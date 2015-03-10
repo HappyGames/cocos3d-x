@@ -1,0 +1,648 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4C09E08817BCE90200AE076E /* ValueAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E08617BCE90200AE076E /* ValueAffector.cpp */; };
+		4C09E08917BCE90200AE076E /* ValueAffector.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E08717BCE90200AE076E /* ValueAffector.h */; };
+		4C09E09017BCE92900AE076E /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E08A17BCE92900AE076E /* Bezier.cpp */; };
+		4C09E09117BCE92900AE076E /* Bezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E08B17BCE92900AE076E /* Bezier.h */; };
+		4C09E09217BCE92900AE076E /* Curve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E08C17BCE92900AE076E /* Curve.cpp */; };
+		4C09E09317BCE92900AE076E /* Curve.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E08D17BCE92900AE076E /* Curve.h */; };
+		4C09E09417BCE92900AE076E /* Easing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E08E17BCE92900AE076E /* Easing.cpp */; };
+		4C09E09517BCE92900AE076E /* Easing.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E08F17BCE92900AE076E /* Easing.h */; };
+		4C09E09B17BCE96800AE076E /* EffectProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E09717BCE96800AE076E /* EffectProtocol.cpp */; };
+		4C09E09C17BCE96800AE076E /* EffectProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E09817BCE96800AE076E /* EffectProtocol.h */; };
+		4C09E09D17BCE96800AE076E /* TextureAnimProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E09917BCE96800AE076E /* TextureAnimProtocol.cpp */; };
+		4C09E09E17BCE96800AE076E /* TextureAnimProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E09A17BCE96800AE076E /* TextureAnimProtocol.h */; };
+		4C09E0A817BCE99500AE076E /* EffectNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0A017BCE99500AE076E /* EffectNode.cpp */; };
+		4C09E0A917BCE99500AE076E /* EffectNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0A117BCE99500AE076E /* EffectNode.h */; };
+		4C09E0AA17BCE99500AE076E /* LightningNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0A217BCE99500AE076E /* LightningNode.cpp */; };
+		4C09E0AB17BCE99500AE076E /* LightningNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0A317BCE99500AE076E /* LightningNode.h */; };
+		4C09E0AC17BCE99500AE076E /* ParticleSystemNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0A417BCE99500AE076E /* ParticleSystemNode.cpp */; };
+		4C09E0AD17BCE99500AE076E /* ParticleSystemNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0A517BCE99500AE076E /* ParticleSystemNode.h */; };
+		4C09E0AE17BCE99500AE076E /* SpriteNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0A617BCE99500AE076E /* SpriteNode.cpp */; };
+		4C09E0AF17BCE99500AE076E /* SpriteNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0A717BCE99500AE076E /* SpriteNode.h */; };
+		4C09E0BD17BCE9C200AE076E /* EffectPlayCallback.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0B017BCE9C200AE076E /* EffectPlayCallback.h */; };
+		4C09E0BE17BCE9C200AE076E /* Grid2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0B117BCE9C200AE076E /* Grid2D.cpp */; };
+		4C09E0BF17BCE9C200AE076E /* Grid2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0B217BCE9C200AE076E /* Grid2D.h */; };
+		4C09E0C017BCE9C200AE076E /* KeyFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0B317BCE9C200AE076E /* KeyFrame.h */; };
+		4C09E0C117BCE9C200AE076E /* MeshWarpEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0B517BCE9C200AE076E /* MeshWarpEffect.cpp */; };
+		4C09E0C217BCE9C200AE076E /* MeshWarpEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0B617BCE9C200AE076E /* MeshWarpEffect.h */; };
+		4C09E0C317BCE9C200AE076E /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0B717BCE9C200AE076E /* ParticleSystem.cpp */; };
+		4C09E0C417BCE9C200AE076E /* ParticleSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0B817BCE9C200AE076E /* ParticleSystem.h */; };
+		4C09E0C517BCE9C200AE076E /* Properties.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0B917BCE9C200AE076E /* Properties.hpp */; };
+		4C09E0C617BCE9C200AE076E /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0BA17BCE9C200AE076E /* Sprite.cpp */; };
+		4C09E0C717BCE9C200AE076E /* Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0BB17BCE9C200AE076E /* Sprite.h */; };
+		4C09E0C817BCE9C200AE076E /* XmlOp.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0BC17BCE9C200AE076E /* XmlOp.hpp */; };
+		4C09E0F017BCFFD700AE076E /* LogManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0EC17BCFFD700AE076E /* LogManager.cpp */; };
+		4C09E0F117BCFFD700AE076E /* LogManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0ED17BCFFD700AE076E /* LogManager.h */; };
+		4C09E0F217BCFFD700AE076E /* LogProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C09E0EE17BCFFD700AE076E /* LogProtocol.cpp */; };
+		4C09E0F317BCFFD700AE076E /* LogProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C09E0EF17BCFFD700AE076E /* LogProtocol.h */; };
+		4C216A8517BE3A2400CED0EA /* Lightning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C216A8217BE3A2400CED0EA /* Lightning.cpp */; };
+		4C216A8617BE3A2400CED0EA /* Lightning.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C216A8317BE3A2400CED0EA /* Lightning.h */; };
+		4C25D29B17A2B23E000483C8 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25D29917A2B23E000483C8 /* Common.cpp */; };
+		4C25D29C17A2B23E000483C8 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D29A17A2B23E000483C8 /* Common.h */; };
+		4C25D2B917A2B255000483C8 /* Affector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25D29D17A2B255000483C8 /* Affector.cpp */; };
+		4C25D2BA17A2B255000483C8 /* Affector.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D29E17A2B255000483C8 /* Affector.h */; };
+		4C25D2BB17A2B255000483C8 /* ColorAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25D29F17A2B255000483C8 /* ColorAffector.cpp */; };
+		4C25D2BC17A2B255000483C8 /* ColorAffector.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A017A2B255000483C8 /* ColorAffector.h */; };
+		4C25D2BD17A2B255000483C8 /* Back.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A217A2B255000483C8 /* Back.h */; };
+		4C25D2BE17A2B255000483C8 /* Bounce.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A317A2B255000483C8 /* Bounce.h */; };
+		4C25D2BF17A2B255000483C8 /* Circ.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A417A2B255000483C8 /* Circ.h */; };
+		4C25D2C017A2B255000483C8 /* Cubic.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A517A2B255000483C8 /* Cubic.h */; };
+		4C25D2C117A2B255000483C8 /* Elastic.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A717A2B255000483C8 /* Elastic.h */; };
+		4C25D2C217A2B255000483C8 /* Expo.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A817A2B255000483C8 /* Expo.h */; };
+		4C25D2C317A2B255000483C8 /* Linear.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2A917A2B255000483C8 /* Linear.h */; };
+		4C25D2C417A2B255000483C8 /* Quad.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2AA17A2B255000483C8 /* Quad.h */; };
+		4C25D2C517A2B255000483C8 /* Quart.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2AB17A2B255000483C8 /* Quart.h */; };
+		4C25D2C617A2B255000483C8 /* Quint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2AC17A2B255000483C8 /* Quint.h */; };
+		4C25D2C717A2B255000483C8 /* Sine.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2AD17A2B255000483C8 /* Sine.h */; };
+		4C25D2C817A2B255000483C8 /* Strong.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2AE17A2B255000483C8 /* Strong.h */; };
+		4C25D2C917A2B255000483C8 /* EffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25D2AF17A2B255000483C8 /* EffectManager.cpp */; };
+		4C25D2CA17A2B255000483C8 /* EffectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2B017A2B255000483C8 /* EffectManager.h */; };
+		4C25D2CB17A2B255000483C8 /* Spline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25D2B117A2B255000483C8 /* Spline.cpp */; };
+		4C25D2CC17A2B255000483C8 /* Spline.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2B217A2B255000483C8 /* Spline.h */; };
+		4C25D2CD17A2B255000483C8 /* SpriteEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25D2B317A2B255000483C8 /* SpriteEffect.cpp */; };
+		4C25D2CE17A2B255000483C8 /* SpriteEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2B417A2B255000483C8 /* SpriteEffect.h */; };
+		4C25D2D717A2B29A000483C8 /* HawkCocos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25D2D517A2B29A000483C8 /* HawkCocos.cpp */; };
+		4C25D2D817A2B29A000483C8 /* HawkCocos.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C25D2D617A2B29A000483C8 /* HawkCocos.h */; };
+		4CA0392617905838008FF84F /* Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA0391A17905838008FF84F /* Effect.cpp */; };
+		4CA0392717905838008FF84F /* Effect.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA0391B17905838008FF84F /* Effect.h */; };
+		4CA0392817905838008FF84F /* EffectHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA0391C17905838008FF84F /* EffectHeader.h */; };
+		4CA0392917905838008FF84F /* EffectLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA0391D17905838008FF84F /* EffectLib.h */; };
+		4CA0392C17905838008FF84F /* ParticleSystemPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA0392017905838008FF84F /* ParticleSystemPoint.cpp */; };
+		4CA0392D17905838008FF84F /* ParticleSystemPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA0392117905838008FF84F /* ParticleSystemPoint.h */; };
+		4CA0393017905838008FF84F /* ParticleSystemSphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA0392417905838008FF84F /* ParticleSystemSphere.cpp */; };
+		4CA0393117905838008FF84F /* ParticleSystemSphere.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA0392517905838008FF84F /* ParticleSystemSphere.h */; };
+		4CA0393917905863008FF84F /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA0393517905863008FF84F /* ResourceManager.cpp */; };
+		4CA0393A17905863008FF84F /* ResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA0393617905863008FF84F /* ResourceManager.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4C09E08617BCE90200AE076E /* ValueAffector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ValueAffector.cpp; path = ../effect/ValueAffector.cpp; sourceTree = "<group>"; };
+		4C09E08717BCE90200AE076E /* ValueAffector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ValueAffector.h; path = ../effect/ValueAffector.h; sourceTree = "<group>"; };
+		4C09E08A17BCE92900AE076E /* Bezier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Bezier.cpp; path = ../effect/Bezier.cpp; sourceTree = "<group>"; };
+		4C09E08B17BCE92900AE076E /* Bezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bezier.h; path = ../effect/Bezier.h; sourceTree = "<group>"; };
+		4C09E08C17BCE92900AE076E /* Curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Curve.cpp; path = ../effect/Curve.cpp; sourceTree = "<group>"; };
+		4C09E08D17BCE92900AE076E /* Curve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Curve.h; path = ../effect/Curve.h; sourceTree = "<group>"; };
+		4C09E08E17BCE92900AE076E /* Easing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Easing.cpp; path = ../effect/Easing.cpp; sourceTree = "<group>"; };
+		4C09E08F17BCE92900AE076E /* Easing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Easing.h; path = ../effect/Easing.h; sourceTree = "<group>"; };
+		4C09E09717BCE96800AE076E /* EffectProtocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EffectProtocol.cpp; path = ../effect/EffectProtocol.cpp; sourceTree = "<group>"; };
+		4C09E09817BCE96800AE076E /* EffectProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectProtocol.h; path = ../effect/EffectProtocol.h; sourceTree = "<group>"; };
+		4C09E09917BCE96800AE076E /* TextureAnimProtocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextureAnimProtocol.cpp; path = ../effect/TextureAnimProtocol.cpp; sourceTree = "<group>"; };
+		4C09E09A17BCE96800AE076E /* TextureAnimProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextureAnimProtocol.h; path = ../effect/TextureAnimProtocol.h; sourceTree = "<group>"; };
+		4C09E0A017BCE99500AE076E /* EffectNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EffectNode.cpp; path = ../effect/EffectNode.cpp; sourceTree = "<group>"; };
+		4C09E0A117BCE99500AE076E /* EffectNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectNode.h; path = ../effect/EffectNode.h; sourceTree = "<group>"; };
+		4C09E0A217BCE99500AE076E /* LightningNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LightningNode.cpp; path = ../effect/LightningNode.cpp; sourceTree = "<group>"; };
+		4C09E0A317BCE99500AE076E /* LightningNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LightningNode.h; path = ../effect/LightningNode.h; sourceTree = "<group>"; };
+		4C09E0A417BCE99500AE076E /* ParticleSystemNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleSystemNode.cpp; path = ../effect/ParticleSystemNode.cpp; sourceTree = "<group>"; };
+		4C09E0A517BCE99500AE076E /* ParticleSystemNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleSystemNode.h; path = ../effect/ParticleSystemNode.h; sourceTree = "<group>"; };
+		4C09E0A617BCE99500AE076E /* SpriteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteNode.cpp; path = ../effect/SpriteNode.cpp; sourceTree = "<group>"; };
+		4C09E0A717BCE99500AE076E /* SpriteNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteNode.h; path = ../effect/SpriteNode.h; sourceTree = "<group>"; };
+		4C09E0B017BCE9C200AE076E /* EffectPlayCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectPlayCallback.h; path = ../effect/EffectPlayCallback.h; sourceTree = "<group>"; };
+		4C09E0B117BCE9C200AE076E /* Grid2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Grid2D.cpp; path = ../effect/Grid2D.cpp; sourceTree = "<group>"; };
+		4C09E0B217BCE9C200AE076E /* Grid2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Grid2D.h; path = ../effect/Grid2D.h; sourceTree = "<group>"; };
+		4C09E0B317BCE9C200AE076E /* KeyFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyFrame.h; path = ../effect/KeyFrame.h; sourceTree = "<group>"; };
+		4C09E0B417BCE9C200AE076E /* KeyFrame.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = KeyFrame.inl; path = ../effect/KeyFrame.inl; sourceTree = "<group>"; };
+		4C09E0B517BCE9C200AE076E /* MeshWarpEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshWarpEffect.cpp; path = ../effect/MeshWarpEffect.cpp; sourceTree = "<group>"; };
+		4C09E0B617BCE9C200AE076E /* MeshWarpEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshWarpEffect.h; path = ../effect/MeshWarpEffect.h; sourceTree = "<group>"; };
+		4C09E0B717BCE9C200AE076E /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleSystem.cpp; path = ../effect/ParticleSystem.cpp; sourceTree = "<group>"; };
+		4C09E0B817BCE9C200AE076E /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleSystem.h; path = ../effect/ParticleSystem.h; sourceTree = "<group>"; };
+		4C09E0B917BCE9C200AE076E /* Properties.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Properties.hpp; path = ../effect/Properties.hpp; sourceTree = "<group>"; };
+		4C09E0BA17BCE9C200AE076E /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sprite.cpp; path = ../effect/Sprite.cpp; sourceTree = "<group>"; };
+		4C09E0BB17BCE9C200AE076E /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sprite.h; path = ../effect/Sprite.h; sourceTree = "<group>"; };
+		4C09E0BC17BCE9C200AE076E /* XmlOp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = XmlOp.hpp; path = ../effect/XmlOp.hpp; sourceTree = "<group>"; };
+		4C09E0EC17BCFFD700AE076E /* LogManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LogManager.cpp; path = ../common/LogManager.cpp; sourceTree = "<group>"; };
+		4C09E0ED17BCFFD700AE076E /* LogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogManager.h; path = ../common/LogManager.h; sourceTree = "<group>"; };
+		4C09E0EE17BCFFD700AE076E /* LogProtocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LogProtocol.cpp; path = ../common/LogProtocol.cpp; sourceTree = "<group>"; };
+		4C09E0EF17BCFFD700AE076E /* LogProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogProtocol.h; path = ../common/LogProtocol.h; sourceTree = "<group>"; };
+		4C216A8217BE3A2400CED0EA /* Lightning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Lightning.cpp; path = ../effect/Lightning.cpp; sourceTree = "<group>"; };
+		4C216A8317BE3A2400CED0EA /* Lightning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lightning.h; path = ../effect/Lightning.h; sourceTree = "<group>"; };
+		4C25D29917A2B23E000483C8 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = ../common/Common.cpp; sourceTree = "<group>"; };
+		4C25D29A17A2B23E000483C8 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../common/Common.h; sourceTree = "<group>"; };
+		4C25D29D17A2B255000483C8 /* Affector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Affector.cpp; path = ../effect/Affector.cpp; sourceTree = "<group>"; };
+		4C25D29E17A2B255000483C8 /* Affector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Affector.h; path = ../effect/Affector.h; sourceTree = "<group>"; };
+		4C25D29F17A2B255000483C8 /* ColorAffector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorAffector.cpp; path = ../effect/ColorAffector.cpp; sourceTree = "<group>"; };
+		4C25D2A017A2B255000483C8 /* ColorAffector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorAffector.h; path = ../effect/ColorAffector.h; sourceTree = "<group>"; };
+		4C25D2A217A2B255000483C8 /* Back.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Back.h; sourceTree = "<group>"; };
+		4C25D2A317A2B255000483C8 /* Bounce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bounce.h; sourceTree = "<group>"; };
+		4C25D2A417A2B255000483C8 /* Circ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circ.h; sourceTree = "<group>"; };
+		4C25D2A517A2B255000483C8 /* Cubic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cubic.h; sourceTree = "<group>"; };
+		4C25D2A617A2B255000483C8 /* easing_readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = easing_readme.txt; sourceTree = "<group>"; };
+		4C25D2A717A2B255000483C8 /* Elastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Elastic.h; sourceTree = "<group>"; };
+		4C25D2A817A2B255000483C8 /* Expo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Expo.h; sourceTree = "<group>"; };
+		4C25D2A917A2B255000483C8 /* Linear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Linear.h; sourceTree = "<group>"; };
+		4C25D2AA17A2B255000483C8 /* Quad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quad.h; sourceTree = "<group>"; };
+		4C25D2AB17A2B255000483C8 /* Quart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quart.h; sourceTree = "<group>"; };
+		4C25D2AC17A2B255000483C8 /* Quint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quint.h; sourceTree = "<group>"; };
+		4C25D2AD17A2B255000483C8 /* Sine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sine.h; sourceTree = "<group>"; };
+		4C25D2AE17A2B255000483C8 /* Strong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Strong.h; sourceTree = "<group>"; };
+		4C25D2AF17A2B255000483C8 /* EffectManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EffectManager.cpp; path = ../effect/EffectManager.cpp; sourceTree = "<group>"; };
+		4C25D2B017A2B255000483C8 /* EffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectManager.h; path = ../effect/EffectManager.h; sourceTree = "<group>"; };
+		4C25D2B117A2B255000483C8 /* Spline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Spline.cpp; path = ../effect/Spline.cpp; sourceTree = "<group>"; };
+		4C25D2B217A2B255000483C8 /* Spline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Spline.h; path = ../effect/Spline.h; sourceTree = "<group>"; };
+		4C25D2B317A2B255000483C8 /* SpriteEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteEffect.cpp; path = ../effect/SpriteEffect.cpp; sourceTree = "<group>"; };
+		4C25D2B417A2B255000483C8 /* SpriteEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteEffect.h; path = ../effect/SpriteEffect.h; sourceTree = "<group>"; };
+		4C25D2D517A2B29A000483C8 /* HawkCocos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HawkCocos.cpp; path = ../HawkCocos.cpp; sourceTree = "<group>"; };
+		4C25D2D617A2B29A000483C8 /* HawkCocos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HawkCocos.h; path = ../HawkCocos.h; sourceTree = "<group>"; };
+		4CA038E6179057AA008FF84F /* libHawkCocos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHawkCocos.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CA0391A17905838008FF84F /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Effect.cpp; path = ../effect/Effect.cpp; sourceTree = "<group>"; };
+		4CA0391B17905838008FF84F /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Effect.h; path = ../effect/Effect.h; sourceTree = "<group>"; };
+		4CA0391C17905838008FF84F /* EffectHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectHeader.h; path = ../effect/EffectHeader.h; sourceTree = "<group>"; };
+		4CA0391D17905838008FF84F /* EffectLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectLib.h; path = ../effect/EffectLib.h; sourceTree = "<group>"; };
+		4CA0392017905838008FF84F /* ParticleSystemPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleSystemPoint.cpp; path = ../effect/ParticleSystemPoint.cpp; sourceTree = "<group>"; };
+		4CA0392117905838008FF84F /* ParticleSystemPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleSystemPoint.h; path = ../effect/ParticleSystemPoint.h; sourceTree = "<group>"; };
+		4CA0392417905838008FF84F /* ParticleSystemSphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleSystemSphere.cpp; path = ../effect/ParticleSystemSphere.cpp; sourceTree = "<group>"; };
+		4CA0392517905838008FF84F /* ParticleSystemSphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleSystemSphere.h; path = ../effect/ParticleSystemSphere.h; sourceTree = "<group>"; };
+		4CA0393517905863008FF84F /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ResourceManager.cpp; path = ../common/ResourceManager.cpp; sourceTree = "<group>"; };
+		4CA0393617905863008FF84F /* ResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourceManager.h; path = ../common/ResourceManager.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4CA038E3179057AA008FF84F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4C09E09617BCE93A00AE076E /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				4C09E09717BCE96800AE076E /* EffectProtocol.cpp */,
+				4C09E09817BCE96800AE076E /* EffectProtocol.h */,
+				4C09E09917BCE96800AE076E /* TextureAnimProtocol.cpp */,
+				4C09E09A17BCE96800AE076E /* TextureAnimProtocol.h */,
+			);
+			name = protocols;
+			sourceTree = "<group>";
+		};
+		4C09E09F17BCE96F00AE076E /* effectNodes */ = {
+			isa = PBXGroup;
+			children = (
+				4C09E0A017BCE99500AE076E /* EffectNode.cpp */,
+				4C09E0A117BCE99500AE076E /* EffectNode.h */,
+				4C09E0A217BCE99500AE076E /* LightningNode.cpp */,
+				4C09E0A317BCE99500AE076E /* LightningNode.h */,
+				4C09E0A417BCE99500AE076E /* ParticleSystemNode.cpp */,
+				4C09E0A517BCE99500AE076E /* ParticleSystemNode.h */,
+				4C09E0A617BCE99500AE076E /* SpriteNode.cpp */,
+				4C09E0A717BCE99500AE076E /* SpriteNode.h */,
+			);
+			name = effectNodes;
+			sourceTree = "<group>";
+		};
+		4C216A8117BE39D500CED0EA /* effectSupport */ = {
+			isa = PBXGroup;
+			children = (
+				4C216A8217BE3A2400CED0EA /* Lightning.cpp */,
+				4C216A8317BE3A2400CED0EA /* Lightning.h */,
+				4C09E0BA17BCE9C200AE076E /* Sprite.cpp */,
+				4C09E0BB17BCE9C200AE076E /* Sprite.h */,
+				4C09E0B117BCE9C200AE076E /* Grid2D.cpp */,
+				4C09E0B217BCE9C200AE076E /* Grid2D.h */,
+			);
+			name = effectSupport;
+			sourceTree = "<group>";
+		};
+		4C216A8817BE3AA200CED0EA /* hawkcocos */ = {
+			isa = PBXGroup;
+			children = (
+				4C25D2D517A2B29A000483C8 /* HawkCocos.cpp */,
+				4C25D2D617A2B29A000483C8 /* HawkCocos.h */,
+			);
+			name = hawkcocos;
+			sourceTree = "<group>";
+		};
+		4C25D2A117A2B255000483C8 /* easing */ = {
+			isa = PBXGroup;
+			children = (
+				4C25D2A217A2B255000483C8 /* Back.h */,
+				4C25D2A317A2B255000483C8 /* Bounce.h */,
+				4C25D2A417A2B255000483C8 /* Circ.h */,
+				4C25D2A517A2B255000483C8 /* Cubic.h */,
+				4C25D2A617A2B255000483C8 /* easing_readme.txt */,
+				4C25D2A717A2B255000483C8 /* Elastic.h */,
+				4C25D2A817A2B255000483C8 /* Expo.h */,
+				4C25D2A917A2B255000483C8 /* Linear.h */,
+				4C25D2AA17A2B255000483C8 /* Quad.h */,
+				4C25D2AB17A2B255000483C8 /* Quart.h */,
+				4C25D2AC17A2B255000483C8 /* Quint.h */,
+				4C25D2AD17A2B255000483C8 /* Sine.h */,
+				4C25D2AE17A2B255000483C8 /* Strong.h */,
+			);
+			name = easing;
+			path = ../effect/easing;
+			sourceTree = "<group>";
+		};
+		4C25D2D317A2B25F000483C8 /* math */ = {
+			isa = PBXGroup;
+			children = (
+				4C09E08A17BCE92900AE076E /* Bezier.cpp */,
+				4C09E08B17BCE92900AE076E /* Bezier.h */,
+				4C09E08C17BCE92900AE076E /* Curve.cpp */,
+				4C09E08D17BCE92900AE076E /* Curve.h */,
+				4C09E08E17BCE92900AE076E /* Easing.cpp */,
+				4C09E08F17BCE92900AE076E /* Easing.h */,
+				4C25D2B117A2B255000483C8 /* Spline.cpp */,
+				4C25D2B217A2B255000483C8 /* Spline.h */,
+				4C25D2A117A2B255000483C8 /* easing */,
+			);
+			name = math;
+			sourceTree = "<group>";
+		};
+		4C25D2D417A2B272000483C8 /* affector */ = {
+			isa = PBXGroup;
+			children = (
+				4C09E08617BCE90200AE076E /* ValueAffector.cpp */,
+				4C09E08717BCE90200AE076E /* ValueAffector.h */,
+				4C25D29D17A2B255000483C8 /* Affector.cpp */,
+				4C25D29E17A2B255000483C8 /* Affector.h */,
+				4C25D29F17A2B255000483C8 /* ColorAffector.cpp */,
+				4C25D2A017A2B255000483C8 /* ColorAffector.h */,
+			);
+			name = affector;
+			sourceTree = "<group>";
+		};
+		4CA038DB179057AA008FF84F = {
+			isa = PBXGroup;
+			children = (
+				4C216A8817BE3AA200CED0EA /* hawkcocos */,
+				4CA0391917905825008FF84F /* ui */,
+				4CA039181790581F008FF84F /* effect */,
+				4CA0391717905819008FF84F /* common */,
+				4CA0391617905813008FF84F /* appframe */,
+				4CA039141790580B008FF84F /* animation */,
+				4CA038E7179057AA008FF84F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4CA038E7179057AA008FF84F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4CA038E6179057AA008FF84F /* libHawkCocos.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4CA039141790580B008FF84F /* animation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = animation;
+			sourceTree = "<group>";
+		};
+		4CA0391617905813008FF84F /* appframe */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = appframe;
+			sourceTree = "<group>";
+		};
+		4CA0391717905819008FF84F /* common */ = {
+			isa = PBXGroup;
+			children = (
+				4C09E0EC17BCFFD700AE076E /* LogManager.cpp */,
+				4C09E0ED17BCFFD700AE076E /* LogManager.h */,
+				4C09E0EE17BCFFD700AE076E /* LogProtocol.cpp */,
+				4C09E0EF17BCFFD700AE076E /* LogProtocol.h */,
+				4C25D29917A2B23E000483C8 /* Common.cpp */,
+				4C25D29A17A2B23E000483C8 /* Common.h */,
+				4CA0393517905863008FF84F /* ResourceManager.cpp */,
+				4CA0393617905863008FF84F /* ResourceManager.h */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
+		4CA039181790581F008FF84F /* effect */ = {
+			isa = PBXGroup;
+			children = (
+				4C216A8117BE39D500CED0EA /* effectSupport */,
+				4C09E09F17BCE96F00AE076E /* effectNodes */,
+				4C09E09617BCE93A00AE076E /* protocols */,
+				4C25D2D417A2B272000483C8 /* affector */,
+				4C25D2D317A2B25F000483C8 /* math */,
+				4CA0393217905840008FF84F /* emitters */,
+				4CA0391A17905838008FF84F /* Effect.cpp */,
+				4CA0391B17905838008FF84F /* Effect.h */,
+				4CA0391C17905838008FF84F /* EffectHeader.h */,
+				4CA0391D17905838008FF84F /* EffectLib.h */,
+				4C09E0B017BCE9C200AE076E /* EffectPlayCallback.h */,
+				4C25D2AF17A2B255000483C8 /* EffectManager.cpp */,
+				4C25D2B017A2B255000483C8 /* EffectManager.h */,
+				4C25D2B317A2B255000483C8 /* SpriteEffect.cpp */,
+				4C25D2B417A2B255000483C8 /* SpriteEffect.h */,
+				4C09E0B317BCE9C200AE076E /* KeyFrame.h */,
+				4C09E0B417BCE9C200AE076E /* KeyFrame.inl */,
+				4C09E0B517BCE9C200AE076E /* MeshWarpEffect.cpp */,
+				4C09E0B617BCE9C200AE076E /* MeshWarpEffect.h */,
+				4C09E0B917BCE9C200AE076E /* Properties.hpp */,
+				4C09E0BC17BCE9C200AE076E /* XmlOp.hpp */,
+			);
+			name = effect;
+			sourceTree = "<group>";
+		};
+		4CA0391917905825008FF84F /* ui */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ui;
+			sourceTree = "<group>";
+		};
+		4CA0393217905840008FF84F /* emitters */ = {
+			isa = PBXGroup;
+			children = (
+				4C09E0B717BCE9C200AE076E /* ParticleSystem.cpp */,
+				4C09E0B817BCE9C200AE076E /* ParticleSystem.h */,
+				4CA0392017905838008FF84F /* ParticleSystemPoint.cpp */,
+				4CA0392117905838008FF84F /* ParticleSystemPoint.h */,
+				4CA0392417905838008FF84F /* ParticleSystemSphere.cpp */,
+				4CA0392517905838008FF84F /* ParticleSystemSphere.h */,
+			);
+			name = emitters;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4CA038E4179057AA008FF84F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CA0392717905838008FF84F /* Effect.h in Headers */,
+				4CA0392817905838008FF84F /* EffectHeader.h in Headers */,
+				4CA0392917905838008FF84F /* EffectLib.h in Headers */,
+				4CA0392D17905838008FF84F /* ParticleSystemPoint.h in Headers */,
+				4CA0393117905838008FF84F /* ParticleSystemSphere.h in Headers */,
+				4CA0393A17905863008FF84F /* ResourceManager.h in Headers */,
+				4C25D29C17A2B23E000483C8 /* Common.h in Headers */,
+				4C25D2BA17A2B255000483C8 /* Affector.h in Headers */,
+				4C25D2BC17A2B255000483C8 /* ColorAffector.h in Headers */,
+				4C25D2BD17A2B255000483C8 /* Back.h in Headers */,
+				4C25D2BE17A2B255000483C8 /* Bounce.h in Headers */,
+				4C25D2BF17A2B255000483C8 /* Circ.h in Headers */,
+				4C25D2C017A2B255000483C8 /* Cubic.h in Headers */,
+				4C25D2C117A2B255000483C8 /* Elastic.h in Headers */,
+				4C25D2C217A2B255000483C8 /* Expo.h in Headers */,
+				4C25D2C317A2B255000483C8 /* Linear.h in Headers */,
+				4C25D2C417A2B255000483C8 /* Quad.h in Headers */,
+				4C25D2C517A2B255000483C8 /* Quart.h in Headers */,
+				4C25D2C617A2B255000483C8 /* Quint.h in Headers */,
+				4C25D2C717A2B255000483C8 /* Sine.h in Headers */,
+				4C25D2C817A2B255000483C8 /* Strong.h in Headers */,
+				4C25D2CA17A2B255000483C8 /* EffectManager.h in Headers */,
+				4C25D2CC17A2B255000483C8 /* Spline.h in Headers */,
+				4C25D2CE17A2B255000483C8 /* SpriteEffect.h in Headers */,
+				4C25D2D817A2B29A000483C8 /* HawkCocos.h in Headers */,
+				4C09E08917BCE90200AE076E /* ValueAffector.h in Headers */,
+				4C09E09117BCE92900AE076E /* Bezier.h in Headers */,
+				4C09E09317BCE92900AE076E /* Curve.h in Headers */,
+				4C09E09517BCE92900AE076E /* Easing.h in Headers */,
+				4C09E09C17BCE96800AE076E /* EffectProtocol.h in Headers */,
+				4C09E09E17BCE96800AE076E /* TextureAnimProtocol.h in Headers */,
+				4C09E0A917BCE99500AE076E /* EffectNode.h in Headers */,
+				4C09E0AB17BCE99500AE076E /* LightningNode.h in Headers */,
+				4C09E0AD17BCE99500AE076E /* ParticleSystemNode.h in Headers */,
+				4C09E0AF17BCE99500AE076E /* SpriteNode.h in Headers */,
+				4C09E0BD17BCE9C200AE076E /* EffectPlayCallback.h in Headers */,
+				4C09E0BF17BCE9C200AE076E /* Grid2D.h in Headers */,
+				4C09E0C017BCE9C200AE076E /* KeyFrame.h in Headers */,
+				4C09E0C217BCE9C200AE076E /* MeshWarpEffect.h in Headers */,
+				4C09E0C417BCE9C200AE076E /* ParticleSystem.h in Headers */,
+				4C09E0C517BCE9C200AE076E /* Properties.hpp in Headers */,
+				4C09E0C717BCE9C200AE076E /* Sprite.h in Headers */,
+				4C09E0C817BCE9C200AE076E /* XmlOp.hpp in Headers */,
+				4C09E0F117BCFFD700AE076E /* LogManager.h in Headers */,
+				4C09E0F317BCFFD700AE076E /* LogProtocol.h in Headers */,
+				4C216A8617BE3A2400CED0EA /* Lightning.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4CA038E5179057AA008FF84F /* HawkCocos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CA038EA179057AA008FF84F /* Build configuration list for PBXNativeTarget "HawkCocos" */;
+			buildPhases = (
+				4CA038E2179057AA008FF84F /* Sources */,
+				4CA038E3179057AA008FF84F /* Frameworks */,
+				4CA038E4179057AA008FF84F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HawkCocos;
+			productName = HawkCocos;
+			productReference = 4CA038E6179057AA008FF84F /* libHawkCocos.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4CA038DD179057AA008FF84F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = Michael;
+			};
+			buildConfigurationList = 4CA038E0179057AA008FF84F /* Build configuration list for PBXProject "HawkCocos" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4CA038DB179057AA008FF84F;
+			productRefGroup = 4CA038E7179057AA008FF84F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4CA038E5179057AA008FF84F /* HawkCocos */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4CA038E2179057AA008FF84F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CA0392617905838008FF84F /* Effect.cpp in Sources */,
+				4CA0392C17905838008FF84F /* ParticleSystemPoint.cpp in Sources */,
+				4CA0393017905838008FF84F /* ParticleSystemSphere.cpp in Sources */,
+				4CA0393917905863008FF84F /* ResourceManager.cpp in Sources */,
+				4C25D29B17A2B23E000483C8 /* Common.cpp in Sources */,
+				4C25D2B917A2B255000483C8 /* Affector.cpp in Sources */,
+				4C25D2BB17A2B255000483C8 /* ColorAffector.cpp in Sources */,
+				4C25D2C917A2B255000483C8 /* EffectManager.cpp in Sources */,
+				4C25D2CB17A2B255000483C8 /* Spline.cpp in Sources */,
+				4C25D2CD17A2B255000483C8 /* SpriteEffect.cpp in Sources */,
+				4C25D2D717A2B29A000483C8 /* HawkCocos.cpp in Sources */,
+				4C09E08817BCE90200AE076E /* ValueAffector.cpp in Sources */,
+				4C09E09017BCE92900AE076E /* Bezier.cpp in Sources */,
+				4C09E09217BCE92900AE076E /* Curve.cpp in Sources */,
+				4C09E09417BCE92900AE076E /* Easing.cpp in Sources */,
+				4C09E09B17BCE96800AE076E /* EffectProtocol.cpp in Sources */,
+				4C09E09D17BCE96800AE076E /* TextureAnimProtocol.cpp in Sources */,
+				4C09E0A817BCE99500AE076E /* EffectNode.cpp in Sources */,
+				4C09E0AA17BCE99500AE076E /* LightningNode.cpp in Sources */,
+				4C09E0AC17BCE99500AE076E /* ParticleSystemNode.cpp in Sources */,
+				4C09E0AE17BCE99500AE076E /* SpriteNode.cpp in Sources */,
+				4C09E0BE17BCE9C200AE076E /* Grid2D.cpp in Sources */,
+				4C09E0C117BCE9C200AE076E /* MeshWarpEffect.cpp in Sources */,
+				4C09E0C317BCE9C200AE076E /* ParticleSystem.cpp in Sources */,
+				4C09E0C617BCE9C200AE076E /* Sprite.cpp in Sources */,
+				4C09E0F017BCFFD700AE076E /* LogManager.cpp in Sources */,
+				4C09E0F217BCFFD700AE076E /* LogProtocol.cpp in Sources */,
+				4C216A8517BE3A2400CED0EA /* Lightning.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4CA038E8179057AA008FF84F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4CA038E9179057AA008FF84F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4CA038EB179057AA008FF84F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				COCOS2DX_ROOT = "$(PROJECT_DIR)/../../../../engine/cocos2dx";
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CC_TARGET_OS_MAC,
+					"DEBUG=1",
+					COCOS_EXPORT,
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"$(COCOS2DX_ROOT)/cocos2dx/\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/include\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/platform/mac\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/network\"",
+					"\"$(COCOS2DX_ROOT)/extensions\"",
+					"\"$(COCOS2DX_ROOT)/external\"",
+					"\"$(COCOS2DX_ROOT)/CocosDenshion/include\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/kazmath/include\"",
+					"\"$(PROJECT_DIR)/../../HawkUtil\"",
+					"\"$(PROJECT_DIR)/../../HawkGeometry\"",
+					"\"$(PROJECT_DIR)/../../HawkUtil/source/fastdelegate\"",
+					"\"$(PROJECT_DIR)/../../HawkUtil/source/rapidxml\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4CA038EC179057AA008FF84F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				COCOS2DX_ROOT = "$(PROJECT_DIR)/../../../../engine/cocos2dx";
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CC_TARGET_OS_MAC,
+					COCOS_EXPORT,
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"$(COCOS2DX_ROOT)/cocos2dx/\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/include\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/platform/mac\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/network\"",
+					"\"$(COCOS2DX_ROOT)/extensions\"",
+					"\"$(COCOS2DX_ROOT)/external\"",
+					"\"$(COCOS2DX_ROOT)/CocosDenshion/include\"",
+					"\"$(COCOS2DX_ROOT)/cocos2dx/kazmath/include\"",
+					"\"$(PROJECT_DIR)/../../HawkUtil\"",
+					"\"$(PROJECT_DIR)/../../HawkGeometry\"",
+					"\"$(PROJECT_DIR)/../../HawkUtil/source/fastdelegate\"",
+					"\"$(PROJECT_DIR)/../../HawkUtil/source/rapidxml\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4CA038E0179057AA008FF84F /* Build configuration list for PBXProject "HawkCocos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CA038E8179057AA008FF84F /* Debug */,
+				4CA038E9179057AA008FF84F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4CA038EA179057AA008FF84F /* Build configuration list for PBXNativeTarget "HawkCocos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CA038EB179057AA008FF84F /* Debug */,
+				4CA038EC179057AA008FF84F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4CA038DD179057AA008FF84F /* Project object */;
+}
