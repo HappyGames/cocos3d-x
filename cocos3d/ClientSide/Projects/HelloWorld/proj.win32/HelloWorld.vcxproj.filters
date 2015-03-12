@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Platforms">
+      <UniqueIdentifier>{01e09b83-3836-40d5-a1ae-f37dae4cb2af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\win32">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Platforms\win32\res">
+      <UniqueIdentifier>{82784581-316e-417f-ad67-f1cdb09b9df4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\android">
+      <UniqueIdentifier>{bd3d662c-0462-4e04-9381-46a37cda6503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\android\jni">
+      <UniqueIdentifier>{13cdfd6e-4fdf-43f4-a937-2d544ec7f3de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\3D">
+      <UniqueIdentifier>{2492f806-a68c-4088-bc91-561279715c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\2DEntry">
+      <UniqueIdentifier>{09c8ae61-3143-4b01-bcd7-a71928759693}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Platforms\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MenuScene.cpp">
+      <Filter>Classes\2DEntry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\DPIJni.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\IMEJni.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\Java_org_cocos2dx_lib_Cocos2dxAccelerometer.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\Java_org_cocos2dx_lib_Cocos2dxBitmap.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\Java_org_cocos2dx_lib_Cocos2dxHelper.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\Java_org_cocos2dx_lib_Cocos2dxRenderer.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\JniHelper.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\TouchesJni.cpp">
+      <Filter>Platforms\android\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\proj.android\jni\hellocpp\cpu-features.c">
+      <Filter>Platforms\android</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3D\CC3HelloWorldLayer.cpp">
+      <Filter>Classes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3D\CC3HelloWorldScene.cpp">
+      <Filter>Classes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\proj.android\jni\hellocpp\main.cpp">
+      <Filter>Platforms\android</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3D\Models.cpp">
+      <Filter>Classes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3D\CC3MashUpLayer.cpp">
+      <Filter>Classes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3D\CC3MashUpScene.cpp">
+      <Filter>Classes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3D\HUDLayer.cpp">
+      <Filter>Classes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3D\HUDScene.cpp">
+      <Filter>Classes\3D</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Platforms\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MenuScene.h">
+      <Filter>Classes\2DEntry</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Platforms\win32\res</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\JniHelper.h">
+      <Filter>Platforms\android\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\DPIJni.h">
+      <Filter>Platforms\android\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\IMEJni.h">
+      <Filter>Platforms\android\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\Java_org_cocos2dx_lib_Cocos2dxBitmap.h">
+      <Filter>Platforms\android\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\Java_org_cocos2dx_lib_Cocos2dxHelper.h">
+      <Filter>Platforms\android\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3D\CC3HelloWorldLayer.h">
+      <Filter>Classes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3D\CC3HelloWorldScene.h">
+      <Filter>Classes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3D\Models.h">
+      <Filter>Classes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3D\CC3MashUpLayer.h">
+      <Filter>Classes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3D\CC3MashUpScene.h">
+      <Filter>Classes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3D\HUDLayer.h">
+      <Filter>Classes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3D\HUDScene.h">
+      <Filter>Classes\3D</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\res.ico">
+      <Filter>Platforms\win32\res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc">
+      <Filter>Platforms\win32\res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

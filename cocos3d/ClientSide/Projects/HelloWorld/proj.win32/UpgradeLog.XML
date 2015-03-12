@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="SimpleGame">
+</Property><Property Name="Solution File" Value="D:\Development\MobileDevelopment\Projects\MobileGames\games\SimpleGame\proj.win32\SimpleGame.sln">
+</Property><Property Name="Date" Value="2013年1月3日">
+</Property><Property Name="Time" Value="11:34:45">
+</Property></Properties><Event ErrorLevel="0" Project="libExtensions" Source="..\..\..\engine\cocos2dx\extensions\proj.win32\libExtensions.vcproj" Description="Converting project file 'D:\Development\MobileDevelopment\Projects\MobileGames\engine\cocos2dx\extensions\proj.win32\libExtensions.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libExtensions" Source="..\..\..\engine\cocos2dx\extensions\proj.win32\libExtensions.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libExtensions" Source="..\..\..\engine\cocos2dx\extensions\proj.win32\libExtensions.vcproj" Description="Done converting to new project file 'D:\Development\MobileDevelopment\Projects\MobileGames\engine\cocos2dx\extensions\proj.win32\libExtensions.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libExtensions" Source="..\..\..\engine\cocos2dx\extensions\proj.win32\libExtensions.vcproj" Description="Converted">
+</Event></UpgradeLog>
