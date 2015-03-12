@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)$(Configuration).win32\</OutDir>
+    <IntDir>$(SolutionDir)Temp\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../../engine/cocos2dx/cocos2dx;$(SolutionDir)../../engine/cocos2dx/cocos2dx/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/kazmath/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform/win32;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform/third_party/win32/OGLES;$(SolutionDir)../../engine/cocos2dx/CocosDenshion\include;$(SolutionDir)../../engine/cocos2dx/extensions;$(SolutionDir)../../engine/cocos2dx/external/;$(SolutionDir)../../engine/mmUtil/mmUtil;$(SolutionDir)../../engine/dependencies/win32/pthread/include;$(SolutionDir)../../engine/dependencies;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;libcocos2d.lib;libCocosDenshion.lib;libExtensions.lib;pthreadVCE2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)../../engine/dependencies/win32/pthread/lib;$(OutDir)</AdditionalLibraryDirectories>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Message>xcopy /Y /Q "$(ProjectDir)\Debug\*.lib" "$(OutDir)"</Message>
+    </PreLinkEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
