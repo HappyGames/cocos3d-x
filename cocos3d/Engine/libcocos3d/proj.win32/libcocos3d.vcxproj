@@ -125,6 +125,7 @@
     <ClCompile Include="..\Utility\CC3CC2Extensions.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Android'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Utility\CC3DataArray.cpp" />
     <ClCompile Include="..\Utility\CC3Foundation.cpp" />
@@ -293,6 +294,9 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <AndroidArch>armv5te</AndroidArch>
   </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Android'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -316,6 +320,11 @@
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
+    <OutDir>$(SolutionDir)$(Configuration).android\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration).android\Intermediate\$(ProjectName)\</IntDir>
+    <TargetExt>.a</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">
     <OutDir>$(SolutionDir)$(Configuration).android\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration).android\Intermediate\$(ProjectName)\</IntDir>
     <TargetExt>.a</TargetExt>
@@ -360,6 +369,13 @@
       <PreprocessorDefinitions>ANDROID;_DEBUG;_LIB;COCOS_EXPORT;_CRT_SECURE_NO_WARNINGS;COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <GccExceptionHandling>true</GccExceptionHandling>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/android/prebuilt/libcurl/include;../../../engine/cocos2dx/cocos2dx/platform/android;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GccExceptionHandling>true</GccExceptionHandling>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

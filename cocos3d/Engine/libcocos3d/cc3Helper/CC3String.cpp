@@ -23,9 +23,16 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
+#include <algorithm>
 #include "CC3String.h"
 
 NS_COCOS3D_BEGIN
+
+#ifndef _WIN32
+	#ifndef _MAX_PATH 
+		#define _MAX_PATH 256
+	#endif
+#endif
 
 std::string CC3String::getFileName( const std::string& filePath )
 {
