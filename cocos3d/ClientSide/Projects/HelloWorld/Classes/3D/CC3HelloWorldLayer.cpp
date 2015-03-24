@@ -1,5 +1,4 @@
 #include "CC3HelloWorldLayer.h"
-#include "Nodes/CC3Camera.h"
 
 /**
  * Override to set up your 2D controls and other initial state, and to initialize update processing.

@@ -26,15 +26,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "Scenes/CC3Scene.h"
-#include "Nodes/CC3Node.h"
-#include "actions/CCActionManager.h"
-#include "cc3PVR/CC3PODLight.h"
-#include "cc3PVR/CC3PODResource.h"
-#include "Particles/CC3PointParticle.h"
-#include "Particles/CC3MeshParticle.h"
-#include "cc3Extras/CC3MeshParticleSamples.h"
-#include "Nodes/CC3BitmapLabelNode.h"
+#include "cocos3d.h"
 
 USING_NS_COCOS3D;
 

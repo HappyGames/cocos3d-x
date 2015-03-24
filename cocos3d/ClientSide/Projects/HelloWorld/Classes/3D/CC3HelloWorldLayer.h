@@ -1,6 +1,6 @@
 #ifndef _CC3_HELLOWORLD_LAYER_H_
 #define _CC3_HELLOWORLD_LAYER_H_
-#include "Scenes/CC3Layer.h"
+#include "cocos3d.h"
 USING_NS_COCOS3D;
 
 class CC3HelloWorldLayer : public CC3Layer

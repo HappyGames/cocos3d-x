@@ -1,6 +1,6 @@
 #ifndef _HUD_LAYER_H_
 #define _HUD_LAYER_H_
-#include "Scenes/CC3Layer.h"
+#include "cocos3d.h"
 USING_NS_COCOS3D;
 
 class CHUDLayer : public CC3Layer

@@ -1,9 +1,6 @@
 #include "SimpleAudioEngine.h"
 #include "AppDelegate.h"
 #include "MenuScene.h"
-#include "Animations/CC3ActionManager.h"
-#include "cocos3d.h"
-#include "cc3Helper/Logging.h"
 
 USING_NS_COCOS3D;
 USING_NS_CC;

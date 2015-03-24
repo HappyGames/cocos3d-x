@@ -48,63 +48,83 @@
     <ClCompile Include="..\cc3PVR\CC3PVRTexture.cpp" />
     <ClCompile Include="..\cc3PVR\PVRT\OGLES2\PVRTgles2Ext.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\OGLES2\PVRTTextureAPI.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\OGLES\PVRTglesExt.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\OGLES\PVRTTextureAPI.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTBoneBatch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTDecompress.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTError.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTFixedPoint.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTMatrixF.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTModelPOD.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTPFXParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTQuaternionF.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTResourceFile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTString.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTStringHash.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTTexture.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTTrans.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTVector.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTVertex.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\cocos3d.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Materials\CC3Material.cpp" />
     <ClCompile Include="..\Materials\CC3STBImage.cpp" />
@@ -112,6 +132,9 @@
     <ClCompile Include="..\Materials\CC3TextureUnit.cpp" />
     <ClCompile Include="..\Materials\stb_image.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
+      </ForcedIncludeFiles>
     </ClCompile>
     <ClCompile Include="..\Matrices\CC3AffineMatrix.cpp" />
     <ClCompile Include="..\Matrices\CC3LinearMatrix.cpp" />
@@ -409,10 +432,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/android/prebuilt/libcurl/include;../../../engine/cocos2dx/cocos2dx/platform/android;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/android/prebuilt/libcurl/include;../../../engine/cocos2dx/cocos2dx/platform/android;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ANDROID;_DEBUG;_LIB;COCOS_EXPORT;_CRT_SECURE_NO_WARNINGS;COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <GccExceptionHandling>true</GccExceptionHandling>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>cocos3d.h</ForcedIncludeFiles>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">

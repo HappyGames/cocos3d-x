@@ -1,7 +1,7 @@
 #include "AppDelegate.h"
 #include "platform/android/jni/JniHelper.h"
-#include "google-breakpad/client/linux/handler/minidump_descriptor.h"
-#include "google-breakpad/client/linux/handler/exception_handler.h"
+//#include "google-breakpad/client/linux/handler/minidump_descriptor.h"
+//#include "google-breakpad/client/linux/handler/exception_handler.h"
 #include <jni.h>
 #include <android/log.h>
 
@@ -21,7 +21,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
 	
 	LOGD( "JNI_OnLoad" );
 
-	initDumper();
+//	initDumper();
 
     return JNI_VERSION_1_4;
 }
@@ -52,6 +52,7 @@ void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit(JNIEnv*  env, jobject thi
     }
 }
 
+#if 0
 //!	The dump callback function.
 static bool DumpCallback( const google_breakpad::MinidumpDescriptor& descriptor, void* context, bool succeeded )
 {
@@ -70,5 +71,6 @@ void initDumper()
 	static google_breakpad::MinidumpDescriptor sDescriptor( sWritablePath.c_str() );
 	static google_breakpad::ExceptionHandler sExceptionHandler( sDescriptor, NULL, DumpCallback, NULL, true, -1 );
 }
+#endif
 
 }

@@ -1,6 +1,6 @@
 #ifndef _CC3_HELLOWORLD_SCENE_H_
 #define _CC3_HELLOWORLD_SCENE_H_
-#include "Scenes/CC3Scene.h"
+#include "cocos3d.h"
 USING_NS_COCOS3D;
 
 class CC3HelloWorldScene : public CC3Scene

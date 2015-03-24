@@ -1,11 +1,6 @@
 #ifndef _CC3_MASHUP_SCENE_H_
 #define _CC3_MASHUP_SCENE_H_
-#include "Scenes/CC3Scene.h"
-#include "Nodes/CC3UtilityMeshNodes.h"
-#include "cc3PVR//CC3PODLight.h"
-#include "Particles/CC3PointParticle.h"
-#include "Particles/CC3MeshParticle.h"
-#include "Scenes/CC3RenderSurfaces.h"
+#include "cocos3d.h"
 #include "Models.h"
 
 USING_NS_COCOS3D;

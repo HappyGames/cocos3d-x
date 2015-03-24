@@ -1,7 +1,4 @@
 #include "HUDScene.h"
-#include "Nodes/CC3Camera.h"
-#include "Nodes/CC3Light.h"
-#include "Nodes/CC3UtilityMeshNodes.h"
 
 #define kGlobeName					"Globe"
 #define kBackDropOpacityFactor		0.4f

@@ -29,10 +29,7 @@
  * See header file Models.h for full API documentation.
  */
 #include "Models.h"
-#include "Animations/CC3Actions.h"
 #include "actions/CCActionInstant.h"
-#include "Utility/CC3CC2Extensions.h"
-#include "Particles/CC3PointParticleEmitter.h"
 
 #define kDropHeight 700.0
 

@@ -1,6 +1,6 @@
 #ifndef _HUD_SCENE_H_
 #define _HUD_SCENE_H_
-#include "Scenes/CC3Scene.h"
+#include "cocos3d.h"
 USING_NS_COCOS3D;
 
 class CHUDScene : public CC3Scene

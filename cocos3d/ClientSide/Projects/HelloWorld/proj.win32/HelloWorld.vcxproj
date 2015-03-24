@@ -38,6 +38,7 @@
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
     <PlatformToolset>arm-linux-androideabi-4.6</PlatformToolset>
     <AndroidArch>armv5te</AndroidArch>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -137,7 +138,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)../../engine/cocos2dx/cocos2dx;$(SolutionDir)../../engine/cocos2dx/cocos2dx/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/kazmath/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform/android;$(SolutionDir)../../engine/cocos2dx/CocosDenshion\include;$(SolutionDir)../../engine/cocos2dx/extensions;$(SolutionDir)../../engine/cocos2dx/external/;$(SolutionDir)../../engine/mmUtil/mmUtil;$(SolutionDir)../../engine/mmUtil;$(SolutionDir)../../engine/dependencies;$(SolutionDir)../../engine/dependencies/google-breakpad;$(SolutionDir)../../engine/dependencies/google-breakpad\common\android\include;$(SolutionDir)../../engine/utilities/CocosLib;..\Classes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)../../engine/cocos2dx/cocos2dx;$(SolutionDir)../../engine/cocos2dx/cocos2dx/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/kazmath/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform/android;$(SolutionDir)../../engine/cocos2dx/CocosDenshion\include;$(SolutionDir)../../engine/cocos2dx/extensions;$(SolutionDir)../../engine/cocos2dx/external/;$(SolutionDir)../../engine/mmUtil/mmUtil;$(SolutionDir)../../engine/mmUtil;$(SolutionDir)../../engine/dependencies;$(SolutionDir)../../engine/dependencies/google-breakpad;$(SolutionDir)../../engine/dependencies/google-breakpad\common\android\include;$(SolutionDir)../../engine/libcocos3d;..\Classes</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <GccExceptionHandling>true</GccExceptionHandling>
       <PreprocessorDefinitions>ANDROID;_DEBUG;_LIB;COCOS_EXPORT;_CRT_SECURE_NO_WARNINGS;COCOS2D_DEBUG=1</PreprocessorDefinitions>
@@ -149,7 +150,7 @@
       <AntLibraryName>libgame</AntLibraryName>
     </AntBuild>
     <Link>
-      <AdditionalDependencies>$(OutDir)libCocosLib.a;$(OutDir)libCocosDenshion.a;$(OutDir)libExtensions.a;$(OutDir)libcocos2d.a;$(OutDir)libmmUtil.a;$(OutDir)libBox2D.a;$(OutDir)libchipmunk.a;$(OutDir)libJson.a;$(OutDir)liblua.a;$(OutDir)libTinyXML.a;$(OutDir)libcurl.a;$(OutDir)libjpeg.a;$(OutDir)libpng.a;$(OutDir)libtiff.a;$(OutDir)libwebp.a;$(OutDir)libxml2.a;$(OutDir)libwebsockets.a;$(OutDir)libBreakpad.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)libCocosLib.a;$(OutDir)libCocosDenshion.a;$(OutDir)libExtensions.a;$(OutDir)libcocos2d.a;$(OutDir)libmmUtil.a;$(OutDir)libBox2D.a;$(OutDir)libchipmunk.a;$(OutDir)libJson.a;$(OutDir)liblua.a;$(OutDir)libTinyXML.a;$(OutDir)libcurl.a;$(OutDir)libjpeg.a;$(OutDir)libpng.a;$(OutDir)libtiff.a;$(OutDir)libwebp.a;$(OutDir)libxml2.a;$(OutDir)libwebsockets.a;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>-Wl,--whole-archive -lGLESv2 -llog -lz -ldl %(AdditionalOptions)</AdditionalOptions>
       <SoName>libgame</SoName>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>

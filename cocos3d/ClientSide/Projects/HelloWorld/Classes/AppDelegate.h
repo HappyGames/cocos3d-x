@@ -1,6 +1,6 @@
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
-#include "cc3Helper/LogDelegate.h"
+#include "cocos3d.h"
 
 #define SCREEN_WIDTH	960
 #define SCREEN_HEIGHT	640
