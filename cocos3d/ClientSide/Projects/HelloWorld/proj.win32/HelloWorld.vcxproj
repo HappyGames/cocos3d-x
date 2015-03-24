@@ -38,7 +38,6 @@
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
     <PlatformToolset>arm-linux-androideabi-4.6</PlatformToolset>
     <AndroidArch>armv5te</AndroidArch>
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -69,6 +68,9 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">libgame</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">$(SolutionDir)$(Configuration).android\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">$(SolutionDir)$(Configuration).android\Intermediate\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Android'">$(SolutionDir)$(Configuration).android\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Android'">$(SolutionDir)$(Configuration).android\Intermediate\$(ProjectName)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Android'">libgame</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -160,6 +162,23 @@
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../../engine/cocos2dx/cocos2dx;$(SolutionDir)../../engine/cocos2dx/cocos2dx/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/kazmath/include;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform;$(SolutionDir)../../engine/cocos2dx/cocos2dx/platform/android;$(SolutionDir)../../engine/cocos2dx/CocosDenshion\include;$(SolutionDir)../../engine/cocos2dx/extensions;$(SolutionDir)../../engine/cocos2dx/external/;$(SolutionDir)../../engine/mmUtil/mmUtil;$(SolutionDir)../../engine/mmUtil;$(SolutionDir)../../engine/dependencies;$(SolutionDir)../../engine/dependencies/google-breakpad;$(SolutionDir)../../engine/dependencies/google-breakpad\common\android\include;$(SolutionDir)../../engine/cocosLib;$(SolutionDir)../../engine/libcocos3d;..\Classes</AdditionalIncludeDirectories>
+      <GccExceptionHandling>true</GccExceptionHandling>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(OutDir)libCocosLib.a;$(OutDir)libCocosDenshion.a;$(OutDir)libExtensions.a;$(OutDir)libcocos2d.a;$(OutDir)libmmUtil.a;$(OutDir)libBox2D.a;$(OutDir)libchipmunk.a;$(OutDir)libJson.a;$(OutDir)liblua.a;$(OutDir)libTinyXML.a;$(OutDir)libcurl.a;$(OutDir)libjpeg.a;$(OutDir)libpng.a;$(OutDir)libtiff.a;$(OutDir)libwebp.a;$(OutDir)libxml2.a;$(OutDir)libwebsockets.a;$(OutDir)libBreakpad.a;$(OutDir)libcocos3d.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <SoName>libgame</SoName>
+      <AdditionalOptions>-lGLESv2 -lz %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <AntBuild>
+      <AntBuildPath>$(ProjectDir)../proj.android</AntBuildPath>
+      <AntLibraryName>libgame</AntLibraryName>
+    </AntBuild>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Engine\cocos2dx\cocos2dx\platform\android\jni\DPIJni.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -211,6 +230,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Android'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,12 +265,14 @@
     <ClInclude Include="..\Classes\MenuScene.h" />
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Android'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Android'">true</ExcludedFromBuild>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>

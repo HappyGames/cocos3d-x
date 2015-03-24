@@ -32,8 +32,6 @@
 
 NS_COCOS3D_BEGIN
 
-class CC3FaceArray;
-
 /**
  * A CC3Mesh holds the 3D mesh for a CC3MeshNode.
  *
@@ -117,6 +115,7 @@ class CC3VertexBoneWeights;
 class CC3VertexBoneIndices;
 class CC3VertexPointSizes;
 class CC3VertexIndices;
+class CC3FaceArray;
 
 class CC3Mesh : public CC3Identifiable
 {
