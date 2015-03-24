@@ -29,10 +29,6 @@
  */
 #ifndef _CC3_BILLBOARD_H_
 #define _CC3_BILLBOARD_H_
-#include "CC3Camera.h"
-#include "CC3BoundingVolumes.h"
-#include "CC3MeshNode.h"
-#include "base_nodes/CCNode.h"
 
 NS_COCOS3D_BEGIN
 /**

@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_RENDER_SURFACES_H_
 #define _CC3_RENDER_SURFACES_H_
-#include "../Materials/CC3Texture.h"
 
 NS_COCOS3D_BEGIN
 

@@ -30,7 +30,7 @@
 /** @file */	// Doxygen marker
 #ifndef _CC3_POD_MATERIAL_H_
 #define _CC3_POD_MATERIAL_H_
-#include "../Materials/CC3Material.h"
+//#include "../Materials/CC3Material.h"
 
 NS_COCOS3D_BEGIN
 

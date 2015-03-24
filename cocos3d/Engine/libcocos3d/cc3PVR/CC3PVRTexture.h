@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_PVR_TEXTURE_H_
 #define _CC3_PVR_TEXTURE_H_
-#include "../Materials/CC3Texture.h"
-#include "textures/CCTexturePVR.h"
 
 NS_COCOS3D_BEGIN
 

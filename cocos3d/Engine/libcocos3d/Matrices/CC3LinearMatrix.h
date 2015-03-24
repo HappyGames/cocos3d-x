@@ -29,7 +29,6 @@
  */
 #ifndef _CCL_CC3LINEARMATRIX_H_
 #define _CCL_CC3LINEARMATRIX_H_
-#include "CC3Matrix.h"
 
 NS_COCOS3D_BEGIN
 

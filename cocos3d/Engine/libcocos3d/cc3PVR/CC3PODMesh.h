@@ -30,7 +30,6 @@
 /** @file */	// Doxygen marker
 #ifndef _CC3_POD_MESH_H_
 #define _CC3_POD_MESH_H_
-#include "../Meshes/CC3Mesh.h"
 
 NS_COCOS3D_BEGIN
 

@@ -27,9 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Rotator.h"
-#include "../Matrices/CC3LinearMatrix.h"
-#include "../Nodes/CC3Node.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

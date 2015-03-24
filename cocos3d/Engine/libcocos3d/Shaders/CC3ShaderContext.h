@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_SHADER_CONTEXT_H_
 #define _CC3_SHADER_CONTEXT_H_
-#include "CC3Shaders.h"
-#include "CC3GLSLVariable.h"
 
 NS_COCOS3D_BEGIN
 

@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_LIGHT_H_
 #define _CC3_LIGHT_H_
-#include "CC3Node.h"
-#include "CC3MeshNode.h"
 
 NS_COCOS3D_BEGIN
 class CC3ShadowProtocol;

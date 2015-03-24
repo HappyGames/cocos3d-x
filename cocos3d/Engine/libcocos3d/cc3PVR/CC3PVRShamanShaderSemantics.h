@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_PVR_SHAMAN_SHADER_SEMANTICS_H_
 #define _CC3_PVR_SHAMAN_SHADER_SEMANTICS_H_
-#include "CC3PFXResource.h"
 
 NS_COCOS3D_BEGIN
 // Legacy naming support

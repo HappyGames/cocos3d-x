@@ -29,8 +29,6 @@
  */
 #ifndef _CCL_CC3NODELISTENERS_H_
 #define _CCL_CC3NODELISTENERS_H_
-#include "../Utility/CC3Foundation.h"
-#include <pthread.h>
 
 NS_COCOS3D_BEGIN
 
@@ -141,7 +139,7 @@ public:
 protected:
 	CC3Node*					m_pNode;
 	std::vector<CC3NodeTransformListenerProtocol*>	m_transformListenerWrappers;
-	pthread_mutex_t				m_mutex;
+//	pthread_mutex_t				m_mutex;
 };
 
 

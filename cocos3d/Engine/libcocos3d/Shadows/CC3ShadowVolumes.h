@@ -29,10 +29,6 @@
  */
 #ifndef _CC3_SHADOWVOLUMES_H_
 #define _CC3_SHADOWVOLUMES_H_
-#include "../Meshes/CC3VertexSkinning.h"
-#include "../Nodes/CC3Light.h"
-#include "../Nodes/CC3Billboard.h"
-#include "../Nodes/CC3UtilityMeshNodes.h"
 
 /** The suggested default shadow volume vertex offset factor. */
 static const GLfloat kCC3DefaultShadowVolumeVertexOffsetFactor = 0.001f;

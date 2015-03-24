@@ -19,14 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Animations\CC3ActionManager.cpp" />
+    <ClCompile Include="..\Animations\CC3ActionManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cocos3d.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="..\Animations\CC3Actions.cpp" />
     <ClCompile Include="..\Animations\CC3NodeAnimation.cpp" />
-    <ClCompile Include="..\cc3Helper\CC3Platform.cpp" />
-    <ClCompile Include="..\cc3Helper\CC3String.cpp" />
-    <ClCompile Include="..\cc3Helper\LineScanner.cpp" />
-    <ClCompile Include="..\cc3Helper\LogManager.cpp" />
-    <ClCompile Include="..\cc3Helper\LogDelegate.cpp" />
+    <ClCompile Include="..\Common\CC3Platform.cpp" />
+    <ClCompile Include="..\Common\CC3String.cpp" />
+    <ClCompile Include="..\Common\LineScanner.cpp" />
+    <ClCompile Include="..\Common\LogManager.cpp" />
+    <ClCompile Include="..\Common\LogDelegate.cpp" />
     <ClCompile Include="..\cc3Extras\CC3MeshParticleSamples.cpp" />
     <ClCompile Include="..\cc3Extras\CC3ModelSampleFactory.cpp" />
     <ClCompile Include="..\cc3Extras\CC3ParticleSamples.cpp" />
@@ -44,31 +46,73 @@
     <ClCompile Include="..\cc3PVR\CC3PVRFoundation.cpp" />
     <ClCompile Include="..\cc3PVR\CC3PVRShamanShaderSemantics.cpp" />
     <ClCompile Include="..\cc3PVR\CC3PVRTexture.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\OGLES2\PVRTgles2Ext.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\OGLES2\PVRTTextureAPI.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\OGLES\PVRTglesExt.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\OGLES\PVRTTextureAPI.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTBoneBatch.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTDecompress.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTError.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTFixedPoint.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTMatrixF.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTModelPOD.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTPFXParser.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTQuaternionF.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTResourceFile.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTString.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTStringHash.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTTexture.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTTrans.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTVector.cpp" />
-    <ClCompile Include="..\cc3PVR\PVRT\PVRTVertex.cpp" />
-    <ClCompile Include="..\cocos3d.cpp" />
+    <ClCompile Include="..\cc3PVR\PVRT\OGLES2\PVRTgles2Ext.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\OGLES2\PVRTTextureAPI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\OGLES\PVRTglesExt.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\OGLES\PVRTTextureAPI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTBoneBatch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTDecompress.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTError.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTFixedPoint.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTMatrixF.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTModelPOD.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTPFXParser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTQuaternionF.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTResourceFile.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTString.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTStringHash.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTTexture.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTTrans.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTVector.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\PVRT\PVRTVertex.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\cocos3d.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Materials\CC3Material.cpp" />
     <ClCompile Include="..\Materials\CC3STBImage.cpp" />
     <ClCompile Include="..\Materials\CC3Texture.cpp" />
     <ClCompile Include="..\Materials\CC3TextureUnit.cpp" />
-    <ClCompile Include="..\Materials\stb_image.c" />
+    <ClCompile Include="..\Materials\stb_image.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Matrices\CC3AffineMatrix.cpp" />
     <ClCompile Include="..\Matrices\CC3LinearMatrix.cpp" />
     <ClCompile Include="..\Matrices\CC3Matrix.cpp" />
@@ -122,15 +166,15 @@
     <ClCompile Include="..\Shadows\CC3ShadowVolumes.cpp" />
     <ClCompile Include="..\Utility\CC3Backgrounder.cpp" />
     <ClCompile Include="..\Utility\CC3Cache.cpp" />
-    <ClCompile Include="..\Utility\CC3CC2Extensions.cpp">
+    <ClCompile Include="..\Common\CC3CC2Extensions.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Android'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Utility\CC3DataArray.cpp" />
-    <ClCompile Include="..\Utility\CC3Foundation.cpp" />
+    <ClCompile Include="..\Common\CC3Foundation.cpp" />
     <ClCompile Include="..\Utility\CC3Identifiable.cpp" />
-    <ClCompile Include="..\Utility\CC3Math.cpp" />
+    <ClCompile Include="..\Common\CC3Math.cpp" />
     <ClCompile Include="..\Utility\CC3PerformanceStatistics.cpp" />
     <ClCompile Include="..\Utility\CC3Rotator.cpp" />
   </ItemGroup>
@@ -138,13 +182,12 @@
     <ClInclude Include="..\Animations\CC3ActionManager.h" />
     <ClInclude Include="..\Animations\CC3Actions.h" />
     <ClInclude Include="..\Animations\CC3NodeAnimation.h" />
-    <ClInclude Include="..\cc3Helper\CC3Platform.h" />
-    <ClInclude Include="..\cc3Helper\CC3String.h" />
-    <ClInclude Include="..\cc3Helper\Common.h" />
-    <ClInclude Include="..\cc3Helper\LineScanner.h" />
-    <ClInclude Include="..\cc3Helper\Logging.h" />
-    <ClInclude Include="..\cc3Helper\LogManager.h" />
-    <ClInclude Include="..\cc3Helper\LogDelegate.h" />
+    <ClInclude Include="..\Common\CC3Platform.h" />
+    <ClInclude Include="..\Common\CC3String.h" />
+    <ClInclude Include="..\Common\Common.h" />
+    <ClInclude Include="..\Common\LineScanner.h" />
+    <ClInclude Include="..\Common\LogManager.h" />
+    <ClInclude Include="..\Common\LogDelegate.h" />
     <ClInclude Include="..\cc3Extras\CC3MeshParticleSamples.h" />
     <ClInclude Include="..\cc3Extras\CC3ModelSampleFactory.h" />
     <ClInclude Include="..\cc3Extras\CC3ParticleSamples.h" />
@@ -207,6 +250,7 @@
     <ClInclude Include="..\Matrices\CC3Matrix4x4.h" />
     <ClInclude Include="..\Matrices\CC3ProjectionMatrix.h" />
     <ClInclude Include="..\Meshes\CC3Mesh.h" />
+    <ClInclude Include="..\Nodes\CC3MeshCommon.h" />
     <ClInclude Include="..\Meshes\CC3VertexArrays.h" />
     <ClInclude Include="..\Meshes\CC3VertexSkinning.h" />
     <ClInclude Include="..\Nodes\CC3Billboard.h" />
@@ -255,12 +299,12 @@
     <ClInclude Include="..\Shadows\CC3ShadowVolumes.h" />
     <ClInclude Include="..\Utility\CC3Backgrounder.h" />
     <ClInclude Include="..\Utility\CC3Cache.h" />
-    <ClInclude Include="..\Utility\CC3CC2Extensions.h" />
+    <ClInclude Include="..\Common\CC3CC2Extensions.h" />
     <ClInclude Include="..\Utility\CC3DataArray.h" />
-    <ClInclude Include="..\Utility\CC3Foundation.h" />
+    <ClInclude Include="..\Common\CC3Foundation.h" />
     <ClInclude Include="..\Utility\CC3Identifiable.h" />
     <ClInclude Include="..\Utility\CC3Logging.h" />
-    <ClInclude Include="..\Utility\CC3Math.h" />
+    <ClInclude Include="..\Common\CC3Math.h" />
     <ClInclude Include="..\Utility\CC3PerformanceStatistics.h" />
     <ClInclude Include="..\Utility\CC3Rotator.h" />
   </ItemGroup>
@@ -331,13 +375,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_WINDOWS;COCOS_EXPORT;_CRT_SECURE_NO_WARNINGS;_EDITOR_;COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/win32;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32/OGLES;../../../engine/dependencies/win32/pthread/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/wd4251 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeaderFile>cocos3d.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -27,15 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3NodeVisitor.h"
-#include "../Scenes/CC3Scene.h"
-#include "../Scenes/CC3Layer.h"
-#include "../Meshes/CC3Mesh.h"
-#include "../Nodes/CC3Light.h"
-#include "../Nodes/CC3EnvironmentNodes.h"
-#include "../Scenes/CC3NodeSequencer.h"
-#include "../Meshes/CC3VertexSkinning.h"
-#include "../Shaders/CC3Shaders.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

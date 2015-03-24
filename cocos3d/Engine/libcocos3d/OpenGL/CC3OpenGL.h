@@ -29,9 +29,6 @@
  */
 #ifndef _CCL_CC3OPENGL_H_
 #define _CCL_CC3OPENGL_H_
-#include "../Utility/CC3Identifiable.h"
-#include "../Platforms/CC3OSExtensions.h"
-#include "../Matrices/CC3Matrix4x4.h"
 
 NS_COCOS3D_BEGIN
 

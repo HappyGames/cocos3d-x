@@ -27,7 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3ModelSampleFactory.h"
+#include "cocos3d.h"
 #include "teapot.h"
 
 NS_COCOS3D_BEGIN

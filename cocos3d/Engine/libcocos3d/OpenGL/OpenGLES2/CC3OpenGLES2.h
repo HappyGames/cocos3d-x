@@ -30,7 +30,6 @@
 #ifndef _CC3OPENGLES2_H_
 #define _CC3OPENGLES2_H_
 #include <string>
-#include "../CC3OpenGLProgPipeline.h"
 
 NS_COCOS3D_BEGIN
 

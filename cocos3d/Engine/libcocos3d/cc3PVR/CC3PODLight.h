@@ -30,8 +30,6 @@
 /** @file */	// Doxygen marker
 #ifndef _CC3_POD_LIGHT_H_
 #define _CC3_POD_LIGHT_H_
-#include "../Nodes/CC3Light.h"
-#include "CC3PODNode.h"
 
 NS_COCOS3D_BEGIN
 /**

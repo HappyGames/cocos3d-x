@@ -30,7 +30,7 @@
 #ifndef _CC3_OPENGL_UTILITY_H_
 #define _CC3_OPENGL_UTILITY_H_
 #include "../Platforms/CC3Environment.h"
-#include "../Utility/CC3Foundation.h"
+#include "../Common/CC3Foundation.h"
 
 #if CC3_OGLES_2
 //#include <OpenGLES/ES2/gl.h>

@@ -27,11 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3PODMeshNode.h"
-#include "CC3PVRTModelPOD.h"
-#include "CC3PODMaterial.h"
-#include "CC3PFXResource.h"
-#include "CC3PODResource.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

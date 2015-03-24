@@ -27,9 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3OpenGLES2.h"
-#include "../../Utility/CC3Foundation.h"
-#include "../CC3OpenGLFoundation.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_NODES_RESOURCE_H_
 #define _CC3_NODES_RESOURCE_H_
-#include "CC3Resource.h"
-#include "../Animations/CC3NodeAnimation.h"
 
 NS_COCOS3D_BEGIN
 /**

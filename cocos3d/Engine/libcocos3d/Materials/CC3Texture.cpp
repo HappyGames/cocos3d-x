@@ -27,13 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Texture.h"
-// #include "CC3PVRTexture.h"
-#include "../Utility/CC3CC2Extensions.h"
-#include "../Shaders/CC3ShaderSemantics.h"
-#include "CC3STBImage.h"
-#include "../cc3Helper/CC3String.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

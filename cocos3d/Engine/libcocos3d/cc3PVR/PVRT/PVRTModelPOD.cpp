@@ -34,7 +34,7 @@
 #include "PVRTResourceFile.h"
 #include "PVRTTrans.h"
 
-#include "../../cc3Helper/Logging.h"
+#include "../../cocos3d.h"
 
 /****************************************************************************
 ** Defines

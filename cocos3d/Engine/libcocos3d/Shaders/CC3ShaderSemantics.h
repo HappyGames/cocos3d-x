@@ -29,9 +29,6 @@
  */
 #ifndef _CC3_SHADERSEMANTICS_H_
 #define _CC3_SHADERSEMANTICS_H_
-#include "../OpenGL/CC3OpenGLFoundation.h"
-#include "../Platforms/CC3OSExtensions.h"
-#include "CC3GLSLVariable.h"
 
 NS_COCOS3D_BEGIN
 // Legacy naming support

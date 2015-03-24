@@ -27,13 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3PODVertexSkinning.h"
-#include "CC3PODMesh.h"
-#include "../Meshes/CC3VertexSkinning.h"
-#include "CC3PVRTModelPOD.h"
-#include "CC3PODNode.h"
-#include "CC3PODResource.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

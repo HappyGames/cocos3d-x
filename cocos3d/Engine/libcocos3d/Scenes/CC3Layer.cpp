@@ -27,10 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Layer.h"
-#include "../OpenGL/CC3OpenGLFoundation.h"
-#include "../Platforms/CC3Environment.h"
-#include "../Utility/CC3CC2Extensions.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 CC3Layer::CC3Layer()

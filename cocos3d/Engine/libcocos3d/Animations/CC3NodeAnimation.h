@@ -30,7 +30,6 @@
 
 #ifndef _CCL_CC3NODEANIMATION_H_
 #define _CCL_CC3NODEANIMATION_H_
-#include "../Nodes/CC3Node.h"
 
 NS_COCOS3D_BEGIN
 

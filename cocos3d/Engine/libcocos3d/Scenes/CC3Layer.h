@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_LAYER_H_
 #define _CC3_LAYER_H_
-#include "CC3Scene.h"
-#include "CC3RenderSurfaces.h"
 
 NS_COCOS3D_BEGIN
 /**

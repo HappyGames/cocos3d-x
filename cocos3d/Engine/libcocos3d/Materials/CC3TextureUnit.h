@@ -29,10 +29,6 @@
  */
 #ifndef _CC3_TEXTURE_UNIT_H_
 #define _CC3_TEXTURE_UNIT_H_
-#include "../Utility/CC3Foundation.h"
-#include "../Utility/CC3CC2Extensions.h"
-#include "../Nodes/CC3NodeVisitor.h"
-#include "CCProtocols.h"
 
 NS_COCOS3D_BEGIN
 

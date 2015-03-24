@@ -27,12 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "../Nodes/CC3Camera.h"
-#include "../Scenes/CC3Scene.h"
-#include "../Animations/CC3NodeAnimation.h"
-#include "../Matrices/CC3AffineMatrix.h"
-#include "CC3VertexSkinning.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

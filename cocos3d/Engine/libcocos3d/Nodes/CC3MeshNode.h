@@ -29,11 +29,10 @@
  */
 #ifndef _CCL_CC3MESHNODE_H_
 #define _CCL_CC3MESHNODE_H_
-#include "../Meshes/CC3Mesh.h"
-#include "CC3LocalContentNode.h"
-
 
 NS_COCOS3D_BEGIN
+class CC3Material;
+
 /**
  * A CC3Node that draws a 3D mesh.
  * This class forms the base of all visible 3D mesh models in the 3D scene.
@@ -89,6 +88,8 @@ NS_COCOS3D_BEGIN
 class CC3ShaderContext;
 class CC3ShaderProgram;
 class CC3Texture;
+class CC3Mesh;
+
 class CC3MeshNode : public CC3LocalContentNode
 {
 	DECLARE_SUPER( CC3LocalContentNode );

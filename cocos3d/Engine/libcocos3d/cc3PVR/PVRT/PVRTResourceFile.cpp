@@ -23,7 +23,7 @@
 #include "PVRTString.h"
 #include "PVRTMemoryFileSystem.h"
 
-#include "../../cc3Helper/Logging.h"
+#include "../../cocos3d.h"
 
 CPVRTString CPVRTResourceFile::s_ReadPath;
 

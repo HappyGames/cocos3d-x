@@ -29,8 +29,6 @@
  */
 #ifndef _CCL_CC3IDENTIFIABLE_H_
 #define _CCL_CC3IDENTIFIABLE_H_
-#include "CC3Foundation.h"
-#include "CC3Cache.h"
 
 NS_COCOS3D_BEGIN
 

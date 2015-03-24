@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_POINT_PARTICLES_H_
 #define _CC3_POINT_PARTICLES_H_
-#include "CC3CVAParticleEmitter.h"
 
 NS_COCOS3D_BEGIN
 

@@ -27,8 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3ParticleSamples.h"
-#include "../Matrices/CC3AffineMatrix.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

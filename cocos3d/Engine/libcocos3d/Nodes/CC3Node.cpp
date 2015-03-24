@@ -27,20 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Node.h"
-#include "CC3BoundingVolumes.h"
-#include "CC3Billboard.h"
-#include "CC3Camera.h"
-#include "../Matrices/CC3AffineMatrix.h"
-#include "../Matrices/CC3LinearMatrix.h"
-#include "../Animations/CC3NodeAnimation.h"
-#include "../Animations/CC3ActionManager.h"
-#include "../Scenes/CC3Scene.h"
-#include "../Resources/CC3NodesResource.h"
-#include "../Shadows/CC3ShadowVolumes.h"
-#include "../cc3PVR/CC3PODNode.h"
-#include "../cc3PVR/CC3PODResource.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

@@ -27,9 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CCNodeAdornments.h"
-#include "..\Utility\CC3Logging.h"
-#include "..\Platforms\CC3Environment.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

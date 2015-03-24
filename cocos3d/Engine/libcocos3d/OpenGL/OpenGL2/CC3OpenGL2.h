@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_OPENGL2_H_
 #define _CC3_OPENGL2_H_
-#include "../CC3OpenGLProgPipeline.h"
 
 NS_COCOS3D_BEGIN
 

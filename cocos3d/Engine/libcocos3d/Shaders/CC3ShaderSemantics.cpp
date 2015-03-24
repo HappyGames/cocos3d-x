@@ -27,20 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3ShaderSemantics.h"
-#include "CC3GLSLVariable.h"
-#include "../Nodes/CC3NodeVisitor.h"
-#include "../Nodes/CC3MeshNode.h"
-#include "../Nodes/CC3Camera.h"
-#include "../Nodes/CC3Light.h"
-#include "../Nodes/CC3EnvironmentNodes.h"
-#include "../Scenes/CC3Scene.h"
-#include "../Particles/CC3PointParticle.h"
-#include "../Particles/CC3PointParticleEmitter.h"
-#include "../Animations/CC3NodeAnimation.h"
-#include "../Meshes/CC3VertexSkinning.h"
-#include "../OpenGL/CC3OpenGL.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

@@ -29,13 +29,13 @@
  */
 #ifndef _CC3VERTEX_SKINNING_H_
 #define _CC3VERTEX_SKINNING_H_
-#include "../Nodes/CC3MeshNode.h"
 
 NS_COCOS3D_BEGIN
 
 class CC3Bone;
 class CC3SkinSection;
 class CC3DeformedFaceArray;
+
 /**
  * CC3SoftBodyNode is the primary structural component for a soft-body object that uses vertex
  * skinning to manipulate and draw mesh vertices.

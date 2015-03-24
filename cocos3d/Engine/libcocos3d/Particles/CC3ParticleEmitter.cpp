@@ -27,11 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3ParticleEmitter.h"
-#include "CC3ParticleNavigator.h"
-#include "CC3Particle.h"
-#include "../cc3Helper/Logging.h"
-#include "../Nodes/CC3UtilityMeshNodes.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

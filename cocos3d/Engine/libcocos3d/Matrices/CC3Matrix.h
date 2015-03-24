@@ -29,7 +29,6 @@
  */
 #ifndef _CCL_CC3MATRIX_H_
 #define _CCL_CC3MATRIX_H_
-#include "CC3Matrix4x4.h"
 
 NS_COCOS3D_BEGIN
 /**

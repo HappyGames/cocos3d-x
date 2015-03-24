@@ -29,10 +29,6 @@
  */
 #ifndef _CCL_CC3MATERIAL_H_
 #define _CCL_CC3MATERIAL_H_
-#include "../Nodes/CC3NodeVisitor.h"
-#include "../Shaders/CC3ShaderContext.h"
-#include "CC3Texture.h"
-#include "CCProtocols.h"
 
 NS_COCOS3D_BEGIN
 

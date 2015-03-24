@@ -25,8 +25,6 @@
  */
 #ifndef _CCL_CC3_ACTIONMANAGER_H_
 #define _CCL_CC3_ACTIONMANAGER_H_
-#include "../Nodes/CC3Node.h"
-#include "actions/CCActionManager.h"
 
 NS_COCOS3D_BEGIN
 class CC3Action;

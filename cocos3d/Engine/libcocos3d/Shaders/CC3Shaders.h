@@ -29,12 +29,6 @@
  */
 #ifndef _CC3_SHADERS_H_
 #define _CC3_SHADERS_H_
-#include "../Platforms/CC3Environment.h"
-#include "../Utility/CC3Identifiable.h"
-#include "../Utility/CC3CC2Extensions.h"
-#include "../cc3PVR/CC3PVRFoundation.h"
-#include "CC3GLSLVariable.h"
-#include "CC3ShaderSemantics.h"
 
 NS_COCOS3D_BEGIN
 

@@ -27,9 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3PVRShamanShaderSemantics.h"
-#include "../Nodes/CC3Light.h"
-#include "../Scenes/CC3Scene.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 std::string NSStringFromCC3PVRShamanSemantic(CC3PVRShamanSemantic semantic) 

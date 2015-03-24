@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_CAMERA_H_
 #define _CC3_CAMERA_H_
-#include "CC3Node.h"
 
 NS_COCOS3D_BEGIN
 /** Defines the orientation of the camera's field of view measurement. */

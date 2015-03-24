@@ -29,12 +29,6 @@
  */
 #ifndef _CC3_POD_RESOURCE_H_
 #define _CC3_POD_RESOURCE_H_
-#include "../Resources/CC3NodesResource.h"
-#include "CC3PVRFoundation.h"
-#include "../Nodes/CC3Camera.h"
-#include "../Nodes/CC3MeshNode.h"
-#include "../Nodes/CC3Light.h"
-#include "../Materials/CC3Material.h"
 
 NS_COCOS3D_BEGIN
 /**

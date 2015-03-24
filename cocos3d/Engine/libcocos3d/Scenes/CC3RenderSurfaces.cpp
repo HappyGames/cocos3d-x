@@ -27,13 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3RenderSurfaces.h"
-#include "../OpenGL/CC3OpenGL.h"
-#include "../Utility/CC3CC2Extensions.h"
-#include "../Scenes/CC3Scene.h"
-#include "../Utility/CC3Backgrounder.h"
-#include "../Platforms/CC3OSExtensions.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

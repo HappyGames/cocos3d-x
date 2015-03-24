@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_BACKGROUNDER_H_
 #define _CC3_BACKGROUNDER_H_
-#include "CC3Foundation.h"
 
 NS_COCOS3D_BEGIN
 

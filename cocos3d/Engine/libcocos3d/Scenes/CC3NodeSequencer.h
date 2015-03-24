@@ -29,7 +29,6 @@
  */
 #ifndef _CC3NODE_SEQUENCER_H_
 #define _CC3NODE_SEQUENCER_H_
-#include "../Nodes/CC3MeshNode.h"
 
 NS_COCOS3D_BEGIN
 class CC3Scene;

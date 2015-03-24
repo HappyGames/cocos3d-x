@@ -29,9 +29,6 @@
  */
 #ifndef _CC3_POD_RESOURCE_NODE_H_
 #define _CC3_POD_RESOURCE_NODE_H_
-#include "../Resources/CC3ResourceNode.h"
-#include "CC3PODResource.h"
-#include "../Scenes/CC3Scene.h"
 
 NS_COCOS3D_BEGIN
 /** 

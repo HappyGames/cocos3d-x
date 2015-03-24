@@ -85,7 +85,7 @@
     <Filter Include="controls">
       <UniqueIdentifier>{94fd7f63-db7f-4da9-8bf1-124d0b4f2c91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cc3Helper">
+    <Filter Include="common">
       <UniqueIdentifier>{f7d990c6-21fc-4582-a112-afb784b1b45d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -162,9 +162,6 @@
     <ClCompile Include="..\Nodes\CC3Billboard.cpp">
       <Filter>nodes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Nodes\CC3BitmapLabelNode.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Nodes\CC3BoundingVolumes.cpp">
       <Filter>nodes</Filter>
     </ClCompile>
@@ -234,19 +231,10 @@
     <ClCompile Include="..\Utility\CC3Cache.cpp">
       <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utility\CC3CC2Extensions.cpp">
-      <Filter>utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utility\CC3DataArray.cpp">
       <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utility\CC3Foundation.cpp">
-      <Filter>utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utility\CC3Identifiable.cpp">
-      <Filter>utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utility\CC3Math.cpp">
       <Filter>utility</Filter>
     </ClCompile>
     <ClCompile Include="..\Utility\CC3PerformanceStatistics.cpp">
@@ -409,20 +397,32 @@
       <Filter>controls</Filter>
     </ClCompile>
     <ClCompile Include="..\cocos3d.cpp" />
-    <ClCompile Include="..\cc3Helper\LineScanner.cpp">
-      <Filter>cc3Helper</Filter>
+    <ClCompile Include="..\Nodes\CC3BitmapLabelNode.cpp">
+      <Filter>nodes</Filter>
     </ClCompile>
-    <ClCompile Include="..\cc3Helper\LogDelegate.cpp">
-      <Filter>cc3Helper</Filter>
+    <ClCompile Include="..\Common\CC3CC2Extensions.cpp">
+      <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\cc3Helper\LogManager.cpp">
-      <Filter>cc3Helper</Filter>
+    <ClCompile Include="..\Common\CC3Foundation.cpp">
+      <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\cc3Helper\CC3String.cpp">
-      <Filter>cc3Helper</Filter>
+    <ClCompile Include="..\Common\CC3Math.cpp">
+      <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\cc3Helper\CC3Platform.cpp">
-      <Filter>cc3Helper</Filter>
+    <ClCompile Include="..\Common\CC3Platform.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CC3String.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\LineScanner.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\LogDelegate.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\LogManager.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -576,22 +576,13 @@
     <ClInclude Include="..\Utility\CC3Cache.h">
       <Filter>utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utility\CC3CC2Extensions.h">
-      <Filter>utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utility\CC3DataArray.h">
-      <Filter>utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utility\CC3Foundation.h">
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\Utility\CC3Identifiable.h">
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\Utility\CC3Logging.h">
-      <Filter>utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utility\CC3Math.h">
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\Utility\CC3PerformanceStatistics.h">
@@ -787,26 +778,35 @@
       <Filter>platforms</Filter>
     </ClInclude>
     <ClInclude Include="..\cocos3d.h" />
-    <ClInclude Include="..\cc3Helper\Common.h">
-      <Filter>cc3Helper</Filter>
+    <ClInclude Include="..\Nodes\CC3MeshCommon.h">
+      <Filter>nodes</Filter>
     </ClInclude>
-    <ClInclude Include="..\cc3Helper\LineScanner.h">
-      <Filter>cc3Helper</Filter>
+    <ClInclude Include="..\Common\CC3CC2Extensions.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\cc3Helper\LogDelegate.h">
-      <Filter>cc3Helper</Filter>
+    <ClInclude Include="..\Common\CC3Foundation.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\cc3Helper\Logging.h">
-      <Filter>cc3Helper</Filter>
+    <ClInclude Include="..\Common\CC3Math.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\cc3Helper\LogManager.h">
-      <Filter>cc3Helper</Filter>
+    <ClInclude Include="..\Common\CC3Platform.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\cc3Helper\CC3String.h">
-      <Filter>cc3Helper</Filter>
+    <ClInclude Include="..\Common\CC3String.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\cc3Helper\CC3Platform.h">
-      <Filter>cc3Helper</Filter>
+    <ClInclude Include="..\Common\Common.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\LineScanner.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\LogDelegate.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\LogManager.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

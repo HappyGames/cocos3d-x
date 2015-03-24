@@ -29,9 +29,6 @@
  */
 #ifndef _CC3_BITMAPLABLE_NODE_H_
 #define _CC3_BITMAPLABLE_NODE_H_
-#include "CC3MeshNode.h"
-#include "../Meshes/CC3Mesh.h"
-#include "support/data_support/uthash.h"
 
 NS_COCOS3D_BEGIN
 

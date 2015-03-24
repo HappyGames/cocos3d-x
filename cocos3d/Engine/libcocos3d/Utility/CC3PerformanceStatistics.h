@@ -29,7 +29,6 @@
  */
 #ifndef _CCL_PERFORMANCE_STATISTICS_H_
 #define _CCL_PERFORMANCE_STATISTICS_H_
-#include "CC3Foundation.h"
 
 NS_COCOS3D_BEGIN
 /**

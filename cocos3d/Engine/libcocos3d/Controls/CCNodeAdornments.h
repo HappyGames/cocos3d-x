@@ -29,8 +29,6 @@
  */
 #ifndef _CCNODE_ADORNMENTS_H_
 #define _CCNODE_ADORNMENTS_H_
-#include "..\Utility\CC3CC2Extensions.h"
-#include "..\Utility\CC3Foundation.h"
 
 NS_COCOS3D_BEGIN
 

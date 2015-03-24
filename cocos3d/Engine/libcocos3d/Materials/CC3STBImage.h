@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_STB_IMAGE_H_
 #define _CC3_STB_IMAGE_H_
-#include "../Utility/CC3Foundation.h"
-#include "../OpenGL/CC3OpenGLFoundation.h"
 
 NS_COCOS3D_BEGIN
 

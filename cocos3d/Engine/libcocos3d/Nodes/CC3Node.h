@@ -29,14 +29,6 @@
  */
 #ifndef _CCL_CC3NODE_H_
 #define _CCL_CC3NODE_H_
-#include "../Utility/CC3Rotator.h"
-#include "../Utility/CC3Identifiable.h"
-#include "../Matrices/CC3Matrix.h"
-#include "../Animations/CC3Actions.h"
-#include "CC3NodeVisitor.h"
-#include "CC3BoundingVolumes.h"
-#include "CCProtocols.h"
-#include "CC3NodeListeners.h"
 #include "../cc3PVR/CC3PVRFoundation.h"
 
 NS_COCOS3D_BEGIN
@@ -82,6 +74,7 @@ class CC3SoftBodyNode;
 class CC3NodesResource;
 class CC3ShadowVolumeMeshNode;
 class CC3Action;
+class CC3Light;
 
 class CC3Node : public CC3Identifiable, 
 	public CCBlendProtocol, 

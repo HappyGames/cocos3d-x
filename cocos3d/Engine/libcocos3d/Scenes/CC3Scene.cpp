@@ -27,19 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Scene.h"
-#include "CC3Layer.h"
-#include "../Nodes/CC3MeshNode.h"
-#include "../Materials/CC3Material.h"
-#include "../Nodes/CC3Light.h"
-#include "../Nodes/CC3EnvironmentNodes.h"
-#include "../Nodes/CC3Billboard.h"
-#include "../Shadows/CC3ShadowVolumes.h"
-#include "../Matrices/CC3AffineMatrix.h"
-#include "../Utility/CC3CC2Extensions.h"
-#include "ccMacros.h"
-#include "../cc3Helper/CC3Platform.h"
-
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_MESH_PARTICLE_H_
 #define _CC3_MESH_PARTICLE_H_
-#include "CC3CVAParticle.h"
-#include "../Matrices/CC3Matrix4x3.h"
 
 NS_COCOS3D_BEGIN
 

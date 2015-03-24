@@ -29,10 +29,6 @@
  */
 #ifndef _CCL_CC3NODEVISITOR_H_
 #define _CCL_CC3NODEVISITOR_H_
-#include "../Matrices/CC3Matrix.h"
-#include "../Utility/CC3DataArray.h"
-#include "../Utility/CC3PerformanceStatistics.h"
-#include "../OpenGL/CC3OpenGL.h"
 
 NS_COCOS3D_BEGIN
 class CC3Node;
@@ -49,6 +45,7 @@ class CC3Mesh;
 class CC3NodeSequencer;
 class CC3SkinSection;
 class CC3RenderSurface;
+class CC3OpenGL;
 
 /**
  * A CC3NodeVisitor is a context object that is passed to a node when it is visited

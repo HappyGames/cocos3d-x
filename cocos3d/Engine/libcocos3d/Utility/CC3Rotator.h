@@ -29,7 +29,6 @@
  */
 #ifndef _CCL_CC3ROTATOR_H_
 #define _CCL_CC3ROTATOR_H_
-#include "../Matrices/CC3Matrix.h"
 
 NS_COCOS3D_BEGIN
 

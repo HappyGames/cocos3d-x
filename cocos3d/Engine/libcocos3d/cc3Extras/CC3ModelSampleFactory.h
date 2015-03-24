@@ -29,8 +29,6 @@
  */
 #ifndef _CC3MODEL_SAMPLE_FACTORY_H_
 #define _CC3MODEL_SAMPLE_FACTORY_H_
-#include "../Meshes/CC3Mesh.h"
-#include "../Nodes/CC3MeshNode.h"
 
 NS_COCOS3D_BEGIN
 

@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_PARTICLE_EMITTER_H_
 #define _CC3_PARTICLE_EMITTER_H_
-#include "../Nodes/CC3MeshNode.h"
 
 NS_COCOS3D_BEGIN
 

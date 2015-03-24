@@ -30,9 +30,6 @@
 /** @file */	// Doxygen marker
 #ifndef _CC3_POD_CAMERA_H_
 #define _CC3_POD_CAMERA_H_
-#include "../Nodes/CC3Camera.h"
-#include "CC3PVRFoundation.h"
-#include "PVRT/PVRTModelPOD.h"
 
 NS_COCOS3D_BEGIN
 /**

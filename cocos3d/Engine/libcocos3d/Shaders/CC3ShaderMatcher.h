@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_SHADERMATCHER_H_
 #define _CC3_SHADERMATCHER_H_
-#include "CC3Shaders.h"
 
 NS_COCOS3D_BEGIN
 

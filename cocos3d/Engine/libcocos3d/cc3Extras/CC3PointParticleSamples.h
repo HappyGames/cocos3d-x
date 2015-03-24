@@ -30,9 +30,6 @@
 /** @file */	// Doxygen marker
 #ifndef _CC3POINT_PARTICLE_SAMPLES_H_
 #define _CC3POINT_PARTICLE_SAMPLES_H_
-#include "../Particles/CC3PointParticle.h"
-#include "../Particles/CC3PointParticleEmitter.h"
-#include "CC3ParticleSamples.h"
 
 NS_COCOS3D_BEGIN
 

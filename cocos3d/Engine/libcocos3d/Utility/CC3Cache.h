@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_CACHE_H_
 #define _CC3_CACHE_H_
-#include "../Platforms/CC3OSExtensions.h"
-#include "CC3Foundation.h"
 #include <pthread.h>
 
 NS_COCOS3D_BEGIN

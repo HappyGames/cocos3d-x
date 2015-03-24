@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_GLSL_VARIABLES_H_
 #define _CC3_GLSL_VARIABLES_H_
-#include "../Utility/CC3Foundation.h"
-#include "../Matrices/CC3Matrix.h"
 
 NS_COCOS3D_BEGIN
 class CC3ShaderProgram;

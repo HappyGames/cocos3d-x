@@ -29,14 +29,13 @@
  */
 #ifndef _CC3_VERTEX_ARRAYS_H_
 #define _CC3_VERTEX_ARRAYS_H_
-#include "../Utility/CC3Identifiable.h"
-#include "../Materials/CC3Material.h"
-#include "../Nodes/CC3NodeVisitor.h"
-#include "../Shaders/CC3ShaderSemantics.h"
 #include "../cc3PVR/CC3PVRTModelPOD.h"
 #include "../cc3PVR/CC3PVRFoundation.h"
 
 NS_COCOS3D_BEGIN
+
+class CC3NodeDrawingVisitor;
+class CC3Texture;
 
 /**
  * CC3VertexArrayContent contains the vertex content data on behalf of a CC3VertexArray.

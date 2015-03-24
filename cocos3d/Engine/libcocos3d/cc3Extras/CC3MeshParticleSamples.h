@@ -31,9 +31,6 @@
 /** @file */	// Doxygen marker
 #ifndef _CC3_MESH_PARTICLE_SAMPLES_H_
 #define _CC3_MESH_PARTICLE_SAMPLES_H_
-#include "../Particles/CC3MeshParticle.h"
-#include "../Particles/CC3MeshParticleEmitter.h"
-#include "CC3ParticleSamples.h"
 
 NS_COCOS3D_BEGIN
 /**

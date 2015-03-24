@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_MESH_PARTICLES_H_
 #define _CC3_MESH_PARTICLES_H_
-#include "CC3CVAParticleEmitter.h"
-#include "CC3CVAParticle.h"
 
 NS_COCOS3D_BEGIN
 

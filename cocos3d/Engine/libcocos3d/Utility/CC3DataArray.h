@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_DATA_ARRAY_H_
 #define _CC3_DATA_ARRAY_H_
-#include "../cc3Helper/Common.h"
 
 NS_COCOS3D_BEGIN
 /** CC3DataArray manages data as an array of structure elements. */

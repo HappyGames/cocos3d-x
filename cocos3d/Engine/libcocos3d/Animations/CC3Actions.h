@@ -30,8 +30,6 @@
 
 #ifndef _CCL_CC3_ACTIONS_H_
 #define _CCL_CC3_ACTIONS_H_
-#include "../Nodes/CC3Node.h"
-#include "actions/CCActionEase.h"
 
 NS_COCOS3D_BEGIN
 

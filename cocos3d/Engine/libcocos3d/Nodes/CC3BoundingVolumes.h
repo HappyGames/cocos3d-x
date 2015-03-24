@@ -29,7 +29,6 @@
  */
 #ifndef _CCL_CC3BOUNDINGVOLUMES_H_
 #define _CCL_CC3BOUNDINGVOLUMES_H_
-#include "../Utility/CC3Foundation.h"
 
 NS_COCOS3D_BEGIN
 

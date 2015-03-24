@@ -29,9 +29,6 @@
  */
 #ifndef _CC3_NODEPODEXTENSIONS_H_
 #define _CC3_NODEPODEXTENSIONS_H_
-#include "../Nodes/CC3Node.h"
-#include "../Animations/CC3NodeAnimation.h"
-#include "CC3PVRFoundation.h"
 
 NS_COCOS3D_BEGIN
 

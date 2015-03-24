@@ -27,10 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Resource.h"
-#include "CC3NodesResource.h"
-#include "../cc3Helper/CC3String.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

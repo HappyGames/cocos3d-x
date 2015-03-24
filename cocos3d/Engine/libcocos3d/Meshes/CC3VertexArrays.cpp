@@ -27,10 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3VertexArrays.h"
-#include "CC3Mesh.h"
-#include "../OpenGL/CC3OpenGLUtility.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

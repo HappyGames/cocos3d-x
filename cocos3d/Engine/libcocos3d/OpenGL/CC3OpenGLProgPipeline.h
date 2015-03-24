@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_OPENGL_PROGPIPELINE_H_
 #define _CC3_OPENGL_PROGPIPELINE_H_
-#include "../Platforms/CC3Environment.h"
-#include "CC3OpenGL.h"
 
 NS_COCOS3D_BEGIN
 

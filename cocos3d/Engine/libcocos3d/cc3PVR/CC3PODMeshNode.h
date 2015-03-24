@@ -29,8 +29,6 @@
  */
 #ifndef _CC3_POD_MESH_NODE_H_
 #define _CC3_POD_MESH_NODE_H_
-#include "../Nodes/CC3MeshNode.h"
-#include "CC3PODNode.h"
 
 NS_COCOS3D_BEGIN
 

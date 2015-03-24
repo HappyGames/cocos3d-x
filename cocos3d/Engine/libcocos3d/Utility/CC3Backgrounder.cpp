@@ -27,8 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Backgrounder.h"
-#include "../OpenGL/CC3OpenGL.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

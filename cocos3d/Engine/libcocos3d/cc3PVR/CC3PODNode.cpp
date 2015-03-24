@@ -27,11 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "../Utility/CC3Foundation.h"	// extern must be first, since foundation also imported via other imports
-#include "CC3PODNode.h"
-#include "CC3PVRTModelPOD.h"
-#include "CC3PODResource.h"
-#include "CC3PODResourceNode.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_UTILITY_MESH_NODES_H_
 #define _CC3_UTILITY_MESH_NODES_H_
-#include "CC3MeshNode.h"
 
 NS_COCOS3D_BEGIN
 

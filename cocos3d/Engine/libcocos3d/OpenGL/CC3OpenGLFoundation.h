@@ -29,7 +29,7 @@
  */
 #ifndef _CC3_OPENGL_FOUNDATION_H_
 #define _CC3_OPENGL_FOUNDATION_H_
-#include "../cc3Helper/Common.h"
+#include "../Common/Common.h"
 #include "../Platforms/CC3Environment.h"
 
 #if CC3_OGLES_2

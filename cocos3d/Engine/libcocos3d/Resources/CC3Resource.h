@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_RESOURCE_H_
 #define _CC3_RESOURCE_H_
-#include "../Utility/CC3Identifiable.h"
 
 NS_COCOS3D_BEGIN
 /**

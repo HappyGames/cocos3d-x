@@ -27,12 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3Camera.h"
-#include "../Scenes/CC3Scene.h"
-#include "../Matrices/CC3ProjectionMatrix.h"
-#include "../Animations/CC3Actions.h"
-#include "../Utility/CC3CC2Extensions.h"
-#include "../Matrices/CC3AffineMatrix.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 /** The maximum allowed effective field of view. */

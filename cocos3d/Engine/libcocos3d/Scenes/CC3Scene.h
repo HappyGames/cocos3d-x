@@ -29,13 +29,6 @@
  */
 #ifndef _CC3SCENE_H_
 #define _CC3SCENE_H_
-#include "../Nodes/CC3Camera.h"
-#include "CC3NodeSequencer.h"
-#include "CC3RenderSurfaces.h"
-#include "../Nodes/CC3UtilityMeshNodes.h"
-#include "../Utility/CC3PerformanceStatistics.h"
-#include "../Platforms/CC3ViewController.h"
-#include "../Utility/CC3Backgrounder.h"
 
 NS_COCOS3D_BEGIN
 /** Default value of the minUpdateInterval property. */

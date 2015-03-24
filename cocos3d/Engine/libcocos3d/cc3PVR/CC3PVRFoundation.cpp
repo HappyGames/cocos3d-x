@@ -27,12 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "../OpenGL/CC3OpenGLFoundation.h"
-#include "../Matrices/CC3Matrix4x4.h"
-#include "CC3PVRFoundation.h"
-#include "CC3PVRTModelPOD.h"
-#include "CC3PVRTPFXParser.h"
-#include "../cc3Helper/Logging.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

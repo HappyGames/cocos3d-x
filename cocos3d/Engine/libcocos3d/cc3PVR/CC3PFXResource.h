@@ -30,11 +30,6 @@
 /** @file */	// Doxygen marker
 #ifndef _CC3_PFX_RESOURCE_H_
 #define _CC3_PFX_RESOURCE_H_
-#include "../Resources/CC3Resource.h"
-#include "CC3PVRFoundation.h"
-#include "../Nodes/CC3MeshNode.h"
-#include "../Shaders/CC3Shaders.h"
-#include "PVRT/PVRTPFXParser.h"
 
 NS_COCOS3D_BEGIN
 class CC3PFXEffect;

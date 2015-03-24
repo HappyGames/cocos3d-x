@@ -27,12 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3OpenGLProgPipeline.h"
-#include "../Shaders/CC3ShaderMatcher.h"
-#include "../Nodes/CC3NodeVisitor.h"
-#include "../Nodes/CC3MeshNode.h"
-#include "../Shaders/CC3Shaders.h"
-#include "kazmath/GL/matrix.h"	// Only Cocos2D 2.x & 3.0
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

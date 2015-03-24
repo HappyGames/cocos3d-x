@@ -27,10 +27,7 @@
  *
  * http://en.wikipedia.org/wiki/MIT_License
  */
-#include "CC3OpenGL2.h"
-#include "../../Shaders/CC3Shaders.h"
-#include "../../Nodes/CC3NodeVisitor.h"
-#include "../../Meshes/CC3Mesh.h"
+#include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
 

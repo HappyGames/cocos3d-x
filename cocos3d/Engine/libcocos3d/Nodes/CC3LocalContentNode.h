@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_LOCALCONTENT_NODE_H_
 #define _CC3_LOCALCONTENT_NODE_H_
-#include "CC3Node.h"
 
 NS_COCOS3D_BEGIN
 /**

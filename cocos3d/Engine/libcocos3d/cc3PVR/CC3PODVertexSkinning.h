@@ -29,9 +29,6 @@
  */
 #ifndef _CC3_POD_VERTEX_SKINNING_H_
 #define	_CC3_POD_VERTEX_SKINNING_H_
-#include "../Meshes/CC3VertexSkinning.h"
-#include "CC3PVRFoundation.h"
-#include "CC3PVRTModelPOD.h"
 
 NS_COCOS3D_BEGIN
 

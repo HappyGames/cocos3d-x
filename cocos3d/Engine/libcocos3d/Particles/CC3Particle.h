@@ -29,7 +29,6 @@
  */
 #ifndef _CC3_PARTICLE_H_
 #define _CC3_PARTICLE_H_
-#include "../Utility/CC3Foundation.h"
 
 NS_COCOS3D_BEGIN
 
