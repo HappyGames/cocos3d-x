@@ -23,8 +23,6 @@
 #include "PVRTString.h"
 #include "PVRTMemoryFileSystem.h"
 
-#include "../../cocos3d.h"
-
 CPVRTString CPVRTResourceFile::s_ReadPath;
 
 #if 0
@@ -81,12 +79,7 @@ static void* LoadFileFunc(const char* pFilename, char** pData, size_t &size)
 	{
 		*pData = data;
 		size = fileSize;
-		CC3_TRACE( "[pvrrez]file [%s] opened with size %d", pFilename, fileSize );
 		return data;
-	}
-	else
-	{
-		CC3_TRACE( "[pvrrez]failed opening file %s", pFilename );
 	}
 
 	size = 0;

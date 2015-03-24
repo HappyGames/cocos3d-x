@@ -34,8 +34,6 @@
 #include "PVRTResourceFile.h"
 #include "PVRTTrans.h"
 
-#include "../../cocos3d.h"
-
 /****************************************************************************
 ** Defines
 ****************************************************************************/
@@ -1880,10 +1878,7 @@ EPVRTError CPVRTModelPOD::ReadFromFile(
 	CSourceStream src;
 
 	if(!src.Init(pszFileName))
-	{
-		CC3_TRACE( "Could not open source stream %s", pszFileName );
 		return PVR_FAIL;
-	}
 
 	return ReadFromSourceStream(this, src, pszExpOpt, count, pszHistory, historyCount);
 }

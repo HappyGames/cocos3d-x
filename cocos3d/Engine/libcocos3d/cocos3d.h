@@ -26,6 +26,9 @@
 #ifndef _CC3_COCOS_LIB_H_
 #define _CC3_COCOS_LIB_H_
 
+/// platforms
+#include "Platforms/CC3Environment.h"
+
 /// common
 #include "Common/Common.h"
 #include "Common/CC3Platform.h"
@@ -100,32 +103,10 @@
 #include "Materials/CC3TextureUnit.h"
 
 /// cc3PVR
-#include "cc3PVR/PVRT/PVRTArray.h"
-#include "cc3PVR/PVRT/PVRTBoneBatch.h"
-#include "cc3PVR/PVRT/PVRTDecompress.h"
-#include "cc3PVR/PVRT/PVRTError.h"
-#include "cc3PVR/PVRT/PVRTFixedPoint.h"
-#include "cc3PVR/PVRT/PVRTGlobal.h"
-#include "cc3PVR/PVRT/PVRTHash.h"
-#include "cc3PVR/PVRT/PVRTMap.h"
-#include "cc3PVR/PVRT/PVRTMatrix.h"
-#include "cc3PVR/PVRT/PVRTMemoryFileSystem.h"
-#include "cc3PVR/PVRT/PVRTModelPOD.h"
-#include "cc3PVR/PVRT/PVRTPFXParser.h"
-#include "cc3PVR/PVRT/PVRTQuaternion.h"
-#include "cc3PVR/PVRT/PVRTResourceFile.h"
-#include "cc3PVR/PVRT/PVRTSkipGraph.h"
-#include "cc3PVR/PVRT/PVRTSkipGraph.h"
-#include "cc3PVR/PVRT/PVRTString.h"
-#include "cc3PVR/PVRT/PVRTStringHash.h"
-#include "cc3PVR/PVRT/PVRTTexture.h"
-#include "cc3PVR/PVRT/PVRTTrans.h"
-#include "cc3PVR/PVRT/PVRTVector.h"
-#include "cc3PVR/PVRT/PVRTVertex.h"
-#include "cc3PVR/PVRT/OGLES/PVRTglesExt.h"
-#include "cc3PVR/PVRT/OGLES/PVRTTextureAPI.h"
-#include "cc3PVR/PVRT/OGLES2/PVRTgles2Ext.h"
-#include "cc3PVR/PVRT/OGLES2/PVRTTextureAPI.h"
+//#include "cc3PVR/PVRT/OGLES/PVRTglesExt.h"
+//#include "cc3PVR/PVRT/OGLES2/PVRTgles2Ext.h"
+
+#include "cc3PVR/CC3PVRTPFXParser.h"
 #include "cc3PVR/CC3PFXResource.h"
 #include "cc3PVR/CC3PODResource.h"
 #include "cc3PVR/CC3PODCamera.h"
@@ -140,7 +121,6 @@
 #include "cc3PVR/CC3PVRShamanShaderSemantics.h"
 #include "cc3PVR/CC3PVRTexture.h"
 #include "cc3PVR/CC3PVRTModelPOD.h"
-#include "cc3PVR/CC3PVRTPFXParser.h"
 #include "cc3PVR/CC3PVRTTexture.h"
 #include "cc3PVR/CC3PODMaterial.h"
 #include "cc3PVR/CC3PODMeshNode.h"
@@ -175,9 +155,6 @@
 #include "cc3Extras/CC3PointParticleSamples.h"
 #include "cc3Extras/CC3MeshParticleSamples.h"
 #include "cc3Extras/CC3ModelSampleFactory.h"
-
-/// platforms
-#include "Platforms/CC3Environment.h"
 
 /// scenes
 #include "Scenes/CC3Layer.h"
