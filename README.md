@@ -7,6 +7,9 @@ Powerful cocos3d IOS game engine and run on Android and many other platforms,
 
 Cocos3dx is easy to use and developers who are familiar with cocos2dx will learn and understand cocos3dx very quickly.
 
+The Android version of sample project 'HelloWorld' is built with vs-android
+please download and install it from tools directory in the trunk
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 COCOS2D-X -->> COCOS3D-X  PORT INSTRUCTIONS
 1. CCAction: ///////////////////////////////////////////////////////////
