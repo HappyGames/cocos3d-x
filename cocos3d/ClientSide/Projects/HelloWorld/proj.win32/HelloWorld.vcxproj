@@ -38,6 +38,7 @@
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
     <PlatformToolset>arm-linux-androideabi-4.6</PlatformToolset>
     <AndroidArch>armv5te</AndroidArch>
+    <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -152,7 +153,7 @@
       <AntLibraryName>libgame</AntLibraryName>
     </AntBuild>
     <Link>
-      <AdditionalDependencies>$(OutDir)libCocosLib.a;$(OutDir)libCocosDenshion.a;$(OutDir)libExtensions.a;$(OutDir)libcocos2d.a;$(OutDir)libmmUtil.a;$(OutDir)libBox2D.a;$(OutDir)libchipmunk.a;$(OutDir)libJson.a;$(OutDir)liblua.a;$(OutDir)libTinyXML.a;$(OutDir)libcurl.a;$(OutDir)libjpeg.a;$(OutDir)libpng.a;$(OutDir)libtiff.a;$(OutDir)libwebp.a;$(OutDir)libxml2.a;$(OutDir)libwebsockets.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)libcocos3d.a;$(OutDir)libCocosDenshion.a;$(OutDir)libExtensions.a;$(OutDir)libcocos2d.a;$(OutDir)libchipmunk.a;$(OutDir)libJson.a;$(OutDir)liblua.a;$(OutDir)libTinyXML.a;$(OutDir)libcurl.a;$(OutDir)libjpeg.a;$(OutDir)libpng.a;$(OutDir)libtiff.a;$(OutDir)libwebp.a;$(OutDir)libxml2.a;$(OutDir)libwebsockets.a;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>-Wl,--whole-archive -lGLESv2 -llog -lz -ldl %(AdditionalOptions)</AdditionalOptions>
       <SoName>libgame</SoName>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>

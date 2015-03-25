@@ -31,6 +31,49 @@
 
 NS_COCOS3D_BEGIN
 
+bool Cocos3d::sm_isEditor = false;
+
+void Cocos3d::shutdown()
+{
+	/*CEffectManager::purge();
+	CInterpolatorManager::purge();
+	CLogManager::purge();
+	CUIRecognizer::purge();
+	CTilesetManager::purge();
+	CMapResManager::purge();*/
+}
+
+void Cocos3d::startUp( bool isEditor )
+{
+	sm_isEditor = isEditor;
+}
+
+bool Cocos3d::isEditor()
+{
+	return sm_isEditor;
+}
+
+void Cocos3d::addInternalShaderPaths()
+{
+	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/VertexShaderLibs" );
+	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/VertexShaders" );
+	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/FragShaders" );
+	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/FragShaderLibs" );
+}
+
+std::string Cocos3d::version()
+{
+	int vFull, vMajor, vMinor, vBuild;
+	vFull = COCOS3D_VERSION;
+	vMajor = (vFull >> 16) & 0xFF;
+	vMinor = (vFull >> 8) & 0xFF;
+	vBuild = vFull & 0xFF;
+
+	std::string ver;
+	stringWithFormat(ver, (char*)"Cocos3D v%d.%d.%d", vMajor, vMinor, vBuild);
+
+	return ver;
+}
 
 CC3Vector4 CC3RayIntersectionWithPlane(CC3Ray ray, CC3Plane plane) 
 {

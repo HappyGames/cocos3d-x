@@ -114,13 +114,13 @@
 #include "cc3PVR/CC3PODResourceNode.h"
 #include "cc3PVR/CC3PODVertexSkinning.h"
 #include "cc3PVR/CC3PVRFoundation.h"
-#include "cc3PVR/CC3PVROpenGLFoundation.h"
 #include "cc3PVR/CC3PVRShamanShaderSemantics.h"
 #include "cc3PVR/CC3PVRTexture.h"
 #include "cc3PVR/CC3PVRTModelPOD.h"
 #include "cc3PVR/CC3PVRTTexture.h"
 #include "cc3PVR/CC3PODMaterial.h"
 #include "cc3PVR/CC3PODMeshNode.h"
+#include "cc3PVR/CC3PVROpenGLFoundation.h"
 
 /// controls
 #include "Controls/CCNodeAdornments.h"
@@ -159,24 +159,8 @@
 #include "Scenes/CC3RenderSurfaces.h"
 #include "Scenes/CC3Scene.h"
 
-
 /// shadows
 #include "Shadows/CC3ShadowVolumes.h"
 
-NS_COCOS3D_BEGIN
-
-class Cocos3d
-{
-public:
-	static void startUp( bool isEditor = true );
-	static void shutdown();
-	static bool isEditor();
-	static void addInternalShaderPaths();
-
-private:
-	static bool	sm_isEditor;
-};
-
-NS_COCOS3D_END
 
 #endif

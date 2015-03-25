@@ -32,6 +32,21 @@
 
 NS_COCOS3D_BEGIN
 
+#define COCOS3D_VERSION 0x010000
+
+class Cocos3d
+{
+public:
+	static void			startUp( bool isEditor = true );
+	static void			shutdown();
+	static bool			isEditor();
+	static void			addInternalShaderPaths();
+	static std::string	version();
+
+private:
+	static bool			sm_isEditor;
+};
+
 #ifdef _WIN32
 #ifndef INFINITY
 #define INFINITY (float)(HUGE_VAL)
@@ -51,22 +66,6 @@ static inline std::string stringWithFormat( char* szFormat, ... )
 	GetVarargs(buffer, 512, szFormat);
 	std::string sDest = buffer;
 	return sDest;
-}
-
-#define COCOS3D_VERSION 0x010000
-
-static inline std::string cocos3dVerion()
-{
-	int vFull, vMajor, vMinor, vBuild;
-	vFull = COCOS3D_VERSION;
-	vMajor = (vFull >> 16) & 0xFF;
-	vMinor = (vFull >> 8) & 0xFF;
-	vBuild = vFull & 0xFF;
-
-	std::string version;
-	stringWithFormat(version, (char*)"Cocos3D v%d.%d.%d", vMajor, vMinor, vBuild);
-
-	return version;
 }
 
 typedef struct 

@@ -396,7 +396,6 @@
     <ClCompile Include="..\Controls\Joystick.cpp">
       <Filter>controls</Filter>
     </ClCompile>
-    <ClCompile Include="..\cocos3d.cpp" />
     <ClCompile Include="..\Nodes\CC3BitmapLabelNode.cpp">
       <Filter>nodes</Filter>
     </ClCompile>
@@ -424,6 +423,7 @@
     <ClCompile Include="..\Common\LogManager.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\cocos3d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Scenes\CC3Layer.h">

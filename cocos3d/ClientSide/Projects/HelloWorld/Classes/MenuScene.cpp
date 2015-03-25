@@ -53,7 +53,7 @@ bool CMenuLayer::init()
 		CC3Scene* cc3Scene = CC3MashUpScene::create();
 #endif
 		
-		std::string sBuilld = cocos3dVerion();
+		std::string sBuilld = Cocos3d::version();
 
 		cc3Layer->setCC3Scene( cc3Scene );
 

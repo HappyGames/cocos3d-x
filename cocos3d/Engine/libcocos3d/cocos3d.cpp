@@ -28,37 +28,3 @@
  * http://en.wikipedia.org/wiki/MIT_License
  */
 #include "cocos3d.h"
-
-NS_COCOS3D_BEGIN
-
-bool Cocos3d::sm_isEditor = false;
-
-void Cocos3d::shutdown()
-{
-	/*CEffectManager::purge();
-	CInterpolatorManager::purge();
-	CLogManager::purge();
-	CUIRecognizer::purge();
-	CTilesetManager::purge();
-	CMapResManager::purge();*/
-}
-
-void Cocos3d::startUp( bool isEditor )
-{
-	sm_isEditor = isEditor;
-}
-
-bool Cocos3d::isEditor()
-{
-	return sm_isEditor;
-}
-
-void Cocos3d::addInternalShaderPaths()
-{
-	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/VertexShaderLibs" );
-	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/VertexShaders" );
-	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/FragShaders" );
-	CCFileUtils::sharedFileUtils()->addSearchPath( "3d/shaders/FragShaderLibs" );
-}
-
-NS_COCOS3D_END
