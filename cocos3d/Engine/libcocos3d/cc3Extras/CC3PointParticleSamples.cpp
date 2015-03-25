@@ -76,7 +76,7 @@ CCObject* CC3MortalPointParticle::copyWithZone( CCZone* zone )
 
 std::string CC3MortalPointParticle::fullDescription()
 {
-	return stringWithFormat( (char*)"%s\n\tlifeSpan: %.3f, timeToLive: %.3f",
+	return CC3String::stringWithFormat( (char*)"%s\n\tlifeSpan: %.3f, timeToLive: %.3f",
 			super::fullDescription().c_str(), _lifeSpan, _timeToLive );
 }
 
@@ -87,14 +87,14 @@ void CC3SprayPointParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visit
 	if( !isAlive() ) 
 		return;
 
-	setLocation( CC3VectorAdd(getLocation(), CC3VectorScaleUniform(getVelocity(), visitor->getDeltaTime())) );
+	setLocation( getLocation().add( getVelocity().scaleUniform( visitor->getDeltaTime() ) ) );
 }
 
 bool CC3SprayPointParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_velocity = kCC3VectorZero;
+		_velocity = CC3Vector::kCC3VectorZero;
 		return true;
 	}
 
@@ -118,8 +118,8 @@ CCObject* CC3SprayPointParticle::copyWithZone( CCZone* zone )
 
 std::string CC3SprayPointParticle::fullDescription()
 {
-	return stringWithFormat( (char*)"%s\n\tvelocity: %s",
-			super::fullDescription().c_str(), stringFromCC3Vector(_velocity).c_str() );
+	return CC3String::stringWithFormat( (char*)"%s\n\tvelocity: %s",
+			super::fullDescription().c_str(), _velocity.stringfy().c_str() );
 }
 
 CC3Vector CC3SprayPointParticle::getVelocity()

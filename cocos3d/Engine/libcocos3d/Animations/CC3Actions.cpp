@@ -84,7 +84,7 @@ CCObject* CC3ActionTransformVector::copyWithZone( CCZone* pZone )
 
 CC3ActionInterval* CC3ActionTransformVector::reverse()
 {
-	return CC3ActionTransformVector::actionWithDuration( getDuration(), CC3VectorNegate(m_diffVector) );
+	return CC3ActionTransformVector::actionWithDuration( getDuration(), m_diffVector.negate() );
 }
 
 void CC3ActionTransformVector::startWithTarget( CC3Node* aTarget )
@@ -95,12 +95,12 @@ void CC3ActionTransformVector::startWithTarget( CC3Node* aTarget )
 
 void CC3ActionTransformVector::update( float t )
 {	
-	setTargetVector( CC3VectorAdd(m_startVector, CC3VectorScaleUniform(m_diffVector, t)) );
+	setTargetVector( m_startVector.add( m_diffVector.scaleUniform( t )) );
 }
 
 CC3Vector CC3ActionTransformVector::getTargetVector()
 { 
-	return kCC3VectorZero; 
+	return CC3Vector::kCC3VectorZero; 
 }
 
 void CC3ActionTransformVector::setTargetVector( const CC3Vector& aVector )
@@ -186,8 +186,8 @@ CC3ActionInterval* CC3ActionRotateForever::reverse()
 void CC3ActionScaleBy::startWithTarget( CC3Node* aTarget )
 {
 	super::startWithTarget( aTarget );
-	CC3Vector endVector = CC3VectorScale(m_startVector, m_diffVector);
-	m_scaleDiffVector = CC3VectorDifference(endVector, m_startVector);
+	CC3Vector endVector = m_startVector.scale( m_diffVector );
+	m_scaleDiffVector = endVector.difference( m_startVector );
 }
 
 void CC3ActionScaleBy::initWithDuration( float t, const CC3Vector& aScale )  /// scaleBy
@@ -216,7 +216,7 @@ CC3ActionScaleBy* CC3ActionScaleBy::actionWithDuration( float t, GLfloat aScale 
 
 void CC3ActionScaleBy::update( float t )
 {	
-	setTargetVector( CC3VectorAdd(m_startVector, CC3VectorScaleUniform(m_scaleDiffVector, t)) );
+	setTargetVector( m_startVector.add( m_scaleDiffVector.scaleUniform( t ) ) );
 }
 
 CC3Vector CC3ActionScaleBy::getTargetVector()
@@ -231,7 +231,7 @@ void CC3ActionScaleBy::setTargetVector( const CC3Vector& aScale )
  
 void CC3ActionRotateByAngle::initWithDuration( float t, GLfloat anAngle )
 {
-	return initWithDuration( t, anAngle, kCC3VectorNull );
+	return initWithDuration( t, anAngle, CC3Vector::kCC3VectorNull );
 }
 
 CC3ActionRotateByAngle* CC3ActionRotateByAngle::actionWithDuration( float t, GLfloat anAngle )
@@ -276,7 +276,7 @@ CC3ActionInterval* CC3ActionRotateByAngle::reverse()
 void CC3ActionRotateByAngle::startWithTarget( CC3Node* aTarget )
 {
 	super::startWithTarget( aTarget );
-	m_activeRotationAxis = CC3VectorIsNull(m_rotationAxis) ? aTarget->getRotationAxis() : m_rotationAxis;
+	m_activeRotationAxis = m_rotationAxis.isNull() ? aTarget->getRotationAxis() : m_rotationAxis;
 	m_fPrevTime = 0;
 }
 
@@ -290,7 +290,7 @@ void CC3ActionRotateByAngle::update( float t )
 
 std::string CC3ActionRotateByAngle::description()
 {
-	return stringWithFormat( (char*)"CC3ActionRotateByAngle angle: %.3f, axis: %s", m_diffAngle, stringFromCC3Vector(m_rotationAxis).c_str() );
+	return CC3String::stringWithFormat( (char*)"CC3ActionRotateByAngle angle: %.3f, axis: %s", m_diffAngle, m_rotationAxis.stringfy().c_str() );
 }
 
 void CC3ActionRotateOnAxisForever::initWithRotationRate( GLfloat degreesPerSecond, const CC3Vector& anAxis )
@@ -343,13 +343,14 @@ CC3ActionInterval* CC3ActionTransformTo::reverse()
 void CC3ActionTransformTo::startWithTarget( CC3Node* aTarget )
 {
 	super::startWithTarget( aTarget );
-	m_diffVector = CC3VectorDifference(m_endVector, m_startVector);
+	m_diffVector = m_endVector.difference( m_startVector );
 }
 
 std::string CC3ActionTransformTo::description()
 {
-	return stringWithFormat( (char*)"%CC3ActionTransformTo start: %s, end: %s, diff: %s", stringFromCC3Vector(m_startVector).c_str(), stringFromCC3Vector(m_endVector).c_str(),
-			stringFromCC3Vector(m_diffVector).c_str() );
+	return CC3String::stringWithFormat( (char*)"%CC3ActionTransformTo start: %s, end: %s, diff: %s", 
+		m_startVector.stringfy().c_str(), m_endVector.stringfy().c_str(),
+			m_diffVector.stringfy().c_str() );
 }
 
 void CC3ActionMoveTo::initWithDuration( float t, const CC3Vector& aLocation ) /// moveTo
@@ -398,7 +399,7 @@ CC3ActionRotateTo* CC3ActionRotateTo::actionWithDuration( float t, const CC3Vect
 void CC3ActionRotateTo::startWithTarget( CC3Node* aTarget )
 {
 	super::startWithTarget( aTarget );
-	m_diffVector = CC3VectorRotationalDifference(m_endVector, m_startVector);
+	m_diffVector = m_endVector.rotationalDifference( m_startVector );
 }
 
 CC3Vector CC3ActionRotateTo::getTargetVector()
@@ -490,13 +491,13 @@ void CC3ActionRotateToAngle::update( float t )
 
 std::string CC3ActionRotateToAngle::description()
 {
-	return stringWithFormat( (char*)"CC3ActionRotateToAngle start: %.3f, end: %.3f, diff: %.3f",
+	return CC3String::stringWithFormat( (char*)"CC3ActionRotateToAngle start: %.3f, end: %.3f, diff: %.3f",
 			m_startAngle, m_endAngle, m_diffAngle );
 }
 
 void CC3ActionRotateToLookTowards::initWithDuration( float t, const CC3Vector& aDirection )	/// forwardDirection
 {
-	return super::initWithDuration( t, CC3VectorNormalize(aDirection) );
+	return super::initWithDuration( t, aDirection.normalize() );
 }
 
 CC3ActionRotateToLookTowards* CC3ActionRotateToLookTowards::actionWithDuration( float t, const CC3Vector& aDirection )
@@ -534,7 +535,7 @@ CC3ActionRotateToLookAt* CC3ActionRotateToLookAt::actionWithDuration( float t, c
 
 void CC3ActionRotateToLookAt::startWithTarget( CC3Node* aTarget )
 {
-	m_endVector = CC3VectorNormalize(CC3VectorDifference(m_endVector, aTarget->getGlobalLocation()));
+	m_endVector = m_endVector.difference(aTarget->getGlobalLocation()).normalize();
 	super::startWithTarget( aTarget );
 }
 
@@ -580,9 +581,9 @@ void CC3ActionMoveDirectionallyBy::update( float t )
 {
 	GLfloat deltaTime = t - m_prevTime;
 	GLfloat deltaDist = m_distance * deltaTime;
-	CC3Vector moveDir = CC3VectorNormalize(getTargetDirection());
+	CC3Vector moveDir = getTargetDirection().normalize();
 	CC3Vector prevLoc = getTargetNode()->getLocation();
-	getTargetNode()->setLocation( CC3VectorAdd(prevLoc, CC3VectorScaleUniform(moveDir, deltaDist)) );
+	getTargetNode()->setLocation( prevLoc.add( moveDir.scaleUniform(deltaDist) ) );
 	m_prevTime = t;
 	
 	/*LogTrace(@"%@: time: %.3f, delta time: %.3f, delta dist: %.3f, was at: %@, now at: %@",
@@ -594,12 +595,12 @@ void CC3ActionMoveDirectionallyBy::update( float t )
 /** The direction in which to move. Subclasses will override. */
 CC3Vector CC3ActionMoveDirectionallyBy::getTargetDirection()
 {
-	return kCC3VectorZero; 
+	return CC3Vector::kCC3VectorZero; 
 }
 
 std::string CC3ActionMoveDirectionallyBy::description()
 {
-	return stringWithFormat( (char*)"CC3ActionMoveDirectionallyBy distance: %.3f", m_distance );
+	return CC3String::stringWithFormat( (char*)"CC3ActionMoveDirectionallyBy distance: %.3f", m_distance );
 }
 
 CC3Vector CC3ActionMoveForwardBy::getTargetDirection()

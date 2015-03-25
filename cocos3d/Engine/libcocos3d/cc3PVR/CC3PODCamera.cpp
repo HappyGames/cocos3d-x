@@ -159,7 +159,7 @@ void CC3PODCamera::adjustQuaternionsIn( SPODNode* psn, GLuint numFrames )
 	}
 	
 	// Offset each quaternion by a -90 degree rotation around X-axis.
-	CC3Vector4 axisAngle = CC3Vector4FromCC3Vector(kCC3VectorUnitXPositive, -90.0f);
+	CC3Vector4 axisAngle = CC3Vector4FromCC3Vector(CC3Vector::kCC3VectorUnitXPositive, -90.0f);
 	CC3Quaternion offsetQuat = CC3QuaternionFromAxisAngle(axisAngle);
 	
 	CC3Quaternion* quaternions = (CC3Quaternion*)psn->pfAnimRotation;
@@ -191,7 +191,7 @@ CCObject* CC3PODCamera::copyWithZone( CCZone* zone )
 
 std::string CC3PODCamera::description()
 {
-	return stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
+	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
 CC3PODCamera* CC3PODCamera::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )

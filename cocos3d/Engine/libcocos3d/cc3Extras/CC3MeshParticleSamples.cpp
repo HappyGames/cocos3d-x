@@ -46,7 +46,7 @@ void CC3MortalMeshParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visit
 
 std::string CC3MortalMeshParticle::fullDescription()
 {
-	return stringWithFormat( (char*)"%s\n\tlifeSpan: %.3f, timeToLive: %.3f",
+	return CC3String::stringWithFormat( (char*)"%s\n\tlifeSpan: %.3f, timeToLive: %.3f",
 			super::fullDescription().c_str(), _lifeSpan, _timeToLive );
 }
 
@@ -86,14 +86,14 @@ void CC3SprayMeshParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visito
 	if( !isAlive() ) 
 		return;
 
-	setLocation( CC3VectorAdd(getLocation(), CC3VectorScaleUniform(getVelocity(), visitor->getDeltaTime())) );
+	setLocation( getLocation().add( getVelocity().scaleUniform( visitor->getDeltaTime() ) ) );
 }
 
 bool CC3SprayMeshParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_velocity = kCC3VectorZero;
+		_velocity = CC3Vector::kCC3VectorZero;
 		return true;
 	}
 
@@ -117,8 +117,8 @@ CCObject* CC3SprayMeshParticle::copyWithZone( CCZone* zone )
 
 std::string  CC3SprayMeshParticle::fullDescription()
 {
-	return stringWithFormat( (char*)"%s\n\tvelocity: %s",
-			super::fullDescription().c_str(), stringFromCC3Vector(_velocity).c_str() );
+	return CC3String::stringWithFormat( (char*)"%s\n\tvelocity: %s",
+			super::fullDescription().c_str(), _velocity.stringfy().c_str() );
 }
 
 CC3Vector CC3UniformlyEvolvingMeshParticle::getRotationVelocity()
@@ -175,8 +175,8 @@ void CC3UniformlyEvolvingMeshParticle::updateBeforeTransform( CC3NodeUpdatingVis
 		case kCC3RotationTypeEuler: 
 		{
 			CC3Vector rotVel = getRotationVelocity();
-			if ( !CC3VectorIsZero(rotVel) ) 
-				rotateBy( CC3VectorScaleUniform(rotVel, dt) );
+			if ( !rotVel.isZero() ) 
+				rotateBy( rotVel.scaleUniform( dt ) );
 			break;
 		}
 		case kCC3RotationTypeAxisAngle: 
@@ -215,7 +215,7 @@ bool CC3UniformlyEvolvingMeshParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_rotationVelocity = kCC3VectorZero;
+		_rotationVelocity = CC3Vector::kCC3VectorZero;
 		_rotationVelocityType = kCC3RotationTypeUnknown;
 		_colorVelocity = kCCC4FBlackTransparent;
 
@@ -245,8 +245,8 @@ CCObject* CC3UniformlyEvolvingMeshParticle::copyWithZone( CCZone* zone )
 
 std::string CC3UniformlyEvolvingMeshParticle::fullDescription()
 {
-	return stringWithFormat( (char*)"%s\n\tvelocity: %s",
-			super::fullDescription().c_str(), stringFromCC3Vector(_velocity).c_str() );
+	return CC3String::stringWithFormat( (char*)"%s\n\tvelocity: %s",
+			super::fullDescription().c_str(), _velocity.stringfy().c_str() );
 }
 
 CC3MultiTemplateMeshParticleEmitter::CC3MultiTemplateMeshParticleEmitter()

@@ -123,8 +123,8 @@ void CC3ModelSampleFactory::initTeapotVertexArrays()
 	for (GLuint i = 1; i < vCount; i++)
 	{
 		vl = vLocs[i];
-		vlMin = CC3VectorMinimize(vlMin, vl);
-		vlMax = CC3VectorMaximize(vlMax, vl);
+		vlMin = vlMin.minimize( vl );
+		vlMax = vlMax.maxmize( vl );
 	}
 	
 	vlRange.x = vlMax.x - vlMin.x;

@@ -162,7 +162,7 @@ void CC3HoseParticleNavigator::checkNozzleParent()
 		if ( _emitter )
 		{
 			if (!_emitter->getName().empty()) 
-				_nozzle->setName( stringWithFormat( (char*)"%s-Nozzle", _emitter->getName().c_str() ) );
+				_nozzle->setName( CC3String::stringWithFormat( (char*)"%s-Nozzle", _emitter->getName().c_str() ) );
 			_emitter->addChild( _nozzle );
 		}
 	}
@@ -309,7 +309,7 @@ void CC3HoseParticleNavigator::initializeParticle( CC3Particle* aParticle )
 	
 	// The particle starts at the location of the nozzle, converted from the
 	// nozzle's local coordinate system to the emitter's local coordinate system.
-	aParticle->setLocation( getNozzleMatrix()->transformLocation( kCC3VectorZero ) );
+	aParticle->setLocation( getNozzleMatrix()->transformLocation( CC3Vector::kCC3VectorZero ) );
 	
 	// Speed of particle is randomized.
 	GLfloat emissionSpeed = CC3RandomFloatBetween(_minParticleSpeed, _maxParticleSpeed);
@@ -323,12 +323,12 @@ void CC3HoseParticleNavigator::initializeParticle( CC3Particle* aParticle )
 	if ( !_shouldPrecalculateNozzleTangents ) 
 		nozzleAspect = CC3ShapeFromDispersionAngle(nozzleAspect);
 
-	CC3Vector emissionDir = CC3VectorNormalize(cc3v(nozzleAspect.width, nozzleAspect.height, 1.0f));
+	CC3Vector emissionDir = cc3v(nozzleAspect.width, nozzleAspect.height, 1.0f).normalize();
 
 	// The combination of emission speed and emission direction is the emission velocity in the
 	// nozzle's local coordinates. The particle velocity is then the nozzle emission velocity
 	// transformed by the nozzleMatrix to convert it to the emitter's local coordinates.
-	CC3Vector emissionVelocity = CC3VectorScaleUniform(emissionDir, emissionSpeed);
+	CC3Vector emissionVelocity = emissionDir.scaleUniform( emissionSpeed );
 	aParticle->setVelocity( getNozzleMatrix()->transformDirection( emissionVelocity ) );
 }
 

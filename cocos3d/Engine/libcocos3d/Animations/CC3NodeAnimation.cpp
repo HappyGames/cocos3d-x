@@ -167,7 +167,7 @@ void CC3NodeAnimation::establishLocationAtFrame( GLuint frameIndex, GLfloat fram
 	if( !animState->isAnimatingLocation() ) 
 		return;
 	
-	animState->setLocation( CC3VectorLerp(getLocationAtFrame(frameIndex), getLocationAtFrame(frameIndex + 1), frameInterpolation) );
+	animState->setLocation( getLocationAtFrame(frameIndex).lerp( getLocationAtFrame(frameIndex + 1), frameInterpolation) );
 }
 
 /**
@@ -195,7 +195,7 @@ void CC3NodeAnimation::establishScaleAtFrame( GLuint frameIndex, GLfloat frameIn
 	if( !animState->isAnimatingScale() ) 
 		return;
 
-	animState->setScale( CC3VectorLerp( getScaleAtFrame(frameIndex), getScaleAtFrame(frameIndex + 1), frameInterpolation) );
+	animState->setScale( getScaleAtFrame(frameIndex).lerp( getScaleAtFrame(frameIndex + 1), frameInterpolation ) );
 }
 
 float CC3NodeAnimation::timeAtFrame( GLuint frameIndex )
@@ -225,7 +225,7 @@ GLuint CC3NodeAnimation::getFrameIndexAt( float t )
  */
 CC3Vector CC3NodeAnimation::getLocationAtFrame( GLuint frameIndex )
 {
-	return kCC3VectorZero; 
+	return CC3Vector::kCC3VectorZero; 
 }
 
 /**
@@ -251,7 +251,7 @@ CC3Quaternion CC3NodeAnimation::getQuaternionAtFrame( GLuint frameIndex )
  */
 CC3Vector CC3NodeAnimation::getScaleAtFrame( GLuint frameIndex )
 {
-	return kCC3VectorUnitCube; 
+	return CC3Vector::kCC3VectorUnitCube; 
 }
 
 CC3ArrayNodeAnimation::CC3ArrayNodeAnimation()
@@ -451,7 +451,7 @@ CC3Vector* CC3ArrayNodeAnimation::allocateScales()
 	{
 		setAnimatedScales( (CC3Vector*)calloc(_frameCount, sizeof(CC3Vector)) );
 		for (GLuint i = 0; i < _frameCount; i++) 
-			_animatedScales[i] = kCC3VectorUnitCube;
+			_animatedScales[i] = CC3Vector::kCC3VectorUnitCube;
 		
 		_scalesAreRetained = true;
 		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d scales", _frameCount);
@@ -487,7 +487,7 @@ CC3Vector CC3FrozenNodeAnimation::getLocation()
 
 bool CC3FrozenNodeAnimation::isAnimatingLocation()
 {
-	return !CC3VectorIsNull(_location); 
+	return !_location.isNull(); 
 }
 
 bool CC3FrozenNodeAnimation::isAnimatingQuaternion()
@@ -497,7 +497,7 @@ bool CC3FrozenNodeAnimation::isAnimatingQuaternion()
 
 bool CC3FrozenNodeAnimation::isAnimatingScale()
 {
-	return !CC3VectorIsNull(_scale); 
+	return !_scale.isNull(); 
 }
 
 void CC3FrozenNodeAnimation::populateFromNodeState( CC3Node* node )
@@ -529,9 +529,9 @@ void CC3FrozenNodeAnimation::initWithFrameCount( GLuint numFrames )
 	super::initWithFrameCount(1);
 	{
 		_shouldInterpolate = false;
-		_location = kCC3VectorNull;
+		_location = CC3Vector::kCC3VectorNull;
 		_quaternion = kCC3QuaternionNull;
-		_scale = kCC3VectorNull;
+		_scale = CC3Vector::kCC3VectorNull;
 	}
 }
 
@@ -867,9 +867,9 @@ void CC3NodeAnimationState::initWithAnimation( CC3NodeAnimation* animation, GLui
 	_trackID = trackID;
 	_blendingWeight = 1.0f;
 	_animationTime = 0.0f;
-	_location = kCC3VectorZero;
+	_location = CC3Vector::kCC3VectorZero;
 	_quaternion = kCC3QuaternionIdentity;
-	_scale = kCC3VectorUnitCube;
+	_scale = CC3Vector::kCC3VectorUnitCube;
 	_isEnabled = true;
 	_isLocationAnimationEnabled = true;
 	_isQuaternionAnimationEnabled = true;
@@ -896,22 +896,22 @@ GLuint CC3NodeAnimationState::generateTrackID()
 
 std::string CC3NodeAnimationState::description()
 {
-	return stringWithFormat( (char*)"CC3NodeAnimationState for node %s with animation on track %u",
+	return CC3String::stringWithFormat( (char*)"CC3NodeAnimationState for node %s with animation on track %u",
 			 _node->getName().c_str(), _trackID );
 }
 
 std::string CC3NodeAnimationState::describeCurrentState()
 {
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"Time: %.4f", _animationTime );
+	desc += CC3String::stringWithFormat( (char*)"Time: %.4f", _animationTime );
 	if (isAnimatingLocation()) 
-		desc += stringWithFormat( (char*)" Loc: %s", stringFromCC3Vector(getLocation()).c_str() );
+		desc += CC3String::stringWithFormat( (char*)" Loc: %s", getLocation().stringfy().c_str() );
 	if (isAnimatingQuaternion())
-		desc += stringWithFormat( (char*)" Quat: %s", stringFromCC3Quaternion(getQuaternion()).c_str() );
+		desc += CC3String::stringWithFormat( (char*)" Quat: %s", stringFromCC3Quaternion(getQuaternion()).c_str() );
 	if (isAnimatingScale())
-		desc += stringWithFormat( (char*)" Scale: %s", stringFromCC3Vector(getScale()).c_str() );
+		desc += CC3String::stringWithFormat( (char*)" Scale: %s", getScale().stringfy().c_str() );
 	if ( !isAnimating()) 
-		desc += stringWithFormat( (char*)" No animation enabled." );
+		desc += CC3String::stringWithFormat( (char*)" No animation enabled." );
 
 	return desc;
 }
@@ -930,12 +930,12 @@ std::string CC3NodeAnimationState::describeStateForFrames( GLuint frameCount, fl
 	if (frameCount > 1) 
 		frameDur = (endTime - startTime) / (GLfloat)(frameCount - 1);
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"%s animated state on track %d over %d frames from %.4f to %.4f:", _node->getName().c_str(), _trackID, frameCount, startTime, endTime );
+	desc += CC3String::stringWithFormat( (char*)"%s animated state on track %d over %d frames from %.4f to %.4f:", _node->getName().c_str(), _trackID, frameCount, startTime, endTime );
 	if (isAnimating() && frameCount > 0)
 		for (GLuint fIdx = 0; fIdx < frameCount; fIdx++) 
 		{
 			establishFrameAt( startTime + (frameDur * fIdx) );
-			desc += stringWithFormat( (char*)"\n\t%s", describeCurrentState().c_str() );
+			desc += CC3String::stringWithFormat( (char*)"\n\t%s", describeCurrentState().c_str() );
 		}
 	else
 		desc += " No animation enabled.";

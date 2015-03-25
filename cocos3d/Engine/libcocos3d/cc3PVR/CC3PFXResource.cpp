@@ -221,8 +221,8 @@ std::string CC3PFXResource::fullDescription()
 {
 	std::string desc = "";
 	desc += "CC3PFXResource";
-	desc += stringWithFormat( (char*)" containing %ld effects", (unsigned long)_effectsByName->count() );
-	desc += stringWithFormat( (char*)", %ld textures", (unsigned long)_texturesByName->count() );
+	desc += CC3String::stringWithFormat( (char*)" containing %ld effects", (unsigned long)_effectsByName->count() );
+	desc += CC3String::stringWithFormat( (char*)", %ld textures", (unsigned long)_texturesByName->count() );
 	return desc;
 }
 //
@@ -451,7 +451,7 @@ GLchar* CC3PFXEffect::getShaderCode( SPVRTPFXParserShader* pfxShader )
 /** Returns a string description of this effect. */
 std::string CC3PFXEffect::description()
 {
-	return stringWithFormat( (char*)"CC3PFXEffect named %s", _name.c_str() ); 
+	return CC3String::stringWithFormat( (char*)"CC3PFXEffect named %s", _name.c_str() ); 
 }
 
 std::string CC3PFXGLSLVariableConfiguration::getPFXSemanticName()
