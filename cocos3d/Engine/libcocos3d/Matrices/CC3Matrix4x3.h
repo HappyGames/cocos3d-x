@@ -353,7 +353,7 @@ static inline CC3Quaternion CC3Matrix4x3ExtractQuaternion(const CC3Matrix4x3* mt
 /** Extracts and returns the 'forward' direction vector from the rotation component of the specified matrix. */
 static inline CC3Vector CC3Matrix4x3ExtractForwardDirection(const CC3Matrix4x3* mtx) 
 {
-	return CC3VectorNegate(mtx->col3);
+	return mtx->col3.negate();
 }
 
 /** Extracts and returns the 'up' direction vector from the rotation component of the specified matrix. */
@@ -434,17 +434,17 @@ static inline void CC3Matrix4x3RotateByQuaternion(CC3Matrix4x3* mtx, CC3Quaterni
  */
 static inline void CC3Matrix4x3ScaleBy(CC3Matrix4x3* mtx, CC3Vector aScale) 
 {
-	mtx->col1 = CC3VectorScaleUniform(mtx->col1, aScale.x);
-	mtx->col2 = CC3VectorScaleUniform(mtx->col2, aScale.y);
-	mtx->col3 = CC3VectorScaleUniform(mtx->col3, aScale.z);
+	mtx->col1 = mtx->col1.scaleUniform( aScale.x );
+	mtx->col2 = mtx->col2.scaleUniform( aScale.y );
+	mtx->col3 = mtx->col3.scaleUniform( aScale.z );
 }
 
 /** Translates the specified matrix in three dimensions by the specified translation vector. */
 static inline void CC3Matrix4x3TranslateBy(CC3Matrix4x3* mtx, CC3Vector aTranslation) 
 {
-	mtx->c4r1 += CC3VectorDot(CC3VectorFromCC3Matrix4x3Row(mtx, 1), aTranslation);
-	mtx->c4r2 += CC3VectorDot(CC3VectorFromCC3Matrix4x3Row(mtx, 2), aTranslation);
-	mtx->c4r3 += CC3VectorDot(CC3VectorFromCC3Matrix4x3Row(mtx, 3), aTranslation);
+	mtx->c4r1 += CC3VectorFromCC3Matrix4x3Row(mtx, 1).dot( aTranslation );
+	mtx->c4r2 += CC3VectorFromCC3Matrix4x3Row(mtx, 2).dot( aTranslation );
+	mtx->c4r3 += CC3VectorFromCC3Matrix4x3Row(mtx, 3).dot( aTranslation );
 }
 
 
@@ -534,7 +534,7 @@ static inline bool CC3Matrix4x3InvertAdjoint(CC3Matrix4x3* mtx)
 	if (!didInvLinMtx) 
 		return false;	// Some matrices can't be inverted
 	
-	mtx->col4 = CC3Matrix3x3TransformCC3Vector(linMtx, CC3VectorNegate(mtx->col4));
+	mtx->col4 = CC3Matrix3x3TransformCC3Vector(linMtx, mtx->col4.negate());
 	
 	return true;
 }
@@ -561,7 +561,7 @@ static inline void CC3Matrix4x3InvertRigid(CC3Matrix4x3* mtx)
 {
 	CC3Matrix3x3* linMtx = (CC3Matrix3x3*)mtx;
 	CC3Matrix3x3Transpose(linMtx);
-	mtx->col4 = CC3Matrix3x3TransformCC3Vector(linMtx, CC3VectorNegate(mtx->col4));
+	mtx->col4 = CC3Matrix3x3TransformCC3Vector(linMtx, mtx->col4.negate());
 }
 
 NS_COCOS3D_END

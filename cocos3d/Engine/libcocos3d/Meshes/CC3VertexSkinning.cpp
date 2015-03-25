@@ -45,7 +45,7 @@ CC3SoftBodyNode* CC3SoftBodyNode::getSoftBodyNode()
 
 CC3Vector CC3SoftBodyNode::getSkeletalScale()
 {
-	return kCC3VectorUnitCube; 
+	return CC3Vector::kCC3VectorUnitCube; 
 }
 
 CC3SoftBodyNode* CC3SoftBodyNode::nodeWithName( const std::string& aName )
@@ -140,7 +140,7 @@ CC3DeformedFaceArray* CC3SkinMeshNode::getDeformedFaces()
 {
 	if ( !_deformedFaces ) 
 	{
-		std::string facesName = stringWithFormat( (char*)"%s-DeformedFaces", getName().c_str() );
+		std::string facesName = CC3String::stringWithFormat( (char*)"%s-DeformedFaces", getName().c_str() );
 		setDeformedFaces( CC3DeformedFaceArray::faceArrayWithName( facesName ) );
 	}
 	return _deformedFaces;
@@ -435,7 +435,7 @@ CC3Vector CC3SkinSection::getDeformedVertexLocationAt( GLuint vtxIdx )
 	// The locations of this vertex before and after deformation.
 	// The latter is to be calculated and returned by this method.
 	CC3Vector restLoc = skinMesh->getVertexLocationAt( vtxIdx );
-	CC3Vector defLoc = kCC3VectorZero;
+	CC3Vector defLoc = CC3Vector::kCC3VectorZero;
 	
 	// Calc the weighted sum of the deformation contributed by each bone to this vertex.
 	// Iterate through the bones associated with this vertex.
@@ -450,8 +450,8 @@ CC3Vector CC3SkinSection::getDeformedVertexLocationAt( GLuint vtxIdx )
 		// Use the bone to deform the vertex, apply the weighting for this bone,
 		// and add to the summed location.
 		CC3Vector boneDefLoc = skinnedBone->getTransformMatrix()->transformLocation( restLoc );
-		CC3Vector wtdBoneDefLoc = CC3VectorScaleUniform(boneDefLoc, vtxWt);
-		defLoc = CC3VectorAdd(defLoc, wtdBoneDefLoc);
+		CC3Vector wtdBoneDefLoc = boneDefLoc.scaleUniform( vtxWt );
+		defLoc = defLoc.add( wtdBoneDefLoc );
 
 		/*LogTrace(@"%@ vu: %i, bone at %i, weight %.3f transforming vertex at %i: %@ to %@ to wtd: %@ to sum: %@",
 				 self, vuIdx, vtxBoneIdx, vtxWt, vtxIdx,
@@ -906,7 +906,7 @@ void CC3DeformedFaceArray::populateDeformedVertexLocations()
 	// track of which vertices have been set, as we iterate through the mesh vertices.
 	GLuint vtxCount = getVertexCount();
 	for (GLuint vtxIdx = 0; vtxIdx < vtxCount; vtxIdx++)
-		_deformedVertexLocations[vtxIdx] = kCC3VectorNull;
+		_deformedVertexLocations[vtxIdx] = CC3Vector::kCC3VectorNull;
 
 	// Determine whether the mesh is indexed.
 	// If it is, we iterate through the indexes.
@@ -938,7 +938,7 @@ void CC3DeformedFaceArray::populateDeformedVertexLocations()
 		
 		// If the cached vertex location has not yet been set, use the skin section to
 		// deform the vertex location at the current index, and set it into the cache array.
-		if ( CC3VectorIsNull(_deformedVertexLocations[vtxIdx]) )
+		if ( _deformedVertexLocations[vtxIdx].isNull() )
 		{
 			_deformedVertexLocations[vtxIdx] = ss->getDeformedVertexLocationAt( vtxIdx );
 			

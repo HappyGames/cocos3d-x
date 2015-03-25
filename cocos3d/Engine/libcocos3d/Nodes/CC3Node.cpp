@@ -45,8 +45,8 @@ CC3Node::CC3Node()
 	m_pAnimationStates = NULL;
 
 	m_scale = cc3v( 1.f, 1.f, 1.f );
-	m_location = kCC3VectorZero;
-	m_projectedLocation = kCC3VectorZero;
+	m_location = CC3Vector::kCC3VectorZero;
+	m_projectedLocation = CC3Vector::kCC3VectorZero;
 	
 	m_fBoundingVolumePadding = 0.f;
 	m_fCameraDistanceProduct = 0.f;
@@ -64,8 +64,8 @@ CC3Node::CC3Node()
 	m_isBeingAdded = true;
 	m_shouldCastShadows = false;
 
-	m_globalLocation = kCC3VectorZero;
-	m_globalRotation = kCC3VectorZero;
+	m_globalLocation = CC3Vector::kCC3VectorZero;
+	m_globalRotation = CC3Vector::kCC3VectorZero;
 	m_globalScale = cc3v(1.f, 1.f, 1.f);
 	m_isTransformDirty = true;
 	m_isTransformRigid = false;
@@ -104,7 +104,7 @@ CC3Vector CC3Node::getLocation()
 CC3Vector CC3Node::getGlobalLocation()
 {
 	if ( !m_pParent )
-		return kCC3VectorZero;
+		return CC3Vector::kCC3VectorZero;
 	
 	if ( m_pParent )
 	{
@@ -113,7 +113,7 @@ CC3Vector CC3Node::getGlobalLocation()
 			return pGlobalTransformMatrix->transformLocation( m_location );
 	}
 
-	return kCC3VectorZero;
+	return CC3Vector::kCC3VectorZero;
 }
 
 CC3Vector4 CC3Node::getGlobalHomogeneousPosition() 
@@ -123,7 +123,7 @@ CC3Vector4 CC3Node::getGlobalHomogeneousPosition()
 
 void CC3Node::translateBy( const CC3Vector& aVector )
 { 
-	m_location = CC3VectorAdd(m_location, aVector); 
+	m_location = m_location.add( aVector ); 
 }
 
 void CC3Node::setRotator( CC3Rotator* rotator )
@@ -143,12 +143,12 @@ CC3Vector CC3Node::getRotation()
 	if ( m_rotator )
 		return m_rotator->getRotation(); 
 
-	return kCC3VectorZero;
+	return CC3Vector::kCC3VectorZero;
 }
 
 void CC3Node::setRotation( const CC3Vector& aRotation )
 {
-	if ( isTrackingTargetDirection() || CC3VectorsAreEqual(aRotation, getRotation()) ) 
+	if ( isTrackingTargetDirection() || aRotation.equals( getRotation() ) ) 
 		return;
 
 	getMutableRotator()->setRotation( aRotation );
@@ -202,7 +202,7 @@ CC3Vector CC3Node::getRotationAxis()
 
 void CC3Node::setRotationAxis( const CC3Vector& aDirection )
 {
-	if ( isTrackingTargetDirection() || CC3VectorsAreEqual(aDirection, getRotationAxis()) ) 
+	if ( isTrackingTargetDirection() || aDirection.equals( getRotationAxis() ) ) 
 		return;
 
 	getMutableRotator()->setRotationAxis( aDirection );
@@ -243,7 +243,7 @@ void CC3Node::rotateByAngle( GLfloat angle, CC3Vector axis, const CC3Vector& piv
 	CC3Vector pivotBefore = getLocalTransformMatrix()->transformLocation( pivotLocation );
 	rotateByAngle( angle, axis );
 	CC3Vector pivotAfter = getLocalTransformMatrix()->transformLocation( pivotLocation );
-	translateBy( CC3VectorDifference(pivotBefore, pivotAfter) );
+	translateBy( pivotBefore.difference( pivotAfter ) );
 }
 
 CC3Vector CC3Node::getForwardDirection()
@@ -311,7 +311,7 @@ GLfloat CC3Node::getUniformScale()
 {
 	return (isUniformlyScaledLocally())
 					? m_scale.x 
-					: CC3VectorLength(m_scale) / kCC3VectorUnitCubeLength;
+					: m_scale.length() / CC3Vector::kCC3VectorUnitCubeLength;
 }
 
 void CC3Node::setUniformScale( GLfloat aValue )
@@ -326,7 +326,7 @@ bool CC3Node::isUniformlyScaledLocally()
 
 CC3Vector CC3Node::getGlobalScale() 
 { 
-	return m_pParent ? CC3VectorScale(m_pParent->getGlobalScale(), m_scale) : m_scale; 
+	return m_pParent ? m_pParent->getGlobalScale().scale( m_scale ) : m_scale; 
 }
 
 bool CC3Node::isUniformlyScaledGlobally() 
@@ -387,7 +387,7 @@ bool CC3Node::isRunning()
 CC3Vector CC3Node::getTargetLocation()
 {
 	CC3Vector targLoc = m_rotator->getTargetLocation();
-	return CC3VectorIsNull(targLoc) ? CC3VectorAdd(getGlobalLocation(), getForwardDirection()) : targLoc;
+	return targLoc.isNull() ? getGlobalLocation().add( getForwardDirection() ) : targLoc;
 }
 
 /** Apply any rotational axis restrictions to the target location before setting it. */
@@ -932,7 +932,7 @@ CC3Box CC3Node::getBoundingBoxRelativeTo( CC3Node* ancestor )
 CC3Vector CC3Node::getCenterOfGeometry() 
 {
 	CC3Box bb = getBoundingBox();
-	return CC3BoxIsNull(bb) ? kCC3VectorZero : CC3BoxCenter(bb);
+	return CC3BoxIsNull(bb) ? CC3Vector::kCC3VectorZero : CC3BoxCenter(bb);
 }
 
 CC3Vector CC3Node::getGlobalCenterOfGeometry()
@@ -1683,9 +1683,9 @@ void CC3Node::initWithTag( GLuint aTag, const std::string& aName )
 	m_pBoundingVolume = NULL;
 	m_fBoundingVolumePadding = 0.0f;
 	m_shouldUseFixedBoundingVolume = false;
-	m_location = kCC3VectorZero;
-	m_projectedLocation = kCC3VectorZero;
-	m_scale = kCC3VectorUnitCube;
+	m_location = CC3Vector::kCC3VectorZero;
+	m_projectedLocation = CC3Vector::kCC3VectorZero;
+	m_scale = CC3Vector::kCC3VectorUnitCube;
 	m_fCameraDistanceProduct = 0.0f;
 	m_touchEnabled = false;
 	m_shouldInheritTouchability = true;
@@ -3085,7 +3085,7 @@ void CC3Node::addAndLocalizeChild( CC3Node* aNode )
 	// Scale cannot readily be extracted from the inverted and multiplied matrix, but we can get
 	// it by scaling the node's scale down by the globalScale of this parent, so that when they
 	// are recombined, the original globalScale of the child node.
-	aNode->setScale( CC3VectorScale(aNode->getGlobalScale(), CC3VectorInvert(getGlobalScale())) );
+	aNode->setScale( aNode->getGlobalScale().scale( getGlobalScale().invert() ) );
 	
 	addChild( aNode );		// Finally, add the child node to this parent
 }
@@ -3320,7 +3320,7 @@ void CC3Node::flattenInto( CCArray* anArray )
 CC3Node* CC3Node::asOrientingWrapper() 
 {
 	std::string sName = "";
-	stringWithFormat( sName, (char*)"%s-OW", m_sName.c_str() );
+	CC3String::stringWithFormat( sName, (char*)"%s-OW", m_sName.c_str() );
 	CC3Node* wrap = CC3Node::nodeWithName( sName.c_str() );
 	wrap->setShouldAutoremoveWhenEmpty( true );
 	wrap->addChild( this );
@@ -3524,7 +3524,7 @@ bool CC3Node::doesIntersectGlobalRay( const CC3Ray& aRay )
 CC3Vector CC3Node::getLocationOfGlobalRayIntesection( const CC3Ray& aRay )
 {
 	if ( shouldIgnoreRayIntersection() ) 
-		return kCC3VectorNull;
+		return CC3Vector::kCC3VectorNull;
 
 	CC3Ray localRay = getGlobalTransformMatrixInverted()->transformRay( aRay );
 	return m_pBoundingVolume->getLocationOfRayIntesection( localRay );
@@ -3533,7 +3533,7 @@ CC3Vector CC3Node::getLocationOfGlobalRayIntesection( const CC3Ray& aRay )
 CC3Vector CC3Node::getGlobalLocationOfGlobalRayIntesection( const CC3Ray& aRay )
 {
 	if ( !m_pBoundingVolume ) 
-		return kCC3VectorNull;
+		return CC3Vector::kCC3VectorNull;
 
 	return m_pBoundingVolume->getGlobalLocationOfGlobalRayIntesection( aRay );
 }
@@ -3556,7 +3556,7 @@ CC3Node* CC3Node::closestNodeIntersectedByGlobalRay( const CC3Ray& aRay )
 std::string CC3Node::getDescriptorName()
 {
 	std::string sName = "";
-	stringWithFormat( sName, (char*)"%s-%s", m_sName.c_str(), kDescriptorSuffix );
+	CC3String::stringWithFormat( sName, (char*)"%s-%s", m_sName.c_str(), kDescriptorSuffix );
 	return sName;
 }
 
@@ -3648,7 +3648,7 @@ void CC3Node::setDescriptorFontSize( float fontSize )
 std::string CC3Node::getWireframeBoxName()
 {
 	std::string sName = "";
-	stringWithFormat( sName, (char*)"%s-%s", m_sName.c_str(), kWireframeBoxSuffix );
+	CC3String::stringWithFormat( sName, (char*)"%s-%s", m_sName.c_str(), kWireframeBoxSuffix );
 	return sName;
 }
 
@@ -3776,10 +3776,10 @@ void CC3Node::setShouldDrawAllLocalContentWireframeBoxes( bool shouldDraw )
 
 void CC3Node::addDirectionMarkerColored( const ccColor4F& aColor, const CC3Vector& aDirection )
 {
-	std::string dmName = stringWithFormat( (char*)"%s-DM-%s", m_sName.c_str(), stringFromCC3Vector(aDirection).c_str() );
+	std::string dmName = CC3String::stringWithFormat( (char*)"%s-DM-%s", m_sName.c_str(), aDirection.stringfy().c_str() );
 	CC3DirectionMarkerNode* dm = CC3DirectionMarkerNode::nodeWithName( dmName.c_str() );
 
-	CC3Vector lineVertices[2] = { kCC3VectorZero, kCC3VectorZero };
+	CC3Vector lineVertices[2] = { CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero };
 	dm->populateAsLineStripWith( 2, lineVertices, true );
 
 	dm->setMarkerDirection( aDirection );
@@ -3790,14 +3790,14 @@ void CC3Node::addDirectionMarkerColored( const ccColor4F& aColor, const CC3Vecto
 
 void CC3Node::addDirectionMarker()
 {
-	addDirectionMarkerColored( getDirectionMarkerColor(), kCC3VectorUnitZNegative );
+	addDirectionMarkerColored( getDirectionMarkerColor(), CC3Vector::kCC3VectorUnitZNegative );
 }
 
 void CC3Node::addAxesDirectionMarkers() 
 {
-	addDirectionMarkerColored( kCCC4FRed, kCC3VectorUnitXPositive );
-	addDirectionMarkerColored( kCCC4FGreen, kCC3VectorUnitYPositive );
-	addDirectionMarkerColored( kCCC4FBlue, kCC3VectorUnitZPositive );
+	addDirectionMarkerColored( kCCC4FRed, CC3Vector::kCC3VectorUnitXPositive );
+	addDirectionMarkerColored( kCCC4FGreen, CC3Vector::kCC3VectorUnitYPositive );
+	addDirectionMarkerColored( kCCC4FBlue, CC3Vector::kCC3VectorUnitZPositive );
 }
 
 void CC3Node::removeAllDirectionMarkers()
@@ -3978,7 +3978,7 @@ std::string CC3Node::getRenderStreamGroupMarker()
 
 CC3Vector CC3Node::getSkeletalScale()
 {
-	return m_pParent ? CC3VectorScale(m_pParent->getSkeletalScale(), m_scale) : m_scale; 
+	return m_pParent ? m_pParent->getSkeletalScale().scale( m_scale ) : m_scale; 
 }
 
 void CC3Node::bindRestPose()
@@ -4623,10 +4623,10 @@ void CC3Node::updateFromAnimationState()
 		return;
 
 	// Start with identity transforms
-	CC3Vector blendedLoc = kCC3VectorZero;
-	CC3Vector blendedRot = kCC3VectorZero;
+	CC3Vector blendedLoc = CC3Vector::kCC3VectorZero;
+	CC3Vector blendedRot = CC3Vector::kCC3VectorZero;
 	CC3Quaternion blendedQuat = kCC3QuaternionIdentity;
-	CC3Vector blendedScale = kCC3VectorUnitCube;
+	CC3Vector blendedScale = CC3Vector::kCC3VectorUnitCube;
 
 	// Accumulated weights
 	GLfloat totWtL = 0.0f;		// Accumulated location weight
@@ -4646,7 +4646,7 @@ void CC3Node::updateFromAnimationState()
 			if ( as->isAnimatingLocation() ) 
 			{
 				totWtL += currWt;
-				blendedLoc = CC3VectorLerp(blendedLoc, as->getLocation(), (currWt / totWtL));
+				blendedLoc = blendedLoc.lerp( as->getLocation(), (currWt / totWtL) );
 			}
 
 			// Blend the quaternion
@@ -4660,7 +4660,7 @@ void CC3Node::updateFromAnimationState()
 			if ( as->isAnimatingScale() ) 
 			{
 				totWtS += currWt;
-				blendedScale = CC3VectorLerp(blendedScale, as->getScale(), (currWt / totWtS));
+				blendedScale = blendedScale.lerp( as->getScale(), (currWt / totWtS) );
 			}
 		}
 	}
@@ -4688,7 +4688,7 @@ std::string CC3Node::describeCurrentAnimationState()
 	CCARRAY_FOREACH( m_pAnimationStates, pObj )
 	{
 		CC3NodeAnimationState* as = (CC3NodeAnimationState*)pObj;
-		desc += stringWithFormat( (char*)"\n%s", as->describeCurrentState().c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n%s", as->describeCurrentState().c_str() );
 	}
 
 	return desc;
@@ -4702,7 +4702,7 @@ std::string CC3Node::describeAnimationStateForFrames( GLuint frameCount, float s
 	CCARRAY_FOREACH( m_pAnimationStates, pObj )
 	{
 		CC3NodeAnimationState* as = (CC3NodeAnimationState*)pObj;
-		desc += stringWithFormat( (char*)"\n%s", as->describeStateForFrames( frameCount, startTime, endTime ).c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n%s", as->describeStateForFrames( frameCount, startTime, endTime ).c_str() );
 	}
 
 	return desc;

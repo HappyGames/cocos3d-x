@@ -469,7 +469,7 @@ void CC3Billboard::align2DToCamera( CC3Camera* camera )
 		// and camera to the defined unity-scale distance. Neither may be smaller than the near
 		// clipping plane.
 		GLfloat camNear = camera->getNearClippingDistance();
-		GLfloat camDist = MAX(CC3VectorDistance(getGlobalLocation(), camera->getGlobalLocation()), camNear);
+		GLfloat camDist = MAX( getGlobalLocation().distance( camera->getGlobalLocation() ), camNear);
 		GLfloat unityDist = MAX(getUnityScaleDistance(), camNear);
 		GLfloat distScale = unityDist / camDist;
 		newBBScale.x = distScale;
@@ -516,7 +516,7 @@ void CC3Billboard::align3DToCamera( CC3Camera* camera )
 
 	GLfloat camNear = camera->getNearClippingDistance();
 	GLfloat unityDist = MAX(getUnityScaleDistance(), camNear);
-	GLfloat camDist = MAX(CC3VectorDistance(getGlobalLocation(), camera->getGlobalLocation()), camNear);
+	GLfloat camDist = MAX(getGlobalLocation().distance(camera->getGlobalLocation()), camNear);
 
 	CCPoint newBBScale = ccp(_billboard->getScaleX(), _billboard->getScaleY());
 
@@ -879,48 +879,48 @@ void CC3BillboardBoundingBoxArea::buildPlanes()
 	CC3Vector bbMax = _vertices[3];
 	
 	// Front plane
-	normal = CC3VectorNormalize( tMtx->transformDirection(kCC3VectorUnitZPositive) );
+	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitZPositive).normalize();
 	_planes[0] = CC3PlaneFromNormalAndLocation(normal, bbMax);
 	
 	// Back plane
-	normal = CC3VectorNormalize( tMtx->transformDirection(kCC3VectorUnitZNegative) );
+	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitZNegative).normalize();
 	_planes[1] = CC3PlaneFromNormalAndLocation(normal, bbMin);
 	
 	// Right plane
-	normal = CC3VectorNormalize( tMtx->transformDirection(kCC3VectorUnitXPositive) );
+	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitXPositive).normalize();
 	_planes[2] = CC3PlaneFromNormalAndLocation(normal, bbMax);
 	
 	// Left plane
-	normal = CC3VectorNormalize( tMtx->transformDirection(kCC3VectorUnitXNegative) );
+	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitXNegative).normalize();
 	_planes[3] = CC3PlaneFromNormalAndLocation(normal, bbMin);
 	
 	// Top plane
-	normal = CC3VectorNormalize( tMtx->transformDirection(kCC3VectorUnitYPositive) );
+	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitYPositive).normalize();
 	_planes[4] = CC3PlaneFromNormalAndLocation(normal, bbMax);
 	
 	// Bottom plane
-	normal = CC3VectorNormalize( tMtx->transformDirection(kCC3VectorUnitYNegative) );
+	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitYNegative).normalize();
 	_planes[5] = CC3PlaneFromNormalAndLocation(normal, bbMin);
 }
 
 CC3Vector CC3BillboardBoundingBoxArea::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
 	if (_shouldIgnoreRayIntersection) 
-		return kCC3VectorNull;
+		return CC3Vector::kCC3VectorNull;
 
 	// Get the location where the ray intersects the plane of the billboard,
 	// which is the Z=0 plane, and ensure that the ray is not parallel to that plane.
-	CC3Plane bbPlane = CC3PlaneFromNormalAndLocation(kCC3VectorUnitZPositive, kCC3VectorZero);
+	CC3Plane bbPlane = CC3PlaneFromNormalAndLocation(CC3Vector::kCC3VectorUnitZPositive, CC3Vector::kCC3VectorZero);
 	CC3Vector4 pLoc4 = CC3RayIntersectionWithPlane(localRay, bbPlane);
 	if (CC3Vector4IsNull(pLoc4)) 
-		return kCC3VectorNull;
+		return CC3Vector::kCC3VectorNull;
 	
 	// Convert the location to a 2D point on the Z=0 plane, and check
 	// if that point is inside the rectangular bounds of the billboard.
 	bool intersects = getBillboardBoundingRect().containsPoint( ccp(pLoc4.x, pLoc4.y) );
 
 	// Return the 3D puncture location, or null if the ray did not intersect the boundary rectangle
-	return intersects ? pLoc4.v : kCC3VectorNull;
+	return intersects ? pLoc4.v : CC3Vector::kCC3VectorNull;
 }
 
 std::string CC3BillboardBoundingBoxArea::displayNodeNameSuffix()

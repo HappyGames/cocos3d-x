@@ -158,7 +158,7 @@ void CC3BitmapFontConfiguration::clearFontConfigurations()
 
 std::string CC3BitmapFontConfiguration::description()
 {
-	return stringWithFormat( (char*)"CC3BitmapFontConfiguration with glphys: %d, kernings:%d, image = %s",
+	return CC3String::stringWithFormat( (char*)"CC3BitmapFontConfiguration with glphys: %d, kernings:%d, image = %s",
 			HASH_COUNT(_charDefDictionary),
 			HASH_COUNT(_kerningDictionary),
 			_atlasName.c_str() );
@@ -252,7 +252,7 @@ void CC3BitmapFontConfiguration::parseCharacterDefinition( const std::string& li
 	element->key = element->charDef.charCode;
 	HASH_ADD_INT(_charDefDictionary, key, element);
 	
-	validChars += stringWithFormat( (char*)"%C", element->charDef.charCode );
+	validChars += CC3String::stringWithFormat( (char*)"%C", element->charDef.charCode );
 }
 
 /** Parses a kerning line. */
@@ -601,7 +601,7 @@ CCObject* CC3BitmapLabelNode::copyWithZone( CCZone* zone )
 
 std::string CC3BitmapLabelNode::description()
 {
-	return stringWithFormat( (char*)"%s '%s'", super::description().c_str(), getLabelString().c_str() );
+	return CC3String::stringWithFormat( (char*)"%s '%s'", super::description().c_str(), getLabelString().c_str() );
 }
 
 typedef struct {
@@ -717,7 +717,7 @@ void populateMeshAsBitmapFontLabelFromString( CC3Mesh* mesh, const std::string& 
 				layoutSize.width = MAX(layoutSize.width, vx);
 				
 				// Vertex normal. Will do nothing if this mesh does not include normals.
-				mesh->setVertexNormal( kCC3VectorUnitZPositive, vIdx );
+				mesh->setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, vIdx );
 				
 				// Vertex texture coordinates, inverted vertically, because we're working top-down.
 				CCSize texSize = fontConfig->getTextureSize();
@@ -793,7 +793,7 @@ void populateMeshAsBitmapFontLabelFromString( CC3Mesh* mesh, const std::string& 
 	for ( vIdx = 0; vIdx < vtxCnt; vIdx++ ) 
 	{
 		CC3Vector locOld = mesh->getVertexLocationAt( vIdx );
-		CC3Vector locNew = CC3VectorDifference(locOld, originLoc);
+		CC3Vector locNew = locOld.difference( originLoc );
 		mesh->setVertexLocation( locNew, vIdx );
 	}
 }

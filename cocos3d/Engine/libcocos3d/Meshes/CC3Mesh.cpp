@@ -36,51 +36,51 @@ std::string stringFromCC3VertexContent(CC3VertexContent vtxContent)
 	std::string desc = "";
 	bool first = true;
 	if (vtxContent & kCC3VertexContentLocation) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"Location" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"Location" );
 		first = false;
 	}
 	if (vtxContent & kCC3VertexContentNormal) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"Normal" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"Normal" );
 		first = false;
 	}
 	if (vtxContent & kCC3VertexContentTangent) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"Tangent" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"Tangent" );
 		first = false;
 	}
 	if (vtxContent >= kCC3VertexContentBitangent) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"Bitangent" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"Bitangent" );
 		first = false;
 	}
 	if (vtxContent & kCC3VertexContentColor) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"Color" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"Color" );
 		first = false;
 	}
 	if (vtxContent & kCC3VertexContentTextureCoordinates) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"TexCoords" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"TexCoords" );
 		first = false;
 	}
 	if (vtxContent & kCC3VertexContentPointSize) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"PointSize" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"PointSize" );
 		first = false;
 	}
 	if (vtxContent & kCC3VertexContentBoneWeights) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"BoneWieghts" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"BoneWieghts" );
 		first = false;
 	}
 	if (vtxContent & kCC3VertexContentBoneIndices) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"BoneIndices" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"BoneIndices" );
 		first = false;
 	}
-	desc += stringWithFormat( (char*)"%s", first ? "(None)" : ")" );
+	desc += CC3String::stringWithFormat( (char*)"%s", first ? "(None)" : ")" );
 	return desc;
 }
 
@@ -1037,7 +1037,7 @@ void CC3Mesh::setVertexIndexCount( GLuint vCount )
 
 CC3Vector CC3Mesh::getVertexLocationAt( GLuint index )
 {
-	return _vertexLocations ? _vertexLocations->getLocationAt( index ) : kCC3VectorZero;
+	return _vertexLocations ? _vertexLocations->getLocationAt( index ) : CC3Vector::kCC3VectorZero;
 }
 
 void CC3Mesh::setVertexLocation( const CC3Vector& aLocation, GLuint index )
@@ -1057,7 +1057,7 @@ void CC3Mesh::setVertexHomogeneousLocation( const CC3Vector4& aLocation, GLuint 
 
 CC3Vector CC3Mesh::getVertexNormalAt( GLuint index )
 {
-	return _vertexNormals ? _vertexNormals->getNormalAt( index ) : kCC3VectorUnitZPositive;
+	return _vertexNormals ? _vertexNormals->getNormalAt( index ) : CC3Vector::kCC3VectorUnitZPositive;
 }
 
 void CC3Mesh::setVertexNormal( const CC3Vector& aNormal, GLuint index )
@@ -1068,7 +1068,7 @@ void CC3Mesh::setVertexNormal( const CC3Vector& aNormal, GLuint index )
 
 CC3Vector CC3Mesh::getVertexTangentAt( GLuint index )
 {
-	return _vertexTangents ? _vertexTangents->getTangentAt( index ) : kCC3VectorUnitXPositive;
+	return _vertexTangents ? _vertexTangents->getTangentAt( index ) : CC3Vector::kCC3VectorUnitXPositive;
 }
 
 void CC3Mesh::setVertexTangent( const CC3Vector& aTangent, GLuint index )
@@ -1079,7 +1079,7 @@ void CC3Mesh::setVertexTangent( const CC3Vector& aTangent, GLuint index )
 
 CC3Vector CC3Mesh::getVertexBitangentAt( GLuint index )
 {
-	return _vertexBitangents ? _vertexBitangents->getTangentAt( index ) : kCC3VectorUnitYPositive;
+	return _vertexBitangents ? _vertexBitangents->getTangentAt( index ) : CC3Vector::kCC3VectorUnitYPositive;
 }
 
 void CC3Mesh::setVertexBitangent( const CC3Vector& aTangent, GLuint index )
@@ -1219,7 +1219,7 @@ CC3FaceArray* CC3Mesh::getFaces()
 {
 	if ( !_faces ) 
 	{
-		std::string facesName = stringWithFormat( (char*)"%s-Faces", getName().c_str() );
+		std::string facesName = CC3String::stringWithFormat( (char*)"%s-Faces", getName().c_str() );
 		setFaces( CC3FaceArray::faceArrayWithName( facesName ) );
 	}
 	return _faces;
@@ -1339,7 +1339,7 @@ GLuint CC3Mesh::findFirst( GLuint maxHitCount, CC3MeshIntersection* intersection
 		
 		// Check if the ray is not parallel to the face, is approaching from the front,
 		// or is approaching from the back and that is okay.
-		GLfloat dirDotNorm = CC3VectorDot(aRay.direction, CC3PlaneNormal(hit->facePlane));
+		GLfloat dirDotNorm = aRay.direction.dot( CC3PlaneNormal(hit->facePlane) );
 		hit->wasBackFace = dirDotNorm > 0.0f;
 		if (dirDotNorm < 0.0f || (hit->wasBackFace && acceptBackFaces)) {
 			
@@ -1856,7 +1856,7 @@ void CC3Mesh::updateVertexIndicesGLBuffer()
 
 CC3Vector CC3Mesh::getCenterOfGeometry()
 {
-	return _vertexLocations ? _vertexLocations->getCenterOfGeometry() : kCC3VectorZero; 
+	return _vertexLocations ? _vertexLocations->getCenterOfGeometry() : CC3Vector::kCC3VectorZero; 
 }
 
 CC3Box CC3Mesh::getBoundingBox()
@@ -2341,7 +2341,7 @@ void CC3Mesh::populateAsRectangleWithSize( const CCSize& rectSize, const CCPoint
 			setVertexLocation( cc3v(vx, vy, 0.0f), vIndx );
 
 			// Vertex normal. Will do nothing if this mesh does not include normals.
-			setVertexNormal( kCC3VectorUnitZPositive, vIndx );
+			setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, vIndx );
 
 			// Vertex texture coordinates.
 			// Will do nothing if this mesh does not include texture coordinates.
@@ -2406,8 +2406,8 @@ void CC3Mesh::populateAsDiskWithRadius( GLfloat radius, const CC3Tessellation& r
 
 	// Add the center vertex Vertex location from unit radial scaled by the radial span and ring number
 	// Setters for any content that is not defined by the vertexContentTypes property will do nothing.
-	setVertexLocation( kCC3VectorZero, vIndx );
-	setVertexNormal( kCC3VectorUnitZPositive, vIndx );
+	setVertexLocation( CC3Vector::kCC3VectorZero, vIndx );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, vIndx );
 	setVertexTexCoord2F( cc3tc(0.5f, 0.5f), vIndx );
 
 	for (GLuint ia = 0; ia <= numAngularDivs; ia++) 
@@ -2425,7 +2425,7 @@ void CC3Mesh::populateAsDiskWithRadius( GLfloat radius, const CC3Tessellation& r
 
 			// Vertex normal always points along positive Z-axis
 			// Will do nothing if this mesh does not include normals.
-			setVertexNormal( kCC3VectorUnitZPositive, vIndx );
+			setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, vIndx );
 
 			// Vertex tex coords from unit radial scaled by the radial texture span and ring
 			// number, then shifted to move range from (-0.5 <-> +0.5) to (0.0 <-> +1.0).
@@ -2496,104 +2496,104 @@ void CC3Mesh::populateAsSolidBox( const CC3Box& box, const CCPoint& corner )
 
 	// Front face, CCW winding:
 	setVertexLocation( cc3v(boxMin.x, boxMin.y, boxMax.z), 0 );
-	setVertexNormal( kCC3VectorUnitZPositive, 0 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, 0 );
 	setVertexTexCoord2F( cc3tc(corner.x, corner.y), 0 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMin.y, boxMax.z), 1 );
-	setVertexNormal( kCC3VectorUnitZPositive, 1 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, 1 );
 	setVertexTexCoord2F( cc3tc(0.5f, corner.y), 1 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMax.y, boxMax.z), 2 );
-	setVertexNormal( kCC3VectorUnitZPositive, 2 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, 2 );
 	setVertexTexCoord2F( cc3tc(0.5f, (1.0f - corner.y)), 2 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMax.y, boxMax.z), 3 );
-	setVertexNormal( kCC3VectorUnitZPositive, 3 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZPositive, 3 );
 	setVertexTexCoord2F( cc3tc(corner.x, (1.0f - corner.y)), 3 );
 
 	// Right face, CCW winding:
 	setVertexLocation( cc3v(boxMax.x, boxMin.y, boxMax.z), 4 );
-	setVertexNormal( kCC3VectorUnitXPositive, 4 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXPositive, 4 );
 	setVertexTexCoord2F( cc3tc(0.5f, corner.y), 4 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMin.y, boxMin.z), 5 );
-	setVertexNormal( kCC3VectorUnitXPositive, 5 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXPositive, 5 );
 	setVertexTexCoord2F( cc3tc((0.5f + corner.x), corner.y), 5 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMax.y, boxMin.z), 6 );
-	setVertexNormal( kCC3VectorUnitXPositive, 6 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXPositive, 6 );
 	setVertexTexCoord2F( cc3tc((0.5f + corner.x), (1.0f - corner.y)), 6 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMax.y, boxMax.z), 7 );
-	setVertexNormal( kCC3VectorUnitXPositive, 7 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXPositive, 7 );
 	setVertexTexCoord2F( cc3tc(0.5f, (1.0f - corner.y)), 7 );
 
 	// Back face, CCW winding:
 	setVertexLocation( cc3v(boxMax.x, boxMin.y, boxMin.z), 8 );
-	setVertexNormal( kCC3VectorUnitZNegative, 8 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZNegative, 8 );
 	setVertexTexCoord2F( cc3tc((0.5f + corner.x), corner.y), 8 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMin.y, boxMin.z), 9 );
-	setVertexNormal( kCC3VectorUnitZNegative, 9 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZNegative, 9 );
 	setVertexTexCoord2F( cc3tc(1.0f, corner.y), 9 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMax.y, boxMin.z), 10 );
-	setVertexNormal( kCC3VectorUnitZNegative, 10 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZNegative, 10 );
 	setVertexTexCoord2F( cc3tc(1.0f, (1.0f - corner.y)), 10 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMax.y, boxMin.z), 11 );
-	setVertexNormal( kCC3VectorUnitZNegative, 11 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitZNegative, 11 );
 	setVertexTexCoord2F( cc3tc((0.5f + corner.x), (1.0f - corner.y)), 11 );
 
 	// Left face, CCW winding:
 	setVertexLocation( cc3v(boxMin.x, boxMin.y, boxMin.z), 12 );
-	setVertexNormal( kCC3VectorUnitXNegative, 12 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXNegative, 12 );
 	setVertexTexCoord2F( cc3tc(0.0f, corner.y), 12 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMin.y, boxMax.z), 13 );
-	setVertexNormal( kCC3VectorUnitXNegative, 13 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXNegative, 13 );
 	setVertexTexCoord2F( cc3tc(corner.x, corner.y), 13 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMax.y, boxMax.z), 14 );
-	setVertexNormal( kCC3VectorUnitXNegative, 14 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXNegative, 14 );
 	setVertexTexCoord2F( cc3tc(corner.x, (1.0f - corner.y)), 14 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMax.y, boxMin.z), 15 );
-	setVertexNormal( kCC3VectorUnitXNegative, 15 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitXNegative, 15 );
 	setVertexTexCoord2F( cc3tc(0.0f, (1.0f - corner.y)), 15 );
 
 	// Top face, CCW winding:
 	setVertexLocation( cc3v(boxMin.x, boxMax.y, boxMin.z), 16 );
-	setVertexNormal( kCC3VectorUnitYPositive, 16 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYPositive, 16 );
 	setVertexTexCoord2F( cc3tc(corner.x, 1.0f), 16 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMax.y, boxMax.z), 17 );
-	setVertexNormal( kCC3VectorUnitYPositive, 17 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYPositive, 17 );
 	setVertexTexCoord2F( cc3tc(corner.x, (1.0f - corner.y)), 17 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMax.y, boxMax.z), 18 );
-	setVertexNormal( kCC3VectorUnitYPositive, 18 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYPositive, 18 );
 	setVertexTexCoord2F( cc3tc(0.5f, (1.0f - corner.y)), 18 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMax.y, boxMin.z), 19 );
-	setVertexNormal( kCC3VectorUnitYPositive, 19 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYPositive, 19 );
 	setVertexTexCoord2F( cc3tc(0.5f, 1.0f), 19 );
 
 	// Bottom face, CCW winding:
 	setVertexLocation( cc3v(boxMin.x, boxMin.y, boxMax.z), 20 );
-	setVertexNormal( kCC3VectorUnitYNegative, 20 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYNegative, 20 );
 	setVertexTexCoord2F( cc3tc(corner.x, corner.y), 20 );
 
 	setVertexLocation( cc3v(boxMin.x, boxMin.y, boxMin.z), 21 );
-	setVertexNormal( kCC3VectorUnitYNegative, 21 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYNegative, 21 );
 	setVertexTexCoord2F( cc3tc(corner.x, 0.0f), 21 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMin.y, boxMin.z), 22 );
-	setVertexNormal( kCC3VectorUnitYNegative, 22 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYNegative, 22 );
 	setVertexTexCoord2F( cc3tc(0.5f, 0.0f), 22 );
 
 	setVertexLocation( cc3v(boxMax.x, boxMin.y, boxMax.z), 23 );
-	setVertexNormal( kCC3VectorUnitYNegative, 23 );
+	setVertexNormal( CC3Vector::kCC3VectorUnitYNegative, 23 );
 	setVertexTexCoord2F( cc3tc(0.5f, corner.y), 23 );
 
 	// Populate the vertex indices
@@ -2703,7 +2703,7 @@ void CC3Mesh::populateAsSphereWithRadius( GLfloat radius, const CC3Tessellation&
 			// Vertex location, starting at negative-Z axis,
 			// and right-hand rotating towards negative-X axis.
 			CC3Vector unitRadial = cc3v( -(sy * sx), cy, -(sy * cx) );
-			setVertexLocation( CC3VectorScaleUniform(unitRadial, radius), vIndx );
+			setVertexLocation( unitRadial.scaleUniform( radius ), vIndx );
 
 			// Vertex normal - same as location on unit sphere
 			// Will do nothing if this mesh does not include normals.
@@ -2775,7 +2775,7 @@ void CC3Mesh::populateAsHollowConeWithRadius( GLfloat radius, GLfloat height, co
 		GLfloat angle = angularDivSpan * ia;
 		GLfloat ca = -cosf(angle);		// Put seam on Z-minus axis and proceed CCW
 		GLfloat sa = -sinf(angle);		// Put seam on Z-minus axis and proceed CCW
-		CC3Vector vtxNormal = CC3VectorNormalize(cc3v(sa, radiusHeightRatio, ca));
+		CC3Vector vtxNormal = cc3v(sa, radiusHeightRatio, ca).normalize();
 
 		for (GLuint ih = 0; ih <= numHeightDivs; ih++, vIdx++)
 		{

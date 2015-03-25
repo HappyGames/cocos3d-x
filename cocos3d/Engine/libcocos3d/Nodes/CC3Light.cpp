@@ -359,7 +359,7 @@ void CC3Light::applyScalingTo( CC3Matrix* matrix )
  */
 CC3Vector CC3Light::getGlobalScale()
 {
-	return m_pParent ? m_pParent->getGlobalScale() : kCC3VectorUnitCube; 
+	return m_pParent ? m_pParent->getGlobalScale() : CC3Vector::kCC3VectorUnitCube; 
 }
 
 /** Overridden to update the camera shadow frustum with the global location of this light */
@@ -967,7 +967,7 @@ GLuint CC3ShadowCastingVolume::getVertexCount()
 void CC3ShadowCastingVolume::addUniqueVertex( const CC3Vector& aLocation )
 {
 	for (GLuint vtxIdx = 0; vtxIdx < _vertexCount; vtxIdx++)
-		if (CC3VectorsAreEqual(aLocation, _vertices[vtxIdx])) 
+		if ( aLocation.equals( _vertices[vtxIdx] ) ) 
 			return;
 
 	_vertices[_vertexCount++] = aLocation;
@@ -994,7 +994,7 @@ void CC3ShadowCastingVolume::checkPlaneEdge( const CC3Plane& edgePlane, const CC
 	if ( isLightInFrontOfPlane( edgePlane ) ) 
 	{
 		CC3Vector v3 = _light->isDirectionalOnly()
-							? CC3VectorAdd(v2, getLightPosition()) 
+							? v2.add( getLightPosition() ) 
 							: getLightPosition();
 		addPlane( CC3PlaneFromLocations(v1, v2, v3) );
 	}
@@ -1209,24 +1209,24 @@ void CC3CameraShadowVolume::buildPlanes()
 		// plane by adding the light direction to one of the locations on the edge. 
 		lightDir = lightPos;
 		
-		_planes[kCC3LeftIdx] = CC3PlaneFromLocations(bl, tl, CC3VectorAdd(tl, lightDir));
-		_planes[kCC3RgtIdx] = CC3PlaneFromLocations(tr, br, CC3VectorAdd(br, lightDir));
+		_planes[kCC3LeftIdx] = CC3PlaneFromLocations(bl, tl, tl.add( lightDir ));
+		_planes[kCC3RgtIdx] = CC3PlaneFromLocations(tr, br, br.add( lightDir ));
 		
-		_planes[kCC3TopIdx] = CC3PlaneFromLocations(tl, tr, CC3VectorAdd(tr, lightDir));
-		_planes[kCC3BotmIdx] = CC3PlaneFromLocations(br, bl, CC3VectorAdd(bl, lightDir));
+		_planes[kCC3TopIdx] = CC3PlaneFromLocations(tl, tr, tr.add( lightDir ));
+		_planes[kCC3BotmIdx] = CC3PlaneFromLocations(br, bl, bl.add( lightDir ));
 		
 		// The far plane is parallel to the near plane, but the normal points in
 		// the opposite direction. Locate the far plane at the light position,
 		// and then move it out an infinite distance, in the same direction.
 		_planes[kCC3FarIdx] = CC3PlaneNegate(_planes[kCC3NearIdx]);
-		_planes[kCC3FarIdx].d = -CC3VectorDot(lightPos, CC3PlaneNormal(_planes[kCC3FarIdx]));
+		_planes[kCC3FarIdx].d = -lightPos.dot( CC3PlaneNormal(_planes[kCC3FarIdx]) );
 		_planes[kCC3FarIdx].d = SIGN(_planes[kCC3FarIdx].d) * INFINITY;
 
 	} else {
 		
 		// The light is at a definite position. All side planes meet at the light position.
 		// The direction is taken from the center of the near clipping rectangle.
-		lightDir = CC3VectorDifference(lightPos, CC3VectorAverage(tl, br));
+		lightDir = lightPos.difference( tl.average( br ) );
 		
 		_planes[kCC3LeftIdx] = CC3PlaneFromLocations(bl, tl, lightPos);
 		_planes[kCC3RgtIdx] = CC3PlaneFromLocations(tr, br, lightPos);
@@ -1237,17 +1237,17 @@ void CC3CameraShadowVolume::buildPlanes()
 		// The far plane is parallel to the near plane, but the normal points in
 		// the opposite direction. Locate the far plane at the light position.
 		_planes[kCC3FarIdx] = CC3PlaneNegate(_planes[kCC3NearIdx]);
-		_planes[kCC3FarIdx].d = -CC3VectorDot(lightPos, CC3PlaneNormal(_planes[kCC3FarIdx]));
+		_planes[kCC3FarIdx].d = -lightPos.dot( CC3PlaneNormal(_planes[kCC3FarIdx]) );
 
 	}
 	
 	// Finally, determine if the light source is actually behind the camera, by crossing
 	// two sides of the near plane to determine the camera direction, and dotting with a
 	// vector from the light position and a point on the near plane.
-	CC3Vector left = CC3VectorDifference(tl, bl);
-	CC3Vector bottom = CC3VectorDifference(br, bl);
-	CC3Vector camDir = CC3VectorCross(left, bottom);
-	BOOL isBehindCamera = (CC3VectorDot(camDir, lightDir) < 0);
+	CC3Vector left = tl.difference( bl );
+	CC3Vector bottom = br.difference( bl );
+	CC3Vector camDir = left.cross( bottom );
+	BOOL isBehindCamera = (camDir.dot( lightDir ) < 0);
 	
 	if ( isBehindCamera ) {
 		_planes[kCC3LeftIdx] = CC3PlaneNegate(_planes[kCC3LeftIdx]);

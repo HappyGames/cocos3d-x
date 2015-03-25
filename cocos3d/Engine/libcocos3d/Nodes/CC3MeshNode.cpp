@@ -1142,7 +1142,7 @@ CC3Vector CC3MeshNode::getCenterOfGeometry()
 
 CC3Vector CC3MeshNode::getLocalContentCenterOfGeometry()
 {
-	return _mesh ? _mesh->getCenterOfGeometry() : kCC3VectorZero;
+	return _mesh ? _mesh->getCenterOfGeometry() : CC3Vector::kCC3VectorZero;
 }
 
 CC3Box CC3MeshNode::getLocalContentBoundingBox()
@@ -1186,7 +1186,7 @@ void CC3MeshNode::setVertexIndexCount( GLuint vCount )
 
 CC3Vector CC3MeshNode::getVertexLocationAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexLocationAt(index) : kCC3VectorZero;
+	return _mesh ? _mesh->getVertexLocationAt(index) : CC3Vector::kCC3VectorZero;
 }
 
 void CC3MeshNode::setVertexLocation( const CC3Vector& aLocation, GLuint index )
@@ -1208,7 +1208,7 @@ void CC3MeshNode::setVertexHomogeneousLocation( const CC3Vector4& aLocation, GLu
 
 CC3Vector CC3MeshNode::getVertexNormalAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexNormalAt(index) : kCC3VectorUnitZPositive;
+	return _mesh ? _mesh->getVertexNormalAt(index) : CC3Vector::kCC3VectorUnitZPositive;
 }
 
 void CC3MeshNode::setVertexNormal( const CC3Vector& aNormal, GLuint index )
@@ -1257,7 +1257,7 @@ void CC3MeshNode::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 
 CC3Vector CC3MeshNode::getVertexTangentAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexTangentAt(index) : kCC3VectorUnitXPositive;
+	return _mesh ? _mesh->getVertexTangentAt(index) : CC3Vector::kCC3VectorUnitXPositive;
 }
 
 void CC3MeshNode::setVertexTangent( const CC3Vector& aTangent, GLuint index )
@@ -1267,7 +1267,7 @@ void CC3MeshNode::setVertexTangent( const CC3Vector& aTangent, GLuint index )
 
 CC3Vector CC3MeshNode::getVertexBitangentAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexBitangentAt(index) : kCC3VectorUnitYPositive;
+	return _mesh ? _mesh->getVertexBitangentAt(index) : CC3Vector::kCC3VectorUnitYPositive;
 }
 
 void CC3MeshNode::setVertexBitangent( const CC3Vector& aTangent, GLuint index )
@@ -1497,7 +1497,7 @@ GLuint CC3MeshNode::findFirstGlobal( GLuint maxHitCount, CC3MeshIntersection* in
 	{
 		CC3MeshIntersection* hit = &intersections[hitIdx];
 		hit->location = getGlobalTransformMatrix()->transformLocation( hit->location );
-		hit->distance = CC3VectorDistance(hit->location, aRay.startLocation);
+		hit->distance = hit->location.distance( aRay.startLocation );
 	}
 
 	return hitCount;
@@ -1733,12 +1733,12 @@ CC3FaceIndices CC3MeshNode::getFaceIndicesAt( GLuint faceIndex )
 
 CC3Vector CC3MeshNode::getFaceCenterAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceCenterAt(faceIndex) : kCC3VectorZero;
+	return _mesh ? _mesh->getFaceCenterAt(faceIndex) : CC3Vector::kCC3VectorZero;
 }
 
 CC3Vector CC3MeshNode::getFaceNormalAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceNormalAt( faceIndex ) : kCC3VectorZero;
+	return _mesh ? _mesh->getFaceNormalAt( faceIndex ) : CC3Vector::kCC3VectorZero;
 }
 
 CC3FaceNeighbours CC3MeshNode::getFaceNeighboursAt( GLuint faceIndex )

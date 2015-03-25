@@ -408,7 +408,7 @@ static inline CC3Quaternion CC3Matrix4x4ExtractQuaternion(const CC3Matrix4x4* mt
 
 /** Extracts and returns the 'forward' direction vector from the rotation component of the specified matrix. */
 static inline CC3Vector CC3Matrix4x4ExtractForwardDirection(const CC3Matrix4x4* mtx) {
-	return CC3VectorNegate(mtx->col3.v);
+	return mtx->col3.v.negate();
 }
 
 /** Extracts and returns the 'up' direction vector from the rotation component of the specified matrix. */
@@ -498,9 +498,9 @@ static inline void CC3Matrix4x4ScaleBy(CC3Matrix4x4* mtx, CC3Vector aScale) {
 
 /** Translates the specified matrix in three dimensions by the specified translation vector. */
 static inline void CC3Matrix4x4TranslateBy(CC3Matrix4x4* mtx, CC3Vector aTranslation) {
-	mtx->c4r1 += CC3VectorDot(CC3VectorFromCC3Matrix4x4Row(mtx, 1), aTranslation);
-	mtx->c4r2 += CC3VectorDot(CC3VectorFromCC3Matrix4x4Row(mtx, 2), aTranslation);
-	mtx->c4r3 += CC3VectorDot(CC3VectorFromCC3Matrix4x4Row(mtx, 3), aTranslation);
+	mtx->c4r1 += CC3VectorFromCC3Matrix4x4Row(mtx, 1).dot( aTranslation );
+	mtx->c4r2 += CC3VectorFromCC3Matrix4x4Row(mtx, 2).dot( aTranslation );
+	mtx->c4r3 += CC3VectorFromCC3Matrix4x4Row(mtx, 3).dot( aTranslation );
 }
 
 

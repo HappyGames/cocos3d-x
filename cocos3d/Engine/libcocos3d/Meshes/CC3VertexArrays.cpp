@@ -578,42 +578,42 @@ std::string CC3VertexArray::describeVertices( GLuint vtxCount, GLuint startElem 
 {
 	GLuint endElem = MIN(startElem + vtxCount, _vertexCount);
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"Content of CC3VertexArray" );
+	desc += CC3String::stringWithFormat( (char*)"Content of CC3VertexArray" );
 	if (_vertices) 
 	{
 		for (GLuint elemIdx = startElem; elemIdx < endElem; elemIdx++) 
 		{
-			desc += stringWithFormat( (char*)"\n\t%d:", elemIdx );
+			desc += CC3String::stringWithFormat( (char*)"\n\t%d:", elemIdx );
 			GLvoid* elemArray = getAddressOfElement(elemIdx);
 			for (int eaIdx = 0; eaIdx < _elementSize; eaIdx++) 
 			{
 				switch (_elementType) {
 					case GL_FLOAT:
-						desc += stringWithFormat( (char*)" %.3f,", ((GLfloat*)elemArray)[eaIdx] );
+						desc += CC3String::stringWithFormat( (char*)" %.3f,", ((GLfloat*)elemArray)[eaIdx] );
 						break;
 					case GL_BYTE:
-						desc += stringWithFormat( (char*)" %d,", ((GLbyte*)elemArray)[eaIdx] );
+						desc += CC3String::stringWithFormat( (char*)" %d,", ((GLbyte*)elemArray)[eaIdx] );
 						break;
 					case GL_UNSIGNED_BYTE:
-						desc += stringWithFormat( (char*)" %d,", ((GLubyte*)elemArray)[eaIdx] );
+						desc += CC3String::stringWithFormat( (char*)" %d,", ((GLubyte*)elemArray)[eaIdx] );
 						break;
 					case GL_SHORT:
-						desc += stringWithFormat( (char*)" %d,", ((GLshort*)elemArray)[eaIdx] );
+						desc += CC3String::stringWithFormat( (char*)" %d,", ((GLshort*)elemArray)[eaIdx] );
 						break;
 					case GL_UNSIGNED_SHORT:
-						desc += stringWithFormat( (char*)" %d,", ((GLushort*)elemArray)[eaIdx] );
+						desc += CC3String::stringWithFormat( (char*)" %d,", ((GLushort*)elemArray)[eaIdx] );
 						break;
 					case GL_FIXED:
-						//desc += stringWithFormat( " %d,", ((GLfixed*)elemArray)[eaIdx] );
+						//desc += CC3String::stringWithFormat( " %d,", ((GLfixed*)elemArray)[eaIdx] );
 						break;
 					default:
-						desc += stringWithFormat( (char*)" unknown type (%u),", _elementType );
+						desc += CC3String::stringWithFormat( (char*)" unknown type (%u),", _elementType );
 						break;
 				}
 			}
 		}
 	} else {
-		desc += stringWithFormat( (char*)" Elements are no longer in memory." );
+		desc += CC3String::stringWithFormat( (char*)" Elements are no longer in memory." );
 	}
 	return desc;
 }
@@ -1165,14 +1165,14 @@ void CC3VertexLocations::buildBoundingBox()
 	CCAssert(_elementType == GL_FLOAT, "CC3VertexLocations must have elementType GLFLOAT to build the bounding box");
 
 	CC3Vector vl, vlMin, vlMax;
-	vl = (_vertexCount > 0) ?  getLocationAt(0) : kCC3VectorZero;
+	vl = (_vertexCount > 0) ?  getLocationAt(0) : CC3Vector::kCC3VectorZero;
 	vlMin = vl;
 	vlMax = vl;
 	for (GLuint i = 1; i < _vertexCount; i++) 
 	{
 		vl = getLocationAt(i);
-		vlMin = CC3VectorMinimize(vlMin, vl);
-		vlMax = CC3VectorMaximize(vlMax, vl);
+		vlMin = vlMin.minimize( vl );
+		vlMax = vlMax.maxmize( vl );
 	}
 	_boundingBox.minimum = vlMin;
 	_boundingBox.maximum = vlMax;
@@ -1199,7 +1199,7 @@ void CC3VertexLocations::calcRadius()
 		for (GLuint i=0; i < _vertexCount; i++) 
 		{
 			CC3Vector vl = getLocationAt( i );
-			GLfloat distSq = CC3VectorDistanceSquared(vl, cog);
+			GLfloat distSq = vl.distanceSquared( cog );
 			radiusSq = MAX(radiusSq, distSq);
 		}
 
@@ -1213,7 +1213,7 @@ void CC3VertexLocations::moveMeshOriginTo( const CC3Vector& aLocation )
 	for (GLuint i = 0; i < _vertexCount; i++) 
 	{
 		CC3Vector locOld = getLocationAt(i);
-		CC3Vector locNew = CC3VectorDifference(locOld, aLocation);
+		CC3Vector locNew = locOld.difference( aLocation );
 		setLocation(locNew, i);
 	}
 	markBoundaryDirty();
@@ -1250,7 +1250,7 @@ void CC3VertexLocations::initWithTag( GLuint aTag, const std::string& aName )
 	super::initWithTag( aTag, aName );
 	{
 		_firstVertex = 0;
-		_centerOfGeometry = kCC3VectorZero;
+		_centerOfGeometry = CC3Vector::kCC3VectorZero;
 		_boundingBox = kCC3BoxZero;
 		_radius = 0.0;
 		markBoundaryDirty();
@@ -1320,7 +1320,7 @@ void CC3VertexNormals::flipNormals()
 	for (GLuint vtxIdx = 0; vtxIdx < vtxCnt; vtxIdx++) 
 	{
 		CC3Vector* pn = (CC3Vector*)getAddressOfElement(vtxIdx);
-		*pn = CC3VectorNegate(*pn);
+		*pn = (*pn).negate();
 	}
 }
 

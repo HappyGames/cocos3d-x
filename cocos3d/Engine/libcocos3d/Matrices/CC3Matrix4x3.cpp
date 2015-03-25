@@ -34,7 +34,7 @@ NS_COCOS3D_BEGIN
 std::string stringFromCC3Matrix4x3(const CC3Matrix4x3* mtxPtr) 
 {
 	std::string sDesc = "";
-	stringWithFormat( sDesc, (char*)"\n\t[%.6f, %.6f, %.6f, %.6f"
+	CC3String::stringWithFormat( sDesc, (char*)"\n\t[%.6f, %.6f, %.6f, %.6f"
 		"\n\t %.6f, %.6f, %.6f, %.6f"
 		"\n\t %.6f, %.6f, %.6f, %.6f]"
 		, mtxPtr->c1r1, mtxPtr->c2r1, mtxPtr->c3r1, mtxPtr->c4r1,

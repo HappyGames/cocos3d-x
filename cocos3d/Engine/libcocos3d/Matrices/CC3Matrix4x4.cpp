@@ -34,7 +34,7 @@ NS_COCOS3D_BEGIN
 std::string stringFromCC3Matrix4x4(const CC3Matrix4x4* mtxPtr) 
 {
 	std::string sDesc = "";
-	stringWithFormat( sDesc, (char*)"\n\t[%.6f, %.6f, %.6f, %.6f"
+	CC3String::stringWithFormat( sDesc, (char*)"\n\t[%.6f, %.6f, %.6f, %.6f"
 		"\n\t %.6f, %.6f, %.6f, %.6f"
 		"\n\t %.6f, %.6f, %.6f, %.6f"
 		"\n\t %.6f, %.6f, %.6f, %.6f]"
@@ -417,7 +417,7 @@ void CC3Matrix4x4InvertRigid(CC3Matrix4x4* mtx)
 
 	// Extract the translation and transform it by the transposed linear matrix
 	CC3Vector t = CC3VectorFromCC3Matrix4x4Col(mtx, 4);
-	t = CC3Matrix3x3TransformCC3Vector(&linMtx, CC3VectorNegate(t));
+	t = CC3Matrix3x3TransformCC3Vector(&linMtx, t.negate());
 	
 	// Populate the 4x4 matrix with the transposed rotation and transformed translation
 	CC3Matrix4x4PopulateFrom3x3(mtx, &linMtx);

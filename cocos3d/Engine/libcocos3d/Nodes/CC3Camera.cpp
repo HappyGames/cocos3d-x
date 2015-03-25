@@ -310,7 +310,7 @@ void CC3Camera::markProjectionDirty()
  */
 void CC3Camera::applyScalingTo( CC3Matrix* matrix )
 {
-	matrix->scaleBy( CC3VectorInvert(getGlobalScale()) ); 
+	matrix->scaleBy( getGlobalScale().invert() ); 
 }
 
 /**
@@ -319,7 +319,7 @@ void CC3Camera::applyScalingTo( CC3Matrix* matrix )
  */
 CC3Vector CC3Camera::getGlobalScale()
 {
-	return m_pParent ? m_pParent->getGlobalScale() : kCC3VectorUnitCube; 
+	return m_pParent ? m_pParent->getGlobalScale() : CC3Vector::kCC3VectorUnitCube; 
 }
 
 CC3Matrix* CC3Camera::getViewMatrix()
@@ -468,8 +468,8 @@ void CC3Camera::moveToShowAllOf( CC3Node* aNode )
 void CC3Camera::moveToShowAllOf( CC3Node* aNode, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = CC3VectorDifference(getGlobalLocation(), aNode->getGlobalLocation());
-	moveToShowAllOfLookAt( aNode, kCC3VectorNull, moveDir, padding, false );
+	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
+	moveToShowAllOfLookAt( aNode, CC3Vector::kCC3VectorNull, moveDir, padding, false );
 }
 
 void CC3Camera::moveToShowAllOf( CC3Node* aNode, const CC3Vector& aDirection )
@@ -479,7 +479,7 @@ void CC3Camera::moveToShowAllOf( CC3Node* aNode, const CC3Vector& aDirection )
 
 void CC3Camera::moveToShowAllOf( CC3Node* aNode, const CC3Vector& aDirection, GLfloat padding )
 {
-	moveToShowAllOfLookAt( aNode, kCC3VectorNull, aDirection, padding, true );
+	moveToShowAllOfLookAt( aNode, CC3Vector::kCC3VectorNull, aDirection, padding, true );
 }
 
 void CC3Camera::moveToShowAllOfLookAt( CC3Node* aNode, const CC3Vector& targetLoc )
@@ -490,7 +490,7 @@ void CC3Camera::moveToShowAllOfLookAt( CC3Node* aNode, const CC3Vector& targetLo
 void CC3Camera::moveToShowAllOfLookAt( CC3Node* aNode, const CC3Vector& targetLoc, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = CC3VectorDifference(getGlobalLocation(), aNode->getGlobalLocation());
+	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
 	moveToShowAllOfLookAt( aNode, targetLoc, moveDir, padding, false );
 }
 
@@ -517,8 +517,8 @@ void CC3Camera::moveWithDuration( float t, CC3Node* aNode )
 void CC3Camera::moveWithDuration( float t, CC3Node* aNode, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = CC3VectorDifference(getGlobalLocation(), aNode->getGlobalLocation());
-	moveWithDuration( t, aNode, kCC3VectorNull, moveDir, padding, false );
+	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
+	moveWithDuration( t, aNode, CC3Vector::kCC3VectorNull, moveDir, padding, false );
 }
 
 void CC3Camera::moveWithDuration( float t, CC3Node* aNode, const CC3Vector& aDirection )
@@ -528,7 +528,7 @@ void CC3Camera::moveWithDuration( float t, CC3Node* aNode, const CC3Vector& aDir
 
 void CC3Camera::moveWithDuration( float t, CC3Node* aNode, const CC3Vector& aDirection, GLfloat padding )
 {
-	moveWithDuration( t, aNode, kCC3VectorNull, aDirection, padding, true );
+	moveWithDuration( t, aNode, CC3Vector::kCC3VectorNull, aDirection, padding, true );
 }
 
 void CC3Camera::moveWithDurationLookAt( float t, const CC3Vector& targetLoc, CC3Node* aNode )
@@ -539,7 +539,7 @@ void CC3Camera::moveWithDurationLookAt( float t, const CC3Vector& targetLoc, CC3
 void CC3Camera::moveWithDurationLookAt( float t, CC3Node* aNode, const CC3Vector& targetLoc, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = CC3VectorDifference(getGlobalLocation(), aNode->getGlobalLocation());
+	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
 	moveWithDuration( t, aNode, targetLoc, moveDir, padding, false );
 }
 
@@ -556,7 +556,7 @@ void CC3Camera::moveWithDurationLookAt( float t, CC3Node* aNode, const CC3Vector
 void CC3Camera::moveWithDuration( float t, CC3Node* aNode, const CC3Vector& targetLoc, const CC3Vector& aDirection, GLfloat padding, bool checkScene )
 {
 	CC3Vector newLoc = calculateLocationToShowAllOf( aNode, targetLoc, aDirection, padding, checkScene );
-	CC3Vector newFwdDir = CC3VectorNegate(aDirection);
+	CC3Vector newFwdDir = aDirection.negate();
 	//LogInfo(@"%@ \n\tmoving to: %@ \n\tpointing towards: %@ \n\tnear clipping distance: %.3f"
 	//		 @"\n\tfar clipping distance: %.3f \n\tto show all of: %@",
 	//		 self, NSStringFromCC3Vector(newLoc), NSStringFromCC3Vector(newFwdDir),
@@ -583,7 +583,7 @@ void CC3Camera::moveWithDuration( float t, CC3Node* aNode, const CC3Vector& targ
 
 CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vector& aDirection, GLfloat padding )
 {
-	return calculateLocationToShowAllOf( aNode, kCC3VectorNull, aDirection, padding );
+	return calculateLocationToShowAllOf( aNode, CC3Vector::kCC3VectorNull, aDirection, padding );
 }
 
 CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vector& targetLoc, const CC3Vector& aDirection, GLfloat padding )
@@ -596,8 +596,8 @@ CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vect
 	ensureSceneUpdated( checkScene );
 	
 	// Complementary unit vectors pointing towards camera from node, and vice versa
-	CC3Vector camDir = CC3VectorNormalize(aDirection);
-	CC3Vector viewDir = CC3VectorNegate(camDir);
+	CC3Vector camDir = aDirection.normalize();
+	CC3Vector viewDir = camDir.negate();
 	
 	// The camera's new forward direction will be viewDir. Use a matrix to detrmine
 	// the camera's new up and right directions assuming the same scene up direction.
@@ -611,7 +611,8 @@ CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vect
 
 	CC3Vector targetLoc = targLoc;
 	// If a target location has not been specified, use the center of the node's global bounding box
-	if (CC3VectorIsNull(targLoc)) targetLoc = CC3BoxCenter(gbb);
+	if ( targetLoc.isNull() ) 
+		targetLoc = CC3BoxCenter(gbb);
 
 	CC3Vector bbMin = gbb.minimum;
 	CC3Vector bbMax = gbb.maximum;
@@ -641,17 +642,17 @@ CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vect
 	for (int i = 0; i < 8; i++) 
 	{
 		// Get a vector from the target location to the vertex 
-		CC3Vector relVtx = CC3VectorDifference(bbVertices[i], targetLoc);
+		CC3Vector relVtx = bbVertices[i].difference( targetLoc );
 		
 		// Project that vector onto each of the camera's new up and right directions,
 		// and use similar triangles to determine the distance at which to place the
 		// camera so that the vertex will fit in both the up and right directions.
-		GLfloat vtxDistUp = fabs(CC3VectorDot(relVtx, upDir) / fovRatios.height);
-		GLfloat vtxDistRt = fabs(CC3VectorDot(relVtx, rtDir) / fovRatios.width);
+		GLfloat vtxDistUp = fabs(relVtx.dot( upDir ) / fovRatios.height);
+		GLfloat vtxDistRt = fabs(relVtx.dot( rtDir ) / fovRatios.width);
 		GLfloat vtxDist = MAX(vtxDistUp, vtxDistRt);
 		
 		// Calculate how far along the view direction the vertex is from the center
-		GLfloat vtxDeltaDist = CC3VectorDot(relVtx, viewDir);
+		GLfloat vtxDeltaDist = relVtx.dot( viewDir );
 		GLfloat ctrDist = vtxDist - vtxDeltaDist;
 		
 		// Accumulate the maximum distance from the node's center to the camera
@@ -666,13 +667,13 @@ CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vect
 	maxCtrDist *= (1 + padding);
 	
 	// Determine if we need to move the far end of the camera frustum farther away
-	GLfloat farClip = CC3VectorLength(CC3VectorScaleUniform(viewDir, maxCtrDist + maxVtxDeltaDist));
+	GLfloat farClip = viewDir.scaleUniform(maxCtrDist + maxVtxDeltaDist).length();
 	farClip *= (GLfloat)(1 + kCC3FrustumFitPadding);		// Include a little bit of padding
 	if (farClip > getFarClippingDistance())
 		setFarClippingDistance( farClip );
 	
 	// Determine if we need to move the near end of the camera frustum closer
-	GLfloat nearClip = CC3VectorLength(CC3VectorScaleUniform(viewDir, maxCtrDist + minVtxDeltaDist));
+	GLfloat nearClip = viewDir.scaleUniform(maxCtrDist + minVtxDeltaDist).length();
 	nearClip *= (GLfloat)(1 - kCC3FrustumFitPadding);		// Include a little bit of padding
 	if (nearClip < getNearClippingDistance()) 
 		setNearClippingDistance( nearClip );
@@ -682,7 +683,7 @@ CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vect
 	//			  aNode, NSStringFromCC3Vector(targLoc), _frustum, self.farClippingDistance);
 	
 	// Return the new location of the camera,
-	return CC3VectorAdd(targetLoc, CC3VectorScaleUniform(camDir, maxCtrDist));
+	return targetLoc.add( camDir.scaleUniform( maxCtrDist ) );
 }
 
 /**
@@ -745,7 +746,7 @@ CC3Vector CC3Camera::getProjectLocation( const CC3Vector& a3DLocation )
 
 	// The projected vector is in a projection coordinate space between -1 and +1 on all axes.
 	// Normalize the vector so that each component is between 0 and 1 by calculating ( v = (v + 1) / 2 ).
-	projectedLoc = CC3VectorAverage(projectedLoc, kCC3VectorUnitCube);
+	projectedLoc = projectedLoc.average( CC3Vector::kCC3VectorUnitCube );
 	
 	CCAssert(_viewport.h > 0 && _viewport.w > 0, "%CC3Camera does not have a valid viewport");
 	
@@ -760,9 +761,9 @@ CC3Vector CC3Camera::getProjectLocation( const CC3Vector& a3DLocation )
 	// to be the signed distance from the camera to the 3D location, with a positive sign
 	// indicating the location is in front of the camera, and a negative sign indicating
 	// the location is behind the camera.
-	CC3Vector camToLocVector = CC3VectorDifference(a3DLocation, getGlobalLocation());
-	GLfloat camToLocDist = CC3VectorLength(camToLocVector);
-	GLfloat frontOrBack = (GLfloat)SIGN(CC3VectorDot(camToLocVector, getGlobalForwardDirection()));
+	CC3Vector camToLocVector = a3DLocation.difference( getGlobalLocation() );
+	GLfloat camToLocDist = camToLocVector.length();
+	GLfloat frontOrBack = (GLfloat)SIGN( camToLocVector.dot( getGlobalForwardDirection() ) );
 	projectedLoc.z = frontOrBack * camToLocDist;
 	
 	//LogTrace(@"%@ projecting location %@ to %@ and orienting with device to %@ using viewport %@",
@@ -823,7 +824,7 @@ CC3Ray CC3Camera::unprojectPoint( const CCPoint& cc2Point )
 	}
 	
 	// Ensure the direction component is normalized before returning.
-	ray.direction = CC3VectorNormalize(ray.direction);
+	ray.direction = ray.direction.normalize();
 	
 	//LogTrace(@"%@ unprojecting point %@ to near plane location %@ and to ray starting at %@ and pointing towards %@",
 	//			  [self class], NSStringFromCGPoint(glPoint), NSStringFromCC3Vector(pointLocNear),

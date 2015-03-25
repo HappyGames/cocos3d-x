@@ -60,7 +60,7 @@ void CC3LocalContentNode::setZOrder( GLint zo )
 CC3Vector CC3LocalContentNode::getLocalContentCenterOfGeometry()
 {
 	CC3Box bb = getLocalContentBoundingBox();
-	return CC3BoxIsNull(bb) ? kCC3VectorZero : CC3BoxCenter(bb);
+	return CC3BoxIsNull(bb) ? CC3Vector::kCC3VectorZero : CC3BoxCenter(bb);
 }
 
 CC3Vector CC3LocalContentNode::getGlobalLocalContentCenterOfGeometry()
@@ -189,7 +189,7 @@ CCColorRef CC3LocalContentNode::getInitialDescriptorColor()
 /** The name to use when creating or retrieving the wireframe node of this node's local content. */
 std::string CC3LocalContentNode::getLocalContentWireframeBoxName()
 {
-	return stringWithFormat( (char*)"%s-%s", getName().c_str(), kLocalContentWireframeBoxSuffix );
+	return CC3String::stringWithFormat( (char*)"%s-%s", getName().c_str(), kLocalContentWireframeBoxSuffix );
 }
 
 CC3WireframeBoundingBoxNode* CC3LocalContentNode::getLocalContentWireframeBoxNode()

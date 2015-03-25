@@ -116,7 +116,7 @@ typedef struct {
 /** Returns a string description of the specified CC3FaceNeighbours struct. */
 static inline std::string stringFromCC3FaceNeighbours(CC3FaceNeighbours faceNeighbours) 
 {
-	return stringWithFormat( (char*)"(%u, %u, %u)",
+	return CC3String::stringWithFormat( (char*)"(%u, %u, %u)",
 			faceNeighbours.edges[0], faceNeighbours.edges[1], faceNeighbours.edges[2] );
 }
 
