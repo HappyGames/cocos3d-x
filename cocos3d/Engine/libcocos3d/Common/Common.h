@@ -129,4 +129,10 @@ public:
 #define DISABLE_CODE_BLOCK_END		} 
 #endif
 
+#ifdef _WIN32
+#ifndef INFINITY
+#define INFINITY (float)(HUGE_VAL)
+#endif
+#endif
+
 #endif

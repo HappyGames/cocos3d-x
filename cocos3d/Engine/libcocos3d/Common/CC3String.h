@@ -42,6 +42,9 @@ public:
 	static std::string	getSystemTime();
 	static int			toInteger( const std::string& str );
 	static bool			startsWith( const char* str, const char* with );
+
+	static void			stringWithFormat( std::string& sDest, char* szFormat, ... );
+	static std::string	stringWithFormat( char* szFormat, ... );
 };
 
 NS_COCOS3D_END

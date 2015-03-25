@@ -143,7 +143,7 @@ CC3Vector CC3LinearMatrix::extractRightDirection()
 
 CC3Vector CC3LinearMatrix::extractTranslation() 
 { 
-	return kCC3VectorZero; 
+	return CC3Vector::kCC3VectorZero; 
 }
 
 void CC3LinearMatrix::implRotateBy( CC3Vector aRotation )

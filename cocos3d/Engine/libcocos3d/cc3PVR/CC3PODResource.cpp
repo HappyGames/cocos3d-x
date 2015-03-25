@@ -398,7 +398,7 @@ void CC3PODResource::buildSoftBodyNode()
 	
 	if (softBodyComponents->count() > 0) 
 	{
-		std::string sbName = stringWithFormat( (char*)"%s-SoftBody", getName().c_str() );
+		std::string sbName = CC3String::stringWithFormat( (char*)"%s-SoftBody", getName().c_str() );
 		CC3SoftBodyNode* sbn = CC3SoftBodyNode::nodeWithName(sbName);
 		
 		CCObject* pObj = NULL;

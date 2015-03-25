@@ -142,7 +142,7 @@ void CC3PODSkinMeshNode::linkToPODNodes( CCArray* nodeArray )
 
 std::string CC3PODSkinMeshNode::description()
 {
-	return stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
+	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
 void CC3PODSkinSection::init()
@@ -255,7 +255,7 @@ CCObject* CC3PODBone::copyWithZone( CCZone* zone )
 
 std::string CC3PODBone::description()
 {
-	return stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
+	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
 CC3PODBone* CC3PODBone::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )

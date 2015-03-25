@@ -95,7 +95,7 @@ CCObject* CC3PODNode::copyWithZone( CCZone* zone )
 
 std::string CC3PODNode::description()
 {
-	return stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
+	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
 void CC3PODNode::addAnimationFromPODFile( const std::string& podFilePath, GLuint trackID )

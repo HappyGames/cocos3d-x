@@ -40,7 +40,7 @@ void CC3Matrix3x3PopulateFromRotationYXZ(CC3Matrix3x3* mtx, CC3Vector aRotation)
 	 
      where cA = cos(A), sA = sin(A) for A = x,y,z
 */
-	CC3Vector rotRads = CC3VectorScaleUniform(aRotation, kCC3DegToRadFactor);
+	CC3Vector rotRads = aRotation.scaleUniform( kCC3DegToRadFactor );
 	
 	GLfloat cx = cosf(rotRads.x);
 	GLfloat sx = sinf(rotRads.x);
@@ -71,7 +71,7 @@ void CC3Matrix3x3PopulateFromRotationZYX(CC3Matrix3x3* mtx, CC3Vector aRotation)
 	 
      where cA = cos(A), sA = sin(A) for A = x,y,z
 */
-	CC3Vector rotRads = CC3VectorScaleUniform(aRotation, kCC3DegToRadFactor);
+	CC3Vector rotRads = aRotation.scaleUniform( kCC3DegToRadFactor );
 	
 	GLfloat cx = cosf(rotRads.x);
 	GLfloat sx = sinf(rotRads.x);
@@ -216,13 +216,13 @@ void CC3Matrix3x3PopulateToPointTowards(CC3Matrix3x3* mtx, const CC3Vector fwdDi
 	 and r is the normalized Right vector in the rotated frame
 */
 	CC3Vector f, u, r;
-	f = CC3VectorNormalize(fwdDirection);
-	r = CC3VectorNormalize(CC3VectorCross(f, upDirection));
-	u = CC3VectorCross(r, f);			// already normalized since f & r are orthonormal
+	f = fwdDirection.normalize();
+	r = f.cross( upDirection ).normalize();
+	u = r.cross( f );			// already normalized since f & r are orthonormal
 
 	mtx->col1 = r;
 	mtx->col2 = u;
-	mtx->col3 = CC3VectorNegate(f);
+	mtx->col3 = f.negate();
 }
 
 void CC3Matrix3x3PopulateFromScale(CC3Matrix3x3* mtx, const CC3Vector aScale) 
@@ -278,7 +278,7 @@ CC3Vector CC3Matrix3x3ExtractRotationYXZ(const CC3Matrix3x3* mtx)
 		radY = -atan2f(-mtx->c2r1, mtx->c1r1);
 		radZ = 0.0;
 	}	
-	return CC3VectorScaleUniform(cc3v(radX, radY, radZ), kCC3RadToDegFactor);
+	return cc3v(radX, radY, radZ).scaleUniform( kCC3RadToDegFactor );
 }
 
 CC3Vector CC3Matrix3x3ExtractRotationZYX(const CC3Matrix3x3* mtx) 
@@ -314,7 +314,7 @@ CC3Vector CC3Matrix3x3ExtractRotationZYX(const CC3Matrix3x3* mtx)
 		radZ = -atan2f(-mtx->c3r2, mtx->c2r2);
 		radX = 0.0;
 	}	
-	return CC3VectorScaleUniform(cc3v(radX, radY, radZ), kCC3RadToDegFactor);
+	return cc3v(radX, radY, radZ).scaleUniform( kCC3RadToDegFactor );
 }
 
 CC3Quaternion CC3Matrix3x3ExtractQuaternion(const CC3Matrix3x3* mtx) 

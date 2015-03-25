@@ -47,27 +47,6 @@ private:
 	static bool			sm_isEditor;
 };
 
-#ifdef _WIN32
-#ifndef INFINITY
-#define INFINITY (float)(HUGE_VAL)
-#endif
-#endif
-
-static inline void stringWithFormat( std::string& sDest, char* szFormat, ... )
-{
-	char buffer[512];  // large buffers
-	GetVarargs(buffer, 512, szFormat);
-	sDest = buffer;
-}
-
-static inline std::string stringWithFormat( char* szFormat, ... )
-{
-	char buffer[512];  // large buffers
-	GetVarargs(buffer, 512, szFormat);
-	std::string sDest = buffer;
-	return sDest;
-}
-
 typedef struct 
 {
 	unsigned long location;
@@ -142,7 +121,7 @@ static const CC3IntPoint kCC3IntPointZero = { 0, 0 };
 
 static inline std::string stringFromCC3IntPoint( const CC3IntPoint& point )
 {
-	return stringWithFormat( (char*)"(%d, %d)", point.x, point.y );
+	return CC3String::stringWithFormat( (char*)"(%d, %d)", point.x, point.y );
 }
 
 /** Returns a CC3IntPoint structure constructed from the vector components. */
@@ -229,7 +208,7 @@ typedef struct
 
 static inline std::string stringFromCC3IntVector( const CC3IntVector& vec )
 {
-	return stringWithFormat( (char*)"(%d, %d, %d)", vec.x, vec.y, vec.z );
+	return CC3String::stringWithFormat( (char*)"(%d, %d, %d)", vec.x, vec.y, vec.z );
 }
 
 /** Returns a CC3IntVector structure constructed from the vector components. */
@@ -250,357 +229,9 @@ static inline bool CC3IntVectorsAreEqual(CC3IntVector v1, CC3IntVector v2)
 		(v1.z == v2.z);
 }
 
-/** 
- * An integer 4D vector.
- *
- * This structure can be referenced as containing 4 individual XYZW axes components,
- * or containing a 3D XYZ vector, plus a W component.
-*/
-typedef struct 
-{
-	union {
-		struct {
-			GLint x;			/**< The X-componenent of the vector. */
-			GLint y;			/**< The Y-componenent of the vector. */
-			GLint z;			/**< The Z-componenent of the vector. */
-		};
-		
-		struct {
-			CC3IntVector v;		/**< The X, Y & Z components as a 3D vector. */
-		};
-	};
-	GLint w;					/**< The homogeneous ratio factor. */
-} CC3IntVector4;
-
-static inline std::string stringFromCC3IntVector4( const CC3IntVector4& vec )
-{
-	return stringWithFormat( (char*)"(%d, %d, %d, %d)", vec.x, vec.y, vec.z, vec.w );
-}
-
-/** Returns a CC3IntVector4 structure constructed from the vector components. */
-static inline CC3IntVector4 CC3IntVector4Make(GLint x, GLint y, GLint z, GLint w)
-{
-	CC3IntVector4 v;
-	v.x = x;
-	v.y = y;
-	v.z = z;
-	v.w = w;
-	return v;
-}
-
-/** Returns whether the two vectors are equal by comparing their respective components. */
-static inline bool CC3IntVector4sAreEqual(CC3IntVector4 v1, CC3IntVector4 v2) 
-{
-	return (v1.w == v2.w) && CC3IntVectorsAreEqual(v1.v, v2.v);
-}
-
-/** 
- * A vector in 3D space. 
- *
- * Although CC3Vector has the same internal structure as GLKVector3, the structures may 
- * have different byte alignment requirements. Avoid casting directly between GLKVector3 
- * and CC3Vector, as this is not guaranteed to work reliably. Instead, use the functions
- * CC3VectorFromGLKVector3 and GLKVector3FromCC3Vector to convert between the two structures.
- *
- * You can, however, reliably copy an array of GLKVector3s to an array of CC3Vectors, and 
- * vice-versa, by simply using memcpy, or equivalent memory copying function. This is also 
- * true of single CC3Vector and GLKVector3 structures. Copying is successful because the 
- * array or pointer declarations will ensure the respective byte-alignment requirements, and
- * since the internal structures are identical, the contents of the copy will be identical.
- */
-struct CC3Vector
-{
-	GLfloat	x;
-	GLfloat y;
-	GLfloat z;
-};
-
-/** A CC3Vector of zero length at the origin. */
-static const CC3Vector kCC3VectorZero = { 0.0f, 0.0f, 0.0f };
-
-/** The null CC3Vector. It cannot be drawn, but is useful for marking an uninitialized vector. */
-static const CC3Vector kCC3VectorNull = {INFINITY, INFINITY, INFINITY};
-
-/** A CC3Vector with each component equal to one, representing the diagonal of a unit cube. */
-static const CC3Vector kCC3VectorUnitCube = { 1.0f, 1.0f, 1.0f };
-
-/** The diagonal length of a unit cube. */
-static const GLfloat kCC3VectorUnitCubeLength = 1.73205f;
-
-/** Unit vector pointing in the same direction as the positive X-axis. */
-static const CC3Vector kCC3VectorUnitXPositive = { 1.0,  0.0,  0.0 };
-
-/** Unit vector pointing in the same direction as the positive Y-axis. */
-static const CC3Vector kCC3VectorUnitYPositive = { 0.0,  1.0,  0.0 };
-
-/** Unit vector pointing in the same direction as the positive Z-axis. */
-static const CC3Vector kCC3VectorUnitZPositive = { 0.0,  0.0,  1.0 };
-
-/** Unit vector pointing in the same direction as the negative X-axis. */
-static const CC3Vector kCC3VectorUnitXNegative = {-1.0,  0.0,  0.0 };
-
-/** Unit vector pointing in the same direction as the negative Y-axis. */
-static const CC3Vector kCC3VectorUnitYNegative = { 0.0, -1.0,  0.0 };
-
-/** Unit vector pointing in the same direction as the negative Z-axis. */
-static const CC3Vector kCC3VectorUnitZNegative = { 0.0,  0.0, -1.0 };
-
 static inline std::string stringFromCCPoint( const CCPoint& point )
 {
-	return stringWithFormat( (char*)"(%.3f, %.3f)", point.x, point.y );
-}
-
-static inline std::string stringFromCC3Vector( CC3Vector v )
-{
-	return stringWithFormat( (char*)"(%.3f, %.3f, %.3f)", v.x, v.y, v.z );
-}
-
-/** Returns a CC3Vector structure constructed from the vector components. */
-static inline CC3Vector CC3VectorMake(GLfloat x, GLfloat y, GLfloat z)
-{
-	CC3Vector v;
-	v.x = x;
-	v.y = y;
-	v.z = z;
-	return v;
-}
-
-/** Convenience alias macro to create CC3Vectors with less keystrokes. */
-#define cc3v(X,Y,Z) CC3VectorMake((X),(Y),(Z))
-
-/** Returns whether the two vectors are equal by comparing their respective components. */
-static inline bool CC3VectorsAreEqual(CC3Vector v1, CC3Vector v2)
-{
-	return v1.x == v2.x &&
-		   v1.y == v2.y &&
-		   v1.z == v2.z;
-}
-
-/** Returns whether the specified vector is equal to the zero vector, specified by kCC3VectorZero. */
-static inline bool CC3VectorIsZero(CC3Vector v)
-{
-	return CC3VectorsAreEqual(v, kCC3VectorZero);
-}
-
-/** Returns whether the specified vector is equal to the null vector, specified by kCC3VectorNull. */
-static inline bool CC3VectorIsNull(CC3Vector v) 
-{
-	return CC3VectorsAreEqual(v, kCC3VectorNull);
-}
-
-/**
- * Returns the result of scaling the original vector by the corresponding scale vector.
- * Scaling can be different for each axis. This has the effect of multiplying each component
- * of the vector by the corresponding component in the scale vector.
- */
-static inline CC3Vector CC3VectorScale(CC3Vector v, CC3Vector scale) 
-{
-	return cc3v(v.x * scale.x,
-				v.y * scale.y,
-				v.z * scale.z);
-}
-
-/**
- * Returns the result of scaling the original vector by the corresponding scale
- * factor uniformly along all axes.
- */
-static inline CC3Vector CC3VectorScaleUniform(CC3Vector v, GLfloat scale) 
-{
-	return cc3v(v.x * scale,
-				v.y * scale,
-				v.z * scale);
-}
-
-/**
- * Returns a vector that is the negative of the specified vector in all directions.
- * For vectors that represent directions, the returned vector points in the direction
- * opposite to the original.
- */
-static inline CC3Vector CC3VectorNegate(CC3Vector v)
-{
-	return cc3v(-v.x, -v.y, -v.z);
-}
-
-/**
- * Returns a vector whose components comprise the minimum value of each of the respective
- * components of the two specfied vectors. In general, do not expect this method to return
- * one of the specified vectors, but a new vector, each of the components of which is the
- * minimum value for that component between the two vectors.
- */
-static inline CC3Vector CC3VectorMinimize(CC3Vector v1, CC3Vector v2) 
-{
-	return cc3v(MIN(v1.x, v2.x),
-				MIN(v1.y, v2.y),
-				MIN(v1.z, v2.z));
-}
-
-/**
- * Returns a vector whose components comprise the maximum value of each of the respective
- * components of the two specfied vectors. In general, do not expect this method to return
- * one of the specified vectors, but a new vector, each of the components of which is the
- * maximum value for that component between the two vectors.
- */
-static inline CC3Vector CC3VectorMaximize(CC3Vector v1, CC3Vector v2) 
-{
-	return cc3v(MAX(v1.x, v2.x),
-				MAX(v1.y, v2.y),
-				MAX(v1.z, v2.z));
-}
-
-/** Returns the dot-product of the two given vectors (v1 . v2). */
-static inline GLfloat CC3VectorDot(CC3Vector v1, CC3Vector v2) 
-{
-	return ((v1.x * v2.x) +
-			(v1.y * v2.y) +
-			(v1.z * v2.z));
-}
-
-/**
- * Returns the square of the scalar length of the specified CC3Vector from the origin.
- * This is calculated as (x*x + y*y + z*z) and will always be positive.
- *
- * This function is useful for comparing vector sizes without having to run an
- * expensive square-root calculation.
- */
-static inline GLfloat CC3VectorLengthSquared(CC3Vector v) { return CC3VectorDot(v, v); }
-
-/**
- * Returns the scalar length of the specified CC3Vector from the origin.
- * This is calculated as sqrt(x*x + y*y + z*z) and will always be positive.
- */
-static inline GLfloat CC3VectorLength(CC3Vector v) 
-{
-	// Avoid expensive sqrt calc if vector is unit length or zero
-	GLfloat lenSq = CC3VectorLengthSquared(v);
-	return (lenSq == 1.0f || lenSq == 0.0f) ? lenSq : sqrtf(lenSq);
-}
-
-/**
- * Returns a normalized copy of the specified CC3Vector so that its length is 1.0.
- * If the length is zero, the original vector (a zero vector) is returned.
- */
-static inline CC3Vector CC3VectorNormalize(CC3Vector v) 
-{
-	GLfloat lenSq = CC3VectorLengthSquared(v);
-	if (lenSq == 0.0f || lenSq == 1.0f) 
-		return v;
-
-	return CC3VectorScaleUniform(v, (1.0f / sqrtf(lenSq)));
-}
-
-/**
- * Returns a CC3Vector that is the inverse of the specified vector in all directions,
- * such that scaling the original by the inverse using CC3VectorScale will result in
- * a vector of unit dimension in each direction (1.0, 1.0, 1.0). The result of this
- * function is effectively calculated by dividing each component of the original
- * vector into 1.0 (1.0/x, 1.0/y, 1.0/z). It is the responsibility of the caller to
- * ensure that none of the components of the original is zero.
- */
-static inline CC3Vector CC3VectorInvert(CC3Vector v) 
-{
-	return cc3v(1.0f / v.x,
-				1.0f / v.y,
-				1.0f / v.z);
-}
-
-/**
- * Returns the result of adding the two specified vectors, by adding the corresponding components 
- * of both vectors. This can also be thought of as a translation of the first vector by the second.
- */
-static inline CC3Vector CC3VectorAdd(CC3Vector v, CC3Vector translation) 
-{
-	return cc3v(v.x + translation.x,
-				v.y + translation.y,
-				v.z + translation.z);
-}
-
-/**
- * Returns the difference between two vectors, by subtracting the subtrahend from the minuend,
- * which is accomplished by subtracting each of the corresponding x,y,z components.
- */
-static inline CC3Vector CC3VectorDifference(CC3Vector minuend, CC3Vector subtrahend) 
-{
-	return cc3v(minuend.x - subtrahend.x,
-				minuend.y - subtrahend.y,
-				minuend.z - subtrahend.z);
-}
-
-/**
- * Returns a modulo version of the specifed rotation,
- * so that each component is between (+/-360 degrees).
- */
-static inline CC3Vector CC3VectorRotationModulo(CC3Vector aRotation)
-{
-	return cc3v(CC3CyclicAngle(aRotation.x),
-				CC3CyclicAngle(aRotation.y),
-				CC3CyclicAngle(aRotation.z));
-}
-
-/**
- * Returns the difference between two rotation vectors, in terms of the minimal degrees,
- * along each axis, required to travel between the two roations, given that rotations
- * are cyclical with a period of 360 degrees. The result may be positive or negative,
- * but will always be between (+/-180 degrees).
- *
- * For example, the difference between 350 and 10 will yield -20 (ie- the smallest change
- * from 10 degrees to 350 degrees is -20 degrees) rather than +340 (from simple subtraction).
- * Similarly, the difference between 10 and 350 will yield +20 (ie- the smallest change from
- * 350 degrees to 10 degrees is +20 degrees) rather than -340 (from simple subtraction).
- */
-static inline CC3Vector CC3VectorRotationalDifference(CC3Vector minuend, CC3Vector subtrahend) 
-{
-	return cc3v(CC3SemiCyclicAngle(minuend.x - subtrahend.x),
-				CC3SemiCyclicAngle(minuend.y - subtrahend.y),
-				CC3SemiCyclicAngle(minuend.z - subtrahend.z));
-}
-
-/** Returns the positive scalar distance between the ends of the two specified vectors. */
-static inline GLfloat CC3VectorDistance(CC3Vector start, CC3Vector end) 
-{
-	return CC3VectorLength(CC3VectorDifference(end, start));
-}
-
-/**
- * Returns the square of the scalar distance between the ends of the two specified vectors.
- *
- * This function is useful for comparing vector distances without having to run an
- * expensive square-root calculation.
- */
-static inline GLfloat CC3VectorDistanceSquared(CC3Vector start, CC3Vector end) 
-{
-	return CC3VectorLengthSquared(CC3VectorDifference(end, start));
-}
-
-/**
- * Returns a vector that represents the average of the two specified vectors. This is
- * calculated by adding the two specified vectors and scaling the resulting sum vector by half.
- *
- * The returned vector represents the midpoint between a line that joins the endpoints
- * of the two specified vectors.
- */
-static inline CC3Vector CC3VectorAverage(CC3Vector v1, CC3Vector v2) 
-{
-	return CC3VectorScaleUniform(CC3VectorAdd(v1, v2), 0.5);	
-}
-
-/** Returns the cross-product of the two given vectors (v1 x v2). */
-static inline CC3Vector CC3VectorCross(CC3Vector v1, CC3Vector v2) 
-{
-	return cc3v(v1.y * v2.z - v1.z * v2.y,
-				v1.z * v2.x - v1.x * v2.z,
-				v1.x * v2.y - v1.y * v2.x);
-}
-
-/** Returns YES if the two vectors are either exactly parallel or exactly antiparallel. */
-static inline bool CC3VectorsAreParallel(CC3Vector v1, CC3Vector v2) 
-{
-	return CC3VectorLengthSquared(CC3VectorCross(v1, v2)) == 0.0f;
-}
-
-/** Returns whether the two vectors are exactly perpendicular. */
-static inline bool CC3VectorsArePerpendicular(CC3Vector v1, CC3Vector v2) 
-{
-	return CC3VectorDot(v1, v2) == 0.0f;
+	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f)", point.x, point.y );
 }
 
 /**
@@ -637,63 +268,50 @@ void CC3VectorOrthonormalize(CC3Vector* vectors, GLuint vectorCount);
  */
 static inline void CC3VectorOrthonormalizeTriple(CC3Vector* triVector) { return CC3VectorOrthonormalize(triVector, 3); }
 
-/**
- * Returns a linear interpolation between two vectors, based on the blendFactor.
- * which should be between zero and one inclusive. The returned value is calculated
- * as v1 + (blendFactor * (v2 - v1)). If the blendFactor is either zero or one
- * exactly, this method short-circuits to simply return v1 or v2 respectively.
- */
-static inline CC3Vector CC3VectorLerp(CC3Vector v1, CC3Vector v2, GLfloat blendFactor)
-{
-	if (blendFactor == 0.0f) 
-		return v1;
-	if (blendFactor == 1.0f) 
-		return v2;
-
-	return CC3VectorAdd(v1, CC3VectorScaleUniform(CC3VectorDifference(v2, v1), blendFactor));
-}
 
 /** 
- * Minimum acceptable absolute value for a scale transformation component.
+ * An integer 4D vector.
  *
- * This is used to ensure that scales used in transforms do not cause uninvertable matrices.
- *
- * The initial value is 1.0e-9f. Set this to another value if appropriate.
- */
-static GLfloat kCC3ScaleMin = 1.0e-9f;
-
-/**
- * Ensures the specified value can be used as a component in a scale vector. If the value is
- * greater than kCC3ScaleMin or less than -kCC3ScaleMin, it is returned unchanced, otherwise
- * either -kCC3ScaleMin or kCC3ScaleMin is returned, depending on whether the value is
- * less than zero or not, respectively.
- *
- * This is used to ensure that scales used in transforms do not cause uninvertable matrices.
- */
-static inline GLfloat CC3EnsureMinScaleAxis(GLfloat val) 
+ * This structure can be referenced as containing 4 individual XYZW axes components,
+ * or containing a 3D XYZ vector, plus a W component.
+*/
+typedef struct 
 {
-	// Test in order of expected value, for fast return.
-	if (val > kCC3ScaleMin) return val;
-	if (val >= 0.0f) return kCC3ScaleMin;
-	if (val < -kCC3ScaleMin) return val;
-	return -kCC3ScaleMin;
+	union {
+		struct {
+			GLint x;			/**< The X-componenent of the vector. */
+			GLint y;			/**< The Y-componenent of the vector. */
+			GLint z;			/**< The Z-componenent of the vector. */
+		};
+		
+		struct {
+			CC3IntVector v;		/**< The X, Y & Z components as a 3D vector. */
+		};
+	};
+	GLint w;					/**< The homogeneous ratio factor. */
+} CC3IntVector4;
+
+static inline std::string stringFromCC3IntVector4( const CC3IntVector4& vec )
+{
+	return CC3String::stringWithFormat( (char*)"(%d, %d, %d, %d)", vec.x, vec.y, vec.z, vec.w );
 }
 
-/**
- * Ensures the absolute value of each of the components in the specified scale vector
- * is greater than kCC3ScaleMin. Any component between -kCC3ScaleMin and kCC3ScaleMin
- * is replaced with -kCC3ScaleMin or kCC3ScaleMin depending on whether the component
- * is less than zero or not, respectively.
- *
- * This can be used to ensure that scales used in transforms do not cause uninvertable matrices.
- */
-static inline CC3Vector CC3EnsureMinScaleVector(CC3Vector scale) 
+/** Returns a CC3IntVector4 structure constructed from the vector components. */
+static inline CC3IntVector4 CC3IntVector4Make(GLint x, GLint y, GLint z, GLint w)
 {
-	return cc3v(CC3EnsureMinScaleAxis(scale.x),
-				CC3EnsureMinScaleAxis(scale.y),
-				CC3EnsureMinScaleAxis(scale.z));
+	CC3IntVector4 v;
+	v.x = x;
+	v.y = y;
+	v.z = z;
+	v.w = w;
+	return v;
 }
 
+/** Returns whether the two vectors are equal by comparing their respective components. */
+static inline bool CC3IntVector4sAreEqual(CC3IntVector4 v1, CC3IntVector4 v2) 
+{
+	return (v1.w == v2.w) && CC3IntVectorsAreEqual(v1.v, v2.v);
+}
 
 /** 
  * A 4D vector, such as a homogeneous vector in 4D graphics matrix space, or a quaternion.
@@ -742,13 +360,13 @@ static const CC3Vector4 kCC3Vector4Null = { { {INFINITY, INFINITY, INFINITY} }, 
 
 static inline std::string stringFromCC3Quaternion( const CC3Quaternion& quat )
 {
-	return stringWithFormat( (char*)"(%.3f, %.3f, %.3f)", quat.x, quat.y, quat.z );
+	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f, %.3f)", quat.x, quat.y, quat.z );
 }
 
 /** Returns a string description of the specified CC3Vector4 struct in the form "(x, y, z, w)" */
 static inline std::string stringFromCC3Vector4(CC3Vector4 v) 
 {
-	return stringWithFormat( (char*)"(%.3f, %.3f, %.3f, %.3f)", v.x, v.y, v.z, v.w );
+	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f, %.3f, %.3f)", v.x, v.y, v.z, v.w );
 }
 
 /** Returns a CC3Vector4 structure constructed from the vector components. */
@@ -795,7 +413,7 @@ static inline CC3Vector4 CC3Vector4FromDirection(CC3Vector aDirection)
 /** Returns whether the two vectors are equal by comparing their respective components. */
 static inline bool CC3Vector4sAreEqual(CC3Vector4 v1, CC3Vector4 v2) 
 {
-	return  (v1.w == v2.w) && CC3VectorsAreEqual(v1.v, v2.v);
+	return  (v1.w == v2.w) && v1.v.equals( v2.v );
 }
 
 /** Returns whether the specified vector is equal to the zero vector, specified by kCC3Vector4Zero. */
@@ -829,7 +447,7 @@ static inline CC3Vector4 CC3Vector4Homogenize(CC3Vector4 v)
 	if (v.w == 0.0f || v.w == 1.0f) 
 		return v;
 
-	return CC3Vector4FromCC3Vector(CC3VectorScaleUniform(v.v, 1.0f / v.w), 1.0f);
+	return CC3Vector4FromCC3Vector(v.v.scaleUniform(1.0f / v.w), 1.0f);
 }
 
 /**
@@ -845,7 +463,7 @@ static inline CC3Vector CC3VectorFromHomogenizedCC3Vector4(CC3Vector4 v)
 /** Returns the result of scaling the original vector by the corresponding scale factor uniformly along all axes. */
 static inline CC3Vector4 CC3Vector4ScaleUniform(CC3Vector4 v, GLfloat scale) 
 {
-	return CC3Vector4FromCC3Vector(CC3VectorScaleUniform(v.v, scale), v.w * scale);
+	return CC3Vector4FromCC3Vector(v.v.scaleUniform(scale), v.w * scale);
 }
 
 /**
@@ -856,13 +474,13 @@ static inline CC3Vector4 CC3Vector4ScaleUniform(CC3Vector4 v, GLfloat scale)
  */
 static inline CC3Vector4 CC3Vector4HomogeneousScaleUniform(CC3Vector4 v, GLfloat scale) 
 {
-	return CC3Vector4FromCC3Vector(CC3VectorScaleUniform(v.v, scale), v.w);
+	return CC3Vector4FromCC3Vector(v.v.scaleUniform(scale), v.w);
 }
 
 /** Returns the dot-product of the two given vectors (v1 . v2). */
 static inline GLfloat CC3Vector4Dot(CC3Vector4 v1, CC3Vector4 v2) 
 {
-	return CC3VectorDot(v1.v, v2.v) + (v1.w * v2.w);
+	return v1.v.dot(v2.v) + (v1.w * v2.w);
 }
 
 /**
@@ -915,7 +533,7 @@ static inline CC3Vector4 CC3Vector4HomogeneousNegate(CC3Vector4 v)
  */
 static inline CC3Vector4 CC3Vector4Add(CC3Vector4 v, CC3Vector4 translation) 
 {
-	return CC3Vector4FromCC3Vector(CC3VectorAdd(v.v, translation.v), v.w + translation.w);
+	return CC3Vector4FromCC3Vector(v.v.add( translation.v ), v.w + translation.w);
 }
 
 /**
@@ -926,7 +544,7 @@ static inline CC3Vector4 CC3Vector4Add(CC3Vector4 v, CC3Vector4 translation)
  */
 static inline CC3Vector4 CC3Vector4Difference(CC3Vector4 minuend, CC3Vector4 subtrahend) 
 {
-	return CC3Vector4FromCC3Vector(CC3VectorDifference(minuend.v, subtrahend.v), minuend.w - subtrahend.w);
+	return CC3Vector4FromCC3Vector( minuend.v.difference( subtrahend.v ), minuend.w - subtrahend.w);
 }
 
 
@@ -976,7 +594,7 @@ static inline CC3Quaternion CC3QuaternionNormalize(CC3Quaternion q) { return CC3
  */
 static inline CC3Quaternion CC3QuaternionConjugate(CC3Quaternion q) 
 {
-	return CC3QuaternionFromCC3Vector(CC3VectorNegate(q.v), q.w);
+	return CC3QuaternionFromCC3Vector( q.v.negate(), q.w );
 }
 
 /** Returns the result of scaling the original quaternion by the corresponding scale factor uniformly along all axes. */
@@ -1043,8 +661,8 @@ static inline CC3Quaternion CC3QuaternionFromAxisAngle(CC3Vector4 axisAngle)
 	// q = ( sin(ra/2)*rx, sin(ra/2)*ry, sin(ra/2)*rz, cos(ra/2) )
 	
 	GLfloat halfAngle = -CC3DegToRad(axisAngle.w) / 2.0f;		// negate for RH system
-	CC3Vector axis = CC3VectorNormalize(axisAngle.v);
-	return CC3Vector4FromCC3Vector(CC3VectorScaleUniform(axis, sinf(halfAngle)), cosf(halfAngle));
+	CC3Vector axis = axisAngle.v.normalize();
+	return CC3Vector4FromCC3Vector(axis.scaleUniform(sinf(halfAngle)), cosf(halfAngle));
 }
 
 /**
@@ -1067,9 +685,9 @@ static inline CC3Vector4 CC3AxisAngleFromQuaternion(CC3Quaternion quaternion)
 	// If angle is zero, rotation axis is undefined. Use zero vector.
 	CC3Vector axis;
 	if (halfAngle != 0.0f)
-		axis = CC3VectorScaleUniform(q.v, 1.0f / sinf(halfAngle));
+		axis = q.v.scaleUniform( 1.0f / sinf(halfAngle) );
 	else
-		axis = kCC3VectorZero;
+		axis = CC3Vector::kCC3VectorZero;
 	
 	return CC3Vector4FromCC3Vector(axis, angle);
 }
@@ -1116,8 +734,16 @@ CC3Quaternion CC3QuaternionSlerp(CC3Quaternion q1, CC3Quaternion q2, GLfloat ble
  */
 static inline CC3Vector CC3QuaternionRotateVector(CC3Quaternion q, CC3Vector v) 
 {
-	return CC3VectorAdd(v, CC3VectorScaleUniform(CC3VectorCross(CC3VectorAdd(CC3VectorCross(v, q.v),
-																			 CC3VectorScaleUniform(v, q.w)), q.v), 2.0f));
+	CC3Vector crossResult = v.cross( q.v );
+	CC3Vector scaleResult = v.scaleUniform( q.w );
+
+	crossResult = crossResult.add( scaleResult );
+	crossResult = crossResult.cross( q.v );
+	crossResult.scaleUniform( 2.f );
+
+	return v.add( crossResult );
+	
+//	return CC3VectorAdd(v, CC3VectorScaleUniform( CC3VectorCross(CC3VectorAdd(CC3VectorCross(v, q.v), CC3VectorScaleUniform(v, q.w)), q.v), 2.0f));
 }
 
 /**
@@ -1135,8 +761,8 @@ typedef struct
 /** Returns a string description of the specified CC3Ray struct. */
 static inline std::string stringFromCC3Ray( const CC3Ray& aRay )
 {
-	return stringWithFormat( (char*)"(Start: %s, Towards: %s)",
-		stringFromCC3Vector(aRay.startLocation).c_str(), stringFromCC3Vector(aRay.direction).c_str() );
+	return CC3String::stringWithFormat( (char*)"(Start: %s, Towards: %s)",
+		aRay.startLocation.stringfy().c_str(), aRay.direction.stringfy().c_str() );
 }
 
 /** Returns a CC3Ray structure constructed from the start location and direction vectors. */
@@ -1163,11 +789,11 @@ static inline bool CC3IsLocationOnRay(CC3Vector aLocation, CC3Ray aRay)
 	// Project that vector onto the ray to find the projection of the location
 	// onto the ray. If the projected location is the same as the initial
 	// location, then the location is on the ray.
-	CC3Vector locVect = CC3VectorDifference(aLocation, aRay.startLocation);
-	GLfloat proj = CC3VectorDot(locVect, aRay.direction);
-	CC3Vector projVect = CC3VectorScaleUniform(aRay.direction, proj);
-	CC3Vector projLoc = CC3VectorAdd(aRay.startLocation, projVect);
-	return CC3VectorsAreEqual(aLocation, projLoc);
+	CC3Vector locVect = aLocation.difference( aRay.startLocation );
+	GLfloat proj = locVect.dot( aRay.direction );
+	CC3Vector projVect = aRay.direction.scaleUniform( proj );
+	CC3Vector projLoc = aRay.startLocation.add( projVect );
+	return aLocation.equals( projLoc );
 }
 
 /** Returns a ccTex2F structure constructed from the vector components. */
@@ -1226,10 +852,10 @@ typedef struct
 } CC3Box;
 
 /** A CC3Box of zero origin and dimensions. */
-static const CC3Box kCC3BoxZero = { {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0} };
+static const CC3Box kCC3BoxZero = { CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero };
 
 /** The null bounding box. It cannot be drawn, but is useful for marking an uninitialized bounding box. */
-static const CC3Box kCC3BoxNull = { {INFINITY, INFINITY, INFINITY}, {INFINITY, INFINITY, INFINITY} };
+static const CC3Box kCC3BoxNull = { CC3Vector::kCC3VectorNull, CC3Vector::kCC3VectorNull };
 
 /** Returns a CC3Box structure constructed from the min and max vertices. */
 static inline CC3Box CC3BoxFromMinMax(CC3Vector minVtx, CC3Vector maxVtx) 
@@ -1251,8 +877,8 @@ static inline CC3Box CC3BoxMake(GLfloat minX, GLfloat minY, GLfloat minZ,
 /** Returns whether the two bounding boxes are equal by comparing their respective components. */
 static inline bool CC3BoxesAreEqual(CC3Box bb1, CC3Box bb2) 
 {
-	return CC3VectorsAreEqual(bb1.minimum, bb2.minimum)
-		&& CC3VectorsAreEqual(bb1.maximum, bb2.maximum);
+	return bb1.minimum.equals( bb2.minimum )
+		&& bb1.maximum.equals( bb2.maximum );
 }
 
 /**
@@ -1276,13 +902,13 @@ static inline bool CC3BoxIsNull(CC3Box bb)
 /** Returns the geometric center of the specified bounding box. */
 static inline CC3Vector CC3BoxCenter(CC3Box bb) 
 {
-	return CC3VectorAverage(bb.minimum, bb.maximum);
+	return bb.minimum.average( bb.maximum );
 }
 
 /** Returns the size of the specified bounding box, between the minimum to maximum corners. */
 static inline CC3Vector CC3BoxSize(CC3Box bb) 
 {
-	return CC3VectorDifference(bb.maximum, bb.minimum);
+	return bb.maximum.difference( bb.minimum );
 }
 
 /** Returns whether the specified bounding box contains the specified location. */
@@ -1328,8 +954,8 @@ static inline CC3Box CC3BoxUnion(CC3Box bb1, CC3Box bb2)
 static inline CC3Box CC3BoxAddPadding(CC3Box bb, CC3Vector padding) 
 {
 	CC3Box bbPadded;
-	bbPadded.maximum = CC3VectorAdd(bb.maximum, padding);
-	bbPadded.minimum = CC3VectorDifference(bb.minimum, padding);
+	bbPadded.maximum = bb.maximum.add( padding );
+	bbPadded.minimum = bb.minimum.difference( padding );
 	return bbPadded;
 }
 
@@ -1349,8 +975,8 @@ static inline CC3Box CC3BoxAddUniformPadding(CC3Box bb, GLfloat padding)
 static inline CC3Box CC3BoxTranslate(CC3Box bb, CC3Vector offset)
 {
 	CC3Box bbXltd;
-	bbXltd.maximum = CC3VectorAdd(bb.maximum, offset);
-	bbXltd.minimum = CC3VectorAdd(bb.minimum, offset);
+	bbXltd.maximum = bb.maximum.add( offset );
+	bbXltd.minimum = bb.minimum.add( offset );
 	return bbXltd;
 }
 
@@ -1362,7 +988,7 @@ static inline CC3Box CC3BoxTranslate(CC3Box bb, CC3Vector offset)
  */
 static inline CC3Box CC3BoxTranslateFractionally(CC3Box bb, CC3Vector offsetScale) 
 {
-	return CC3BoxTranslate(bb, CC3VectorScale(CC3BoxSize(bb), offsetScale));
+	return CC3BoxTranslate( bb, CC3BoxSize(bb).scale(offsetScale) );
 }
 
 /**
@@ -1372,7 +998,7 @@ static inline CC3Box CC3BoxTranslateFractionally(CC3Box bb, CC3Vector offsetScal
  */
 static inline CC3Box CC3BoxMoveCenterToOrigin(CC3Box bb)
 {
-	return CC3BoxTranslate(bb, CC3VectorNegate(CC3BoxCenter(bb)));
+	return CC3BoxTranslate( bb, CC3BoxCenter(bb).negate() );
 }
 
 /**
@@ -1385,8 +1011,8 @@ static inline CC3Box CC3BoxMoveCenterToOrigin(CC3Box bb)
 static inline CC3Box CC3BoxScale(CC3Box bb, CC3Vector scale) 
 {
 	CC3Box bbScaled;
-	bbScaled.maximum = CC3VectorScale(bb.maximum, scale);
-	bbScaled.minimum = CC3VectorScale(bb.minimum, scale);
+	bbScaled.maximum = bb.maximum.scale( scale );
+	bbScaled.minimum = bb.minimum.scale( scale );
 	return bbScaled;
 }
 
@@ -1400,8 +1026,8 @@ static inline CC3Box CC3BoxScale(CC3Box bb, CC3Vector scale)
 static inline CC3Box CC3BoxScaleUniform(CC3Box bb, GLfloat scale) 
 {
 	CC3Box bbScaled;
-	bbScaled.maximum = CC3VectorScaleUniform(bb.maximum, scale);
-	bbScaled.minimum = CC3VectorScaleUniform(bb.minimum, scale);
+	bbScaled.maximum = bb.maximum.scaleUniform( scale );
+	bbScaled.minimum = bb.minimum.scaleUniform( scale );
 	return bbScaled;
 }
 
@@ -1470,7 +1096,7 @@ static inline CC3AngularVector CC3AngularVectorMake(GLfloat heading, GLfloat inc
 static inline CC3AngularVector CC3AngularVectorFromVector(CC3Vector aCoord) 
 {
 	CC3AngularVector av;
-	av.radius = CC3VectorLength(aCoord);
+	av.radius = aCoord.length();
 	av.inclination = av.radius ? CC3RadToDeg(asinf(aCoord.y / av.radius)) : 0.0f;
 	av.heading = CC3RadToDeg(atan2f(aCoord.x, -aCoord.z));
 	return av;
@@ -1497,7 +1123,7 @@ static inline CC3Vector CC3VectorFromAngularVector(CC3AngularVector av)
 	GLfloat radHeading = CC3DegToRad(av.heading);
 	unitDir.x = xzLen * sinf(radHeading);
 	unitDir.z = -xzLen * cosf(radHeading);
-	return CC3VectorScaleUniform(unitDir, av.radius);
+	return unitDir.scaleUniform( av.radius );
 }
 
 /**
@@ -1522,7 +1148,7 @@ typedef struct
 } CC3Face;
 
 /** A CC3Face with all vertices set to zero. */
-static const CC3Face kCC3FaceZero = { { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } } };
+static const CC3Face kCC3FaceZero = { CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero };
 
 /** 
  * Returns a CC3Face structure constructed from the three specified vectors,
@@ -1571,8 +1197,7 @@ static inline CC3Vector CC3FaceCenter(CC3Face face)
  */
 static inline CC3Vector CC3FaceNormal(CC3Face face) 
 {
-	return CC3VectorNormalize(CC3VectorCross(CC3VectorDifference(face.vertices[1], face.vertices[0]),
-											 CC3VectorDifference(face.vertices[2], face.vertices[0])));
+	return face.vertices[1].difference(face.vertices[0]).cross( face.vertices[2].difference(face.vertices[0]) ).normalize();
 }
 
 /** Defines the barycentric weights of the three vertices of a triangle, in the same order as the vertices in a CC3Face. */
@@ -1669,7 +1294,7 @@ static const CC3Plane kCC3PlaneZero = { 0, 0, 0, 0 };
 /** Returns a string description of the specified CC3Plane struct in the form "(a, b, c, d)" */
 static inline std::string stringFromCC3Plane( const CC3Plane& p )
 {
-	return stringWithFormat( (char*)"(%.3f, %.3f, %.3f, %.3f)", p.a, p.b, p.c, p.d );
+	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f, %.3f, %.3f)", p.a, p.b, p.c, p.d );
 }
 
 
@@ -1693,7 +1318,7 @@ static inline CC3Vector CC3PlaneNormal(CC3Plane p)
 /** Returns a CC3Plane that has the specified normal and intersects the specified location. */
 static inline CC3Plane CC3PlaneFromNormalAndLocation(CC3Vector n, CC3Vector loc)
 {
-	GLfloat d = -CC3VectorDot(loc, n);
+	GLfloat d = -loc.dot( n );
 	return CC3PlaneMake(n.x, n.y, n.z, d);
 }
 
@@ -1709,8 +1334,7 @@ static inline CC3Plane CC3PlaneFromNormalAndLocation(CC3Vector n, CC3Vector loc)
  */
 static inline CC3Plane CC3PlaneFromLocations(CC3Vector v1, CC3Vector v2, CC3Vector v3) 
 {
-	CC3Vector n = CC3VectorNormalize(CC3VectorCross(CC3VectorDifference(v2, v1),
-													CC3VectorDifference(v3, v1)));
+	CC3Vector n = v2.difference(v1).cross( v3.difference(v1) ).normalize();
 	return CC3PlaneFromNormalAndLocation(n, v1);
 }
 
@@ -1755,7 +1379,7 @@ static inline CC3Plane CC3PlaneNegate(CC3Plane p)
 /** Returns a normalized copy of the specified CC3Plane so that the length of its normal (a, b, c) is 1.0 */
 static inline CC3Plane CC3PlaneNormalize(CC3Plane p) 
 {
-	GLfloat ooNormLen = 1.0f / CC3VectorLength(CC3PlaneNormal(p));
+	GLfloat ooNormLen = 1.0f / CC3PlaneNormal(p).length();
 	return CC3PlaneMake(p.a * ooNormLen,
 						p.b * ooNormLen,
 						p.c * ooNormLen,
@@ -1770,7 +1394,7 @@ static inline CC3Plane CC3PlaneNormalize(CC3Plane p)
  */
 static inline GLfloat CC3DistanceFromPlane(CC3Vector v, CC3Plane p) 
 {
-	return CC3VectorDot(v, CC3PlaneNormal(p)) + p.d;
+	return v.dot( CC3PlaneNormal(p) ) + p.d;
 }
 
 /**
@@ -1844,7 +1468,7 @@ static inline CC3Sphere CC3SphereMake(CC3Vector center, GLfloat radius)
 static inline CC3Sphere CC3SphereFromCircumscribingBox(CC3Box box) 
 {
 	CC3Vector center = CC3BoxCenter(box);
-	GLfloat radius = CC3VectorDistance(box.maximum, center);
+	GLfloat radius = box.maximum.distance( center );
 	return CC3SphereMake(center, radius);
 }
 
@@ -1853,7 +1477,7 @@ static inline bool CC3IsLocationWithinSphere(CC3Vector aLocation, CC3Sphere aSph
 {
 	// Compare the squares of the distances to avoid taking an expensive square root. 
 	GLfloat radiusSquared = aSphere.radius * aSphere.radius;
-	return CC3VectorDistanceSquared(aLocation, aSphere.center) <= radiusSquared;
+	return aLocation.distanceSquared( aSphere.center ) <= radiusSquared;
 }
 
 /** Returns whether the specified spheres intersect. */
@@ -2371,13 +1995,13 @@ static inline void CC3SetBit(GLbitfield* bits, GLuint bitIdx, bool val)
 
 static inline std::string stringFromCCSize( const CCSize& size )
 {
-	return stringWithFormat( (char*)"(%.2f, %.2f)", size.width, size.height );
+	return CC3String::stringWithFormat( (char*)"(%.2f, %.2f)", size.width, size.height );
 }
 
 /** Returns a string description of the specified ccColor4F in the form "(r, g, b, a)" */
 static inline std::string stringFromCCC4F(ccColor4F rgba) 
 {
-	return stringWithFormat( (char*)"(%.3f, %.3f, %.3f, %.3f)", rgba.r, rgba.g, rgba.b, rgba.a );
+	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f, %.3f, %.3f)", rgba.r, rgba.g, rgba.b, rgba.a );
 }
 
 /**

@@ -193,7 +193,7 @@ void CC3Matrix::populateCC3Matrix4x4( CC3Matrix4x4* mtx )
 
 void CC3Matrix::populateFromRotation( CC3Vector aRotation )
 {
-	if (CC3VectorsAreEqual(aRotation, kCC3VectorZero)) 
+	if ( aRotation.isZero() ) 
 	{
 		populateIdentity();
 	} 
@@ -230,7 +230,7 @@ void CC3Matrix::implPopulateFromQuaternion( CC3Quaternion aQuaternion )
 
 void CC3Matrix::populateFromScale( CC3Vector aScale ) 
 {
-	if (CC3VectorsAreEqual(aScale, kCC3VectorUnitCube)) {
+	if ( aScale.equals( CC3Vector::kCC3VectorUnitCube )) {
 		populateIdentity();
 	} else {
 		implPopulateFromScale( aScale );
@@ -246,7 +246,7 @@ void CC3Matrix::implPopulateFromScale( CC3Vector aScale )
 }
 
 void CC3Matrix::populateFromTranslation( CC3Vector aTranslation ){
-	if (CC3VectorsAreEqual(aTranslation, kCC3VectorZero)) {
+	if ( aTranslation.isZero() ) {
 		populateIdentity();
 	} else {
 		implPopulateFromTranslation( aTranslation );
@@ -276,10 +276,10 @@ void CC3Matrix::implPopulateToPointTowards( CC3Vector fwdDirection, CC3Vector up
 
 void CC3Matrix::populateToLookAt( CC3Vector targetLocation, CC3Vector eyeLocation, CC3Vector upDirection )
 {
-	CC3Vector fwdDir = CC3VectorDifference(targetLocation, eyeLocation);
+	CC3Vector fwdDir = targetLocation.difference( eyeLocation );
 	populateToPointTowards( fwdDir, upDirection );
 	transpose();		
-	translateBy( CC3VectorNegate(eyeLocation) );
+	translateBy( eyeLocation.negate() );
 	m_isIdentity = false;
 	m_isRigid = true;
 }
@@ -335,7 +335,7 @@ void CC3Matrix::implPopulateOrthoFromFrustumLeft(GLfloat left, GLfloat right, GL
 CC3Vector CC3Matrix::extractRotation()
 {
 	CCAssert(false, "the extractRotation method is not implemented");
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 CC3Quaternion CC3Matrix::extractQuaternion()
@@ -347,29 +347,29 @@ CC3Quaternion CC3Matrix::extractQuaternion()
 CC3Vector CC3Matrix::extractForwardDirection()
 {
 	CCAssert(false, "the extractForwardDirection method is not implemented");
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 CC3Vector CC3Matrix::extractUpDirection()
 {
 	CCAssert(false, "the extractUpDirection method is not implemented");
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 CC3Vector CC3Matrix::extractRightDirection() 
 {
 	CCAssert(false, "the extractRightDirection method is not implemented");
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 CC3Vector CC3Matrix::extractTranslation() {
 	CCAssert(false, "the extractTranslation method is not implemented");
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 // Short-circuit the identity transform. isRigid unchanged under rotation.
 void CC3Matrix::rotateBy( CC3Vector aRotation ) {
-	if ( !CC3VectorsAreEqual(aRotation, kCC3VectorZero) ) {
+	if ( !aRotation.isZero() ) {
 		implRotateBy( aRotation );
 		m_isIdentity = false;
 	}
@@ -404,7 +404,7 @@ void CC3Matrix::orthonormalizeRotationStartingWith( unsigned int startColNum )
 // Short-circuit the identity transform
 void CC3Matrix::scaleBy( CC3Vector aScale )
 {
-	if ( !CC3VectorsAreEqual(aScale, kCC3VectorUnitCube) ) 
+	if ( !aScale.equals( CC3Vector::kCC3VectorUnitCube ) ) 
 	{
 		implScaleBy( aScale );
 		m_isIdentity = false;
@@ -421,7 +421,7 @@ void CC3Matrix::implScaleBy( CC3Vector aScale )
 // Short-circuit the identity transform. isRigid unchanged under translation.
 void CC3Matrix::translateBy( CC3Vector aTranslation )
 {
-	if ( !CC3VectorsAreEqual(aTranslation, kCC3VectorZero) ) 
+	if ( !aTranslation.isZero() ) 
 	{
 		implTranslateBy( aTranslation );
 		m_isIdentity = false;
@@ -580,7 +580,7 @@ CC3Vector CC3Matrix::transformLocation( CC3Vector aLocation )
 		return aLocation;
 
 	CCAssert(false, "the transformLocation: method is not implemented");
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 // Short-circuit if this is an identity matrix
@@ -590,7 +590,7 @@ CC3Vector CC3Matrix::transformDirection( CC3Vector aDirection )
 		return aDirection;
 
 	CCAssert(false, "the transformDirection: method is not implemented");
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 // Short-circuit if this is an identity matrix

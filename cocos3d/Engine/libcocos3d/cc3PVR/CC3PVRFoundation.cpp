@@ -35,38 +35,38 @@ std::string NSStringFromSPODNode(PODStructPtr pSPODNode)
 {
 	SPODNode* psn = (SPODNode*)pSPODNode;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPODNode named %s", psn->pszName );
-	desc += stringWithFormat( (char*)", parent index: %d ", psn->nIdxParent );
-	desc += stringWithFormat( (char*)", content index: %d ", psn->nIdx );
-	desc += stringWithFormat( (char*)", material index: %d ", psn->nIdxMaterial );
-	desc += stringWithFormat( (char*)",\n\tanimation flags: %d", psn->nAnimFlags );
+	desc += CC3String::stringWithFormat( (char*)"SPODNode named %s", psn->pszName );
+	desc += CC3String::stringWithFormat( (char*)", parent index: %d ", psn->nIdxParent );
+	desc += CC3String::stringWithFormat( (char*)", content index: %d ", psn->nIdx );
+	desc += CC3String::stringWithFormat( (char*)", material index: %d ", psn->nIdxMaterial );
+	desc += CC3String::stringWithFormat( (char*)",\n\tanimation flags: %d", psn->nAnimFlags );
 	bool first = true;
 	if (psn->nAnimFlags & ePODHasPositionAni) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"ePODHasPositionAni" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"ePODHasPositionAni" );
 		first = false;
 	}
 	if (psn->nAnimFlags & ePODHasRotationAni) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"ePODHasRotationAni" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"ePODHasRotationAni" );
 		first = false;
 	}
 	if (psn->nAnimFlags & ePODHasScaleAni) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"ePODHasScaleAni" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"ePODHasScaleAni" );
 		first = false;
 	}
 	if (psn->nAnimFlags & ePODHasMatrixAni) {
-		desc += stringWithFormat( (char*)"%s", first ? " (" : " + " );
-		desc += stringWithFormat( (char*)"ePODHasMatrixAni" );
+		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
+		desc += CC3String::stringWithFormat( (char*)"ePODHasMatrixAni" );
 		first = false;
 	}
-	desc += stringWithFormat( (char*)"%s", first ? "" : ")" );
-	desc += stringWithFormat( (char*)"\n\tposition: %s", (psn->pfAnimPosition ? stringFromCC3Vector(*(CC3Vector*)psn->pfAnimPosition).c_str() : "none") );
-	desc += stringWithFormat( (char*)", quaternion: %s", (psn->pfAnimRotation ? stringFromCC3Vector4(*(CC3Vector4*)psn->pfAnimRotation).c_str() : "none") );
-	desc += stringWithFormat( (char*)", scale: %s", (psn->pfAnimScale ? stringFromCC3Vector(*(CC3Vector*)psn->pfAnimScale).c_str() : "none") );
-	desc += stringWithFormat( (char*)", matrix: %s", (psn->pfAnimMatrix ? stringFromCC3Matrix4x4((CC3Matrix4x4*)psn->pfAnimMatrix).c_str() : "none") );
-	desc += stringWithFormat( (char*)", %d bytes of user data at %d", psn->nUserDataSize, psn->pUserData );
+	desc += CC3String::stringWithFormat( (char*)"%s", first ? "" : ")" );
+	desc += CC3String::stringWithFormat( (char*)"\n\tposition: %s", (psn->pfAnimPosition ? (*(CC3Vector*)psn->pfAnimPosition).stringfy().c_str() : "none") );
+	desc += CC3String::stringWithFormat( (char*)", quaternion: %s", (psn->pfAnimRotation ? stringFromCC3Vector4(*(CC3Vector4*)psn->pfAnimRotation).c_str() : "none") );
+	desc += CC3String::stringWithFormat( (char*)", scale: %s", (psn->pfAnimScale ? (*(CC3Vector*)psn->pfAnimScale).stringfy().c_str() : "none") );
+	desc += CC3String::stringWithFormat( (char*)", matrix: %s", (psn->pfAnimMatrix ? stringFromCC3Matrix4x4((CC3Matrix4x4*)psn->pfAnimMatrix).c_str() : "none") );
+	desc += CC3String::stringWithFormat( (char*)", %d bytes of user data at %d", psn->nUserDataSize, psn->pUserData );
 	return desc;
 }
 
@@ -83,37 +83,37 @@ std::string NSStringFromSPODMesh(PODStructPtr pSPODNode)
 //			[desc appendFormat: @"ePODLines"];
 			break;
 		default:
-			desc += stringWithFormat( (char*)"unknown ePrimitiveType (%d)", psm->ePrimitiveType );
+			desc += CC3String::stringWithFormat( (char*)"unknown ePrimitiveType (%d)", psm->ePrimitiveType );
 			break;
 	}
-	desc += stringWithFormat( (char*)"\n\tvertices: %d (%s)", psm->nNumVertex, NSStringFromCPODData(&psm->sVertex).c_str() );
-	desc += stringWithFormat( (char*)"\n\t\tnormals: (%s)", NSStringFromCPODData(&psm->sNormals).c_str() );
-	desc += stringWithFormat( (char*)"\n\t\ttangents: (%s)", NSStringFromCPODData(&psm->sTangents).c_str() );
-	desc += stringWithFormat( (char*)"\n\t\tbinormals: (%s)", NSStringFromCPODData(&psm->sBinormals).c_str() );
-	desc += stringWithFormat( (char*)"\n\t\tcolors: (%s)", NSStringFromCPODData(&psm->sVtxColours).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tvertices: %d (%s)", psm->nNumVertex, NSStringFromCPODData(&psm->sVertex).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\t\tnormals: (%s)", NSStringFromCPODData(&psm->sNormals).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\t\ttangents: (%s)", NSStringFromCPODData(&psm->sTangents).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\t\tbinormals: (%s)", NSStringFromCPODData(&psm->sBinormals).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\t\tcolors: (%s)", NSStringFromCPODData(&psm->sVtxColours).c_str() );
 	for (GLuint i = 0; i < psm->nNumUVW; i++) {
-		desc += stringWithFormat( (char*)"\n\t\ttexmap%u: (%s)", i, NSStringFromCPODData(&psm->psUVW[i]).c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\ttexmap%u: (%s)", i, NSStringFromCPODData(&psm->psUVW[i]).c_str() );
 	}
-	desc += stringWithFormat( (char*)"\n\t\tboneIndices: (%s)", NSStringFromCPODData(&psm->sBoneIdx).c_str() );
-	desc += stringWithFormat( (char*)"\n\t\tboneWeights: (%s)", NSStringFromCPODData(&psm->sBoneWeight).c_str() );
-	desc += stringWithFormat( (char*)"\n\tfaces: %d (%s)", psm->nNumFaces, NSStringFromCPODData(&psm->sFaces).c_str() );
-	desc += stringWithFormat( (char*)"\n\tstrips: %d", psm->nNumStrips );
-	desc += stringWithFormat( (char*)", texture channels: %d", psm->nNumUVW );
-	desc += stringWithFormat( (char*)", interleaved data: %p", psm->pInterleaved );
+	desc += CC3String::stringWithFormat( (char*)"\n\t\tboneIndices: (%s)", NSStringFromCPODData(&psm->sBoneIdx).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\t\tboneWeights: (%s)", NSStringFromCPODData(&psm->sBoneWeight).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tfaces: %d (%s)", psm->nNumFaces, NSStringFromCPODData(&psm->sFaces).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tstrips: %d", psm->nNumStrips );
+	desc += CC3String::stringWithFormat( (char*)", texture channels: %d", psm->nNumUVW );
+	desc += CC3String::stringWithFormat( (char*)", interleaved data: %p", psm->pInterleaved );
 	
 	int batchCount = psm->sBoneBatches.nBatchCnt;
-	desc += stringWithFormat( (char*)", bone batches: %d", batchCount );
+	desc += CC3String::stringWithFormat( (char*)", bone batches: %d", batchCount );
 	
 	for (int bbi = 0; bbi < psm->sBoneBatches.nBatchCnt; bbi++) {
 		int boneCount = psm->sBoneBatches.pnBatchBoneCnt[bbi];
-		desc += stringWithFormat( (char*)"\n\t\tbatch with %d bone nodes:", boneCount );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\tbatch with %d bone nodes:", boneCount );
 		bool firstBone = true;
 		for (int bi = 0; bi < boneCount; bi++) {
-			desc += stringWithFormat( (char*)"%s", firstBone ? " (" : ", " );
-			desc += stringWithFormat( (char*)"%d", psm->sBoneBatches.pnBatches[bbi * psm->sBoneBatches.nBatchBoneMax + bi] );
+			desc += CC3String::stringWithFormat( (char*)"%s", firstBone ? " (" : ", " );
+			desc += CC3String::stringWithFormat( (char*)"%d", psm->sBoneBatches.pnBatches[bbi * psm->sBoneBatches.nBatchBoneMax + bi] );
 			firstBone = false;
 		}
-		desc += stringWithFormat( (char*)"%s", firstBone ? "" : ")" );
+		desc += CC3String::stringWithFormat( (char*)"%s", firstBone ? "" : ")" );
 	}
 	return desc;
 }
@@ -122,10 +122,10 @@ std::string NSStringFromCPODData(PODClassPtr aCPODData)
 {
 	CPODData* pcd = (CPODData*)aCPODData;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"CPODData type: %s", NSStringFromEPVRTDataType(pcd->eType).c_str() );
-	desc += stringWithFormat( (char*)", size: %d", pcd->n );
-	desc += stringWithFormat( (char*)", stride: %d", pcd->nStride );
-	desc += stringWithFormat( (char*)", data ptr: %d", pcd->pData );
+	desc += CC3String::stringWithFormat( (char*)"CPODData type: %s", NSStringFromEPVRTDataType(pcd->eType).c_str() );
+	desc += CC3String::stringWithFormat( (char*)", size: %d", pcd->n );
+	desc += CC3String::stringWithFormat( (char*)", stride: %d", pcd->nStride );
+	desc += CC3String::stringWithFormat( (char*)", data ptr: %d", pcd->pData );
 	return desc;
 }
 
@@ -133,20 +133,20 @@ std::string NSStringFromCPVRTBoneBatches(PODClassPtr aCPVRTBoneBatches) {
 	CPVRTBoneBatches* pbb = (CPVRTBoneBatches*)aCPVRTBoneBatches;
 	int batchCount = pbb->nBatchCnt;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"CPVRTBoneBatches with %d batches of max %d bones per batch at: %d",
+	desc += CC3String::stringWithFormat( (char*)"CPVRTBoneBatches with %d batches of max %d bones per batch at: %d",
 			batchCount, pbb->nBatchBoneMax, pbb->pnBatches );
 
 	if (batchCount) 
 	{
-		desc += stringWithFormat( (char*)"\n\t\tbone counts: (%d", pbb->pnBatchBoneCnt[0] );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\tbone counts: (%d", pbb->pnBatchBoneCnt[0] );
 		for (int i = 1; i < batchCount; i++) {
-			desc += stringWithFormat( (char*)", %d", pbb->pnBatchBoneCnt[i] );
+			desc += CC3String::stringWithFormat( (char*)", %d", pbb->pnBatchBoneCnt[i] );
 		}
 		desc += ")";
 
-		desc += stringWithFormat( (char*)"\n\t\tbone vertex offsets: (%d", pbb->pnBatchOffset[0] );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\tbone vertex offsets: (%d", pbb->pnBatchOffset[0] );
 		for (int i = 1; i < batchCount; i++) {
-			desc += stringWithFormat( (char*)", %d", pbb->pnBatchOffset[i] );
+			desc += CC3String::stringWithFormat( (char*)", %d", pbb->pnBatchOffset[i] );
 		}
 		desc += ")";
 	}
@@ -234,7 +234,7 @@ std::string NSStringFromEPVRTDataType(GLuint ePVRTDataType) {
 		case EPODDataFixed16_16:
 			return "EPODDataFixed16_16";
 		default:
-			return stringWithFormat((char*)"unknown EPVRTDataType (%d)", ePVRTDataType);
+			return CC3String::stringWithFormat((char*)"unknown EPVRTDataType (%d)", ePVRTDataType);
 	}
 }
 
@@ -255,25 +255,25 @@ GLenum GLDrawingModeForSPODMesh(PODStructPtr aSPODMesh) {
 std::string NSStringFromSPODCamera(PODStructPtr pSPODCamera) {
 	SPODCamera* psc = (SPODCamera*)pSPODCamera;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPODCamera fov: %.2f", psc->fFOV );
-	desc += stringWithFormat( (char*)", near: %.2f", psc->fNear );
-	desc += stringWithFormat( (char*)", far: %.2f", psc->fFar );
-	desc += stringWithFormat( (char*)", target index: %i", psc->nIdxTarget );
-	desc += stringWithFormat( (char*)", FOV is %sanimated", (psc->pfAnimFOV ? "" : "not ") );
+	desc += CC3String::stringWithFormat( (char*)"SPODCamera fov: %.2f", psc->fFOV );
+	desc += CC3String::stringWithFormat( (char*)", near: %.2f", psc->fNear );
+	desc += CC3String::stringWithFormat( (char*)", far: %.2f", psc->fFar );
+	desc += CC3String::stringWithFormat( (char*)", target index: %i", psc->nIdxTarget );
+	desc += CC3String::stringWithFormat( (char*)", FOV is %sanimated", (psc->pfAnimFOV ? "" : "not ") );
 	return desc;
 }
 
 std::string NSStringFromSPODLight(PODStructPtr pSPODLight) {
 	SPODLight* psl = (SPODLight*)pSPODLight;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPODLight type: %s", NSStringFromEPODLight(psl->eType).c_str() );
-	desc += stringWithFormat( (char*)", color: (%.3f, %.3f, %.3f)", psl->pfColour[0], psl->pfColour[1], psl->pfColour[2] );
-	desc += stringWithFormat( (char*)", falloff angle: %.3f", psl->fFalloffAngle );
-	desc += stringWithFormat( (char*)", falloff expo: %.3f", psl->fFalloffExponent );
-	desc += stringWithFormat( (char*)", const atten: %.3f", psl->fConstantAttenuation );
-	desc += stringWithFormat( (char*)", linear atten: %.3f", psl->fLinearAttenuation );
-	desc += stringWithFormat( (char*)", quad atten: %3f", psl->fQuadraticAttenuation );
-	desc += stringWithFormat( (char*)", target index: %i", psl->nIdxTarget );
+	desc += CC3String::stringWithFormat( (char*)"SPODLight type: %s", NSStringFromEPODLight(psl->eType).c_str() );
+	desc += CC3String::stringWithFormat( (char*)", color: (%.3f, %.3f, %.3f)", psl->pfColour[0], psl->pfColour[1], psl->pfColour[2] );
+	desc += CC3String::stringWithFormat( (char*)", falloff angle: %.3f", psl->fFalloffAngle );
+	desc += CC3String::stringWithFormat( (char*)", falloff expo: %.3f", psl->fFalloffExponent );
+	desc += CC3String::stringWithFormat( (char*)", const atten: %.3f", psl->fConstantAttenuation );
+	desc += CC3String::stringWithFormat( (char*)", linear atten: %.3f", psl->fLinearAttenuation );
+	desc += CC3String::stringWithFormat( (char*)", quad atten: %3f", psl->fQuadraticAttenuation );
+	desc += CC3String::stringWithFormat( (char*)", target index: %i", psl->nIdxTarget );
 	return desc;
 }
 
@@ -286,39 +286,39 @@ std::string NSStringFromEPODLight(GLuint ePODLight) {
 		case ePODSpot:
 			return "ePODSpot";
 		default:
-			return stringWithFormat( (char*)"unknown EPODLight (%d)", ePODLight );
+			return CC3String::stringWithFormat( (char*)"unknown EPODLight (%d)", ePODLight );
 	}
 }
 
 std::string NSStringFromSPODMaterial(PODStructPtr pSPODMaterial) {
 	SPODMaterial* psm = (SPODMaterial*)pSPODMaterial;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPODMaterial named %s", psm->pszName );
-	desc += stringWithFormat( (char*)"\n\tambient: (%.2f, %.2f, %.2f)", psm->pfMatAmbient[0], psm->pfMatAmbient[1], psm->pfMatAmbient[2] );
-	desc += stringWithFormat( (char*)", diffuse: (%.2f, %.2f, %.2f)", psm->pfMatDiffuse[0], psm->pfMatDiffuse[1], psm->pfMatDiffuse[2] );
-	desc += stringWithFormat( (char*)", specular: (%.2f, %.2f, %.2f)", psm->pfMatSpecular[0], psm->pfMatSpecular[1], psm->pfMatSpecular[2] );
-	desc += stringWithFormat( (char*)", opacity: %.2f", psm->fMatOpacity );
-	desc += stringWithFormat( (char*)", shininess: %.2f", psm->fMatShininess );
-	desc += stringWithFormat( (char*)"\n\tsrc RGB blend: %s", NSStringFromEPODBlendFunc(psm->eBlendSrcRGB).c_str() );
-	desc += stringWithFormat( (char*)", src alpha blend: %s", NSStringFromEPODBlendFunc(psm->eBlendSrcA).c_str() );
-	desc += stringWithFormat( (char*)"\n\tdest RGB blend: %s", NSStringFromEPODBlendFunc(psm->eBlendDstRGB).c_str() );
-	desc += stringWithFormat( (char*)", dest alpha blend: %s", NSStringFromEPODBlendFunc(psm->eBlendDstA).c_str() );
-	desc += stringWithFormat( (char*)"\n\toperation RGB blend: %s", NSStringFromEPODBlendOp(psm->eBlendOpRGB).c_str() );
-	desc += stringWithFormat( (char*)", operation alpha blend: %s", NSStringFromEPODBlendOp(psm->eBlendOpA).c_str() );
-	desc += stringWithFormat( (char*)"\n\tblend color: (%.2f, %.2f, %.2f, %.2f)", psm->pfBlendColour[0], psm->pfBlendColour[1], psm->pfBlendColour[2], psm->pfBlendColour[3] );
-	desc += stringWithFormat( (char*)", blend factor: (%.2f, %.2f, %.2f, %.2f)", psm->pfBlendFactor[0], psm->pfBlendFactor[1], psm->pfBlendFactor[2], psm->pfBlendFactor[3] );
-	desc += stringWithFormat( (char*)"\n\ttexture indices: (diffuse: %d", psm->nIdxTexDiffuse );
-	desc += stringWithFormat( (char*)", ambient: %d", psm->nIdxTexAmbient );
-	desc += stringWithFormat( (char*)", specular color: %d", psm->nIdxTexSpecularColour );
-	desc += stringWithFormat( (char*)", specular level: %d", psm->nIdxTexSpecularLevel );
-	desc += stringWithFormat( (char*)", bump: %d", psm->nIdxTexBump );
-	desc += stringWithFormat( (char*)", emissive: %d", psm->nIdxTexEmissive );
-	desc += stringWithFormat( (char*)", gloss: %d", psm->nIdxTexGlossiness );
-	desc += stringWithFormat( (char*)", opacity: %d", psm->nIdxTexOpacity );
-	desc += stringWithFormat( (char*)", reflection: %d", psm->nIdxTexReflection );
-	desc += stringWithFormat( (char*)", refraction: %d)", psm->nIdxTexRefraction );
-	desc += stringWithFormat( (char*)"\n\tflags: %d", psm->nFlags );
-	desc += stringWithFormat( (char*)", effect %s in file %s",
+	desc += CC3String::stringWithFormat( (char*)"SPODMaterial named %s", psm->pszName );
+	desc += CC3String::stringWithFormat( (char*)"\n\tambient: (%.2f, %.2f, %.2f)", psm->pfMatAmbient[0], psm->pfMatAmbient[1], psm->pfMatAmbient[2] );
+	desc += CC3String::stringWithFormat( (char*)", diffuse: (%.2f, %.2f, %.2f)", psm->pfMatDiffuse[0], psm->pfMatDiffuse[1], psm->pfMatDiffuse[2] );
+	desc += CC3String::stringWithFormat( (char*)", specular: (%.2f, %.2f, %.2f)", psm->pfMatSpecular[0], psm->pfMatSpecular[1], psm->pfMatSpecular[2] );
+	desc += CC3String::stringWithFormat( (char*)", opacity: %.2f", psm->fMatOpacity );
+	desc += CC3String::stringWithFormat( (char*)", shininess: %.2f", psm->fMatShininess );
+	desc += CC3String::stringWithFormat( (char*)"\n\tsrc RGB blend: %s", NSStringFromEPODBlendFunc(psm->eBlendSrcRGB).c_str() );
+	desc += CC3String::stringWithFormat( (char*)", src alpha blend: %s", NSStringFromEPODBlendFunc(psm->eBlendSrcA).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tdest RGB blend: %s", NSStringFromEPODBlendFunc(psm->eBlendDstRGB).c_str() );
+	desc += CC3String::stringWithFormat( (char*)", dest alpha blend: %s", NSStringFromEPODBlendFunc(psm->eBlendDstA).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\toperation RGB blend: %s", NSStringFromEPODBlendOp(psm->eBlendOpRGB).c_str() );
+	desc += CC3String::stringWithFormat( (char*)", operation alpha blend: %s", NSStringFromEPODBlendOp(psm->eBlendOpA).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tblend color: (%.2f, %.2f, %.2f, %.2f)", psm->pfBlendColour[0], psm->pfBlendColour[1], psm->pfBlendColour[2], psm->pfBlendColour[3] );
+	desc += CC3String::stringWithFormat( (char*)", blend factor: (%.2f, %.2f, %.2f, %.2f)", psm->pfBlendFactor[0], psm->pfBlendFactor[1], psm->pfBlendFactor[2], psm->pfBlendFactor[3] );
+	desc += CC3String::stringWithFormat( (char*)"\n\ttexture indices: (diffuse: %d", psm->nIdxTexDiffuse );
+	desc += CC3String::stringWithFormat( (char*)", ambient: %d", psm->nIdxTexAmbient );
+	desc += CC3String::stringWithFormat( (char*)", specular color: %d", psm->nIdxTexSpecularColour );
+	desc += CC3String::stringWithFormat( (char*)", specular level: %d", psm->nIdxTexSpecularLevel );
+	desc += CC3String::stringWithFormat( (char*)", bump: %d", psm->nIdxTexBump );
+	desc += CC3String::stringWithFormat( (char*)", emissive: %d", psm->nIdxTexEmissive );
+	desc += CC3String::stringWithFormat( (char*)", gloss: %d", psm->nIdxTexGlossiness );
+	desc += CC3String::stringWithFormat( (char*)", opacity: %d", psm->nIdxTexOpacity );
+	desc += CC3String::stringWithFormat( (char*)", reflection: %d", psm->nIdxTexReflection );
+	desc += CC3String::stringWithFormat( (char*)", refraction: %d)", psm->nIdxTexRefraction );
+	desc += CC3String::stringWithFormat( (char*)"\n\tflags: %d", psm->nFlags );
+	desc += CC3String::stringWithFormat( (char*)", effect %s in file %s",
 			(psm->pszEffectName ? psm->pszEffectName : "none"),
 			(psm->pszEffectFile ? psm->pszEffectFile : "none") );
 	
@@ -382,7 +382,7 @@ std::string NSStringFromEPODBlendFunc(GLuint ePODBlendFunc) {
 		case ePODBlendFunc_ONE_MINUS_CONSTANT_ALPHA:
 			return "ePODBlendFunc_ONE_MINUS_CONSTANT_ALPHA";
 		default:
-			return stringWithFormat( (char*)"unknown EPODBlendFunc (%d)", ePODBlendFunc );
+			return CC3String::stringWithFormat( (char*)"unknown EPODBlendFunc (%d)", ePODBlendFunc );
 	}
 }
 
@@ -399,52 +399,52 @@ std::string NSStringFromEPODBlendOp(GLuint ePODBlendOp) {
 		case ePODBlendOp_REVERSE_SUBTRACT:
 			return "ePODBlendOp_REVERSE_SUBTRACT";
 		default:
-			return stringWithFormat( (char*)"unknown EPODBlendOp (%d)", ePODBlendOp );
+			return CC3String::stringWithFormat( (char*)"unknown EPODBlendOp (%d)", ePODBlendOp );
 	}
 }
 
 std::string NSStringFromSPODTexture(PODStructPtr pSPODTexture) {
 	SPODTexture* pst = (SPODTexture*)pSPODTexture;
-	return stringWithFormat( (char*)"\nSPODTexture filename %s", pst->pszName );
+	return CC3String::stringWithFormat( (char*)"\nSPODTexture filename %s", pst->pszName );
 }
 
 std::string NSStringFromSPVRTPFXParserEffect(PFXClassPtr pSPVRTPFXParserEffect) {
 	SPVRTPFXParserEffect* pfxEffect = (SPVRTPFXParserEffect*)pSPVRTPFXParserEffect;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPVRTPFXParserEffect" );
-	desc += stringWithFormat( (char*)" named %s", pfxEffect->Name.c_str() );
-	desc += stringWithFormat( (char*)"\n\tvertex shader: %s", pfxEffect->VertexShaderName.c_str() );
-	desc += stringWithFormat( (char*)"\n\tfragment shader: %s", pfxEffect->FragmentShaderName.c_str() );
+	desc += CC3String::stringWithFormat( (char*)"SPVRTPFXParserEffect" );
+	desc += CC3String::stringWithFormat( (char*)" named %s", pfxEffect->Name.c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tvertex shader: %s", pfxEffect->VertexShaderName.c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tfragment shader: %s", pfxEffect->FragmentShaderName.c_str() );
 	
 	CPVRTArray<SPVRTPFXParserSemantic> attributes = pfxEffect->Attributes;
 	GLuint attrCount = attributes.GetSize();
-	desc += stringWithFormat( (char*)"\n\twith %d attributes:", attrCount );
+	desc += CC3String::stringWithFormat( (char*)"\n\twith %d attributes:", attrCount );
 	for(GLuint i = 0; i < attrCount; i++) {
-		desc += stringWithFormat( (char*)"\n\t\t%s:", NSStringFromSPVRTPFXParserSemantic(&attributes[i], "attribute").c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\t%s:", NSStringFromSPVRTPFXParserSemantic(&attributes[i], "attribute").c_str() );
 	}
 
 	CPVRTArray<SPVRTPFXParserSemantic> uniforms = pfxEffect->Uniforms;
 	GLuint uniformCount = uniforms.GetSize();
-	desc += stringWithFormat( (char*)"\n\twith %d uniforms:", uniformCount );
+	desc += CC3String::stringWithFormat( (char*)"\n\twith %d uniforms:", uniformCount );
 	for(GLuint i = 0; i < uniformCount; i++) {
-		desc += stringWithFormat( (char*)"\n\t\t%s:", NSStringFromSPVRTPFXParserSemantic(&uniforms[i], "uniform").c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\t%s:", NSStringFromSPVRTPFXParserSemantic(&uniforms[i], "uniform").c_str() );
 	}
 	
 	CPVRTArray<SPVRTPFXParserEffectTexture> textures = pfxEffect->Textures;
 	GLuint texCount = textures.GetSize();
-	desc += stringWithFormat( (char*)"\n\twith %d textures:", texCount );
+	desc += CC3String::stringWithFormat( (char*)"\n\twith %d textures:", texCount );
 	for(GLuint i = 0; i < texCount; i++) {
-		desc += stringWithFormat( (char*)"\n\t\t%s:", NSStringFromSPVRTPFXParserEffectTexture(&textures[i]).c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\t%s:", NSStringFromSPVRTPFXParserEffectTexture(&textures[i]).c_str() );
 	}
 	
 	CPVRTArray<SPVRTTargetPair> targets = pfxEffect->Targets;
 	GLuint targCount = targets.GetSize();
-	desc += stringWithFormat( (char*)"\n\twith %d targets:", targCount );
+	desc += CC3String::stringWithFormat( (char*)"\n\twith %d targets:", targCount );
 	for(GLuint i = 0; i < targCount; i++) {
-		desc += stringWithFormat( (char*)"\n\t\ttarget named %s of type %s", targets[i].TargetName.c_str(), targets[i].BufferType.c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n\t\ttarget named %s of type %s", targets[i].TargetName.c_str(), targets[i].BufferType.c_str() );
 	}
 
-	desc += stringWithFormat( (char*)"\n\tannotation: %s", pfxEffect->Annotation.c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tannotation: %s", pfxEffect->Annotation.c_str() );
 	return desc;
 }
 
@@ -452,10 +452,10 @@ std::string NSStringFromSPVRTPFXParserSemantic(PFXClassPtr pSPVRTPFXParserSemant
 {
 	SPVRTPFXParserSemantic* pfxSemantic = (SPVRTPFXParserSemantic*)pSPVRTPFXParserSemantic;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPVRTPFXParserSemantic" );
-	desc += stringWithFormat( (char*)" for GLSL %s %s", typeName.c_str(), pfxSemantic->pszName );
-	desc += stringWithFormat( (char*)" with semantic %s", pfxSemantic->pszValue );
-	desc += stringWithFormat( (char*)" at %d", pfxSemantic->nIdx );
+	desc += CC3String::stringWithFormat( (char*)"SPVRTPFXParserSemantic" );
+	desc += CC3String::stringWithFormat( (char*)" for GLSL %s %s", typeName.c_str(), pfxSemantic->pszName );
+	desc += CC3String::stringWithFormat( (char*)" with semantic %s", pfxSemantic->pszValue );
+	desc += CC3String::stringWithFormat( (char*)" at %d", pfxSemantic->nIdx );
 	return desc;
 }
 
@@ -463,9 +463,9 @@ std::string NSStringFromSPVRTPFXParserEffectTexture(PFXClassPtr pSPVRTPFXParserE
 {
 	SPVRTPFXParserEffectTexture* pfxTex = (SPVRTPFXParserEffectTexture*)pSPVRTPFXParserEffectTexture;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPVRTPFXParserEffectTexture" );
-	desc += stringWithFormat( (char*)" named %s", pfxTex->Name.c_str() );
-	desc += stringWithFormat( (char*)" in texture unit %d", pfxTex->nNumber );
+	desc += CC3String::stringWithFormat( (char*)"SPVRTPFXParserEffectTexture" );
+	desc += CC3String::stringWithFormat( (char*)" named %s", pfxTex->Name.c_str() );
+	desc += CC3String::stringWithFormat( (char*)" in texture unit %d", pfxTex->nNumber );
 	return desc;
 }
 
@@ -473,12 +473,12 @@ std::string NSStringFromSPVRTPFXParserShader(PFXClassPtr pSPVRTPFXParserShader)
 {
 	SPVRTPFXParserShader* pfxShader = (SPVRTPFXParserShader*)pSPVRTPFXParserShader;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPVRTPFXParserShader" );
-	desc += stringWithFormat( (char*)" named %s", pfxShader->Name.c_str() );
+	desc += CC3String::stringWithFormat( (char*)"SPVRTPFXParserShader" );
+	desc += CC3String::stringWithFormat( (char*)" named %s", pfxShader->Name.c_str() );
 	if (pfxShader->bUseFileName) {
-		desc += stringWithFormat( (char*)" from file %s", pfxShader->pszGLSLfile );
+		desc += CC3String::stringWithFormat( (char*)" from file %s", pfxShader->pszGLSLfile );
 	} else {
-		desc += stringWithFormat( (char*)" from embedded GLSL source code" );
+		desc += CC3String::stringWithFormat( (char*)" from embedded GLSL source code" );
 	}
 	return desc;
 }
@@ -487,16 +487,16 @@ std::string NSStringFromSPVRTPFXParserTexture(PFXClassPtr pSPVRTPFXParserTexture
 {
 	SPVRTPFXParserTexture* pfxTex = (SPVRTPFXParserTexture*)pSPVRTPFXParserTexture;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPVRTPFXParserTexture" );
-	desc += stringWithFormat( (char*)" named %s", pfxTex->Name.c_str() );
-	desc += stringWithFormat( (char*)" from file %s", pfxTex->FileName.c_str() );
-	desc += stringWithFormat( (char*)" wrap (S,T,R): (%s, %s, %s)", NSStringFromETextureWrap(pfxTex->nWrapS).c_str(),
+	desc += CC3String::stringWithFormat( (char*)"SPVRTPFXParserTexture" );
+	desc += CC3String::stringWithFormat( (char*)" named %s", pfxTex->Name.c_str() );
+	desc += CC3String::stringWithFormat( (char*)" from file %s", pfxTex->FileName.c_str() );
+	desc += CC3String::stringWithFormat( (char*)" wrap (S,T,R): (%s, %s, %s)", NSStringFromETextureWrap(pfxTex->nWrapS).c_str(),
 														NSStringFromETextureWrap(pfxTex->nWrapT).c_str(),
 														NSStringFromETextureWrap(pfxTex->nWrapR).c_str() );
-	desc += stringWithFormat( (char*)" min: %s", NSStringFromETextureFilter(pfxTex->nMin).c_str() );
-	desc += stringWithFormat( (char*)" mag: %s", NSStringFromETextureFilter(pfxTex->nMag).c_str() );
-	desc += stringWithFormat( (char*)" mipmap: %s", NSStringFromETextureFilter(pfxTex->nMIP).c_str() );
-	desc += stringWithFormat( (char*)" is render target: %s", pfxTex->bRenderToTexture ? "true" : "false" );
+	desc += CC3String::stringWithFormat( (char*)" min: %s", NSStringFromETextureFilter(pfxTex->nMin).c_str() );
+	desc += CC3String::stringWithFormat( (char*)" mag: %s", NSStringFromETextureFilter(pfxTex->nMag).c_str() );
+	desc += CC3String::stringWithFormat( (char*)" mipmap: %s", NSStringFromETextureFilter(pfxTex->nMIP).c_str() );
+	desc += CC3String::stringWithFormat( (char*)" is render target: %s", pfxTex->bRenderToTexture ? "true" : "false" );
 	return desc;
 }
 
@@ -504,8 +504,8 @@ std::string NSStringFromSPVRTPFXRenderPass(PFXClassPtr pSPVRTPFXRenderPass)
 {
 	SPVRTPFXRenderPass* pfxPass = (SPVRTPFXRenderPass*)pSPVRTPFXRenderPass;
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"SPVRTPFXRenderPass" );
-	desc += stringWithFormat( (char*)" to texture %s", pfxPass->pTexture->Name.c_str() );
+	desc += CC3String::stringWithFormat( (char*)"SPVRTPFXRenderPass" );
+	desc += CC3String::stringWithFormat( (char*)" to texture %s", pfxPass->pTexture->Name.c_str() );
 	return desc;
 }
 
@@ -530,7 +530,7 @@ std::string NSStringFromETextureWrap(GLuint eTextureWrap)
 		case eWrap_Repeat:
 			return "eWrap_Repeat";
 		default:
-			return stringWithFormat( (char*)"unknown ETextureWrap (%d)", eTextureWrap );
+			return CC3String::stringWithFormat( (char*)"unknown ETextureWrap (%d)", eTextureWrap );
 	}
 }
 
@@ -592,7 +592,7 @@ std::string NSStringFromETextureFilter(GLuint eTextureFilter)
 		case eFilter_None:
 			return "eFilter_None";
 		default:
-			return stringWithFormat( (char*)"unknown ETextureFilter (%d)", eTextureFilter );
+			return CC3String::stringWithFormat( (char*)"unknown ETextureFilter (%d)", eTextureFilter );
 	}
 }
 

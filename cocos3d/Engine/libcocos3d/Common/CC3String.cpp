@@ -245,4 +245,19 @@ bool CC3String::startsWith( const char* str, const char* with )
 	return true;
 }
 
+void CC3String::stringWithFormat( std::string& sDest, char* szFormat, ... )
+{
+	char buffer[512];  // large buffers
+	GetVarargs(buffer, 512, szFormat);
+	sDest = buffer;
+}
+
+std::string CC3String::stringWithFormat( char* szFormat, ... )
+{
+	char buffer[512];  // large buffers
+	GetVarargs(buffer, 512, szFormat);
+	std::string sDest = buffer;
+	return sDest;
+}
+
 NS_COCOS3D_END

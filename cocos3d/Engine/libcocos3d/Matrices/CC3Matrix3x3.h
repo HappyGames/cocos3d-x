@@ -109,7 +109,7 @@ typedef union
 static inline std::string stringFromCC3Matrix3x3( const CC3Matrix3x3* mtxPtr )
 {
 	std::string sDesc = "";
-	stringWithFormat( sDesc, (char*)"\n\t[%.6f, %.6f, %.6f"
+	CC3String::stringWithFormat( sDesc, (char*)"\n\t[%.6f, %.6f, %.6f"
 		"\n\t[%.6f, %.6f, %.6f"
 		"\n\t %.6f, %.6f, %.6f"
 		"\n\t %.6f, %.6f, %.6f]"
@@ -226,7 +226,7 @@ CC3Quaternion CC3Matrix3x3ExtractQuaternion(const CC3Matrix3x3* mtx);
 /** Extracts and returns the 'forward' direction vector from the rotation component of the specified matrix. */
 static inline CC3Vector CC3Matrix3x3ExtractForwardDirection(const CC3Matrix3x3* mtx) 
 {
-	return CC3VectorNegate(mtx->col3);
+	return mtx->col3.negate();
 }
 
 /** Extracts and returns the 'up' direction vector from the rotation component of the specified matrix. */
@@ -304,9 +304,9 @@ static inline void CC3Matrix3x3RotateByQuaternion(CC3Matrix3x3* mtx, CC3Quaterni
  */
 static inline void CC3Matrix3x3ScaleBy(CC3Matrix3x3* mtx, CC3Vector aScale) 
 {
-	mtx->col1 = CC3VectorScaleUniform(mtx->col1, aScale.x);
-	mtx->col2 = CC3VectorScaleUniform(mtx->col2, aScale.y);
-	mtx->col3 = CC3VectorScaleUniform(mtx->col3, aScale.z);
+	mtx->col1 = mtx->col1.scaleUniform( aScale.x );
+	mtx->col2 = mtx->col2.scaleUniform( aScale.y );
+	mtx->col3 = mtx->col3.scaleUniform( aScale.z );
 }
 
 /**

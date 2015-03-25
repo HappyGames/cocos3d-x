@@ -70,7 +70,7 @@ std::string Cocos3d::version()
 	vBuild = vFull & 0xFF;
 
 	std::string ver;
-	stringWithFormat(ver, (char*)"Cocos3D v%d.%d.%d", vMajor, vMinor, vBuild);
+	CC3String::stringWithFormat(ver, (char*)"Cocos3D v%d.%d.%d", vMajor, vMinor, vBuild);
 
 	return ver;
 }
@@ -86,13 +86,13 @@ CC3Vector4 CC3RayIntersectionWithPlane(CC3Ray ray, CC3Plane plane)
 	CC3Vector pn = CC3PlaneNormal(plane);
 	CC3Vector rs = ray.startLocation;
 	CC3Vector rd = ray.direction;
-	GLfloat dirDotNorm = CC3VectorDot(rd, pn);
+	GLfloat dirDotNorm = rd.dot( pn );
 
 	if (dirDotNorm == 0.0f) 
 		return kCC3Vector4Null;		// Ray is parallel to plane, so no intersection
 
-	GLfloat dirDist = -(CC3VectorDot(rs, pn) + plane.d) / CC3VectorDot(rd, pn);
-	CC3Vector loc = CC3VectorAdd(rs, CC3VectorScaleUniform(rd, dirDist));
+	GLfloat dirDist = -(rs.dot( pn ) + plane.d) / rd.dot( pn );
+	CC3Vector loc = rs.add( rd.scaleUniform( dirDist ) );
 	return CC3Vector4FromCC3Vector(loc, dirDist);
 }
 
@@ -107,16 +107,16 @@ CC3Vector CC3TriplePlaneIntersection(CC3Plane p1, CC3Plane p2, CC3Plane p3)
 	CC3Vector n2 = CC3PlaneNormal(p2);
 	CC3Vector n3 = CC3PlaneNormal(p3);
 
-	GLfloat n1xn2dotn3 = CC3VectorDot(CC3VectorCross(n1, n2), n3);
-	if (n1xn2dotn3 == 0.0f) return kCC3VectorNull;
+	GLfloat n1xn2dotn3 = n1.cross(n2).dot( n3 );
+	if (n1xn2dotn3 == 0.0f) return CC3Vector::kCC3VectorNull;
 
-	CC3Vector d1n2xn3 = CC3VectorScaleUniform(CC3VectorCross(n2, n3), p1.d);
-	CC3Vector d2n3xn1 = CC3VectorScaleUniform(CC3VectorCross(n3, n1), p2.d);
-	CC3Vector d3n1xn2 = CC3VectorScaleUniform(CC3VectorCross(n1, n2), p3.d);
+	CC3Vector d1n2xn3 = n2.cross( n3 ).scaleUniform( p1.d );
+	CC3Vector d2n3xn1 = n3.cross( n1 ).scaleUniform( p2.d );
+	CC3Vector d3n1xn2 = n1.cross( n2 ).scaleUniform( p3.d );
 
-	CC3Vector sum = CC3VectorAdd(CC3VectorAdd(d1n2xn3, d2n3xn1), d3n1xn2);
+	CC3Vector sum = d1n2xn3.add(d2n3xn1).add(d3n1xn2);
 
-	return CC3VectorScaleUniform(sum, (-1.0f / n1xn2dotn3));
+	return sum.scaleUniform(-1.0f / n1xn2dotn3);
 }
 
 CC3Box CC3BoxEngulfLocation(CC3Box bb, CC3Vector aLoc) 
@@ -144,16 +144,16 @@ CC3BarycentricWeights CC3FaceBarycentricWeights(CC3Face face, CC3Vector aLocatio
 	CC3Vector* c = face.vertices;
 
 	// Create basis vectors using the first face corner (index 0) as the origin
-	CC3Vector vp = CC3VectorDifference(aLocation, c[0]);
-	CC3Vector v1 = CC3VectorDifference(c[1], c[0]);
-	CC3Vector v2 = CC3VectorDifference(c[2], c[0]);
+	CC3Vector vp = aLocation.difference( c[0] );
+	CC3Vector v1 = c[1].difference( c[0] );
+	CC3Vector v2 = c[2].difference( c[0] );
 
 	// Create dot products required to solve the two equations and two unknowns
-	GLfloat dot11 = CC3VectorDot(v1, v1);
-	GLfloat dot12 = CC3VectorDot(v1, v2);
-	GLfloat dot1p = CC3VectorDot(v1, vp);
-	GLfloat dot22 = CC3VectorDot(v2, v2);
-	GLfloat dot2p = CC3VectorDot(v2, vp);
+	GLfloat dot11 = v1.dot( v1 );
+	GLfloat dot12 = v1.dot( v2 );
+	GLfloat dot1p = v1.dot( vp );
+	GLfloat dot22 = v2.dot( v2 );
+	GLfloat dot2p = v2.dot( vp );
 
 	GLfloat invDenom = 1.0f / (dot11 * dot22 - dot12 * dot12);	// Denominator
 
@@ -181,11 +181,11 @@ void CC3VectorOrthonormalize(CC3Vector* vectors, GLuint vectorCount)
 		CC3Vector cleanedCurrVector = currVector;
 		for (GLuint prevIdx = 0; prevIdx < currIdx; prevIdx++) {
 			CC3Vector prevVector = vectors[prevIdx];
-			CC3Vector projPrevVector = CC3VectorScaleUniform(prevVector, CC3VectorDot(currVector, prevVector));
-			cleanedCurrVector = CC3VectorDifference(cleanedCurrVector, projPrevVector);
+			CC3Vector projPrevVector = prevVector.scaleUniform( currVector.dot(prevVector) );
+			cleanedCurrVector = cleanedCurrVector.difference( projPrevVector );
 		}
 		// Replace the current vector with its orthonormalized version
-		vectors[currIdx] = CC3VectorNormalize(cleanedCurrVector);
+		vectors[currIdx] = cleanedCurrVector.normalize();
 	}
 
 	//LogTrace(@"Vectors AFTER orthonormalization: %@", NSStringFromCC3Vectors(vectors, vectorCount));
@@ -223,14 +223,14 @@ CC3Vector4 CC3RayIntersectionWithBoxSide(CC3Ray aRay, CC3Box bb, CC3Vector sideN
 
 CC3Vector  CC3RayIntersectionWithBox(CC3Ray aRay, CC3Box bb) 
 {
-	if (CC3BoxIsNull(bb)) return kCC3VectorNull;	// Short-circuit null bounding box
+	if (CC3BoxIsNull(bb)) return CC3Vector::kCC3VectorNull;	// Short-circuit null bounding box
 	CC3Vector4 closestHit = kCC3Vector4Null;
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, kCC3VectorUnitXPositive, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, kCC3VectorUnitXNegative, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, kCC3VectorUnitYPositive, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, kCC3VectorUnitYNegative, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, kCC3VectorUnitZPositive, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, kCC3VectorUnitZNegative, closestHit);
+	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitXPositive, closestHit);
+	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitXNegative, closestHit);
+	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitYPositive, closestHit);
+	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitYNegative, closestHit);
+	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitZPositive, closestHit);
+	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitZNegative, closestHit);
 	return closestHit.v;
 }
 
@@ -239,7 +239,7 @@ CC3Vector CC3RayIntersectionWithSphere(CC3Ray aRay, CC3Sphere aSphere)
 {
 	// Retrieve the quadratic equation that describes the points of interesection.
 	CC3Plane eqn = CC3RaySphereIntersectionEquation(aRay, aSphere);
-	if (eqn.d < 0.0f) return kCC3VectorNull;	// No intersection if discriminant is negative.
+	if (eqn.d < 0.0f) return CC3Vector::kCC3VectorNull;	// No intersection if discriminant is negative.
 
 	// There are two roots of the quadratic equation: ((-b +/- sqrt(D)) / 2a),
 	// where D is the discriminant (b*b - 4ac). Get the square root of the
@@ -257,12 +257,12 @@ CC3Vector CC3RayIntersectionWithSphere(CC3Ray aRay, CC3Sphere aSphere)
 	// If t is positive, the corresponding intersection location is on the ray.
 	// Find that location on the ray as: p = s + tv and return it.
 	if (t >= 0.0f) {
-		CC3Vector tv = CC3VectorScaleUniform(aRay.direction, t);
-		return CC3VectorAdd(aRay.startLocation, tv);
+		CC3Vector tv = aRay.direction.scaleUniform( t );
+		return aRay.startLocation.add( tv );
 	}
 
 	// Both intersection locations are behind the startLocation of the ray
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 
@@ -286,31 +286,31 @@ CC3Sphere CC3SphereUnion(CC3Sphere s1, CC3Sphere s2)
 	// This comparison is performed twice, once in each direction of the line.
 
 	// Unit vector between the centers
-	uc = CC3VectorNormalize(CC3VectorDifference(s2.center, s1.center));
+	uc = s2.center.difference(s1.center).normalize();
 
 	// The location midpoint between the centers. This is used as an origin
 	// for comparing distances along the line that intersects both centers.
-	mc = CC3VectorAverage(s1.center, s2.center);
+	mc = s1.center.average( s2.center );
 
 	// Calculate where each sphere intersects the line in the direction of the unit
 	// vector between the centers. Then take the intersection point that is farther
 	// from the midpoint along this line as the foward endpoint.
-	is1 = CC3VectorAdd(s1.center, CC3VectorScaleUniform(uc, s1.radius));
-	is2 = CC3VectorAdd(s2.center, CC3VectorScaleUniform(uc, s2.radius));
-	epF = (CC3VectorDistanceSquared(is1, mc) > CC3VectorDistanceSquared(is2, mc)) ? is1 : is2;
+	is1 = s1.center.add( uc.scaleUniform(s1.radius) );
+	is2 = s2.center.add( uc.scaleUniform(s2.radius) );
+	epF = ( is1.distanceSquared(mc) > is2.distanceSquared( mc ) ) ? is1 : is2;
 
 	// Calculate where each sphere intersects the line in the opposite direction of
 	// the unit vector between the centers. Then take the intersection point that is
 	// farther from the midpoint along this line as the backward endpoint.
-	is1 = CC3VectorDifference(s1.center, CC3VectorScaleUniform(uc, s1.radius));
-	is2 = CC3VectorDifference(s2.center, CC3VectorScaleUniform(uc, s2.radius));
-	epB = (CC3VectorDistanceSquared(is1, mc) > CC3VectorDistanceSquared(is2, mc)) ? is1 : is2;
+	is1 = s1.center.difference( uc.scaleUniform( s1.radius ) );
+	is2 = s2.center.difference( uc.scaleUniform( s2.radius ) );
+	epB = ( is1.distanceSquared( mc ) > is2.distanceSquared( mc ) ) ? is1 : is2;
 
 	// The resulting union sphere has a center at the midpoint between the two endpoints,
 	// and a radius that is half the distance between the two endpoints.
 	CC3Sphere rslt;
-	rslt.center = CC3VectorAverage(epF, epB);
-	rslt.radius = CC3VectorDistance(epF, epB) * 0.5f;
+	rslt.center = epF.average( epB );
+	rslt.radius = epF.distance( epB ) * 0.5f;
 	return rslt;
 }
 
@@ -319,12 +319,12 @@ CC3Plane CC3RaySphereIntersectionEquation(CC3Ray aRay, CC3Sphere aSphere)
 {
 	// The quadratic intersection equation assumes the sphere is at the origin,
 	// so translate the ray to the sphere's reference frame.
-	CC3Vector rayStart = CC3VectorDifference(aRay.startLocation, aSphere.center);
+	CC3Vector rayStart = aRay.startLocation.difference( aSphere.center );
 
 	// Calculate the coefficients of the quadratic intersection equation
-	GLfloat a = CC3VectorLengthSquared(aRay.direction);
-	GLfloat b = 2.0f * CC3VectorDot(rayStart, aRay.direction);
-	GLfloat c = CC3VectorLengthSquared(rayStart) - (aSphere.radius * aSphere.radius);
+	GLfloat a = aRay.direction.lengthSquared();
+	GLfloat b = 2.0f * rayStart.dot( aRay.direction );
+	GLfloat c = rayStart.lengthSquared() - (aSphere.radius * aSphere.radius);
 
 	// Calculate the discriminant of the quadratic solution
 	GLfloat d = (b * b) - (4.0f * a * c);

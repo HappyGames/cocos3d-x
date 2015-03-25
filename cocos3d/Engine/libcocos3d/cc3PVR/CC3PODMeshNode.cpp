@@ -126,7 +126,7 @@ void CC3PODMeshNode::setMaterial( CC3PODMaterial* aMaterial )
 
 std::string CC3PODMeshNode::description()
 {
-	return stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
+	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
 CC3PODMeshNode* CC3PODMeshNode::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )

@@ -142,7 +142,7 @@ CC3Vector4 CC3PODLight::getGlobalHomogeneousPosition()
 
 std::string CC3PODLight::description()
 {
-	return stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
+	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
 CC3PODLight* CC3PODLight::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )

@@ -63,15 +63,15 @@ CC3Vector CC3TextureUnit::getLightDirection()
 			break;
 	}
 	// Convert half-scaled vector between 0.0 and 1.0 to range +/- 1.0.
-	return CC3VectorDifference(CC3VectorScaleUniform(hv, 2.0f), kCC3VectorUnitCube);
+	return hv.scaleUniform(2.0f).difference(CC3Vector::kCC3VectorUnitCube);
 }
 
 void CC3TextureUnit::setLightDirection( const CC3Vector& aDirection )
 {
 	CC3Vector direction = aDirection;
 	// Normalize direction, then half-shift to move value from +/-1.0 to between 0.0 and 1.0
-	direction = CC3VectorNormalize(aDirection);
-	CC3Vector hv = CC3VectorAverage(direction, kCC3VectorUnitCube);
+	direction = aDirection.normalize();
+	CC3Vector hv = direction.average(CC3Vector::kCC3VectorUnitCube);
 	
 	// Set constantColor from normal direction, according to RGB <-> normal mapping
 	switch (_rgbNormalMap) 

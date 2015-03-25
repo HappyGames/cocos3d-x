@@ -696,7 +696,7 @@ CC3Vector CC3Material::getLightDirection()
 		}
 	}
 	
-	return kCC3VectorZero;
+	return CC3Vector::kCC3VectorZero;
 }
 
 void CC3Material::setLightDirection( const CC3Vector& aDirection )

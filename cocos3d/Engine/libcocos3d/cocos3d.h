@@ -38,6 +38,7 @@
 #include "Common/LogManager.h"
 #include "Common/CC3CC2Extensions.h"
 #include "Common/CC3Math.h"
+#include "Common/CC3Vector.h"
 #include "Common/CC3Foundation.h"
 
 /// matrices

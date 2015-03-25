@@ -200,7 +200,7 @@ void CC3Texture::setTextureUnit( CC3TextureUnit* textureUnit )
 
 }
 
-CC3Vector CC3Texture::getLightDirection() { return kCC3VectorZero; }
+CC3Vector CC3Texture::getLightDirection() { return CC3Vector::kCC3VectorZero; }
 
 void CC3Texture::setLightDirection( const CC3Vector& aDirection )
 {
@@ -1902,7 +1902,7 @@ void CC3TextureUnitTexture::resizeTo( const CC3IntSize& size )
 
 CC3Vector CC3TextureUnitTexture::getLightDirection()
 {
-	return _textureUnit ? _textureUnit->getLightDirection() : kCC3VectorZero; 
+	return _textureUnit ? _textureUnit->getLightDirection() : CC3Vector::kCC3VectorZero; 
 }
 
 void CC3TextureUnitTexture::setLightDirection( const CC3Vector& aDirection )
@@ -2534,12 +2534,12 @@ bool CC3TextureCube::loadFromFilePattern( const std::string& aFilePathPattern )
 	if ( m_sName.empty() ) 
 		setName( textureNameFromFilePath(aFilePathPattern) );
 
-	return loadFromFiles( stringWithFormat( (char*)aFilePathPattern.c_str(), "PosX" ),
-						  stringWithFormat( (char*)aFilePathPattern.c_str(), "NegX" ),
-						  stringWithFormat( (char*)aFilePathPattern.c_str(), "PosY" ),
-						  stringWithFormat( (char*)aFilePathPattern.c_str(), "NegY" ),
-						  stringWithFormat( (char*)aFilePathPattern.c_str(), "PosZ" ),
-						  stringWithFormat( (char*)aFilePathPattern.c_str(), "NegZ" ) );
+	return loadFromFiles( CC3String::stringWithFormat( (char*)aFilePathPattern.c_str(), "PosX" ),
+						  CC3String::stringWithFormat( (char*)aFilePathPattern.c_str(), "NegX" ),
+						  CC3String::stringWithFormat( (char*)aFilePathPattern.c_str(), "PosY" ),
+						  CC3String::stringWithFormat( (char*)aFilePathPattern.c_str(), "NegY" ),
+						  CC3String::stringWithFormat( (char*)aFilePathPattern.c_str(), "PosZ" ),
+						  CC3String::stringWithFormat( (char*)aFilePathPattern.c_str(), "NegZ" ) );
 }
 
 GLuint CC3TextureCube::getTextureUnitFromVisitor( CC3NodeDrawingVisitor* visitor )
@@ -2651,7 +2651,7 @@ bool CC3TextureCube::initCubeColoredForAxes()
 
 std::string CC3TextureCube::constructorDescription()
 {
-	return stringWithFormat( (char*)"CC3TextureCube textureCubeFromFilePattern: \"%s\"];", getName().c_str() );
+	return CC3String::stringWithFormat( (char*)"CC3TextureCube textureCubeFromFilePattern: \"%s\"];", getName().c_str() );
 }
 
 NS_COCOS3D_END

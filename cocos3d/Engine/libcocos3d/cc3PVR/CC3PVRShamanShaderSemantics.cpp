@@ -43,7 +43,7 @@ std::string NSStringFromCC3PVRShamanSemantic(CC3PVRShamanSemantic semantic)
 			
 		case kCC3PVRShamanSemanticAppBase: return "kCC3PVRShamanSemanticAppBase";
 		default: 
-			return stringWithFormat( (char*)"Unknown PVRShaman semantic (%d)", semantic );
+			return CC3String::stringWithFormat( (char*)"Unknown PVRShaman semantic (%d)", semantic );
 	}
 }
 
