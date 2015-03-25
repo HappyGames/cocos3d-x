@@ -1321,11 +1321,12 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 			return true;
 
 		// PARTICLES ------------
-		case kCC3SemanticPointSize:
+		case kCC3SemanticPointSize: {
 			emitter = dynamic_cast<CC3PointParticleEmitter*>(visitor->getCurrentNode());
 			isPtEmitter = (emitter != NULL);
 			uniform->setFloat( isPtEmitter ? emitter->getNormalizedParticleSize() : 0.0f );
 			return true;
+		}
 		case kCC3SemanticPointSizeAttenuation: {
 			emitter = dynamic_cast<CC3PointParticleEmitter*>(visitor->getCurrentNode());
 			isPtEmitter = (emitter != NULL);
@@ -1335,18 +1336,20 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 			uniform->setVector( *(CC3Vector*)&ac );
 			return true;
 		}
-		case kCC3SemanticPointSizeMinimum:
+		case kCC3SemanticPointSizeMinimum: {
 			emitter = dynamic_cast<CC3PointParticleEmitter*>(visitor->getCurrentNode());
 			isPtEmitter = (emitter != NULL);
 			uniform->setFloat( isPtEmitter ? emitter->getNormalizedParticleSizeMinimum() : 0.0f );
 			return true;
-		case kCC3SemanticPointSizeMaximum:
+		}
+		case kCC3SemanticPointSizeMaximum: {
 			emitter = dynamic_cast<CC3PointParticleEmitter*>(visitor->getCurrentNode());
 			isPtEmitter = (emitter != NULL);
 			maximumPointSize = visitor->getGL()->value_GL_MAX_POINT_SIZE;
 			maximumPointSize = CLAMP( maximumPointSize, emitter->getNormalizedParticleSizeMaximum(), maximumPointSize );
 			uniform->setFloat( isPtEmitter ? maximumPointSize : 0.0f );
 			return true;
+		}
 		case kCC3SemanticPointSpritesIsEnabled:
 			uniform->setBoolean( visitor->getCurrentMeshNode()->isDrawingPointSprites() );
 			return true;

@@ -103,9 +103,6 @@
 #include "Materials/CC3TextureUnit.h"
 
 /// cc3PVR
-//#include "cc3PVR/PVRT/OGLES/PVRTglesExt.h"
-//#include "cc3PVR/PVRT/OGLES2/PVRTgles2Ext.h"
-
 #include "cc3PVR/CC3PVRTPFXParser.h"
 #include "cc3PVR/CC3PFXResource.h"
 #include "cc3PVR/CC3PODResource.h"

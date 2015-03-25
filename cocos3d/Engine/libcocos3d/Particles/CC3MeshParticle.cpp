@@ -471,7 +471,6 @@ void CC3MeshParticle::translateVertices()
  */
 void CC3MeshParticle::fullyTransformVertices()
 {
-	CC3_TRACE("CC3MeshParticle transforming vertices");
 	bool hasNorms = hasVertexNormals();
 	GLuint vtxCount = getVertexCount();
 	
@@ -510,21 +509,19 @@ void CC3MeshParticle::applyLocalTransformsTo( CC3Matrix4x3* mtx )
  */
 void CC3MeshParticle::prepareForTransform( CC3Matrix4x3* mtx )
 {
-	CC3Matrix4x3PopulateIdentity(mtx);
+	CC3Matrix4x3PopulateIdentity( mtx );
 }
 
 /** Template method that applies the local location property to the specified matrix. */
 void CC3MeshParticle::applyTranslationTo( CC3Matrix4x3* mtx )
 {
-	CC3Matrix4x3TranslateBy(mtx, getLocation());
-	CC3_TRACE("[ptc]CC3MeshParticle translated to %s", stringFromCC3Vector(getLocation()).c_str());
+	CC3Matrix4x3TranslateBy( mtx, getLocation() );
 }
 
 /** Template method that applies the rotation in the rotator to the specified transform matrix. */
 void CC3MeshParticle::applyRotationTo( CC3Matrix4x3* mtx )
 {
 	_rotator->getRotationMatrix()->multiplyIntoCC3Matrix4x3( mtx );
-	CC3_TRACE("CC3MeshParticle rotated to %s", stringFromCC3Vector(_rotator->getRotation()).c_str());
 }
 
 void CC3MeshParticle::markColorDirty()

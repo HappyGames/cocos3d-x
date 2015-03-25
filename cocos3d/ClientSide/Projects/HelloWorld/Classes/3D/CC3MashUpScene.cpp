@@ -834,7 +834,7 @@ void CC3MashUpScene::addTeapotAndSatellite()
 	 // For effect, also rotate the satellite around its own axes.
 	_teapotSatellite->runAction( CC3ActionRotateForever::actionWithRotationRate( cc3v(30.0, 0.0, 45.0) ) );
 
-	getActiveCamera()->setTarget( _teapotTextured );
+//	getActiveCamera()->setTarget( _teapotTextured );
 }
 
 void CC3MashUpScene::addSkyBox()

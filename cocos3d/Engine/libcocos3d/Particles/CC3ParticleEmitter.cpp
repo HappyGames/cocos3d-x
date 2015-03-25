@@ -275,20 +275,19 @@ void CC3ParticleEmitter::processUpdateBeforeTransform( CC3NodeUpdatingVisitor* v
 void CC3ParticleEmitter::updateParticlesBeforeTransform( CC3NodeUpdatingVisitor* visitor )
 {
 	GLuint i = 0;
-	while (i < _particleCount) 
+	while ( i < _particleCount ) 
 	{
 		CC3Particle* p = (CC3Particle*)_particles->objectAtIndex( i );
 		
 		p->updateBeforeTransform( visitor );
 		
-		if (p->isAlive())
+		if ( p->isAlive() )
 		{
 			i++;			// Move on to next particle
 		} 
 		else 
 		{
 			// Remove the particle from active use and don't increment iterator.
-			// CCLOG_TRACE("[ptc]Expiring %s", p->fullDescription().c_str() );
 			finalizeAndRemoveParticle( p, i );
 		}
 	}
@@ -297,7 +296,7 @@ void CC3ParticleEmitter::updateParticlesBeforeTransform( CC3NodeUpdatingVisitor*
 /** Template method that checks if its time to quit emitting. */
 void CC3ParticleEmitter::checkDuration( GLfloat dt )
 {
-	if (_isEmitting && (_emissionDuration != kCC3ParticleInfiniteInterval)) 
+	if ( _isEmitting && (_emissionDuration != kCC3ParticleInfiniteInterval) ) 
 	{
 		_elapsedTime += dt;
 		if (_elapsedTime >= _emissionDuration) 
@@ -325,7 +324,7 @@ void CC3ParticleEmitter::checkEmission( GLfloat dt )
 GLuint CC3ParticleEmitter::emitParticles( GLuint count )
 {
 	GLuint emitCount = 0;
-	for (GLuint i = 0; i < count; i++) 
+	for ( GLuint i = 0; i < count; i++ ) 
 	{
 		if ( emitParticle() ) 
 			emitCount++;
@@ -343,16 +342,12 @@ CC3Particle* CC3ParticleEmitter::emitParticle()
 /** Template method to create a new particle, or reuse an existing expired particle. */
 CC3Particle* CC3ParticleEmitter::acquireParticle()
 {
-	if (_particleCount < _particles->count()) 
+	if ( _particleCount < _particles->count() ) 
 	{
-//		CCLOG_TRACE("[ptc]reusing particle at %d", _particleCount);
 		return (CC3Particle*)_particles->objectAtIndex( _particleCount );
 	}
-	else 
-	{
-//		CCLOG_TRACE("[ptc]creating new particle at %d", _particleCount);
-		return makeParticle();
-	}
+		
+	return makeParticle();
 }
 
 bool CC3ParticleEmitter::emitParticle( CC3Particle* aParticle )

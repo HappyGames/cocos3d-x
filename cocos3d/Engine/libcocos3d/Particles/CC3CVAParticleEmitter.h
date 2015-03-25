@@ -44,22 +44,18 @@ class CC3CommonVertexArrayParticleEmitter : public CC3ParticleEmitter
 	DECLARE_SUPER( CC3ParticleEmitter );
 public:
 	void						initWithTag( GLuint aTag, const std::string& aName );
-	
 	void						populateFrom( CC3CommonVertexArrayParticleEmitter* another );
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 	std::string					fullDescription();
+
 	// Overridden to retain all vertex content in memory and dynamically write to GL buffer.
 	void						setVertexContentTypes( CC3VertexContent vtxContentTypes );
 	void						setVertexLocation( const CC3Vector& aLocation, GLuint vtxIndex );
-
 	void						setVertexHomogeneousLocation( const CC3Vector4& aLocation, GLuint vtxIndex );
-
 	void						setVertexNormal( const CC3Vector& aNormal, GLuint vtxIndex );
-
 	void						setVertexColor4F( const ccColor4F& aColor, GLuint vtxIndex );
 	void						setVertexColor4B( const ccColor4B& aColor, GLuint vtxIndex );
-
 	void						setVertexTexCoord2F( const ccTex2F& aTex2F, GLuint texUnit, GLuint vtxIndex );
 
 	/** Ensures space has been allocated for the specified particle. */
