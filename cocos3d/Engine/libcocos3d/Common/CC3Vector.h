@@ -296,7 +296,9 @@ inline float CC3Vector::lengthSquared() const
 
 inline float CC3Vector::length() const
 {
-	return sqrtf( lengthSquared() );
+	// Avoid expensive sqrt calc if vector is unit length or zero
+	float lenSq = lengthSquared();
+	return (lenSq == 1.0f || lenSq == 0.0f) ? lenSq : sqrtf(lenSq);
 }
 
 inline CC3Vector CC3Vector::normalize()

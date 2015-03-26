@@ -53,7 +53,7 @@ NS_COCOS3D_BEGIN
 #define CC3DegToRad(D)			((D) * kCC3DegToRadFactor)
 #define CC3RadToDeg(R)			((R) * kCC3RadToDegFactor)
 
-#define kCC3FloatEpsilon		0.00000001f
+#define kCC3FloatEpsilon		0.00001f
 
 /**
  * Returns the logical exclusive-OR of the specified two expressions.
@@ -82,7 +82,7 @@ NS_COCOS3D_BEGIN
 #endif
 
 #ifndef FEQUAL
-#define FEQUAL( a, b ) (fabsf(((a)-(b))) <= kCC3FloatEpsilon)
+#define FEQUAL( a, b ) ( (a)==(b) )
 #endif
 
 #define  CC3WeightedAverage WAVG
