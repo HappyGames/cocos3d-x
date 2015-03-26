@@ -315,15 +315,6 @@ static inline bool CC3IntVector4sAreEqual(CC3IntVector4 v1, CC3IntVector4 v2)
 
 typedef CC3Vector4 CC3Quaternion;
 
-/** A CC3Vector4 of zero length at the origin. */
-static const CC3Vector4 kCC3Vector4Zero ( CC3Vector(0.0, 0.0, 0.0), 0.0 );
-
-/** A CC3Vector4 location at the origin. As a definite location, the W component is 1.0. */
-static const CC3Vector4 kCC3Vector4ZeroLocation ( CC3Vector(0.0, 0.0, 0.0), 1.0 );
-
-/** The null CC3Vector4. It cannot be drawn, but is useful for marking an uninitialized vector. */
-static const CC3Vector4 kCC3Vector4Null ( CC3Vector::kCC3VectorNull, INFINITY );
-
 static inline std::string stringFromCC3Quaternion( const CC3Quaternion& quat )
 {
 	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f, %.3f)", quat.x, quat.y, quat.z );

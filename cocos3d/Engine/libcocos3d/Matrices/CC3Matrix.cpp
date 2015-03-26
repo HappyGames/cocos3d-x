@@ -604,7 +604,7 @@ CC3Vector4 CC3Matrix::transformHomogeneousVector( CC3Vector4 aVector )
 		return aVector;
 
 	CCAssert(false, "the transformHomogeneousVector: method is not implemented");
-	return kCC3Vector4Null;
+	return CC3Vector4::kCC3Vector4Null;
 }
 
 // Short-circuit if this is an identity matrix

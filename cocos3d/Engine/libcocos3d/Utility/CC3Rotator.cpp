@@ -372,7 +372,7 @@ void CC3MutableRotator::initOnRotationMatrix( CC3Matrix* aMatrix )
 	{
 		m_orthonormalizationStartColumnNumber = 1;
 		m_incrementalRotationCount = 0;
-		m_rotationVector = kCC3Vector4Zero;
+		m_rotationVector = CC3Vector4::kCC3Vector4Zero;
 		setRotationMatrix( aMatrix );		// also sets rotation type
 	}
 }

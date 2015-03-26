@@ -1197,7 +1197,7 @@ void CC3MeshNode::setVertexLocation( const CC3Vector& aLocation, GLuint index )
 
 CC3Vector4 CC3MeshNode::getVertexHomogeneousLocationAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexHomogeneousLocationAt(index) : kCC3Vector4ZeroLocation;
+	return _mesh ? _mesh->getVertexHomogeneousLocationAt(index) : CC3Vector4::kCC3Vector4ZeroLocation;
 }
 
 void CC3MeshNode::setVertexHomogeneousLocation( const CC3Vector4& aLocation, GLuint index )

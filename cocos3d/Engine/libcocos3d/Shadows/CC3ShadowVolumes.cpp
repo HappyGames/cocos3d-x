@@ -340,7 +340,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 	bool isNudgingVertices = (_shadowVolumeVertexOffsetFactor != 0.0f);
 	CC3Vector4 svVtxNudge = isNudgingVertices
 								? getShadowVolumeVertexOffsetForLightAt(localLightPosition)
-								: kCC3Vector4Zero;
+								: CC3Vector4::kCC3Vector4Zero;
 	
 	//	if (doesRequireCapping) LogDebug(@"Populating %@ with end caps", self);
 	

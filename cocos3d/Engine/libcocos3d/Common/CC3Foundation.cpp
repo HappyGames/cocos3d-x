@@ -89,7 +89,7 @@ CC3Vector4 CC3RayIntersectionWithPlane(CC3Ray ray, CC3Plane plane)
 	GLfloat dirDotNorm = rd.dot( pn );
 
 	if (dirDotNorm == 0.0f) 
-		return kCC3Vector4Null;		// Ray is parallel to plane, so no intersection
+		return CC3Vector4::kCC3Vector4Null;		// Ray is parallel to plane, so no intersection
 
 	GLfloat dirDist = -(rs.dot( pn ) + plane.d) / rd.dot( pn );
 	CC3Vector loc = rs.add( rd.scaleUniform( dirDist ) );
@@ -225,7 +225,7 @@ CC3Vector4 CC3RayIntersectionWithBoxSide(CC3Ray aRay, CC3Box bb, CC3Vector sideN
 CC3Vector  CC3RayIntersectionWithBox(CC3Ray aRay, CC3Box bb) 
 {
 	if (CC3BoxIsNull(bb)) return CC3Vector::kCC3VectorNull;	// Short-circuit null bounding box
-	CC3Vector4 closestHit = kCC3Vector4Null;
+	CC3Vector4 closestHit = CC3Vector4::kCC3Vector4Null;
 	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitXPositive, closestHit);
 	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitXNegative, closestHit);
 	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitYPositive, closestHit);

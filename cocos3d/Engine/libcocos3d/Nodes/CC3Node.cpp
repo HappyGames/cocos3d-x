@@ -1287,7 +1287,7 @@ CC3Vector4 CC3Node::getGlobalLightPosition()
 		}
 	}
 
-	return kCC3Vector4Zero;
+	return CC3Vector4::kCC3Vector4Zero;
 }
 
 void CC3Node::setGlobalLightPosition( const CC3Vector4& aPosition )
@@ -3071,7 +3071,7 @@ void CC3Node::addAndLocalizeChild( CC3Node* aNode )
 	// we determine what that location property needs to be.
 	getGlobalTransformMatrixInverted()->populateCC3Matrix4x3( &g2LMtx );
 	aNode->getGlobalTransformMatrix()->multiplyIntoCC3Matrix4x3( &g2LMtx );
-	CC3Vector4 nodeLoc4 = CC3Matrix4x3TransformCC3Vector4(&g2LMtx, kCC3Vector4ZeroLocation);
+	CC3Vector4 nodeLoc4 = CC3Matrix4x3TransformCC3Vector4(&g2LMtx, CC3Vector4::kCC3Vector4ZeroLocation);
 	aNode->setLocation( nodeLoc4.cc3Vector() );
 	
 	// Localize the child node's rotation by finding the right rotation matrix. For rotation, we use
