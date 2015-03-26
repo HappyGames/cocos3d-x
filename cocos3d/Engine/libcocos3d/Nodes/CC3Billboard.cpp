@@ -912,7 +912,7 @@ CC3Vector CC3BillboardBoundingBoxArea::getLocationOfRayIntesection( const CC3Ray
 	// which is the Z=0 plane, and ensure that the ray is not parallel to that plane.
 	CC3Plane bbPlane = CC3PlaneFromNormalAndLocation(CC3Vector::kCC3VectorUnitZPositive, CC3Vector::kCC3VectorZero);
 	CC3Vector4 pLoc4 = CC3RayIntersectionWithPlane(localRay, bbPlane);
-	if (CC3Vector4IsNull(pLoc4)) 
+	if ( pLoc4.isNull() ) 
 		return CC3Vector::kCC3VectorNull;
 	
 	// Convert the location to a 2D point on the Z=0 plane, and check
@@ -920,7 +920,7 @@ CC3Vector CC3BillboardBoundingBoxArea::getLocationOfRayIntesection( const CC3Ray
 	bool intersects = getBillboardBoundingRect().containsPoint( ccp(pLoc4.x, pLoc4.y) );
 
 	// Return the 3D puncture location, or null if the ray did not intersect the boundary rectangle
-	return intersects ? pLoc4.v : CC3Vector::kCC3VectorNull;
+	return intersects ? pLoc4.cc3Vector() : CC3Vector::kCC3VectorNull;
 }
 
 std::string CC3BillboardBoundingBoxArea::displayNodeNameSuffix()

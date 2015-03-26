@@ -492,7 +492,7 @@ bool CC3FrozenNodeAnimation::isAnimatingLocation()
 
 bool CC3FrozenNodeAnimation::isAnimatingQuaternion()
 {
-	return !CC3QuaternionIsNull(_quaternion); 
+	return !_quaternion.isNull(); 
 }
 
 bool CC3FrozenNodeAnimation::isAnimatingScale()

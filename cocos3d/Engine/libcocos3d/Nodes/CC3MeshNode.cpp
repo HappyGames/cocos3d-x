@@ -390,14 +390,14 @@ void CC3MeshNode::setReflectivity( GLfloat reflectivity )
 CC3Vector4 CC3MeshNode::getGlobalLightPosition()
 {
 	return (_material && _material->hasBumpMap())
-				? getGlobalTransformMatrix()->transformHomogeneousVector( CC3Vector4FromDirection(_material->getLightDirection()) )
+				? getGlobalTransformMatrix()->transformHomogeneousVector( CC3Vector4().fromDirection(_material->getLightDirection()) )
 				: super::getGlobalLightPosition();
 }
 
 void CC3MeshNode::setGlobalLightPosition( const CC3Vector4& aPosition )
 {
 	CC3Vector4 localLtPos = getGlobalTransformMatrixInverted()->transformHomogeneousVector( aPosition );
-	getMaterial()->setLightDirection( localLtPos.v );
+	getMaterial()->setLightDirection( localLtPos.cc3Vector() );
 	super::setGlobalLightPosition( aPosition );
 }
 

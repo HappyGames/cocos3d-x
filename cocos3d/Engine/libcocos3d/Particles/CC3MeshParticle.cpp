@@ -184,7 +184,7 @@ CC3Quaternion CC3MeshParticle::getQuaternion()
 void CC3MeshParticle::setQuaternion( const CC3Quaternion& aQuaternion )
 {
 	// This test for change avoids unnecessarily creating and transforming a mutable rotator
-	if ( !shouldTrackTarget() && !CC3QuaternionsAreEqual(aQuaternion, _rotator->getQuaternion()) ) 
+	if ( !shouldTrackTarget() && !aQuaternion.equals(_rotator->getQuaternion()) ) 
 	{
 		getMutableRotator()->setQuaternion( aQuaternion );
 		markTransformDirty();

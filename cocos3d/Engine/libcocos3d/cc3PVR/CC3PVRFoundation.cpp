@@ -63,7 +63,7 @@ std::string NSStringFromSPODNode(PODStructPtr pSPODNode)
 	}
 	desc += CC3String::stringWithFormat( (char*)"%s", first ? "" : ")" );
 	desc += CC3String::stringWithFormat( (char*)"\n\tposition: %s", (psn->pfAnimPosition ? (*(CC3Vector*)psn->pfAnimPosition).stringfy().c_str() : "none") );
-	desc += CC3String::stringWithFormat( (char*)", quaternion: %s", (psn->pfAnimRotation ? stringFromCC3Vector4(*(CC3Vector4*)psn->pfAnimRotation).c_str() : "none") );
+	desc += CC3String::stringWithFormat( (char*)", quaternion: %s", (psn->pfAnimRotation ? (*(CC3Vector4*)psn->pfAnimRotation).stringfy().c_str() : "none") );
 	desc += CC3String::stringWithFormat( (char*)", scale: %s", (psn->pfAnimScale ? (*(CC3Vector*)psn->pfAnimScale).stringfy().c_str() : "none") );
 	desc += CC3String::stringWithFormat( (char*)", matrix: %s", (psn->pfAnimMatrix ? stringFromCC3Matrix4x4((CC3Matrix4x4*)psn->pfAnimMatrix).c_str() : "none") );
 	desc += CC3String::stringWithFormat( (char*)", %d bytes of user data at %d", psn->nUserDataSize, psn->pUserData );

@@ -56,15 +56,8 @@ public:
 	static const CC3Vector	kCC3VectorUnitZNegative;
 
 public:
-	static CC3Vector make( float x, float y, float z )
-	{
-		CC3Vector vec;
-		vec.x = x;
-		vec.y = y;
-		vec.z = z;
-
-		return vec;
-	}
+	inline CC3Vector() : x(0.f), y(0.f), z(0.f) {  }
+	inline CC3Vector( float _x, float _y, float _z ) : x(_x), y(_y), z(_z) {  }
 
 	std::string		stringfy();
 	std::string		stringfy() const;
@@ -264,45 +257,45 @@ inline bool CC3Vector::isNull()
 
 inline CC3Vector CC3Vector::scale( const CC3Vector& scl )
 {
-	return CC3Vector::make( this->x * scl.x,
+	return CC3Vector( this->x * scl.x,
 		this->y * scl.y,
 		this->z * scl.z );
 }
 
 inline CC3Vector CC3Vector::scaleUniform( float scl )
 {
-	return CC3Vector::make( this->x * scl,
+	return CC3Vector( this->x * scl,
 		this->y * scl,
 		this->z * scl );
 }
 
 inline CC3Vector CC3Vector::scaleUniform( float scl ) const
 {
-	return CC3Vector::make( this->x * scl,
+	return CC3Vector( this->x * scl,
 		this->y * scl,
 		this->z * scl );
 }
 
 inline CC3Vector CC3Vector::negate()
 {
-	return CC3Vector::make( -this->x, -this->y, -this->z );
+	return CC3Vector( -this->x, -this->y, -this->z );
 }
 
 inline CC3Vector CC3Vector::negate() const
 {
-	return CC3Vector::make( -this->x, -this->y, -this->z );
+	return CC3Vector( -this->x, -this->y, -this->z );
 }
 
 inline CC3Vector CC3Vector::minimize( const CC3Vector& other )
 {
-	return CC3Vector::make( MIN(this->x, other.x),
+	return CC3Vector( MIN(this->x, other.x),
 				MIN(this->y, other.y),
 				MIN(this->z, other.z) );
 }
 
 inline CC3Vector CC3Vector::maxmize( const CC3Vector& other )
 {
-	return CC3Vector::make( MAX(this->x, other.x),
+	return CC3Vector( MAX(this->x, other.x),
 		MAX(this->y, other.y),
 		MAX(this->z, other.z) );
 }
@@ -358,49 +351,49 @@ inline CC3Vector CC3Vector::normalize() const
 
 inline CC3Vector CC3Vector::invert() 
 {
-	return CC3Vector::make( 1.0f / this->x,
+	return CC3Vector( 1.0f / this->x,
 				1.0f / this->y,
 				1.0f / this->z );
 }
 
 inline CC3Vector CC3Vector::add( const CC3Vector& translation ) 
 {
-	return CC3Vector::make( this->x + translation.x,
+	return CC3Vector( this->x + translation.x,
 				this->y + translation.y,
 				this->z + translation.z );
 }
 
 inline CC3Vector CC3Vector::add( const CC3Vector& translation ) const
 {
-	return CC3Vector::make( this->x + translation.x,
+	return CC3Vector( this->x + translation.x,
 		this->y + translation.y,
 		this->z + translation.z );
 }
 
 inline CC3Vector CC3Vector::difference( const CC3Vector& subtrahend ) 
 {
-	return CC3Vector::make( this->x - subtrahend.x,
+	return CC3Vector( this->x - subtrahend.x,
 				this->y - subtrahend.y,
 				this->z - subtrahend.z );
 }
 
 inline CC3Vector CC3Vector::difference( const CC3Vector& subtrahend ) const
 {
-	return CC3Vector::make( this->x - subtrahend.x,
+	return CC3Vector( this->x - subtrahend.x,
 		this->y - subtrahend.y,
 		this->z - subtrahend.z );
 }
 
 inline CC3Vector CC3Vector::rotationModulo()
 {
-	return CC3Vector::make( CC3CyclicAngle(this->x),
+	return CC3Vector( CC3CyclicAngle(this->x),
 				CC3CyclicAngle(this->y),
 				CC3CyclicAngle(this->z) );
 }
 
 inline CC3Vector CC3Vector::rotationalDifference( const CC3Vector& subtrahend ) 
 {
-	return CC3Vector::make( CC3SemiCyclicAngle(this->x - subtrahend.x),
+	return CC3Vector( CC3SemiCyclicAngle(this->x - subtrahend.x),
 				CC3SemiCyclicAngle(this->y - subtrahend.y),
 				CC3SemiCyclicAngle(this->z - subtrahend.z) );
 }
@@ -431,7 +424,7 @@ inline CC3Vector CC3Vector::average( const CC3Vector& other )
 /** Returns the cross-product of the two given vectors (v1 x v2). */
 inline CC3Vector CC3Vector::cross( const CC3Vector& other )
 {
-	return CC3Vector::make(this->y * other.z - this->z * other.y,
+	return CC3Vector(this->y * other.z - this->z * other.y,
 		this->z * other.x - this->x * other.z,
 		this->x * other.y - this->y * other.x);
 }
@@ -494,7 +487,7 @@ static inline GLfloat CC3EnsureMinScaleAxis(GLfloat val)
  */
 static inline CC3Vector CC3EnsureMinScaleVector(CC3Vector scale) 
 {
-	return CC3Vector::make( CC3EnsureMinScaleAxis(scale.x),
+	return CC3Vector( CC3EnsureMinScaleAxis(scale.x),
 				CC3EnsureMinScaleAxis(scale.y),
 				CC3EnsureMinScaleAxis(scale.z) );
 }

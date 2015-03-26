@@ -213,9 +213,12 @@ void CC3Matrix::implPopulateFromRotation( CC3Vector aRotation )
 
 void CC3Matrix::populateFromQuaternion( CC3Quaternion aQuaternion )
 {
-	if (CC3QuaternionsAreEqual(aQuaternion, kCC3QuaternionIdentity)) {
+	if ( aQuaternion.equals(kCC3QuaternionIdentity) ) 
+	{
 		populateIdentity();
-	} else {
+	} 
+	else 
+	{
 		implPopulateFromQuaternion( aQuaternion );
 		m_isIdentity = false;
 		m_isRigid = true;
@@ -383,7 +386,8 @@ void CC3Matrix::implRotateBy( CC3Vector aRotation )
 
 // Short-circuit the identity transform. isRigid unchanged under rotation.
 void CC3Matrix::rotateByQuaternion( CC3Quaternion aQuaternion ){
-	if ( !CC3QuaternionsAreEqual(aQuaternion, kCC3QuaternionIdentity) ) {
+	if ( !aQuaternion.equals( kCC3QuaternionIdentity ) ) 
+	{
 		implRotateByQuaternion( aQuaternion );
 		m_isIdentity = false;
 	}

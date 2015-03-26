@@ -50,7 +50,7 @@ void CC3OpenGLES2::disableTexturingAt( GLuint tuIdx )
 
 std::string CC3OpenGLES2::dumpTextureBindingsAt( GLuint tuIdx )
 {
-	return stringWithFormat( (char*)"%s: %d, %s: %d",
+	return CC3String::stringWithFormat( (char*)"%s: %d, %s: %d",
 			stringFromGLEnum(GL_TEXTURE_2D).c_str(), getInteger( GL_TEXTURE_BINDING_2D ),
 			stringFromGLEnum(GL_TEXTURE_CUBE_MAP).c_str(), getInteger( GL_TEXTURE_BINDING_CUBE_MAP ));
 }			

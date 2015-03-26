@@ -96,7 +96,7 @@ bool CC3PVRShamanShaderSemantics::populateUniform( CC3GLSLUniform* uniform, CC3N
 					fovWidth = CC3DegToRad(cam->getEffectiveFieldOfView());
 					fovHeight = fovWidth / aspect;
 				}
-				uniform->setVector4( CC3Vector4Make(cam->getNearClippingDistance(), cam->getFarClippingDistance(), fovWidth, fovHeight) );
+				uniform->setVector4( CC3Vector4(cam->getNearClippingDistance(), cam->getFarClippingDistance(), fovWidth, fovHeight) );
 				return true;
 			}
 		default: 

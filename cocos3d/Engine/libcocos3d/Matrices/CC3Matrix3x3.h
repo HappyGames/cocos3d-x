@@ -93,16 +93,6 @@ typedef union
 		GLfloat c3r2;		/**< The element at column 3, row 2 */
 		GLfloat c3r3;		/**< The element at column 3, row 3 */
 	};
-	
-	/** The three columns as zero-based indexed 3D vectors. */
-	CC3Vector columns[kCC3Matrix3x3ColumnCount];
-
-	struct 
-	{
-		CC3Vector col1;		/**< The first column as a 3D vector. */
-		CC3Vector col2;		/**< The second column as a 3D vector. */
-		CC3Vector col3;		/**< The third column as a 3D vector. */
-	};
 } CC3Matrix3x3;
 
 /** Returns a string description of the specified CC3Matrix3x3, including contents. */
@@ -226,14 +216,23 @@ CC3Quaternion CC3Matrix3x3ExtractQuaternion(const CC3Matrix3x3* mtx);
 /** Extracts and returns the 'forward' direction vector from the rotation component of the specified matrix. */
 static inline CC3Vector CC3Matrix3x3ExtractForwardDirection(const CC3Matrix3x3* mtx) 
 {
-	return mtx->col3.negate();
+	CC3Vector col3( mtx->c3r1, mtx->c3r2, mtx->c3r3 );
+	return col3.negate();
 }
 
 /** Extracts and returns the 'up' direction vector from the rotation component of the specified matrix. */
-static inline CC3Vector CC3Matrix3x3ExtractUpDirection(const CC3Matrix3x3* mtx) { return mtx->col2; }
+static inline CC3Vector CC3Matrix3x3ExtractUpDirection(const CC3Matrix3x3* mtx) 
+{ 
+	CC3Vector col2( mtx->c2r1, mtx->c2r2, mtx->c2r3 );
+	return col2; 
+}
 
 /** Extracts and returns the 'right' direction vector from the rotation component of the specified matrix. */
-static inline CC3Vector CC3Matrix3x3ExtractRightDirection(const CC3Matrix3x3* mtx) { return mtx->col1; }
+static inline CC3Vector CC3Matrix3x3ExtractRightDirection(const CC3Matrix3x3* mtx) 
+{ 
+	CC3Vector col1( mtx->c1r1, mtx->c1r2, mtx->c1r3 );
+	return col1; 
+}
 
 
 /** Multiplies mL on the left by mR on the right, and stores the result in mOut. */
@@ -304,9 +303,12 @@ static inline void CC3Matrix3x3RotateByQuaternion(CC3Matrix3x3* mtx, CC3Quaterni
  */
 static inline void CC3Matrix3x3ScaleBy(CC3Matrix3x3* mtx, CC3Vector aScale) 
 {
-	mtx->col1 = mtx->col1.scaleUniform( aScale.x );
-	mtx->col2 = mtx->col2.scaleUniform( aScale.y );
-	mtx->col3 = mtx->col3.scaleUniform( aScale.z );
+	CC3Vector& col1 = *(CC3Vector*)&mtx->c1r1;
+	CC3Vector& col2 = *(CC3Vector*)&mtx->c2r1;
+	CC3Vector& col3 = *(CC3Vector*)&mtx->c3r1;
+	col1 = col1.scaleUniform( aScale.x );
+	col2 = col2.scaleUniform( aScale.y );
+	col3 = col3.scaleUniform( aScale.z );
 }
 
 /**

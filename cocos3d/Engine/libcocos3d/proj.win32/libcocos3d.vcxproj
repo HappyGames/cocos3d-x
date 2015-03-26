@@ -35,6 +35,7 @@
     <ClCompile Include="..\Common\CC3Platform.cpp" />
     <ClCompile Include="..\Common\CC3String.cpp" />
     <ClCompile Include="..\Common\CC3Vector.cpp" />
+    <ClCompile Include="..\Common\CC3Vector4.cpp" />
     <ClCompile Include="..\Common\LineScanner.cpp" />
     <ClCompile Include="..\Common\LogManager.cpp" />
     <ClCompile Include="..\Common\LogDelegate.cpp" />
@@ -59,6 +60,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
+      </ForcedIncludeFiles>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\OGLES2\PVRTTextureAPI.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -239,6 +242,7 @@
     <ClInclude Include="..\Common\CC3Platform.h" />
     <ClInclude Include="..\Common\CC3String.h" />
     <ClInclude Include="..\Common\CC3Vector.h" />
+    <ClInclude Include="..\Common\CC3Vector4.h" />
     <ClInclude Include="..\Common\Common.h" />
     <ClInclude Include="..\Common\LineScanner.h" />
     <ClInclude Include="..\Common\LogManager.h" />
@@ -470,6 +474,7 @@
       <GccExceptionHandling>true</GccExceptionHandling>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>cocos3d.h</ForcedIncludeFiles>
+      <AdditionalOptions>-std=gnu++11 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">

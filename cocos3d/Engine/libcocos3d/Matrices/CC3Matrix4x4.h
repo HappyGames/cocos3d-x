@@ -102,16 +102,6 @@ typedef union {
 		GLfloat c4r3;		/**< The element at column 4, row 3 */
 		GLfloat c4r4;		/**< The element at column 3, row 4 */
 	};
-	
-	/** The four columns as zero-based indexed 4D vectors. */
-	CC3Vector4 columns[kCC3Matrix4x4ColumnCount];
-	
-	struct {
-		CC3Vector4 col1;	/**< The first column as a 4D vector. */
-		CC3Vector4 col2;	/**< The second column as a 4D vector. */
-		CC3Vector4 col3;	/**< The third column as a 4D vector. */
-		CC3Vector4 col4;	/**< The fourth column as a 4D vector. */
-	};
 } CC3Matrix4x4;
 
 /** Returns a string description of the specified CC3Matrix4x4, including contents. */
@@ -322,8 +312,11 @@ void CC3Matrix4x4PopulateInfiniteOrthoFrustum(CC3Matrix4x4* mtx,
  * In keeping with matrix math terminology, the index is one-based.
  * The first column of the matrix has an index of one.
  */
-static inline CC3Vector CC3VectorFromCC3Matrix4x4Col(const CC3Matrix4x4* mtx, unsigned int colIdx) {
-	return mtx->columns[--colIdx].v;		// Convert to zero-based.
+static inline CC3Vector CC3VectorFromCC3Matrix4x4Col(const CC3Matrix4x4* mtx, unsigned int colIdx) 
+{
+	CC3Vector4* baseAddr = (CC3Vector4*)&mtx->c1r1;
+	CC3Vector4* finalAddr = baseAddr + (--colIdx) * sizeof( CC3Vector4 ); // Convert to zero-based.
+	return finalAddr->cc3Vector();
 }
 
 /**
@@ -345,8 +338,11 @@ static inline CC3Vector CC3VectorFromCC3Matrix4x4Row(const CC3Matrix4x4* mtx, un
  * In keeping with matrix math terminology, the index is one-based.
  * The first column of the matrix has an index of one.
  */
-static inline CC3Vector4 CC3Vector4FromCC3Matrix4x4Col(const CC3Matrix4x4* mtx, unsigned int colIdx) {
-	return mtx->columns[--colIdx];	// Convert to zero-based.
+static inline CC3Vector4 CC3Vector4FromCC3Matrix4x4Col(const CC3Matrix4x4* mtx, unsigned int colIdx) 
+{
+	CC3Vector4* baseAddr = (CC3Vector4*)&mtx->c1r1;
+	CC3Vector4* finalAddr = baseAddr + (--colIdx) * sizeof( CC3Vector4 ); // Convert to zero-based.
+	return *finalAddr;
 }
 
 /**
@@ -356,9 +352,10 @@ static inline CC3Vector4 CC3Vector4FromCC3Matrix4x4Col(const CC3Matrix4x4* mtx, 
  * In keeping with matrix math terminology, the index is one-based.
  * The first column of the matrix has an index of one.
  */
-static inline CC3Vector4 CC3Vector4FromCC3Matrix4x4Row(const CC3Matrix4x4* mtx, unsigned int rowIdx) {
+static inline CC3Vector4 CC3Vector4FromCC3Matrix4x4Row(const CC3Matrix4x4* mtx, unsigned int rowIdx) 
+{
 	rowIdx--;	// Convert to zero-based.
-	return CC3Vector4Make(mtx->colRow[0][rowIdx], mtx->colRow[1][rowIdx],
+	return CC3Vector4(mtx->colRow[0][rowIdx], mtx->colRow[1][rowIdx],
 						  mtx->colRow[2][rowIdx], mtx->colRow[3][rowIdx]);
 }
 
@@ -367,7 +364,8 @@ static inline CC3Vector4 CC3Vector4FromCC3Matrix4x4Row(const CC3Matrix4x4* mtx, 
  * vector, assuming the rotations should be applied in YXZ order, which is the OpenGL default.
  * Each element of the returned rotation vector represents an Euler angle in degrees.
  */
-static inline CC3Vector CC3Matrix4x4ExtractRotationYXZ(const CC3Matrix4x4* mtx) {
+static inline CC3Vector CC3Matrix4x4ExtractRotationYXZ(const CC3Matrix4x4* mtx) 
+{
 	CC3Matrix3x3 mtx3;
 	CC3Matrix3x3PopulateFrom4x4(&mtx3, mtx);
 	return CC3Matrix3x3ExtractRotationYXZ(&mtx3);
@@ -378,7 +376,8 @@ static inline CC3Vector CC3Matrix4x4ExtractRotationYXZ(const CC3Matrix4x4* mtx) 
  * vector, assuming the rotations should be applied in ZYX order. Each element of the returned
  * rotation vector represents an Euler angle in degrees.
  */
-static inline CC3Vector CC3Matrix4x4ExtractRotationZYX(const CC3Matrix4x4* mtx) {
+static inline CC3Vector CC3Matrix4x4ExtractRotationZYX(const CC3Matrix4x4* mtx) 
+{
 	CC3Matrix3x3 mtx3;
 	CC3Matrix3x3PopulateFrom4x4(&mtx3, mtx);
 	return CC3Matrix3x3ExtractRotationZYX(&mtx3);
@@ -400,30 +399,39 @@ static inline CC3Vector CC3Matrix4x4ExtractRotationZYX(const CC3Matrix4x4* mtx) 
  * Similar equations exist for the other combinations of the diagonal elements. Selecting the largest
  * combination helps numerical stability and avoids divide-by-zeros and square roots of negative numbers.
  */
-static inline CC3Quaternion CC3Matrix4x4ExtractQuaternion(const CC3Matrix4x4* mtx) {
+static inline CC3Quaternion CC3Matrix4x4ExtractQuaternion(const CC3Matrix4x4* mtx) 
+{
 	CC3Matrix3x3 mtx3;
 	CC3Matrix3x3PopulateFrom4x4(&mtx3, mtx);
 	return CC3Matrix3x3ExtractQuaternion(&mtx3);
 }
 
 /** Extracts and returns the 'forward' direction vector from the rotation component of the specified matrix. */
-static inline CC3Vector CC3Matrix4x4ExtractForwardDirection(const CC3Matrix4x4* mtx) {
-	return mtx->col3.v.negate();
+static inline CC3Vector CC3Matrix4x4ExtractForwardDirection(const CC3Matrix4x4* mtx) 
+{
+	CC3Vector4& col3 = *(CC3Vector4*)&mtx->c3r1;
+	return col3.cc3Vector().negate();
 }
 
 /** Extracts and returns the 'up' direction vector from the rotation component of the specified matrix. */
-static inline CC3Vector CC3Matrix4x4ExtractUpDirection(const CC3Matrix4x4* mtx) {
-	return mtx->col2.v;
+static inline CC3Vector CC3Matrix4x4ExtractUpDirection(const CC3Matrix4x4* mtx) 
+{
+	CC3Vector4& col2 = *(CC3Vector4*)&mtx->c2r1;
+	return col2.cc3Vector();
 }
 
 /** Extracts and returns the 'right' direction vector from the rotation component of the specified matrix. */
-static inline CC3Vector CC3Matrix4x4ExtractRightDirection(const CC3Matrix4x4* mtx) {
-	return mtx->col1.v;
+static inline CC3Vector CC3Matrix4x4ExtractRightDirection(const CC3Matrix4x4* mtx) 
+{
+	CC3Vector4& col1 = *(CC3Vector4*)&mtx->c1r1;
+	return col1.cc3Vector();
 }
 
 /** Extracts and returns the translation vector from the specified matrix. */
-static inline CC3Vector CC3Matrix4x4ExtractTranslation(const CC3Matrix4x4* mtx) {
-	return mtx->col4.v;
+static inline CC3Vector CC3Matrix4x4ExtractTranslation(const CC3Matrix4x4* mtx) 
+{
+	CC3Vector4& col4 = *(CC3Vector4*)&mtx->c4r1;
+	return col4.cc3Vector();
 }
 
 
@@ -442,7 +450,8 @@ void CC3Matrix4x4Multiply(CC3Matrix4x4* mOut, const CC3Matrix4x4* mL, const CC3M
  * In mathematical terms, the incoming rotation is converted to matrix form, and is
  * left-multiplied to the specified matrix elements. 
  */
-static inline void CC3Matrix4x4RotateYXZBy(CC3Matrix4x4* mtx, CC3Vector aRotation) {
+static inline void CC3Matrix4x4RotateYXZBy(CC3Matrix4x4* mtx, CC3Vector aRotation) 
+{
 	CC3Matrix4x4 rotMtx, mRslt;
 	CC3Matrix4x4PopulateFromRotationYXZ(&rotMtx, aRotation);
 	CC3Matrix4x4Multiply(&mRslt, &rotMtx, mtx);
@@ -461,7 +470,8 @@ static inline void CC3Matrix4x4RotateYXZBy(CC3Matrix4x4* mtx, CC3Vector aRotatio
  * In mathematical terms, the incoming rotation is converted to matrix form, and is
  * left-multiplied to the specified matrix elements. 
  */
-static inline void CC3Matrix4x4RotateZYXBy(CC3Matrix4x4* mtx, CC3Vector aRotation) {
+static inline void CC3Matrix4x4RotateZYXBy(CC3Matrix4x4* mtx, CC3Vector aRotation) 
+{
 	CC3Matrix4x4 rotMtx, mRslt;
 	CC3Matrix4x4PopulateFromRotationZYX(&rotMtx, aRotation);
 	CC3Matrix4x4Multiply(&mRslt, &rotMtx, mtx);
@@ -479,7 +489,8 @@ static inline void CC3Matrix4x4RotateZYXBy(CC3Matrix4x4* mtx, CC3Vector aRotatio
  * In mathematical terms, the incoming rotation is converted to matrix form, and is
  * left-multiplied to the specified matrix elements.
  */
-static inline void CC3Matrix4x4RotateByQuaternion(CC3Matrix4x4* mtx, CC3Quaternion aQuaternion) {
+static inline void CC3Matrix4x4RotateByQuaternion(CC3Matrix4x4* mtx, CC3Quaternion aQuaternion) 
+{
 	CC3Matrix4x4 rotMtx, mRslt;
 	CC3Matrix4x4PopulateFromQuaternion(&rotMtx, aQuaternion);
 	CC3Matrix4x4Multiply(&mRslt, &rotMtx, mtx);
@@ -490,14 +501,19 @@ static inline void CC3Matrix4x4RotateByQuaternion(CC3Matrix4x4* mtx, CC3Quaterni
  * Scales the specified matrix in three dimensions by the specified scaling vector. Non-uniform
  * scaling can be achieved by specifying different values for each element of the scaling vector.
  */
-static inline void CC3Matrix4x4ScaleBy(CC3Matrix4x4* mtx, CC3Vector aScale) {
-	mtx->col1 = CC3Vector4ScaleUniform(mtx->col1, aScale.x);
-	mtx->col2 = CC3Vector4ScaleUniform(mtx->col2, aScale.y);
-	mtx->col3 = CC3Vector4ScaleUniform(mtx->col3, aScale.z);
+static inline void CC3Matrix4x4ScaleBy(CC3Matrix4x4* mtx, CC3Vector aScale) 
+{
+	CC3Vector4& col1 = *(CC3Vector4*)&mtx->c1r1;
+	CC3Vector4& col2 = *(CC3Vector4*)&mtx->c2r1;
+	CC3Vector4& col3 = *(CC3Vector4*)&mtx->c3r1;
+	col1 = col1.scaleUniform( aScale.x );
+	col2 = col2.scaleUniform( aScale.y );
+	col3 = col3.scaleUniform( aScale.z );
 }
 
 /** Translates the specified matrix in three dimensions by the specified translation vector. */
-static inline void CC3Matrix4x4TranslateBy(CC3Matrix4x4* mtx, CC3Vector aTranslation) {
+static inline void CC3Matrix4x4TranslateBy(CC3Matrix4x4* mtx, CC3Vector aTranslation) 
+{
 	mtx->c4r1 += CC3VectorFromCC3Matrix4x4Row(mtx, 1).dot( aTranslation );
 	mtx->c4r2 += CC3VectorFromCC3Matrix4x4Row(mtx, 2).dot( aTranslation );
 	mtx->c4r3 += CC3VectorFromCC3Matrix4x4Row(mtx, 3).dot( aTranslation );
@@ -542,7 +558,8 @@ CC3Vector CC3Matrix4x4TransformDirection(const CC3Matrix4x4* mtx, CC3Vector v);
  * column number be changed on each invocation of this function, to ensure that the starting
  * bias be averaged across each of the columns over the long term.
  */
-static inline void CC3Matrix4x4Orthonormalize(CC3Matrix4x4* mtx, unsigned int startColNum) {
+static inline void CC3Matrix4x4Orthonormalize(CC3Matrix4x4* mtx, unsigned int startColNum) 
+{
 	CC3Matrix3x3 mtx3;
 	CC3Matrix3x3PopulateFrom4x4(&mtx3, mtx);
 	CC3Matrix3x3Orthonormalize(&mtx3, startColNum);

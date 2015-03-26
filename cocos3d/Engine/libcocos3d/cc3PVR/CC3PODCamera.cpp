@@ -159,7 +159,7 @@ void CC3PODCamera::adjustQuaternionsIn( SPODNode* psn, GLuint numFrames )
 	}
 	
 	// Offset each quaternion by a -90 degree rotation around X-axis.
-	CC3Vector4 axisAngle = CC3Vector4FromCC3Vector(CC3Vector::kCC3VectorUnitXPositive, -90.0f);
+	CC3Vector4 axisAngle = CC3Vector4().fromCC3Vector(CC3Vector::kCC3VectorUnitXPositive, -90.0f);
 	CC3Quaternion offsetQuat = CC3QuaternionFromAxisAngle(axisAngle);
 	
 	CC3Quaternion* quaternions = (CC3Quaternion*)psn->pfAnimRotation;

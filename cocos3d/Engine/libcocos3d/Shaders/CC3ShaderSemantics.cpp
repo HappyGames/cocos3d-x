@@ -785,7 +785,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 						fovWidth = CC3DegToRad(cam->getEffectiveFieldOfView());
 						fovHeight = fovWidth / aspect;
 					}
-					uniform->setVector4( CC3Vector4Make(fovWidth, fovHeight,
+					uniform->setVector4( CC3Vector4(fovWidth, fovHeight,
 						cam->getNearClippingDistance(),
 						cam->getFarClippingDistance()) );
 				}
@@ -798,7 +798,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 				if ( cam )
 				{
 					cam->getProjectionMatrix()->populateCC3Matrix4x4( &m4x4 );
-					uniform->setVector4( CC3Vector4Make(cam->getFarClippingDistance(),
+					uniform->setVector4( CC3Vector4(cam->getFarClippingDistance(),
 						cam->getNearClippingDistance(),
 						m4x4.c3r3, m4x4.c4r3) );
 				}
@@ -870,7 +870,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 				{
 					CC3Vector4 ltPos = light->getGlobalHomogeneousPosition();
 					if (isInverted)
-						ltPos = CC3Vector4HomogeneousNegate(ltPos);
+						ltPos = ltPos.homogeneousNegate();
 					uniform->setVector4( ltPos, i );
 				}
 			}
@@ -885,11 +885,11 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 				if ( light )
 				{
 					CC3Vector4 ltPos = light->getGlobalHomogeneousPosition();
-					if (isInverted) ltPos = CC3Vector4HomogeneousNegate(ltPos);
+					if (isInverted) ltPos = ltPos.homogeneousNegate();
 					// Transform global position/direction to eye space and normalize if direction
 					ltPos = CC3Matrix4x3TransformCC3Vector4(visitor->getViewMatrix(), ltPos);
 					if (light->isDirectionalOnly()) 
-						ltPos = CC3Vector4Normalize(ltPos);
+						ltPos = ltPos.normalize();
 					uniform->setVector4( ltPos, i );
 				}
 			}
@@ -906,11 +906,11 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 				{
 					CC3Vector4 ltPos = light->getGlobalHomogeneousPosition();
 					if (isInverted) 
-						ltPos = CC3Vector4HomogeneousNegate(ltPos);
+						ltPos = ltPos.homogeneousNegate();
 					// Transform global position/direction to model space and normalize if direction
 					ltPos = CC3Matrix4x3TransformCC3Vector4(&m4x3, ltPos);
 					if (light->isDirectionalOnly()) 
-						ltPos = CC3Vector4Normalize(ltPos);
+						ltPos = ltPos.normalize();
 					uniform->setVector4( ltPos, i );
 				}
 			}
@@ -1364,21 +1364,21 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 			return true;
 		case kCC3SemanticSceneTimeSine:
 			sceneTime = (float)visitor->getScene()->getElapsedTimeSinceOpened();
-			uniform->setVector4( CC3Vector4Make(sinf(sceneTime),
+			uniform->setVector4( CC3Vector4(sinf(sceneTime),
 												sinf(sceneTime / 2.0f),
 												sinf(sceneTime / 4.0f),
 												sinf(sceneTime / 8.0f)) );
 			return true;
 		case kCC3SemanticSceneTimeCosine:
 			sceneTime = (float)visitor->getScene()->getElapsedTimeSinceOpened();
-			uniform->setVector4( CC3Vector4Make(cosf(sceneTime),
+			uniform->setVector4( CC3Vector4(cosf(sceneTime),
 												cosf(sceneTime / 2.0f),
 												cosf(sceneTime / 4.0f),
 												cosf(sceneTime / 8.0f)) );
 			return true;
 		case kCC3SemanticSceneTimeTangent:
 			sceneTime = (float)visitor->getScene()->getElapsedTimeSinceOpened();
-			uniform->setVector4( CC3Vector4Make(tanf(sceneTime),
+			uniform->setVector4( CC3Vector4(tanf(sceneTime),
 												tanf(sceneTime / 2.0f),
 												tanf(sceneTime / 4.0f),
 												tanf(sceneTime / 8.0f)) );

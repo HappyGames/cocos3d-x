@@ -135,7 +135,7 @@ CCObject* CC3PODLight::copyWithZone( CCZone* zone )
 CC3Vector4 CC3PODLight::getGlobalHomogeneousPosition()
 {
 	if (isDirectionalOnly()) 
-		return CC3Vector4FromCC3Vector(getGlobalUpDirection(), 0.0f);
+		return CC3Vector4().fromCC3Vector(getGlobalUpDirection(), 0.0f);
 
 	return super::getGlobalHomogeneousPosition();
 }

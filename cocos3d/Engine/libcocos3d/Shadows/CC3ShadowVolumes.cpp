@@ -291,7 +291,7 @@ void CC3ShadowVolumeMeshNode::createShadowMesh()
 CC3Vector4 CC3ShadowVolumeMeshNode::getShadowVolumeVertexOffsetForLightAt( const CC3Vector4& localLightPos )
 {
 	CC3Vector scLoc = getShadowCaster()->getLocalContentCenterOfGeometry();
-	CC3Vector lgtLoc = localLightPos.v;
+	CC3Vector lgtLoc = localLightPos.cc3Vector();
 	CC3Vector camLoc = getShadowCaster()->getGlobalTransformMatrixInverted()->transformLocation( getActiveCamera()->getGlobalLocation() );	
 
 	// Get a unit offset vector in the direction away from the light
@@ -306,7 +306,7 @@ CC3Vector4 CC3ShadowVolumeMeshNode::getShadowVolumeVertexOffsetForLightAt( const
 	CC3_TRACE("CC3ShadowVolumeMeshNode nudging vertices by %s", offset.stringfy().c_str());
 
 	// Create and return a 4D directional vector from the offset
-	return CC3Vector4FromDirection(offset);
+	return CC3Vector4().fromDirection(offset);
 }
 
 /**
@@ -366,16 +366,16 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 		// Retrieve the current face, convert it to 4D homogeneous locations
 		CC3Face face = scNode->getDeformedFaceAt( faceIdx );
 		CC3Vector4 vertices4d[3];
-		vertices4d[0] = CC3Vector4FromLocation(face.vertices[0]);
-		vertices4d[1] = CC3Vector4FromLocation(face.vertices[1]);
-		vertices4d[2] = CC3Vector4FromLocation(face.vertices[2]);
+		vertices4d[0].fromLocation(face.vertices[0]);
+		vertices4d[1].fromLocation(face.vertices[1]);
+		vertices4d[2].fromLocation(face.vertices[2]);
 		
 		// If needed, nudge the shadow volume face away from the
 		// shadow caster face in the direction away from the light
 		if (isNudgingVertices) {
-			vertices4d[0] = CC3Vector4Add(vertices4d[0], svVtxNudge);
-			vertices4d[1] = CC3Vector4Add(vertices4d[1], svVtxNudge);
-			vertices4d[2] = CC3Vector4Add(vertices4d[2], svVtxNudge);
+			vertices4d[0] = vertices4d[0].add( svVtxNudge );
+			vertices4d[1] = vertices4d[1].add( svVtxNudge );
+			vertices4d[2] = vertices4d[2].add( svVtxNudge );
 		}
 		
 		// Determine whether the face is illuminated.
@@ -447,7 +447,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 				if (shouldDrawTerminator() && isVisible()) {
 					// Draw the terminator line instead of a shadow
 					wasMeshExpanded |= addTerminatorLineFrom( edgeStartLoc, edgeEndLoc, &shdwVtxIdx );
-				} else if (CC3Vector4IsDirectional(localLightPosition)) {
+				} else if ( localLightPosition.isDirectional() ) {
 					// Draw the shadow from a directional light
 					wasMeshExpanded |= addShadowVolumeSideFrom( edgeStartLoc, edgeEndLoc, localLightPosition, &shdwVtxIdx );
 				} else {
@@ -493,7 +493,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeStartLoc, const CC3Vector4& edgeEndLoc, const CC3Vector4& lightPosition, GLuint* shdwVtxIdx )
 {	
 	// Get the location of the single point at infinity from the light direction.
-	CC3Vector4 farLoc = CC3Vector4HomogeneousNegate(lightPosition);
+	CC3Vector4 farLoc = lightPosition.homogeneousNegate();
 	
 	// Ensure the mesh has enough capacity for another triangle.
 	bool wasMeshExpanded = getMesh()->ensureVertexCapacity( *shdwVtxIdx + 3 );
@@ -548,8 +548,8 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeSta
 		// to infinity in a direction away from the light, through the edge points.
 		// The W component of the result of each subtraction will be zero, indicating
 		// a point at infinity.
-		farStartLoc = CC3Vector4Difference(edgeStartLoc, lightPosition);
-		farEndLoc = CC3Vector4Difference(edgeEndLoc, lightPosition);
+		farStartLoc = edgeStartLoc.difference( lightPosition );
+		farEndLoc = edgeEndLoc.difference( lightPosition );
 	}
 	
 	// Ensure the mesh has enough capacity for another two triangles.
@@ -587,9 +587,9 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeSta
  */
 CC3Vector4 CC3ShadowVolumeMeshNode::expand( const CC3Vector4& edgeLoc, const CC3Vector4& lightLoc )
 {
-	CC3Vector4 extDir = CC3Vector4Difference(edgeLoc, lightLoc);
-	CC3Vector4 extrusion = CC3Vector4ScaleUniform(extDir, _shadowExpansionLimitFactor);
-	return CC3Vector4Add(edgeLoc, extrusion);
+	CC3Vector4 extDir = edgeLoc.difference( lightLoc );
+	CC3Vector4 extrusion = extDir.scaleUniform( _shadowExpansionLimitFactor );
+	return edgeLoc.add( extrusion );
 }
 
 /**

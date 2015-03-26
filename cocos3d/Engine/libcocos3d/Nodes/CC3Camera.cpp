@@ -737,12 +737,13 @@ CC3Vector CC3Camera::getProjectLocation( const CC3Vector& a3DLocation )
 {
 	// Convert specified location to a 4D homogeneous location vector
 	// and transform it using the modelview and projection matrices.
-	CC3Vector4 hLoc = CC3Vector4FromLocation(a3DLocation);
+	CC3Vector4 hLoc;
+	hLoc.fromLocation(a3DLocation);
 	hLoc = getViewMatrix()->transformHomogeneousVector( hLoc );
 	hLoc = getProjectionMatrix()->transformHomogeneousVector( hLoc );
 	
 	// Convert projected 4D vector back to 3D.
-	CC3Vector projectedLoc = CC3VectorFromHomogenizedCC3Vector4(hLoc);
+	CC3Vector projectedLoc = hLoc.homogenizedCC3Vector();
 
 	// The projected vector is in a projection coordinate space between -1 and +1 on all axes.
 	// Normalize the vector so that each component is between 0 and 1 by calculating ( v = (v + 1) / 2 ).

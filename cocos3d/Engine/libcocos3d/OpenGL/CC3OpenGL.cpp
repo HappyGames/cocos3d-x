@@ -1927,7 +1927,7 @@ bool CC3CheckGLVectorAt(GLuint idx, CC3Vector val, CC3Vector* stateArray, GLbitf
 
 bool CC3CheckGLVector4At(GLuint idx, CC3Vector4 val, CC3Vector4* stateArray, GLbitfield* isKnownBits) 
 {
-	bool needsUpdate = !CC3Vector4sAreEqual(stateArray[idx], val) || CC3IsBitClear(*isKnownBits, idx);
+	bool needsUpdate = !stateArray[idx].equals(val) || CC3IsBitClear(*isKnownBits, idx);
 	if (needsUpdate) 
 	{
 		stateArray[idx] = val;

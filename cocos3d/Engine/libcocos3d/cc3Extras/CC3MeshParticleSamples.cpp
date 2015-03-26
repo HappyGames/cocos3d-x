@@ -127,7 +127,7 @@ CC3Vector CC3UniformlyEvolvingMeshParticle::getRotationVelocity()
 	{
 		case kCC3RotationTypeAxisAngle: 
 		{
-			CC3Vector4 axisAngle = CC3Vector4FromCC3Vector(getRotationAxis(), getRotationAngleVelocity());
+			CC3Vector4 axisAngle = CC3Vector4().fromCC3Vector(getRotationAxis(), getRotationAngleVelocity());
 			return CC3RotationFromQuaternion(CC3QuaternionFromAxisAngle(axisAngle));
 		}
 		default:

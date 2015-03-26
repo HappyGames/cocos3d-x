@@ -1347,7 +1347,7 @@ GLuint CC3Mesh::findFirst( GLuint maxHitCount, CC3MeshIntersection* intersection
 			// and check that it is not behind the start of the ray.
 			CC3Vector4 loc4 = CC3RayIntersectionWithPlane(aRay, hit->facePlane);
 			if (acceptBehind || loc4.w >= 0.0f) {
-				hit->location = loc4.v;
+				hit->location = loc4.cc3Vector();
 				hit->distance = loc4.w;
 				hit->barycentricLocation = CC3FaceBarycentricWeights(hit->face, hit->location);
 				if ( CC3BarycentricWeightsAreInsideTriangle(hit->barycentricLocation) ) 

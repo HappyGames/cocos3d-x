@@ -118,7 +118,7 @@ CC3Vector CC3Node::getGlobalLocation()
 
 CC3Vector4 CC3Node::getGlobalHomogeneousPosition() 
 { 
-	return CC3Vector4FromLocation( getGlobalLocation() ); 
+	return CC3Vector4().fromLocation( getGlobalLocation() ); 
 }
 
 void CC3Node::translateBy( const CC3Vector& aVector )
@@ -179,7 +179,7 @@ CC3Quaternion CC3Node::getQuaternion()
 
 void CC3Node::setQuaternion( const CC3Quaternion& aQuaternion )
 {
-	if ( isTrackingTargetDirection() || CC3QuaternionsAreEqual(aQuaternion, getQuaternion()) ) 
+	if ( isTrackingTargetDirection() || aQuaternion.equals(getQuaternion()) ) 
 		return;
 
 	getMutableRotator()->setQuaternion( aQuaternion );
@@ -1282,7 +1282,7 @@ CC3Vector4 CC3Node::getGlobalLightPosition()
 		if (pChild )
 		{
 			CC3Vector4 glp = pChild->getGlobalLightPosition();
-			if ( !CC3Vector4sAreEqual(glp, kCC3Vector4Zero) ) 
+			if ( !glp.isZero() ) 
 				return glp;
 		}
 	}
@@ -3072,7 +3072,7 @@ void CC3Node::addAndLocalizeChild( CC3Node* aNode )
 	getGlobalTransformMatrixInverted()->populateCC3Matrix4x3( &g2LMtx );
 	aNode->getGlobalTransformMatrix()->multiplyIntoCC3Matrix4x3( &g2LMtx );
 	CC3Vector4 nodeLoc4 = CC3Matrix4x3TransformCC3Vector4(&g2LMtx, kCC3Vector4ZeroLocation);
-	aNode->setLocation( nodeLoc4.v );
+	aNode->setLocation( nodeLoc4.cc3Vector() );
 	
 	// Localize the child node's rotation by finding the right rotation matrix. For rotation, we use
 	// the globalRotationMatrix, which is free of scale and translation content. Otherwise it would

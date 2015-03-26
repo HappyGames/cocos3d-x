@@ -229,13 +229,13 @@ void CC3MutableRotator::markRotationClean()
 CC3Vector CC3MutableRotator::getRotation()
 {
 	return (m_rotationType == kCC3RotationTypeEuler)
-				? m_rotationVector.v
+				? m_rotationVector.cc3Vector()
 				: getRotationMatrix()->extractRotation();
 }
 
 void CC3MutableRotator::setRotation( CC3Vector aRotation )
 {
-	m_rotationVector = CC3Vector4FromCC3Vector(aRotation.rotationModulo(), 0.0f);
+	m_rotationVector = CC3Vector4().fromCC3Vector(aRotation.rotationModulo(), 0.0f);
 	m_rotationType = kCC3RotationTypeEuler;
 	markRotationDirty();
 }
@@ -285,12 +285,12 @@ CC3Vector4 CC3MutableRotator::getRotationAxisAngle()
 
 CC3Vector CC3MutableRotator::getRotationAxis()
 { 
-	return getRotationAxisAngle().v; 
+	return getRotationAxisAngle().cc3Vector(); 
 }
 
 void CC3MutableRotator::setRotationAxis( CC3Vector aDirection )
 {
-	m_rotationVector = CC3Vector4FromCC3Vector(aDirection, getRotationAngle());
+	m_rotationVector = CC3Vector4().fromCC3Vector(aDirection, getRotationAngle());
 	m_rotationType = kCC3RotationTypeAxisAngle;
 	markRotationDirty();
 }
@@ -302,14 +302,14 @@ GLfloat CC3MutableRotator::getRotationAngle()
 
 void CC3MutableRotator::setRotationAngle( GLfloat anAngle )
 {
-	m_rotationVector = CC3Vector4FromCC3Vector(getRotationAxis(), CC3CyclicAngle(anAngle));
+	m_rotationVector = CC3Vector4().fromCC3Vector(getRotationAxis(), CC3CyclicAngle(anAngle));
 	m_rotationType = kCC3RotationTypeAxisAngle;
 	markRotationDirty();
 }
 
 void CC3MutableRotator::rotateByAngle( GLfloat anAngle, CC3Vector anAxis )
 {
-	rotateByQuaternion( CC3QuaternionFromAxisAngle(CC3Vector4FromCC3Vector(anAxis, anAngle)) );
+	rotateByQuaternion( CC3QuaternionFromAxisAngle(CC3Vector4().fromCC3Vector(anAxis, anAngle)) );
 }
 
 CC3Matrix* CC3MutableRotator::getRotationMatrix()
@@ -436,7 +436,7 @@ std::string CC3MutableRotator::fullDescription()
 	return CC3String::stringWithFormat( (char*)"%s with rotation: %s, quaternion: %s, rotation axis: %s, rotation angle %.3f",
 			super::fullDescription().c_str(),
 			getRotation().stringfy().c_str(),
-			stringFromCC3Vector4(getQuaternion()).c_str(),
+			getQuaternion().stringfy().c_str(),
 			getRotationAxis().stringfy().c_str(),
 			getRotationAngle() );
 }
@@ -501,7 +501,7 @@ CC3Vector CC3DirectionalRotator::getForwardDirection()
 {
 	if (m_rotationType == kCC3RotationTypeDirection) 
 	{
-		return m_rotationVector.v;
+		return m_rotationVector.cc3Vector();
 	} 
 	else 
 	{
@@ -514,7 +514,7 @@ void CC3DirectionalRotator::setForwardDirection( CC3Vector aDirection )
 {
 	CCAssert(!aDirection.equals(CC3Vector::kCC3VectorZero),
 			 "The forwardDirection may not be set to the zero vector.");
-	m_rotationVector = CC3Vector4FromDirection(aDirection.normalize());
+	m_rotationVector.fromDirection( aDirection.normalize() );
 	m_rotationType = kCC3RotationTypeDirection;
 	markRotationDirty();
 }
@@ -677,12 +677,12 @@ bool CC3TargettingRotator::isTargettable()
 
 CC3Vector CC3TargettingRotator::getTargetLocation()
 {
-	return (m_rotationType == kCC3RotationTypeLocation) ? m_rotationVector.v : CC3Vector::kCC3VectorNull;
+	return (m_rotationType == kCC3RotationTypeLocation) ? m_rotationVector.cc3Vector() : CC3Vector::kCC3VectorNull;
 }
 
 void CC3TargettingRotator::setTargetLocation( CC3Vector aLocation )
 {
-	m_rotationVector = CC3Vector4FromCC3Vector(aLocation, 0.0f);
+	m_rotationVector = CC3Vector4().fromCC3Vector(aLocation, 0.0f);
 	m_rotationType = kCC3RotationTypeLocation;
 	m_isNewTarget = false;		// Target is no longer new once the location of it has been set.
 	markRotationDirty();

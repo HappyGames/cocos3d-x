@@ -1061,7 +1061,7 @@ void CC3VertexLocations::setLocation( const CC3Vector& aLocation, GLuint index )
 			*(CCPoint*)elemAddr = *(CCPoint*)&aLocation;
 			break;
 		case 4:		// Convert to 4D with w = 1
-			*(CC3Vector4*)elemAddr = CC3Vector4FromLocation(aLocation);
+			*(CC3Vector4*)elemAddr = CC3Vector4().fromLocation(aLocation);
 			break;
 		case 3:
 		default:

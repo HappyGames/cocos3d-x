@@ -340,7 +340,7 @@ void CC3GLSLUniform::setFloat( GLfloat value )
 
 void CC3GLSLUniform::setFloat( GLfloat value, GLuint index )
 {
-	setVector4( CC3Vector4Make(value, 0.0f, 0.0f, 1.0f), index );
+	setVector4( CC3Vector4(value, 0.0f, 0.0f, 1.0f), index );
 }
 
 void CC3GLSLUniform::setPoint( const CCPoint& value )
@@ -350,7 +350,7 @@ void CC3GLSLUniform::setPoint( const CCPoint& value )
 
 void CC3GLSLUniform::setPoint( const CCPoint& value, GLuint index )
 {
-	setVector4( CC3Vector4Make(value.x, value.y, 0.0f, 1.0f), index );
+	setVector4( CC3Vector4(value.x, value.y, 0.0f, 1.0f), index );
 }
 
 void CC3GLSLUniform::setVector( const CC3Vector& value )
@@ -360,7 +360,7 @@ void CC3GLSLUniform::setVector( const CC3Vector& value )
 
 void CC3GLSLUniform::setVector( const CC3Vector& value, GLuint index )
 {
-	setVector4( CC3Vector4Make(value.x, value.y, value.z, 1.0f), index );
+	setVector4( CC3Vector4(value.x, value.y, value.z, 1.0f), index );
 }
 
 void CC3GLSLUniform::setVector4( const CC3Vector4& value )
@@ -412,7 +412,7 @@ void CC3GLSLUniform::setVector4( const CC3Vector4& value, GLuint index )
 			return;
 	}
 	
-	CC3_TRACE("CC3GLSLUniform setting value to %s", stringFromCC3Vector4( value).c_str());
+	CC3_TRACE("CC3GLSLUniform setting value to %s", value.stringfy().c_str());
 }
 
 void CC3GLSLUniform::setQuaternion( const CC3Quaternion& value )
@@ -531,7 +531,7 @@ void CC3GLSLUniform::setIntVector4( const CC3IntVector4& value, GLuint index )
 		case GL_FLOAT_VEC3:
 		case GL_FLOAT_VEC4:
 		case GL_FLOAT_MAT2:
-			setVector4( CC3Vector4Make((GLfloat)value.x, (GLfloat)value.y, (GLfloat)value.z, (GLfloat)value.w), index );
+			setVector4( CC3Vector4((GLfloat)value.x, (GLfloat)value.y, (GLfloat)value.z, (GLfloat)value.w), index );
 			return;
 			
 		case GL_FLOAT_MAT3:
@@ -665,7 +665,7 @@ void CC3GLSLUniform::setColor4F( const ccColor4F& value, GLuint index )
 		case GL_FLOAT_VEC3:
 		case GL_FLOAT_VEC4:
 		case GL_FLOAT_MAT2:
-			setVector4( CC3Vector4Make(value.r, value.g, value.b, value.a), index );
+			setVector4( CC3Vector4(value.r, value.g, value.b, value.a), index );
 			return;
 
 		case GL_FLOAT_MAT3:
@@ -724,7 +724,7 @@ std::string CC3GLSLUniform::valueDescription()
 				break;
 			case GL_FLOAT_VEC4:
 			case GL_FLOAT_MAT2:
-				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Vector4(((CC3Vector4*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", (((CC3Vector4*)_varValue)[vIdx]).stringfy().c_str() );
 				break;
 				
 			case GL_FLOAT_MAT3:
@@ -790,11 +790,11 @@ void CC3GLSLUniform::populateInitialValue()
 			case GL_FLOAT_VEC2:
 			case GL_FLOAT_VEC3:
 			case GL_FLOAT_VEC4:
-				setVector4( CC3Vector4Make(0.0f, 0.0f, 0.0f, 1.0f), vIdx );
+				setVector4( CC3Vector4(0.0f, 0.0f, 0.0f, 1.0f), vIdx );
 				return;
 				
 			case GL_FLOAT_MAT2:
-				setVector4( CC3Vector4Make(1.0f, 0.0f, 0.0f, 1.0f), vIdx );
+				setVector4( CC3Vector4(1.0f, 0.0f, 0.0f, 1.0f), vIdx );
 				return;
 			case GL_FLOAT_MAT3:
 				CC3Matrix3x3PopulateIdentity(&m3x3);

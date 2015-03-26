@@ -59,8 +59,8 @@ GLuint CC3Light::getLightIndex()
 CC3Vector4 CC3Light::getGlobalHomogeneousPosition()
 {
 	return (isDirectionalOnly()
-			? CC3Vector4FromDirection(getGlobalLocation())
-			: CC3Vector4FromLocation(getGlobalLocation()));
+			? CC3Vector4().fromDirection(getGlobalLocation())
+			: CC3Vector4().fromLocation(getGlobalLocation()));
 }
 
 /** Overridden to return NO so that the forwardDirection aligns with the negative-Z-axis. */
@@ -876,7 +876,7 @@ void CC3LightCameraBridgeVolume::setLight( CC3Light* aLight )
  */
 CC3Vector CC3LightCameraBridgeVolume::getLightPosition()
 {
-	return _light->getGlobalHomogeneousPosition().v; 
+	return _light->getGlobalHomogeneousPosition().cc3Vector(); 
 }
 
 void CC3LightCameraBridgeVolume::populateFrom( CC3LightCameraBridgeVolume* another )

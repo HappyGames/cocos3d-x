@@ -93,7 +93,7 @@ CC3Vector4 CC3RayIntersectionWithPlane(CC3Ray ray, CC3Plane plane)
 
 	GLfloat dirDist = -(rs.dot( pn ) + plane.d) / rd.dot( pn );
 	CC3Vector loc = rs.add( rd.scaleUniform( dirDist ) );
-	return CC3Vector4FromCC3Vector(loc, dirDist);
+	return CC3Vector4().fromCC3Vector(loc, dirDist);
 }
 
 
@@ -202,7 +202,8 @@ CC3Vector4 CC3RayIntersectionWithBoxSide(CC3Ray aRay, CC3Box bb, CC3Vector sideN
 
 	// If ray is parallel to edge plane, or if edge plane is behind the ray
 	// start, we have no intersection, so return the previous intersection.
-	if (sideHit.w < 0.0f || CC3Vector4IsNull(sideHit)) return prevHit;
+	if (sideHit.w < 0.0f || sideHit.isNull()) 
+		return prevHit;
 
 	// To avoid missed intersections due to rounding errors when checking if the
 	// intersection is within the bounding box, force the side plane intersection
@@ -213,7 +214,7 @@ CC3Vector4 CC3RayIntersectionWithBoxSide(CC3Ray aRay, CC3Box bb, CC3Vector sideN
 
 	// If the side intersection location is not within
 	// the bounding box, return the previous intersection.
-	if ( !CC3BoxContainsLocation(bb, sideHit.v) ) return prevHit;
+	if ( !CC3BoxContainsLocation(bb, sideHit.cc3Vector()) ) return prevHit;
 
 	// If the ray distance to this side is less than the previous intersection,
 	// return this intersection, otherwise return the previous intersection.
@@ -231,7 +232,7 @@ CC3Vector  CC3RayIntersectionWithBox(CC3Ray aRay, CC3Box bb)
 	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitYNegative, closestHit);
 	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitZPositive, closestHit);
 	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitZNegative, closestHit);
-	return closestHit.v;
+	return closestHit.cc3Vector();
 }
 
 
@@ -347,7 +348,7 @@ CC3Quaternion CC3QuaternionSlerp(CC3Quaternion q1, CC3Quaternion q2, GLfloat ble
 
 	GLfloat theta, cosTheta, oneOverSinTheta, v1Weight, v2Weight;
 
-	cosTheta = CC3Vector4Dot(q1, q2) / (CC3Vector4Length(q1) * CC3Vector4Length(q2));
+	cosTheta = q1.dot( q2 ) / (q1.length() * q2.length());
 
 	// (Q and −Q map to the same rotation), the rotation path may turn either the "short way"
 	// (less than 180°) or the "long way" (more than 180°). Long paths can be prevented by
@@ -365,8 +366,7 @@ CC3Quaternion CC3QuaternionSlerp(CC3Quaternion q1, CC3Quaternion q2, GLfloat ble
 		v1Weight = (sinf(theta * (1.0f - blendFactor)) * oneOverSinTheta);
 		v2Weight = (sinf(theta * blendFactor) * oneOverSinTheta);
 	}
-	CC3Vector4 result = CC3QuaternionNormalize(CC3Vector4Add(CC3QuaternionScaleUniform(q1, v1Weight),
-		CC3QuaternionScaleUniform(q2, v2Weight)));
+	CC3Vector4 result = CC3QuaternionNormalize( q1.scaleUniform(v1Weight).add( q2.scaleUniform(v2Weight) ) );
 	//LogTrace(@"SLERP with cos %.3f at %.3f between %@ and %@ is %@", cosTheta, blendFactor, 
 	//	NSStringFromCC3Quaternion(q1), NSStringFromCC3Quaternion(q2),
 	//	NSStringFromCC3Quaternion(result));

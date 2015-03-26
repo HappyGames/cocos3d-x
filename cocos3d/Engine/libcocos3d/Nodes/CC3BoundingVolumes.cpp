@@ -241,10 +241,10 @@ bool CC3BoundingVolume::isRayBehindAllOtherPlanesAtPunctureOfPlane( const CC3Ray
 	CC3Vector4 pLoc4 = CC3RayIntersectionWithPlane(aRay, pArray[planeIndex]);
 
 	// If ray is pointed away from, or is parallel to the plane, it won't puncture it.
-	if (pLoc4.w < 0.0f || CC3Vector4IsNull(pLoc4)) 
+	if ( pLoc4.w < 0.0f || pLoc4.isNull() ) 
 		return false;
 
-	CC3Vector punctureLoc = pLoc4.v;
+	CC3Vector punctureLoc = pLoc4.cc3Vector();
 	GLuint pCnt = getPlaneCount();
 	for (GLuint pIdx = 0; pIdx < pCnt; pIdx++) 
 	{

@@ -220,9 +220,12 @@ void CC3Matrix3x3PopulateToPointTowards(CC3Matrix3x3* mtx, const CC3Vector fwdDi
 	r = f.cross( upDirection ).normalize();
 	u = r.cross( f );			// already normalized since f & r are orthonormal
 
-	mtx->col1 = r;
-	mtx->col2 = u;
-	mtx->col3 = f.negate();
+	CC3Vector& col1 = *(CC3Vector*)&mtx->c1r1;
+	CC3Vector& col2 = *(CC3Vector*)&mtx->c2r1;
+	CC3Vector& col3 = *(CC3Vector*)&mtx->c3r1;
+	col1 = r;
+	col2 = u;
+	col3 = f.negate();
 }
 
 void CC3Matrix3x3PopulateFromScale(CC3Matrix3x3* mtx, const CC3Vector aScale) 
@@ -409,40 +412,44 @@ CC3Vector CC3Matrix3x3TransformCC3Vector(const CC3Matrix3x3* mtx, CC3Vector v)
 
 void CC3Matrix3x3Orthonormalize(CC3Matrix3x3* mtx, unsigned int startColNum) 
 {
+	CC3Vector& col1 = *(CC3Vector*)&mtx->c1r1;
+	CC3Vector& col2 = *(CC3Vector*)&mtx->c2r1;
+	CC3Vector& col3 = *(CC3Vector*)&mtx->c3r1;
+
 	CC3Vector basisVectors[3];
 	switch (startColNum) {
 			
 			// Start Gram-Schmidt orthonormalization with the first column.
 		case 1:
-			basisVectors[0] = mtx->col1;
-			basisVectors[1] = mtx->col2;
-			basisVectors[2] = mtx->col3;
+			basisVectors[0] = col1;
+			basisVectors[1] = col2;
+			basisVectors[2] = col3;
 			CC3VectorOrthonormalizeTriple(basisVectors);
-			mtx->col1 = basisVectors[0];
-			mtx->col2 = basisVectors[1];
-			mtx->col3 = basisVectors[2];
+			col1 = basisVectors[0];
+			col2 = basisVectors[1];
+			col3 = basisVectors[2];
 			break;
 			
 			// Start Gram-Schmidt orthonormalization with the second column.
 		case 2:
-			basisVectors[0] = mtx->col2;
-			basisVectors[1] = mtx->col3;
-			basisVectors[2] = mtx->col1;
+			basisVectors[0] = col2;
+			basisVectors[1] = col3;
+			basisVectors[2] = col1;
 			CC3VectorOrthonormalizeTriple(basisVectors);
-			mtx->col2 = basisVectors[0];
-			mtx->col3 = basisVectors[1];
-			mtx->col1 = basisVectors[2];
+			col2 = basisVectors[0];
+			col3 = basisVectors[1];
+			col1 = basisVectors[2];
 			break;
 			
 			// Start Gram-Schmidt orthonormalization with the third column.
 		case 3:
-			basisVectors[0] = mtx->col3;
-			basisVectors[1] = mtx->col1;
-			basisVectors[2] = mtx->col2;
+			basisVectors[0] = col3;
+			basisVectors[1] = col1;
+			basisVectors[2] = col2;
 			CC3VectorOrthonormalizeTriple(basisVectors);
-			mtx->col3 = basisVectors[0];
-			mtx->col1 = basisVectors[1];
-			mtx->col2 = basisVectors[2];
+			col3 = basisVectors[0];
+			col1 = basisVectors[1];
+			col2 = basisVectors[2];
 			break;
 			
 		default:	// Don't do any orthonormalization
