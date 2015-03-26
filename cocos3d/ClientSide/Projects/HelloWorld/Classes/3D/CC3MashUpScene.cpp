@@ -103,8 +103,8 @@ USING_NS_COCOS3D;
 static CC3IntSize kTVTexSize = { (16 * kTVScale), (9 * kTVScale) };
 
 // Locations for the brick wall in open and closed position
-static CC3Vector kBrickWallOpenLocation = { -190, 150, -840 };
-static CC3Vector kBrickWallClosedLocation = { -115, 150, -765 };
+static CC3Vector kBrickWallOpenLocation ( -190, 150, -840 );
+static CC3Vector kBrickWallClosedLocation ( -115, 150, -765 );
 
 CC3MashUpScene::CC3MashUpScene()
 {
@@ -3188,7 +3188,7 @@ void CC3MashUpScene::touchGroundAt( const CCPoint& touchPoint )
 	{
 		CC3MeshNode* tp = CC3ModelSampleFactory::factory()->makeUniColoredTeapotNamed( kTeapotOrangeName, kCCC4FOrange );
 		tp->setUniformScale( 200.0f );
-		tp->setLocation( touchLoc.v );
+		tp->setLocation( touchLoc.cc3Vector() );
 		
 		addExplosionTo( tp );	// For effect, add an explosion as the teapot is placed
 		

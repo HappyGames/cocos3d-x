@@ -5,8 +5,6 @@
 #include "3D/CC3MashUpLayer.h"
 #include "3D/CC3MashUpScene.h"
 
-USING_NS_COCOS3D;
-
 bool CMainMenu::init()
 {
 	if( CCScene::init() )
@@ -53,8 +51,6 @@ bool CMenuLayer::init()
 		CC3Scene* cc3Scene = CC3MashUpScene::create();
 #endif
 		
-		std::string sBuilld = Cocos3d::version();
-
 		cc3Layer->setCC3Scene( cc3Scene );
 
 		addChild( cc3Layer );

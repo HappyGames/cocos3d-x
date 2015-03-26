@@ -32,6 +32,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	GLfloat deviceFactor = MAX(viewSize.height, viewSize.width) / 480.f;
 	CCLOG( "Device Factor: %.2f", deviceFactor );
 
+	std::string sBuilld = Cocos3d::version();
+	CCLOG( sBuilld.c_str() );
+
 	//////////////////////////////////////////////////////////////////////////
 	// Use a customized action manager
 	// Unschedule first
