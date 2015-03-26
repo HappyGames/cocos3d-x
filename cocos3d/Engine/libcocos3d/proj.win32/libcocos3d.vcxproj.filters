@@ -430,9 +430,6 @@
     <ClCompile Include="..\Common\CC3Vector4.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\CC3Quaternion.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Scenes\CC3Layer.h">
@@ -821,9 +818,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\CC3Vector4.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\CC3Quaternion.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

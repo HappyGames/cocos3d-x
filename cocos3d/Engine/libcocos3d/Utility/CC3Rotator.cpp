@@ -336,13 +336,16 @@ void CC3MutableRotator::orthonormalize()
 {
 	getRotationMatrix()->orthonormalizeRotationStartingWith( m_orthonormalizationStartColumnNumber );
 
-	m_orthonormalizationStartColumnNumber = (m_orthonormalizationStartColumnNumber < 3)
-												? (m_orthonormalizationStartColumnNumber + 1) : 1;
+	m_orthonormalizationStartColumnNumber = ( m_orthonormalizationStartColumnNumber < 3 )
+												? ( m_orthonormalizationStartColumnNumber + 1 ) : 1;
 }
 
 static GLubyte _autoOrthonormalizeCount = 0;
 
-GLubyte CC3MutableRotator::getAutoOrthonormalizeCount() { return _autoOrthonormalizeCount; }
+GLubyte CC3MutableRotator::getAutoOrthonormalizeCount() 
+{ 
+	return _autoOrthonormalizeCount; 
+}
 
 void CC3MutableRotator::setAutoOrthonormalizeCount( GLubyte aCount )
 {
@@ -351,9 +354,11 @@ void CC3MutableRotator::setAutoOrthonormalizeCount( GLubyte aCount )
 
 void CC3MutableRotator::autoOrthonormalize()
 {
-	if (_autoOrthonormalizeCount) {
+	if ( _autoOrthonormalizeCount ) 
+	{
 		m_incrementalRotationCount++;
-		if (m_incrementalRotationCount >= _autoOrthonormalizeCount) {
+		if ( m_incrementalRotationCount >= _autoOrthonormalizeCount ) 
+		{
 			orthonormalize();
 			m_incrementalRotationCount = 0;
 		}

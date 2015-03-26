@@ -134,11 +134,10 @@ static inline CC3IntPoint CC3IntPointMake(GLint x, GLint y)
 }
 
 /** Returns a CC3IntPoint structure constructed from the specified CCPoint. */
-static inline CC3IntPoint CC3IntPointFromCGPoint( const CCPoint& pt ) { return CC3IntPointMake((GLint)pt.x, (GLint)pt.y); }
-
-/** Returns a CGPoint structure constructed from the specified CC3IntPoint. */
-static inline CCPoint CGPointFromCC3IntPoint( const CC3IntPoint& ipt ) { return ccp(ipt.x, ipt.y); }
-
+static inline CC3IntPoint CC3IntPointFromCGPoint( const CCPoint& pt ) 
+{
+	return CC3IntPointMake((GLint)pt.x, (GLint)pt.y); 
+}
 
 /** Returns whether the two points are equal by comparing their respective components. */
 static inline bool CC3IntPointsAreEqual(CC3IntPoint p1, CC3IntPoint p2)
@@ -176,10 +175,16 @@ static inline CC3IntSize CC3IntSizeMake(GLint w, GLint h)
 }
 
 /** Returns a CC3IntSize structure constructed from the specified CGSize. */
-static inline CC3IntSize CC3IntSizeFromCGSize(const CCSize& sz) { return CC3IntSizeMake((GLint)sz.width, (GLint)sz.height); }
+static inline CC3IntSize CC3IntSizeFromCGSize(const CCSize& sz) 
+{
+	return CC3IntSizeMake((GLint)sz.width, (GLint)sz.height); 
+}
 
 /** Returns a CGSize structure constructed from the specified CC3IntSize. */
-static inline CCSize CGSizeFromCC3IntSize(CC3IntSize isz) { return CCSizeMake(isz.width, isz.height); }
+static inline CCSize CGSizeFromCC3IntSize(CC3IntSize isz) 
+{
+	return CCSizeMake(isz.width, isz.height); 
+}
 
 /** Returns whether the two sizes are equal by comparing their respective components. */
 static inline bool CC3IntSizesAreEqual(CC3IntSize s1, CC3IntSize s2) 
@@ -189,13 +194,19 @@ static inline bool CC3IntSizesAreEqual(CC3IntSize s1, CC3IntSize s2)
 }
 
 /** Returns whether the specified size is zero, as specified by kCC3IntSizeZero. */
-static inline bool CC3IntSizeIsZero(CC3IntSize s) { return CC3IntSizesAreEqual(s, kCC3IntSizeZero); }
+static inline bool CC3IntSizeIsZero(CC3IntSize s) 
+{
+	return CC3IntSizesAreEqual(s, kCC3IntSizeZero); 
+}
 
 /** A struct representing an integer tessellation. */
 typedef CC3IntPoint CC3Tessellation;
 
 /** Returns a CC3Tessellation structure constructed from the specified components. */
-static inline CC3Tessellation CC3TessellationMake(GLint x, GLint y) { return CC3IntPointMake(x, y); }
+static inline CC3Tessellation CC3TessellationMake(GLint x, GLint y) 
+{
+	return CC3IntPointMake(x, y); 
+}
 
 
 /** An integer 3D vector. */
@@ -266,7 +277,10 @@ void CC3VectorOrthonormalize(CC3Vector* vectors, GLuint vectorCount);
  * of the vectors in the array be changed on each call to this function, to ensure that
  * the starting bias be averaged across each of the vectors over the long term.
  */
-static inline void CC3VectorOrthonormalizeTriple(CC3Vector* triVector) { return CC3VectorOrthonormalize(triVector, 3); }
+static inline void CC3VectorOrthonormalizeTriple(CC3Vector* triVector) 
+{
+	return CC3VectorOrthonormalize(triVector, 3); 
+}
 
 
 /** 

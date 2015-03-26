@@ -381,8 +381,7 @@ CC3Quaternion CC3Matrix3x3ExtractQuaternion(const CC3Matrix3x3* mtx)
 			break;
 	}
 
-	CC3Vector4 normalizedQuat = quat.normalize();
-	return *(CC3Quaternion*)&normalizedQuat;
+	return quat.normalize();
 }
 
 

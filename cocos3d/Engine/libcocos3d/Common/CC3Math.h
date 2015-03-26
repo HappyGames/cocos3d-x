@@ -53,6 +53,7 @@ NS_COCOS3D_BEGIN
 #define CC3DegToRad(D)			((D) * kCC3DegToRadFactor)
 #define CC3RadToDeg(R)			((R) * kCC3RadToDegFactor)
 
+#define kCC3FloatEpsilon		0.00000001f
 
 /**
  * Returns the logical exclusive-OR of the specified two expressions.
@@ -80,6 +81,10 @@ NS_COCOS3D_BEGIN
 #define WAVG(val1, val2, weight) ((val1) + (((val2) - (val1)) * CLAMP(weight, 0.0f, 1.0f)))
 #endif
 
+#ifndef FEQUAL
+#define FEQUAL( a, b ) (fabsf(((a)-(b))) <= kCC3FloatEpsilon)
+#endif
+
 #define  CC3WeightedAverage WAVG
 
 /** Returns the positive or negative modulo remainder of value divided by period. */
@@ -99,7 +104,8 @@ NS_COCOS3D_BEGIN
  * below zero. In this sense, this function behaves like the numbers on a clock, and
  * CC3Cyclic(-2.0, 12.0) will return 10.0 rather than -2.0. 
  */
-static inline float CC3PositiveCyclic(float value, float period) {
+static inline float CC3PositiveCyclic(float value, float period) 
+{
 	float modVal = CC3Cyclic(value, period);
 	return (modVal < 0.0) ? (modVal + period) : modVal;
 }
@@ -114,7 +120,8 @@ static inline float CC3PositiveCyclic(float value, float period) {
  *   - CC3CyclicAngle(-185) will return -185
  *   - CC3CyclicAngle(-535) will return -175
  */
-static inline float CC3CyclicAngle(float angle) {
+static inline float CC3CyclicAngle(float angle)
+{
 	return CC3Cyclic(angle, kCC3CircleDegrees);
 }
 
@@ -128,7 +135,8 @@ static inline float CC3CyclicAngle(float angle) {
  *   - CC3SemiCyclicAngle(-185) will return +175
  *   - CC3SemiCyclicAngle(-535) will return -175
  */
-static inline float CC3SemiCyclicAngle(float angle) {
+static inline float CC3SemiCyclicAngle(float angle) 
+{
 	// Convert the angle to +/- 360 degrees
 	float modAngle = CC3CyclicAngle(angle);
 
@@ -151,7 +159,8 @@ static inline float CC3SemiCyclicAngle(float angle) {
  *
  * For angles in degrees, consider using CC3SemiCyclicAngle instead.
  */
-static inline float CC3CyclicDifference(float minuend, float subtrahend, float period) {
+static inline float CC3CyclicDifference(float minuend, float subtrahend, float period) 
+{
 	float semiPeriod = period * 0.5f;
 	float diff = CC3Cyclic(minuend - subtrahend, period);
 	// If the difference is outside the range (period/2 >= diff >= -period/2),

@@ -167,11 +167,11 @@ CC3BarycentricWeights CC3FaceBarycentricWeights(CC3Face face, CC3Vector aLocatio
 }
 
 
-void CC3VectorOrthonormalize(CC3Vector* vectors, GLuint vectorCount) 
+void CC3VectorOrthonormalize( CC3Vector* vectors, GLuint vectorCount ) 
 {
 	//LogTrace(@"Vectors BEFORE orthonormalization: %@", NSStringFromCC3Vectors(vectors, vectorCount));
 
-	for (GLuint currIdx = 0; currIdx < vectorCount; currIdx++) 
+	for ( GLuint currIdx = 0; currIdx < vectorCount; currIdx++ ) 
 	{
 		// Get the current vector, and subtract any projection from any previously processed vector.
 		// (ie- subtract the portion of each previously processed vector that is parallel to this one).
@@ -179,18 +179,19 @@ void CC3VectorOrthonormalize(CC3Vector* vectors, GLuint vectorCount)
 		// keep the projections into the current vector consistent across all previous vectors.
 		CC3Vector currVector = vectors[currIdx];
 		CC3Vector cleanedCurrVector = currVector;
-		for (GLuint prevIdx = 0; prevIdx < currIdx; prevIdx++) {
+		for (GLuint prevIdx = 0; prevIdx < currIdx; prevIdx++) 
+		{
 			CC3Vector prevVector = vectors[prevIdx];
 			CC3Vector projPrevVector = prevVector.scaleUniform( currVector.dot(prevVector) );
 			cleanedCurrVector = cleanedCurrVector.difference( projPrevVector );
 		}
+
 		// Replace the current vector with its orthonormalized version
 		vectors[currIdx] = cleanedCurrVector.normalize();
 	}
 
 	//LogTrace(@"Vectors AFTER orthonormalization: %@", NSStringFromCC3Vectors(vectors, vectorCount));
 }
-
 
 CC3Vector4 CC3RayIntersectionWithBoxSide(CC3Ray aRay, CC3Box bb, CC3Vector sideNormal, CC3Vector4 prevHit) 
 {
@@ -357,22 +358,6 @@ void CC3FlipVertically( GLubyte* rowMajorData, GLuint rowCount, GLuint bytesPerR
 	}
 
 	CC_SAFE_DELETE_ARRAY( tmpRow );
-}
-
-// Simple function, but too much expanded code to make inline
-CC3Vector CC3RotationFromQuaternion(CC3Quaternion aQuaternion) 
-{
-	CC3Matrix3x3 rotMtx;
-	CC3Matrix3x3PopulateFromQuaternion(&rotMtx, aQuaternion);
-	return CC3Matrix3x3ExtractRotationYXZ(&rotMtx);
-}
-
-// Simple function, but too much expanded code to make inline
-CC3Quaternion CC3QuaternionFromRotation(CC3Vector aRotation) 
-{
-	CC3Matrix3x3 rotMtx;
-	CC3Matrix3x3PopulateFromRotationYXZ(&rotMtx, aRotation);
-	return CC3Matrix3x3ExtractQuaternion(&rotMtx);
 }
 
 NS_COCOS3D_END

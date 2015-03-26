@@ -59,18 +59,16 @@ public:
 	inline CC3Vector() : x(0.f), y(0.f), z(0.f) {  }
 	inline CC3Vector( float _x, float _y, float _z ) : x(_x), y(_y), z(_z) {  }
 
-	std::string		stringfy();
 	std::string		stringfy() const;
 
 	/** Returns whether the two vectors are equal by comparing their respective components. */
-	bool			equals( const CC3Vector& other );
 	bool			equals( const CC3Vector& other ) const;
 
 	/** Returns whether the specified vector is equal to the zero vector, specified by kCC3VectorZero. */
-	bool			isZero();
+	bool			isZero() const;
 
 	/** Returns whether the specified vector is equal to the null vector, specified by kCC3VectorNull. */
-	bool			isNull();
+	bool			isNull() const;
 
 	/**
 	 * Returns the result of scaling the original vector by the corresponding scale vector.
@@ -111,7 +109,6 @@ public:
 	CC3Vector		maxmize( const CC3Vector& other );
 
 	/** Returns the dot-product of the two given vectors (v1 . v2). */
-	float			dot( const CC3Vector& other );
 	float			dot( const CC3Vector& other ) const;
 
 	/**
@@ -121,14 +118,13 @@ public:
 	 * This function is useful for comparing vector sizes without having to run an
 	 * expensive square-root calculation.
 	 */
-	float			lengthSquared();
 	float			lengthSquared() const;
 
 	/**
 	 * Returns the scalar length of the specified CC3Vector from the origin.
 	 * This is calculated as sqrt(x*x + y*y + z*z) and will always be positive.
 	 */
-	float			length();
+	float			length() const;
 
 	/**
 	 * Returns a normalized copy of the specified CC3Vector so that its length is 1.0.
@@ -158,7 +154,6 @@ public:
 	 * Returns the difference between two vectors, by subtracting the subtrahend from the minuend,
 	 * which is accomplished by subtracting each of the corresponding x,y,z components.
 	 */
-	CC3Vector		difference( const CC3Vector& other );
 	CC3Vector		difference( const CC3Vector& other ) const;
 
 	/**
@@ -181,7 +176,6 @@ public:
 	CC3Vector		rotationalDifference( const CC3Vector& other );
 
 	/** Returns the positive scalar distance between the ends of the two specified vectors. */
-	float			distance( const CC3Vector& other );
 	float			distance( const CC3Vector& other ) const;
 
 	/**
@@ -190,7 +184,7 @@ public:
 	 * This function is useful for comparing vector distances without having to run an
 	 * expensive square-root calculation.
 	 */
-	float			distanceSquared( const CC3Vector& other );
+	float			distanceSquared( const CC3Vector& other ) const;
 
 	/**
 	 * Returns a vector that represents the average of the two specified vectors. This is
@@ -202,14 +196,13 @@ public:
 	CC3Vector		average( const CC3Vector& other );
 
 	/** Returns the cross-product of the two given vectors (v1 x v2). */
-	CC3Vector		cross( const CC3Vector& other );
 	CC3Vector		cross( const CC3Vector& other ) const;
 
 	/** Returns YES if the two vectors are either exactly parallel or exactly antiparallel. */
-	bool			isParallelWith( const CC3Vector& other );
+	bool			isParallelWith( const CC3Vector& other ) const;
 
 	/** Returns whether the two vectors are exactly perpendicular. */
-	bool			isPerpendicularTo( const CC3Vector& other );
+	bool			isPerpendicularTo( const CC3Vector& other ) const;
 
 	/**
 	 * Returns a linear interpolation between two vectors, based on the blendFactor.
@@ -222,36 +215,24 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 /// CC3Vector IMPLEMENTATION
-inline std::string CC3Vector::stringfy()
-{
-	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f, %.3f)", this->x, this->y, this->z );
-}
-
 inline std::string CC3Vector::stringfy() const
 {
 	return CC3String::stringWithFormat( (char*)"(%.3f, %.3f, %.3f)", this->x, this->y, this->z );
 }
 
-inline bool CC3Vector::equals( const CC3Vector& other )
-{
-	return this->x == other.x &&
-		this->y == other.y &&
-		this->z == other.z;
-}
-
 inline bool CC3Vector::equals( const CC3Vector& other ) const
 {
-	return this->x == other.x &&
-		this->y == other.y &&
-		this->z == other.z;
+	return FEQUAL(this->x, other.x) &&
+		FEQUAL(this->y, other.y) &&
+		FEQUAL(this->z, other.z);
 }
 
-inline bool CC3Vector::isZero()
+inline bool CC3Vector::isZero() const
 {
 	return equals( kCC3VectorZero );
 }
 
-inline bool CC3Vector::isNull()
+inline bool CC3Vector::isNull() const
 {
 	return equals( kCC3VectorNull );
 }
@@ -301,13 +282,6 @@ inline CC3Vector CC3Vector::maxmize( const CC3Vector& other )
 		MAX(this->z, other.z) );
 }
 
-inline float CC3Vector::dot( const CC3Vector& other )
-{
-	return ( (this->x * other.x) +
-			(this->y * other.y) +
-			(this->z * other.z) );
-}
-
 inline float CC3Vector::dot( const CC3Vector& other ) const
 {
 	return ( (this->x * other.x) +
@@ -315,21 +289,14 @@ inline float CC3Vector::dot( const CC3Vector& other ) const
 		(this->z * other.z) );
 }
 
-inline float CC3Vector::lengthSquared()
-{
-	return dot( *this );
-}
-
 inline float CC3Vector::lengthSquared() const
 {
 	return dot( *this );
 }
 
-inline float CC3Vector::length()
+inline float CC3Vector::length() const
 {
-	// Avoid expensive sqrt calc if vector is unit length or zero
-	float lenSq = lengthSquared();
-	return (lenSq == 1.0f || lenSq == 0.0f) ? lenSq : sqrtf(lenSq);
+	return sqrtf( lengthSquared() );
 }
 
 inline CC3Vector CC3Vector::normalize()
@@ -371,13 +338,6 @@ inline CC3Vector CC3Vector::add( const CC3Vector& translation ) const
 		this->z + translation.z );
 }
 
-inline CC3Vector CC3Vector::difference( const CC3Vector& subtrahend ) 
-{
-	return CC3Vector( this->x - subtrahend.x,
-				this->y - subtrahend.y,
-				this->z - subtrahend.z );
-}
-
 inline CC3Vector CC3Vector::difference( const CC3Vector& subtrahend ) const
 {
 	return CC3Vector( this->x - subtrahend.x,
@@ -399,19 +359,13 @@ inline CC3Vector CC3Vector::rotationalDifference( const CC3Vector& subtrahend )
 				CC3SemiCyclicAngle(this->z - subtrahend.z) );
 }
 
-inline float CC3Vector::distance( const CC3Vector& end ) 
-{
-	CC3Vector thisEnd = end;
-	return thisEnd.difference( *this ).length();
-}
-
 inline float CC3Vector::distance( const CC3Vector& end ) const
 {
 	CC3Vector thisEnd = end;
 	return thisEnd.difference( *this ).length();
 }
 
-inline float CC3Vector::distanceSquared( const CC3Vector& end ) 
+inline float CC3Vector::distanceSquared( const CC3Vector& end ) const 
 {
 	CC3Vector thisEnd = end;
 	return thisEnd.difference( *this ).lengthSquared();
@@ -422,14 +376,6 @@ inline CC3Vector CC3Vector::average( const CC3Vector& other )
 	return add( other ).scaleUniform( 0.5f );
 }
 
-/** Returns the cross-product of the two given vectors (v1 x v2). */
-inline CC3Vector CC3Vector::cross( const CC3Vector& other )
-{
-	return CC3Vector(this->y * other.z - this->z * other.y,
-		this->z * other.x - this->x * other.z,
-		this->x * other.y - this->y * other.x);
-}
-
 inline CC3Vector CC3Vector::cross( const CC3Vector& other ) const
 {
 	return CC3Vector(this->y * other.z - this->z * other.y,
@@ -438,12 +384,12 @@ inline CC3Vector CC3Vector::cross( const CC3Vector& other ) const
 }
 
 /** Returns YES if the two vectors are either exactly parallel or exactly antiparallel. */
-inline bool CC3Vector::isParallelWith( const CC3Vector& other ) 
+inline bool CC3Vector::isParallelWith( const CC3Vector& other ) const
 {
 	return ( cross( other ).lengthSquared() == 0.0f );
 }
 
-inline bool CC3Vector::isPerpendicularTo( const CC3Vector& other ) 
+inline bool CC3Vector::isPerpendicularTo( const CC3Vector& other ) const
 {
 	return ( dot( other ) == 0.0f );
 }
