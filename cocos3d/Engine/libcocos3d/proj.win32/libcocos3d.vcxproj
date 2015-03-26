@@ -33,6 +33,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cocos3d.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="..\Common\CC3Platform.cpp" />
+    <ClCompile Include="..\Common\CC3Quaternion.cpp" />
     <ClCompile Include="..\Common\CC3String.cpp" />
     <ClCompile Include="..\Common\CC3Vector.cpp" />
     <ClCompile Include="..\Common\CC3Vector4.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="..\Animations\CC3Actions.h" />
     <ClInclude Include="..\Animations\CC3NodeAnimation.h" />
     <ClInclude Include="..\Common\CC3Platform.h" />
+    <ClInclude Include="..\Common\CC3Quaternion.h" />
     <ClInclude Include="..\Common\CC3String.h" />
     <ClInclude Include="..\Common\CC3Vector.h" />
     <ClInclude Include="..\Common\CC3Vector4.h" />

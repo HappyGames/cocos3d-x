@@ -337,45 +337,7 @@ CC3Plane CC3RaySphereIntersectionEquation(CC3Ray aRay, CC3Sphere aSphere)
 	return CC3PlaneMake(a, b, c, d);
 }
 
-
-#define kSlerpCosAngleLinearEpsilon 0.01	// about 8 degrees
-
-CC3Quaternion CC3QuaternionSlerp(CC3Quaternion q1, CC3Quaternion q2, GLfloat blendFactor) 
-{
-	// Short-circuit if we know it's one of the end-points.
-	if (blendFactor == 0.0f) return q1;
-	if (blendFactor == 1.0f) return q2;
-
-	GLfloat theta, cosTheta, oneOverSinTheta, v1Weight, v2Weight;
-
-	cosTheta = q1.dot( q2 ) / (q1.length() * q2.length());
-
-	// (Q and −Q map to the same rotation), the rotation path may turn either the "short way"
-	// (less than 180°) or the "long way" (more than 180°). Long paths can be prevented by
-	// negating one end if the dot product, cos(theta), is negative, thus ensuring that
-	// −90° ≤ theta ≤ 90°. Taken from http://en.wikipedia.org/wiki/Slerp
-	if (cosTheta < 0.0) { return CC3QuaternionSlerp(q1, CC3QuaternionNegate(q2), blendFactor); }
-
-	// If angle close to zero (cos() close to one), save cycles by interpolating linearly
-	if ((1.0 - cosTheta) < kSlerpCosAngleLinearEpsilon) {
-		v1Weight = 1.0f - blendFactor;
-		v2Weight = blendFactor;
-	} else {
-		theta = acosf(cosTheta);
-		oneOverSinTheta = 1.0f / sinf(theta);
-		v1Weight = (sinf(theta * (1.0f - blendFactor)) * oneOverSinTheta);
-		v2Weight = (sinf(theta * blendFactor) * oneOverSinTheta);
-	}
-	CC3Vector4 result = CC3QuaternionNormalize( q1.scaleUniform(v1Weight).add( q2.scaleUniform(v2Weight) ) );
-	//LogTrace(@"SLERP with cos %.3f at %.3f between %@ and %@ is %@", cosTheta, blendFactor, 
-	//	NSStringFromCC3Quaternion(q1), NSStringFromCC3Quaternion(q2),
-	//	NSStringFromCC3Quaternion(result));
-	return result;
-}
-
-
-
-void CC3FlipVertically(GLubyte* rowMajorData, GLuint rowCount, GLuint bytesPerRow) 
+void CC3FlipVertically( GLubyte* rowMajorData, GLuint rowCount, GLuint bytesPerRow ) 
 {
 	if ( !rowMajorData ) 
 		return;		// If no data, nothing to flip!
@@ -383,7 +345,8 @@ void CC3FlipVertically(GLubyte* rowMajorData, GLuint rowCount, GLuint bytesPerRo
 	GLubyte* tmpRow = new GLubyte[bytesPerRow];
 	GLuint lastRowIdx = rowCount - 1;
 	GLuint halfRowCnt = rowCount / 2;
-	for (GLuint rowIdx = 0; rowIdx < halfRowCnt; rowIdx++) {
+	for (GLuint rowIdx = 0; rowIdx < halfRowCnt; rowIdx++) 
+	{
 		GLubyte* lowerRow = rowMajorData + (bytesPerRow * rowIdx);
 		GLubyte* upperRow = rowMajorData + (bytesPerRow * (lastRowIdx - rowIdx));
 		memcpy(tmpRow, upperRow, bytesPerRow);

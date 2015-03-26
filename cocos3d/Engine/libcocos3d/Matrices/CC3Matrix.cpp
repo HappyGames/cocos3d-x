@@ -213,7 +213,7 @@ void CC3Matrix::implPopulateFromRotation( CC3Vector aRotation )
 
 void CC3Matrix::populateFromQuaternion( CC3Quaternion aQuaternion )
 {
-	if ( aQuaternion.equals(kCC3QuaternionIdentity) ) 
+	if ( aQuaternion.equals( CC3Quaternion::kCC3QuaternionIdentity ) ) 
 	{
 		populateIdentity();
 	} 
@@ -344,7 +344,7 @@ CC3Vector CC3Matrix::extractRotation()
 CC3Quaternion CC3Matrix::extractQuaternion()
 {
 	CCAssert(false, "the extractQuaternion method is not implemented");
-	return kCC3QuaternionNull;
+	return CC3Quaternion::kCC3QuaternionNull;
 }
 
 CC3Vector CC3Matrix::extractForwardDirection()
@@ -386,7 +386,7 @@ void CC3Matrix::implRotateBy( CC3Vector aRotation )
 
 // Short-circuit the identity transform. isRigid unchanged under rotation.
 void CC3Matrix::rotateByQuaternion( CC3Quaternion aQuaternion ){
-	if ( !aQuaternion.equals( kCC3QuaternionIdentity ) ) 
+	if ( !aQuaternion.equals( CC3Quaternion::kCC3QuaternionIdentity ) ) 
 	{
 		implRotateByQuaternion( aQuaternion );
 		m_isIdentity = false;

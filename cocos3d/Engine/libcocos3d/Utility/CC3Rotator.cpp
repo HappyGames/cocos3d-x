@@ -63,7 +63,7 @@ CC3Vector CC3Rotator::getRotation()
 
 CC3Quaternion CC3Rotator::getQuaternion()
 { 
-	return kCC3QuaternionIdentity; 
+	return CC3Quaternion::kCC3QuaternionIdentity; 
 }
 
 CC3Vector CC3Rotator::getRotationAxis() 
@@ -253,9 +253,9 @@ CC3Quaternion CC3MutableRotator::getQuaternion()
 	switch (m_rotationType) 
 	{
 		case kCC3RotationTypeQuaternion:
-			return m_rotationVector;
+			return *(CC3Quaternion*)&m_rotationVector;
 		case kCC3RotationTypeAxisAngle:
-			return CC3QuaternionFromAxisAngle(getRotationAxisAngle());
+			return CC3Quaternion().fromAxisAngle(getRotationAxisAngle());
 		default:
 			return getRotationMatrix()->extractQuaternion();
 	}
@@ -280,7 +280,7 @@ CC3Vector4 CC3MutableRotator::getRotationAxisAngle()
 {
 	return (m_rotationType == kCC3RotationTypeAxisAngle)
 				? m_rotationVector
-				: CC3AxisAngleFromQuaternion(getQuaternion());
+				: getQuaternion().toAxisAngle();
 }
 
 CC3Vector CC3MutableRotator::getRotationAxis()
@@ -309,7 +309,7 @@ void CC3MutableRotator::setRotationAngle( GLfloat anAngle )
 
 void CC3MutableRotator::rotateByAngle( GLfloat anAngle, CC3Vector anAxis )
 {
-	rotateByQuaternion( CC3QuaternionFromAxisAngle(CC3Vector4().fromCC3Vector(anAxis, anAngle)) );
+	rotateByQuaternion( CC3Quaternion().fromAxisAngle(CC3Vector4().fromCC3Vector(anAxis, anAngle)) );
 }
 
 CC3Matrix* CC3MutableRotator::getRotationMatrix()

@@ -40,6 +40,7 @@
 #include "Common/CC3Math.h"
 #include "Common/CC3Vector.h"
 #include "Common/CC3Vector4.h"
+#include "Common/CC3Quaternion.h"
 #include "Common/CC3Foundation.h"
 
 /// matrices

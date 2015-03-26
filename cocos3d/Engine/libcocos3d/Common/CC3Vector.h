@@ -203,6 +203,7 @@ public:
 
 	/** Returns the cross-product of the two given vectors (v1 x v2). */
 	CC3Vector		cross( const CC3Vector& other );
+	CC3Vector		cross( const CC3Vector& other ) const;
 
 	/** Returns YES if the two vectors are either exactly parallel or exactly antiparallel. */
 	bool			isParallelWith( const CC3Vector& other );
@@ -423,6 +424,13 @@ inline CC3Vector CC3Vector::average( const CC3Vector& other )
 
 /** Returns the cross-product of the two given vectors (v1 x v2). */
 inline CC3Vector CC3Vector::cross( const CC3Vector& other )
+{
+	return CC3Vector(this->y * other.z - this->z * other.y,
+		this->z * other.x - this->x * other.z,
+		this->x * other.y - this->y * other.x);
+}
+
+inline CC3Vector CC3Vector::cross( const CC3Vector& other ) const
 {
 	return CC3Vector(this->y * other.z - this->z * other.y,
 		this->z * other.x - this->x * other.z,

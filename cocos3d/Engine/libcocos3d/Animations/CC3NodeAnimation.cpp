@@ -181,7 +181,7 @@ void CC3NodeAnimation::establishQuaternionAtFrame( GLuint frameIndex, GLfloat fr
 	if( !animState->isAnimatingQuaternion() ) 
 		return;
 
-	animState->setQuaternion( CC3QuaternionSlerp(getQuaternionAtFrame(frameIndex), getQuaternionAtFrame(frameIndex + 1), frameInterpolation) );
+	animState->setQuaternion( getQuaternionAtFrame(frameIndex).slerp(getQuaternionAtFrame(frameIndex + 1), frameInterpolation) );
 }
 
 /**
@@ -238,7 +238,7 @@ CC3Vector CC3NodeAnimation::getLocationAtFrame( GLuint frameIndex )
  */
 CC3Quaternion CC3NodeAnimation::getQuaternionAtFrame( GLuint frameIndex )
 {
-	return kCC3QuaternionIdentity; 
+	return CC3Quaternion::kCC3QuaternionIdentity; 
 }
 
 /**
@@ -425,7 +425,7 @@ CC3Quaternion* CC3ArrayNodeAnimation::allocateQuaternions()
 		setAnimatedQuaternions( (CC3Quaternion*)calloc(_frameCount, sizeof(CC3Quaternion)) );
 
 		for (GLuint i = 0; i < _frameCount; i++) 
-			_animatedQuaternions[i] = kCC3QuaternionIdentity;
+			_animatedQuaternions[i] = CC3Quaternion::kCC3QuaternionIdentity;
 
 		_quaternionsAreRetained = true;
 		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d quaternions", _frameCount);
@@ -475,7 +475,7 @@ CC3Vector CC3FrozenNodeAnimation::getScale()
 	return _scale;
 }
 
-CC3Vector4 CC3FrozenNodeAnimation::getQuaternion()
+CC3Quaternion CC3FrozenNodeAnimation::getQuaternion()
 {
 	return _quaternion;
 }
@@ -530,7 +530,7 @@ void CC3FrozenNodeAnimation::initWithFrameCount( GLuint numFrames )
 	{
 		_shouldInterpolate = false;
 		_location = CC3Vector::kCC3VectorNull;
-		_quaternion = kCC3QuaternionNull;
+		_quaternion = CC3Quaternion::kCC3QuaternionNull;
 		_scale = CC3Vector::kCC3VectorNull;
 	}
 }
@@ -868,7 +868,7 @@ void CC3NodeAnimationState::initWithAnimation( CC3NodeAnimation* animation, GLui
 	_blendingWeight = 1.0f;
 	_animationTime = 0.0f;
 	_location = CC3Vector::kCC3VectorZero;
-	_quaternion = kCC3QuaternionIdentity;
+	_quaternion = CC3Quaternion::kCC3QuaternionIdentity;
 	_scale = CC3Vector::kCC3VectorUnitCube;
 	_isEnabled = true;
 	_isLocationAnimationEnabled = true;
@@ -907,7 +907,7 @@ std::string CC3NodeAnimationState::describeCurrentState()
 	if (isAnimatingLocation()) 
 		desc += CC3String::stringWithFormat( (char*)" Loc: %s", getLocation().stringfy().c_str() );
 	if (isAnimatingQuaternion())
-		desc += CC3String::stringWithFormat( (char*)" Quat: %s", stringFromCC3Quaternion(getQuaternion()).c_str() );
+		desc += CC3String::stringWithFormat( (char*)" Quat: %s", getQuaternion().stringfy().c_str() );
 	if (isAnimatingScale())
 		desc += CC3String::stringWithFormat( (char*)" Scale: %s", getScale().stringfy().c_str() );
 	if ( !isAnimating()) 

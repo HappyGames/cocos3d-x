@@ -174,7 +174,7 @@ CC3Quaternion CC3Node::getQuaternion()
 	if ( m_rotator )
 		return m_rotator->getQuaternion(); 
 
-	return kCC3QuaternionNull;
+	return CC3Quaternion::kCC3QuaternionNull;
 }
 
 void CC3Node::setQuaternion( const CC3Quaternion& aQuaternion )
@@ -4625,7 +4625,7 @@ void CC3Node::updateFromAnimationState()
 	// Start with identity transforms
 	CC3Vector blendedLoc = CC3Vector::kCC3VectorZero;
 	CC3Vector blendedRot = CC3Vector::kCC3VectorZero;
-	CC3Quaternion blendedQuat = kCC3QuaternionIdentity;
+	CC3Quaternion blendedQuat = CC3Quaternion::kCC3QuaternionIdentity;
 	CC3Vector blendedScale = CC3Vector::kCC3VectorUnitCube;
 
 	// Accumulated weights
@@ -4653,7 +4653,7 @@ void CC3Node::updateFromAnimationState()
 			if ( as->isAnimatingQuaternion() )
 			{
 				totWtQ += currWt;
-				blendedQuat = CC3QuaternionSlerp(blendedQuat, as->getQuaternion(), (currWt / totWtQ));
+				blendedQuat = blendedQuat.slerp(as->getQuaternion(), (currWt / totWtQ));
 			}
 
 			// Blend the scale

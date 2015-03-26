@@ -206,6 +206,12 @@ public:
 		return CC3Vector4().fromCC3Vector( vec3.scaleUniform(scale), this->w * scale );
 	}
 
+	inline CC3Vector4 scaleUniform( float scale ) const
+	{
+		CC3Vector vec3( x, y, z );
+		return CC3Vector4().fromCC3Vector( vec3.scaleUniform(scale), this->w * scale );
+	}
+
 	/**
 	 * Returns the result of scaling the original vector by the corresponding scale
 	 * factor uniformly along the X, Y & Z axes. The W component is left unchanged.
@@ -224,6 +230,11 @@ public:
 		return this->x * other.x + this->y * other.y + this->z * other.z + this->w * other.w;
 	}
 
+	inline float dot( const CC3Vector4& other ) const
+	{
+		return this->x * other.x + this->y * other.y + this->z * other.z + this->w * other.w;
+	}
+
 	/**
 	 * Returns the square of the scalar length of the specified vector from the origin, including
 	 * the w-component. This is calculated as (x*x + y*y + z*z + w*w) and will always be positive.
@@ -236,11 +247,23 @@ public:
 		return this->dot( *this ); 
 	}
 
+	inline float lengthSquared() const
+	{ 
+		return this->dot( *this ); 
+	}
+
 	/**
 	 * Returns the scalar length of the specified vector from the origin, including the w-component
 	 * This is calculated as sqrt(x*x + y*y + z*z + w*w) and will always be positive.
 	 */
 	inline GLfloat length() 
+	{
+		// Avoid expensive sqrt calc if vector is unit length or zero
+		float lenSq = lengthSquared();
+		return (lenSq == 1.0f || lenSq == 0.0f) ? lenSq : sqrtf(lenSq);
+	}
+	
+	inline GLfloat length() const
 	{
 		// Avoid expensive sqrt calc if vector is unit length or zero
 		float lenSq = lengthSquared();
@@ -259,6 +282,11 @@ public:
 
 	/** Returns a vector that is the negative of the specified vector in all dimensions, including W. */
 	inline CC3Vector4 negate() 
+	{ 
+		return CC3Vector4( cc3v(-x, -y, -z), -w ); 
+	}
+
+	inline CC3Vector4 negate() const
 	{ 
 		return CC3Vector4( cc3v(-x, -y, -z), -w ); 
 	}
