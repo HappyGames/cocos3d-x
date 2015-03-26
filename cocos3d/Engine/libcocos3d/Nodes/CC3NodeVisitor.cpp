@@ -1234,7 +1234,7 @@ void CC3NodePuncture::initOnNode( CC3Node* aNode, const CC3Ray& aRay )
 	_node->retain();
 	_punctureLocation = aNode->getLocationOfGlobalRayIntesection( aRay );
 	_globalPunctureLocation = aNode->getGlobalTransformMatrix()->transformLocation( _punctureLocation );
-	_sqGlobalPunctureDistance = CC3VectorDistanceSquared(_globalPunctureLocation, aRay.startLocation);
+	_sqGlobalPunctureDistance = _globalPunctureLocation.distanceSquared( aRay.startLocation );
 }
 
 CC3NodePuncture* CC3NodePuncture::punctureOnNode( CC3Node* aNode, const CC3Ray& aRay )
@@ -1283,7 +1283,7 @@ CC3Vector CC3NodePuncturingVisitor::getPunctureLocationAt( unsigned int index )
 
 CC3Vector CC3NodePuncturingVisitor::getClosestPunctureLocation()
 {
-	return getNodeCount() > 0 ? getPunctureLocationAt(0) : kCC3VectorNull;
+	return getNodeCount() > 0 ? getPunctureLocationAt(0) : CC3Vector::kCC3VectorNull;
 }
 
 CC3Vector CC3NodePuncturingVisitor::getGlobalPunctureLocationAt( unsigned int index )
@@ -1293,7 +1293,7 @@ CC3Vector CC3NodePuncturingVisitor::getGlobalPunctureLocationAt( unsigned int in
 
 CC3Vector CC3NodePuncturingVisitor::getClosestGlobalPunctureLocation()
 {
-	return getNodeCount() > 0 ? getGlobalPunctureLocationAt( 0 ) : kCC3VectorNull;
+	return getNodeCount() > 0 ? getGlobalPunctureLocationAt( 0 ) : CC3Vector::kCC3VectorNull;
 }
 
 void CC3NodePuncturingVisitor::open()
@@ -1342,7 +1342,7 @@ void CC3NodePuncturingVisitor::processBeforeChildren( CC3Node* aNode )
 
 void CC3NodePuncturingVisitor::init()
 { 
-	return initWithRay( CC3RayFromLocDir(kCC3VectorNull, kCC3VectorNull) );
+	return initWithRay( CC3RayFromLocDir(CC3Vector::kCC3VectorNull, CC3Vector::kCC3VectorNull) );
 }
 
 void CC3NodePuncturingVisitor::initWithRay( const CC3Ray& aRay )

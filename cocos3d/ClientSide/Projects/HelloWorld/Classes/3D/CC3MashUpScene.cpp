@@ -762,7 +762,7 @@ void CC3MashUpScene::addTexturedCube()
 	
 	// Wrap the cube in a spinner node to allow it to be rotated by touch swipes.
 	// Give the spinner some friction so that it slows down over time one released.
-	itemName = stringWithFormat( (char*)"%s-Spinner", texCube->getName().c_str() );
+	itemName = CC3String::stringWithFormat( (char*)"%s-Spinner", texCube->getName().c_str() );
 	_texCubeSpinner = SpinningNode::nodeWithName( itemName );
 	_texCubeSpinner->setFriction( 1.0f );
 	_texCubeSpinner->setLocation( cc3v(-200, 75.0, 0.0) );
@@ -1109,7 +1109,7 @@ void CC3MashUpScene::addFloatingHead()
 	// First turn the floating head to face right so that it points towards the side of the
 	// wrapper that will be kept facing the camera, and move the head to the origin of the wrapper.
 	_floatingHead->setRotation( cc3v(0, -90, 0) );
-	_floatingHead->setLocation( kCC3VectorZero );
+	_floatingHead->setLocation( CC3Vector::kCC3VectorZero );
 	CC3Node* headHolder = _floatingHead->asCameraTrackingWrapper();
 	headHolder->setLocation( cc3v(-500.0, 200.0, 0.0) );
 
@@ -1950,8 +1950,8 @@ void CC3MashUpScene::addReflectiveMask()
 	// within the holder (and therefore the required offset) scales as the holder scales!!
 	CC3Node* maskHolder = mask->asOrientingWrapper();
 	maskHolder->setUniformScale( 4.0f );
-	CC3Vector maskOffset = CC3VectorScaleUniform(mask->getLocation(), maskHolder->getUniformScale());
-	maskHolder->setLocation( CC3VectorDifference(cc3v(-750.0, 100.0, -500.0), maskOffset) );
+	CC3Vector maskOffset = mask->getLocation().scaleUniform( maskHolder->getUniformScale() );
+	maskHolder->setLocation( cc3v(-750.0, 100.0, -500.0).difference( maskOffset ) );
 
 	// Mask is added on on background thread. Configure it for the scene, and fade it in slowly.
 	configureForScene( maskHolder, kFadeInDuration );
@@ -2452,13 +2452,13 @@ void CC3MashUpScene::checkForCollisions()
 	if ( _teapotSatellite && _teapotSatellite->doesIntersectNode( _brickWall ) ) 
 	{
 		// Get the direction from the teapot to the wall.
-		CC3Vector tpDir = CC3VectorDifference(_brickWall->getGlobalLocation(), _teapotSatellite->getGlobalLocation());		
+		CC3Vector tpDir = _brickWall->getGlobalLocation().difference( _teapotSatellite->getGlobalLocation() );		
 
 		// If the teapot velocity is in the same direction as the vector from the
 		// teapot to the wall, it is heading towards the wall. If so, turn it around
 		// by getting the current spin action on the teapot holder and replacing it
 		// with the reverse spin.
-		if (CC3VectorDot(_teapotSatellite->getVelocity(), tpDir) > 0.0f) 
+		if ( _teapotSatellite->getVelocity().dot( tpDir ) > 0.0f) 
 		{
 			//LogInfo(@"BANG! %@ hit %@", _teapotSatellite, _brickWall);
 			
@@ -2495,9 +2495,9 @@ void CC3MashUpScene::updateCameraFromControls( GLfloat dt )
 		// in turn are set by the joystick, and combined into a single directional vector.
 		// This represents the movement of the camera. The new location is simply the old
 		// camera location plus the movement.
-		CC3Vector moveVector = CC3VectorAdd(CC3VectorScaleUniform(cam->getGlobalRightDirection(), delta.x),
-											CC3VectorScaleUniform(cam->getGlobalForwardDirection(), delta.y));
-		cam->setLocation( CC3VectorAdd(cam->getLocation(), moveVector) );
+		CC3Vector moveVector = cam->getGlobalRightDirection().scaleUniform(delta.x).add(
+											cam->getGlobalForwardDirection().scaleUniform(delta.y));
+		cam->setLocation( cam->getLocation().add( moveVector ) );
 	}
 
 	// Update the direction the camera is pointing by panning and inclining using rotation.
@@ -2800,8 +2800,8 @@ void CC3MashUpScene::moveCameraBy( GLfloat aMovement )
 	// Convert to a logarithmic scale, zero is backwards, one is unity, and above one is forward.
 	GLfloat camMoveDist = logf(aMovement) * kCamPinchMovementUnit;
 
-	CC3Vector moveVector = CC3VectorScaleUniform(cam->getGlobalForwardDirection(), camMoveDist);
-	cam->setLocation( CC3VectorAdd(_cameraMoveStartLocation, moveVector) );
+	CC3Vector moveVector = cam->getGlobalForwardDirection().scaleUniform(camMoveDist);
+	cam->setLocation( _cameraMoveStartLocation.add(moveVector) );
 }
 
 void CC3MashUpScene::startPanningCamera()
@@ -2854,8 +2854,7 @@ void CC3MashUpScene::rotate( SpinningNode* aNode, const CCPoint& swipeVelocity )
 	// Project the 2D rotation axis into a 3D axis by mapping the 2D X & Y screen
 	// coords to the camera's rightDirection and upDirection, respectively.
 	CC3Camera* cam = getActiveCamera();
-	aNode->setSpinAxis( CC3VectorAdd(CC3VectorScaleUniform(cam->getRightDirection(), axis2d.x),
-								  CC3VectorScaleUniform(cam->getUpDirection(), axis2d.y)) );
+	aNode->setSpinAxis( cam->getRightDirection().scaleUniform(axis2d.x).add( cam->getUpDirection().scaleUniform(axis2d.y)) );
 
 	// Set the spin speed from the scaled drag velocity.
 	aNode->setSpinSpeed( ccpLength(swipeVelocity) * kSwipeVelocityScale );
@@ -2961,8 +2960,7 @@ void CC3MashUpScene::rotate( SpinningNode* aNode, const CCPoint& touchPoint, GLf
 	
 	// Project the 2D axis into a 3D axis by mapping the 2D X & Y screen coords
 	// to the camera's rightDirection and upDirection, respectively.
-	CC3Vector axis = CC3VectorAdd(CC3VectorScaleUniform(cam->getRightDirection(), axis2d.x),
-								  CC3VectorScaleUniform(cam->getUpDirection(), axis2d.y));
+	CC3Vector axis = cam->getRightDirection().scaleUniform(axis2d.x).add( cam->getUpDirection().scaleUniform(axis2d.y) );
 	GLfloat angle = ccpLength(swipe2d) * kSwipeScale;
 
 	// Rotate the cube under direct finger control, by directly rotating by the angle
@@ -3134,9 +3132,9 @@ void CC3MashUpScene::markTouchPoint( const CCPoint& touchPoint, CC3Node* aNode )
 	CC3Vector nodeTouchLoc = puncturedNodes->getClosestPunctureLocation();
 
 	// Create a descriptor node to display the location on the node
-	std::string touchLocStr = stringWithFormat( (char*)"(%.1f, %.1f, %.1f)", nodeTouchLoc.x, nodeTouchLoc.y, nodeTouchLoc.z );
+	std::string touchLocStr = CC3String::stringWithFormat( (char*)"(%.1f, %.1f, %.1f)", nodeTouchLoc.x, nodeTouchLoc.y, nodeTouchLoc.z );
 	CCLabelTTF* dnLabel = CCLabelTTF::create( touchLocStr.c_str(), "Arial", 8 );
-	CC3Node* dn = CC3NodeDescriptor::nodeWithName( stringWithFormat( (char*)"%s-TP", localNode->getName().c_str() ), dnLabel );
+	CC3Node* dn = CC3NodeDescriptor::nodeWithName( CC3String::stringWithFormat( (char*)"%s-TP", localNode->getName().c_str() ), dnLabel );
 	dn->setColor( localNode->getInitialDescriptorColor() );
 
 	// Use actions to fade the descriptor node in and then out, and remove it when done.

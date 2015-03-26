@@ -358,8 +358,8 @@ CC3Scene* CC3MashUpLayer::makeHUDScene()
 	CC3Scene* hudScene = CHUDScene::scene();
 	
 	CC3Node* globe = (CC3Node*)getCC3Scene()->getNodeNamed( kGlobeName )->copy();
-	globe->setLocation( kCC3VectorZero );
-	globe->setRotation( kCC3VectorZero );
+	globe->setLocation( CC3Vector::kCC3VectorZero );
+	globe->setRotation( CC3Vector::kCC3VectorZero );
 	globe->runAction( CC3ActionRotateForever::actionWithRotationRate( cc3v(0, 30, 0) ) );
 	hudScene->addChild( globe );
 	hudScene->createGLBuffers();		// Won't really do anything because the Globe mesh...

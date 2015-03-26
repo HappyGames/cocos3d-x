@@ -424,6 +424,9 @@
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="..\cocos3d.cpp" />
+    <ClCompile Include="..\Common\CC3Vector.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Scenes\CC3Layer.h">
@@ -806,6 +809,9 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\LogManager.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Vector.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

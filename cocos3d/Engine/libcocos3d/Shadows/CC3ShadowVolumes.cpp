@@ -295,15 +295,15 @@ CC3Vector4 CC3ShadowVolumeMeshNode::getShadowVolumeVertexOffsetForLightAt( const
 	CC3Vector camLoc = getShadowCaster()->getGlobalTransformMatrixInverted()->transformLocation( getActiveCamera()->getGlobalLocation() );	
 
 	// Get a unit offset vector in the direction away from the light
-	CC3Vector offsetDir = CC3VectorNormalize((_light->isDirectionalOnly())
-												? CC3VectorNegate(lgtLoc) 
-												: CC3VectorDifference(scLoc, lgtLoc));
+	CC3Vector offsetDir = (_light->isDirectionalOnly()
+												? lgtLoc.negate() 
+												: scLoc.difference( lgtLoc )).normalize();
 
 	// Get the distance from the shadow caster CoG and the camera, and scale the
 	// unit offset vector by that distance and the shadowVolumeVertexOffsetFactor
-	GLfloat camDist = CC3VectorDistance(scLoc, camLoc);
-	CC3Vector offset = CC3VectorScaleUniform(offsetDir, (camDist * _shadowVolumeVertexOffsetFactor));
-	CC3_TRACE("CC3ShadowVolumeMeshNode nudging vertices by %s", stringFromCC3Vector(offset).c_str());
+	GLfloat camDist = scLoc.distance( camLoc );
+	CC3Vector offset = offsetDir.scaleUniform( camDist * _shadowVolumeVertexOffsetFactor );
+	CC3_TRACE("CC3ShadowVolumeMeshNode nudging vertices by %s", offset.stringfy().c_str());
 
 	// Create and return a 4D directional vector from the offset
 	return CC3Vector4FromDirection(offset);

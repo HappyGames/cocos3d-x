@@ -70,7 +70,7 @@ std::string CC3Shader::getShaderPreambleString()
 
 void CC3Shader::setShaderPreambleString( const std::string& shaderPreambleString )
 {
-	std::string preambleName = stringWithFormat( (char*)"%s-Preamble", getName().c_str() );
+	std::string preambleName = CC3String::stringWithFormat( (char*)"%s-Preamble", getName().c_str() );
 	setShaderPreamble( CC3ShaderSourceCode::shaderSourceCodeWithName( preambleName, shaderPreambleString ) );
 }
 
@@ -211,7 +211,7 @@ std::string CC3Shader::getLocalizeCompileErrors( const std::string& logTxt, CC3S
 				visitor = CC3ShaderSourceCodeLineNumberLocalizingVisitor::visitorWithLineNumber( CC3String::toInteger(field) );
 				if ( getShaderPreamble()->localizeLineNumberWithVisitor(visitor) ||
 					shSrcCode->localizeLineNumberWithVisitor(visitor) )
-					localizedLogTxt += stringWithFormat( (char*)"(at %s)", "visitor"/*visitor->fullDescription().c_str()*/ );
+					localizedLogTxt += CC3String::stringWithFormat( (char*)"(at %s)", "visitor"/*visitor->fullDescription().c_str()*/ );
 			}
 			
 			// Write the log field separator at the end of each field
@@ -396,7 +396,7 @@ CC3Shader* CC3Shader::shaderFromPFXShader( PFXClassPtr pSPVRTPFXParserShader, CC
 		return shaderFromSourceCodeFile( shaderFilePath );
 	} else {
 		// Derive the shader name as a combination of the PFX resource name and the local shader name.
-		std::string shaderName = stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
+		std::string shaderName = CC3String::stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
 		std::string shSrcStr = pfxShader->pszGLSLcode;
 		return shaderWithName( shaderName, shSrcStr );
 	}
@@ -438,7 +438,7 @@ CC3VertexShader* CC3VertexShader::shaderFromPFXShader( PFXClassPtr pSPVRTPFXPars
 	else 
 	{
 		// Derive the shader name as a combination of the PFX resource name and the local shader name.
-		std::string shaderName = stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
+		std::string shaderName = CC3String::stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
 		std::string shSrcStr = pfxShader->pszGLSLcode;
 		return CC3VertexShader::shaderWithName( shaderName, shSrcStr );
 	}
@@ -509,7 +509,7 @@ CC3FragmentShader* CC3FragmentShader::shaderFromPFXShader( PFXClassPtr pSPVRTPFX
 		return shaderFromSourceCodeFile( shaderFilePath );
 	} else {
 		// Derive the shader name as a combination of the PFX resource name and the local shader name.
-		std::string shaderName = stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
+		std::string shaderName = CC3String::stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
 		std::string shSrcStr = pfxShader->pszGLSLcode;
 		return shaderWithName( shaderName, shSrcStr );
 	}
@@ -1226,7 +1226,7 @@ CC3ShaderProgram* CC3ShaderProgram::programWithSemanticDelegate( CC3ShaderSemant
 
 std::string CC3ShaderProgram::programNameFromVertexShaderName( const std::string& vertexShaderName, const std::string& fragmentShaderName )
 {
-	return stringWithFormat( (char*)"%s-%s", vertexShaderName.c_str(), fragmentShaderName.c_str() );
+	return CC3String::stringWithFormat( (char*)"%s-%s", vertexShaderName.c_str(), fragmentShaderName.c_str() );
 }
 
 bool CC3ShaderProgram::wasLoadedFromFile()
@@ -1390,7 +1390,7 @@ std::string CC3ShaderSourceCode::getSourceCodeString()
 std::string CC3ShaderSourceCode::getImportableSourceCodeString()
 {
 	return (wasLoadedFromFile()
-				? stringWithFormat( (char*)"#import \"%s\"\n", getName().c_str() )
+				? CC3String::stringWithFormat( (char*)"#import \"%s\"\n", getName().c_str() )
 				: getSourceCodeString());
 }
 
@@ -1474,7 +1474,7 @@ CC3ShaderSourceCode* CC3ShaderSourceCode::shaderSourceCodeWithName( const std::s
 		{
 			if ( !srcSection ) 
 			{
-				std::string sectionName = name + stringWithFormat( (char*)"-Section-%d", ++sectionCount );
+				std::string sectionName = name + CC3String::stringWithFormat( (char*)"-Section-%d", ++sectionCount );
 				srcSection = new CC3ShaderSourceCodeString; 
 				srcSection->initWithName( sectionName );
 				srcSection->autorelease();
@@ -2005,7 +2005,7 @@ CC3MeshNode* CC3ShaderPrewarmer::getPrewarmingMeshNode()
 		_prewarmingMeshNode->setVertexContentTypes( kCC3VertexContentLocation );
 		
 		// Populate the mesh as a single triangular face of zero dimensions
-		CC3Face triangle = CC3FaceMake(kCC3VectorZero, kCC3VectorZero, kCC3VectorZero);
+		CC3Face triangle = CC3FaceMake(CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero);
 		ccTex2F texCoords[3] = { {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0} };				// unused
 		_prewarmingMeshNode->populateAsTriangle( triangle, texCoords, 1 );
 

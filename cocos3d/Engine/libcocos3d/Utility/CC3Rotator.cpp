@@ -58,7 +58,7 @@ bool CC3Rotator::isTargettable()
 
 CC3Vector CC3Rotator::getRotation()
 { 
-	return kCC3VectorZero; 
+	return CC3Vector::kCC3VectorZero; 
 }
 
 CC3Quaternion CC3Rotator::getQuaternion()
@@ -68,7 +68,7 @@ CC3Quaternion CC3Rotator::getQuaternion()
 
 CC3Vector CC3Rotator::getRotationAxis() 
 { 
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 GLfloat CC3Rotator::getRotationAngle()
@@ -83,7 +83,7 @@ CC3Matrix* CC3Rotator::getRotationMatrix()
 
 CC3Vector CC3Rotator::getTargetLocation()
 { 
-	return kCC3VectorNull; 
+	return CC3Vector::kCC3VectorNull; 
 }
 
 CC3TargettingConstraint CC3Rotator::getTargettingConstraint()
@@ -154,7 +154,7 @@ void CC3Rotator::populateFrom( CC3Rotator* another )
 
 std::string CC3Rotator::description()
 { 
-	return stringWithFormat( (char*)"CC3Rotator" ); 
+	return CC3String::stringWithFormat( (char*)"CC3Rotator" ); 
 }
 
 std::string CC3Rotator::fullDescription()
@@ -235,14 +235,14 @@ CC3Vector CC3MutableRotator::getRotation()
 
 void CC3MutableRotator::setRotation( CC3Vector aRotation )
 {
-	m_rotationVector = CC3Vector4FromCC3Vector(CC3VectorRotationModulo(aRotation), 0.0f);
+	m_rotationVector = CC3Vector4FromCC3Vector(aRotation.rotationModulo(), 0.0f);
 	m_rotationType = kCC3RotationTypeEuler;
 	markRotationDirty();
 }
 
 void CC3MutableRotator::rotateBy( CC3Vector aRotation )
 {
-	getRotationMatrix()->rotateBy( CC3VectorRotationModulo(aRotation) );
+	getRotationMatrix()->rotateBy( aRotation.rotationModulo() );
 	autoOrthonormalize();
 	m_rotationType = kCC3RotationTypeUnknown;
 	markRotationClean();
@@ -433,11 +433,11 @@ CCObject* CC3MutableRotator::copyWithZone(CCZone* pZone)
 
 std::string CC3MutableRotator::fullDescription()
 {
-	return stringWithFormat( (char*)"%s with rotation: %s, quaternion: %s, rotation axis: %s, rotation angle %.3f",
+	return CC3String::stringWithFormat( (char*)"%s with rotation: %s, quaternion: %s, rotation axis: %s, rotation angle %.3f",
 			super::fullDescription().c_str(),
-			stringFromCC3Vector(getRotation()).c_str(),
+			getRotation().stringfy().c_str(),
 			stringFromCC3Vector4(getQuaternion()).c_str(),
-			stringFromCC3Vector(getRotationAxis()).c_str(),
+			getRotationAxis().stringfy().c_str(),
 			getRotationAngle() );
 }
 
@@ -506,15 +506,15 @@ CC3Vector CC3DirectionalRotator::getForwardDirection()
 	else 
 	{
 		CC3Vector mtxFwdDir = getRotationMatrix()->extractForwardDirection();
-		return m_shouldReverseForwardDirection ? CC3VectorNegate(mtxFwdDir) : mtxFwdDir;
+		return m_shouldReverseForwardDirection ? mtxFwdDir.negate() : mtxFwdDir;
 	}
 }
 
 void CC3DirectionalRotator::setForwardDirection( CC3Vector aDirection )
 {
-	CCAssert(!CC3VectorsAreEqual(aDirection, kCC3VectorZero),
+	CCAssert(!aDirection.equals(CC3Vector::kCC3VectorZero),
 			 "The forwardDirection may not be set to the zero vector.");
-	m_rotationVector = CC3Vector4FromDirection(CC3VectorNormalize(aDirection));
+	m_rotationVector = CC3Vector4FromDirection(aDirection.normalize());
 	m_rotationType = kCC3RotationTypeDirection;
 	markRotationDirty();
 }
@@ -527,10 +527,10 @@ CC3Vector CC3DirectionalRotator::getReferenceUpDirection()
 /** Does not set the rotation type until the forwardDirection is set. */
 void CC3DirectionalRotator::setReferenceUpDirection( CC3Vector aDirection )
 {
-	CCAssert(!CC3VectorsAreEqual(aDirection, kCC3VectorZero),
+	CCAssert(!aDirection.equals(CC3Vector::kCC3VectorZero),
 			 "The referenceUpDirection may not be set to the zero vector.");
 
-	m_referenceUpDirection = CC3VectorNormalize(aDirection);
+	m_referenceUpDirection = aDirection.normalize();
 }
 
 
@@ -548,7 +548,7 @@ CC3Vector CC3DirectionalRotator::getRightDirection()
 void CC3DirectionalRotator::initOnRotationMatrix( CC3Matrix* aMatrix )
 {
 	super::initOnRotationMatrix( aMatrix );
-	m_referenceUpDirection = kCC3VectorUnitYPositive;
+	m_referenceUpDirection = CC3Vector::kCC3VectorUnitYPositive;
 	m_shouldReverseForwardDirection = false;	
 }
 
@@ -587,12 +587,12 @@ void CC3DirectionalRotator::applyRotation()
 	
 	if (m_rotationType == kCC3RotationTypeDirection) 
 	{
-		CCAssert( !CC3VectorsAreParallel(getForwardDirection(), getReferenceUpDirection()),
+		CCAssert( !getForwardDirection().isParallelWith( getReferenceUpDirection() ),
 				  "The forwardDirection cannot be parallel to the referenceUpDirection."
 				  " To use this forwardDirection, you must choose a different referenceUpDirection." );
 
 		CC3Vector mtxFwdDir = m_shouldReverseForwardDirection
-									? CC3VectorNegate(getForwardDirection())
+									? getForwardDirection().negate()
 									: getForwardDirection();
 		m_rotationMatrix->populateToPointTowards( mtxFwdDir, getReferenceUpDirection() );
 		markRotationClean();
@@ -605,11 +605,11 @@ void CC3DirectionalRotator::applyRotation()
 
 std::string CC3DirectionalRotator::fullDescription()
 {
-	return stringWithFormat( (char*)"%s, direction: %s, up: %s, scene up: %s",
+	return CC3String::stringWithFormat( (char*)"%s, direction: %s, up: %s, scene up: %s",
 			super::fullDescription().c_str(),
-			stringFromCC3Vector(getForwardDirection()).c_str(),
-			stringFromCC3Vector(getUpDirection()).c_str(),
-			stringFromCC3Vector(getReferenceUpDirection()).c_str() );
+			getForwardDirection().stringfy().c_str(),
+			getUpDirection().stringfy().c_str(),
+			getReferenceUpDirection().stringfy().c_str() );
 }
 
 CC3TargettingRotator::CC3TargettingRotator()
@@ -677,7 +677,7 @@ bool CC3TargettingRotator::isTargettable()
 
 CC3Vector CC3TargettingRotator::getTargetLocation()
 {
-	return (m_rotationType == kCC3RotationTypeLocation) ? m_rotationVector.v : kCC3VectorNull;
+	return (m_rotationType == kCC3RotationTypeLocation) ? m_rotationVector.v : CC3Vector::kCC3VectorNull;
 }
 
 void CC3TargettingRotator::setTargetLocation( CC3Vector aLocation )
@@ -695,11 +695,11 @@ bool CC3TargettingRotator::isDirtyByTargetLocation()
 
 void CC3TargettingRotator::rotateToTargetLocation( CC3Vector targLoc, CC3Vector eyeLoc, CC3Vector upDir )
 {
-	if ( !CC3VectorsAreEqual(targLoc, eyeLoc) ) 
+	if ( !targLoc.equals( eyeLoc ) ) 
 	{
 		CC3Vector mtxDir = m_shouldReverseForwardDirection
-								? CC3VectorDifference(eyeLoc, targLoc)
-								: CC3VectorDifference(targLoc, eyeLoc);
+								? eyeLoc.difference( targLoc )
+								: targLoc.difference( eyeLoc );
 
 		m_rotationMatrix->populateToPointTowards( mtxDir, upDir );
 		
@@ -794,8 +794,8 @@ CCObject* CC3TargettingRotator::copyWithZone(CCZone* pZone)
 
 std::string  CC3TargettingRotator::fullDescription()
 {
-	return stringWithFormat( (char*)"%s, targetted at: %s, from target: %s",
-			super::fullDescription().c_str(), stringFromCC3Vector(getTargetLocation()).c_str(),  m_pTarget->getName().c_str() );
+	return CC3String::stringWithFormat( (char*)"%s, targetted at: %s, from target: %s",
+			super::fullDescription().c_str(), getTargetLocation().stringfy().c_str(),  m_pTarget->getName().c_str() );
 }
 
 

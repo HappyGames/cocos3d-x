@@ -60,7 +60,7 @@ bool CC3Identifiable::deriveNameFrom( CC3Identifiable* another, const std::strin
 	if ( suffix.empty() ) 
 		return false;
 
-	setName( stringWithFormat( (char*)"%s-%s", otherName.c_str(), suffix.c_str() ) );
+	setName( CC3String::stringWithFormat( (char*)"%s-%s", otherName.c_str(), suffix.c_str() ) );
 
 	return true;
 }
@@ -172,7 +172,7 @@ void CC3Identifiable::resetTagAllocation()
 
 std::string CC3Identifiable::fullDescription()
 {
-	return stringWithFormat( (char*)"%s :%d", m_sName.c_str(), m_nTag );
+	return CC3String::stringWithFormat( (char*)"%s :%d", m_sName.c_str(), m_nTag );
 }
 
 GLint CC3Identifiable::getInstanceCount()

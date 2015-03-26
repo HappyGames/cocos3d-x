@@ -219,7 +219,7 @@ std::string stringFromCC3Semantic(CC3Semantic semantic)
 		case kCC3SemanticMax: return "kCC3SemanticMax";
 
 		default: 
-			return stringWithFormat( (char*)"Unknown state semantic (%d)", semantic );
+			return CC3String::stringWithFormat( (char*)"Unknown state semantic (%d)", semantic );
 	}
 }
 
@@ -682,7 +682,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 				{
 					boneCnt = pSection->getBoneCount();
 					for (GLuint boneIdx = 0; boneIdx < boneCnt; boneIdx++)
-						uniform->setVector( CC3VectorScale(visitor->getCurrentMeshNode()->getGlobalScale(), pSection->getBoneAt(boneIdx)->getSkeletalScale()) );
+						uniform->setVector( visitor->getCurrentMeshNode()->getGlobalScale().scale( pSection->getBoneAt(boneIdx)->getSkeletalScale() ) );
 				}
 			}
 			return true;
@@ -978,7 +978,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 					CC3Vector spotDir = light->getGlobalForwardDirection();
 					// Transform global direction to eye space and normalize
 					spotDir = CC3Matrix4x3TransformDirection(visitor->getViewMatrix(), spotDir);
-					uniform->setVector( CC3VectorNormalize(spotDir), i );
+					uniform->setVector( spotDir.normalize(), i );
 
 				}
 			}
@@ -993,7 +993,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 					CC3Vector spotDir = light->getGlobalForwardDirection();
 					// Transform global direction to model space and normalize
 					spotDir = CC3Matrix4x3TransformDirection(&m4x3, spotDir);
-					uniform->setVector( CC3VectorNormalize(spotDir), i );
+					uniform->setVector( spotDir.normalize(), i );
 				}
 			}
 			return true;
@@ -1466,7 +1466,7 @@ void CC3ShaderSemanticsByVarName::populateWithDefaultVariableNameMappings()
 	mapVarName( "a_cc3TexCoord", kCC3SemanticVertexTexture );				/**< Vertex texture coordinate for the first texture unit. */
 	GLuint maxTexUnits = CC3OpenGL::sharedGL()->getMaxNumberOfTextureUnits();
 	for (GLuint tuIdx = 0; tuIdx < maxTexUnits; tuIdx++)
-		mapVarName( stringWithFormat( (char*)"a_cc3TexCoord%d", tuIdx ), kCC3SemanticVertexTexture, tuIdx );	/**< Vertex texture coordinate for a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"a_cc3TexCoord%d", tuIdx ), kCC3SemanticVertexTexture, tuIdx );	/**< Vertex texture coordinate for a texture unit. */
 	
 	// VERTEX STATE --------------
 	mapVarName( "u_cc3VertexHasNormal", kCC3SemanticHasVertexNormal );							/**< (bool) Whether a vertex normal is available. */
@@ -1675,7 +1675,7 @@ void CC3ShaderSemanticsByVarName::populateWithStructuredVariableNameMappings()
 	mapVarName( "a_cc3TexCoord", kCC3SemanticVertexTexture );				/**< Vertex texture coordinate for the first texture unit. */
 	GLuint maxTexUnits = CC3OpenGL::sharedGL()->getMaxNumberOfTextureUnits();
 	for (GLuint tuIdx = 0; tuIdx < maxTexUnits; tuIdx++)
-		mapVarName( stringWithFormat( (char*)"a_cc3TexCoord%u", tuIdx ), kCC3SemanticVertexTexture, tuIdx );	/**< Vertex texture coordinate for a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"a_cc3TexCoord%u", tuIdx ), kCC3SemanticVertexTexture, tuIdx );	/**< Vertex texture coordinate for a texture unit. */
 	
 	// VERTEX STATE --------------
 	mapVarName( "u_cc3Vertex.hasVertexNormal", kCC3SemanticHasVertexNormal );					/**< (bool) Whether a vertex normal is available. */
@@ -1838,7 +1838,7 @@ void CC3ShaderSemanticsByVarName::populateWithLegacyVariableNameMappings()
 	mapVarName( "a_cc3TexCoord", kCC3SemanticVertexTexture );				/**< Vertex texture coordinate for the first texture unit. */
 	GLuint maxTexUnits = CC3OpenGL::sharedGL()->getMaxNumberOfTextureUnits();
 	for (GLuint tuIdx = 0; tuIdx < maxTexUnits; tuIdx++)
-		mapVarName( stringWithFormat((char*)"a_cc3TexCoord%u", tuIdx), kCC3SemanticVertexTexture, tuIdx );	/**< Vertex texture coordinate for a texture unit. */
+		mapVarName( CC3String::stringWithFormat((char*)"a_cc3TexCoord%u", tuIdx), kCC3SemanticVertexTexture, tuIdx );	/**< Vertex texture coordinate for a texture unit. */
 	
 	// ATTRIBUTE QUALIFIERS --------------
 	mapVarName( "u_cc3HasVertexNormal", kCC3SemanticHasVertexNormal );					/**< (bool) Whether a vertex normal is available. */
@@ -1921,20 +1921,20 @@ void CC3ShaderSemanticsByVarName::populateWithLegacyVariableNameMappings()
 	// Multiple lights are indexed
 	for (GLuint ltIdx = 0; ltIdx < 4; ltIdx++) 
 	{
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].isEnabled", ltIdx ), kCC3SemanticLightIsEnabled, ltIdx );						/**< (bool) Whether a light is enabled. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].positionEyeSpace", ltIdx ), kCC3SemanticLightPositionEyeSpace, ltIdx );			/**< (vec4) Homogeneous position (location or direction) of a light in eye space. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].positionGlobal", ltIdx ), kCC3SemanticLightPositionGlobal, ltIdx );				/**< (vec4) Homogeneous position (location or direction) of a light in global coordinates. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].positionModel", ltIdx ), kCC3SemanticLightPositionModelSpace, ltIdx );			/**< (vec4) Homogeneous position (location or direction) of a light in local coordinates of model (not light). */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].ambientColor", ltIdx ), kCC3SemanticLightColorAmbient, ltIdx );					/**< (vec4) Ambient color of a light. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].diffuseColor", ltIdx ), kCC3SemanticLightColorDiffuse, ltIdx );					/**< (vec4) Diffuse color of a light. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].specularColor", ltIdx ), kCC3SemanticLightColorSpecular, ltIdx );				/**< (vec4) Specular color of a light. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].attenuation", ltIdx ), kCC3SemanticLightAttenuation, ltIdx );					/**< (vec3) Distance attenuation coefficients for a light. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].spotDirectionEyeSpace", ltIdx ), kCC3SemanticLightSpotDirectionEyeSpace, ltIdx );	/**< (vec3) Direction of a spotlight in eye space. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].spotDirectionGlobal", ltIdx ), kCC3SemanticLightSpotDirectionGlobal, ltIdx );		/**< (vec3) Direction of a spotlight in global coordinates. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].spotDirectionModel", ltIdx ), kCC3SemanticLightSpotDirectionModelSpace, ltIdx );	/**< (vec3) Direction of a spotlight in local coordinates of the model (not light). */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].spotExponent", ltIdx ), kCC3SemanticLightSpotExponent, ltIdx );						/**< (float) Fade-off exponent of a spotlight. */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].spotCutoffAngle", ltIdx ), kCC3SemanticLightSpotCutoffAngle, ltIdx );				/**< (float) Cutoff angle of a spotlight (degrees). */
-		mapVarName( stringWithFormat( (char*)"u_cc3Lights[%d].spotCutoffAngleCosine", ltIdx ), kCC3SemanticLightSpotCutoffAngleCosine, ltIdx );	/**< (float) Cosine of cutoff angle of a spotlight. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].isEnabled", ltIdx ), kCC3SemanticLightIsEnabled, ltIdx );						/**< (bool) Whether a light is enabled. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].positionEyeSpace", ltIdx ), kCC3SemanticLightPositionEyeSpace, ltIdx );			/**< (vec4) Homogeneous position (location or direction) of a light in eye space. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].positionGlobal", ltIdx ), kCC3SemanticLightPositionGlobal, ltIdx );				/**< (vec4) Homogeneous position (location or direction) of a light in global coordinates. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].positionModel", ltIdx ), kCC3SemanticLightPositionModelSpace, ltIdx );			/**< (vec4) Homogeneous position (location or direction) of a light in local coordinates of model (not light). */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].ambientColor", ltIdx ), kCC3SemanticLightColorAmbient, ltIdx );					/**< (vec4) Ambient color of a light. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].diffuseColor", ltIdx ), kCC3SemanticLightColorDiffuse, ltIdx );					/**< (vec4) Diffuse color of a light. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].specularColor", ltIdx ), kCC3SemanticLightColorSpecular, ltIdx );				/**< (vec4) Specular color of a light. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].attenuation", ltIdx ), kCC3SemanticLightAttenuation, ltIdx );					/**< (vec3) Distance attenuation coefficients for a light. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].spotDirectionEyeSpace", ltIdx ), kCC3SemanticLightSpotDirectionEyeSpace, ltIdx );	/**< (vec3) Direction of a spotlight in eye space. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].spotDirectionGlobal", ltIdx ), kCC3SemanticLightSpotDirectionGlobal, ltIdx );		/**< (vec3) Direction of a spotlight in global coordinates. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].spotDirectionModel", ltIdx ), kCC3SemanticLightSpotDirectionModelSpace, ltIdx );	/**< (vec3) Direction of a spotlight in local coordinates of the model (not light). */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].spotExponent", ltIdx ), kCC3SemanticLightSpotExponent, ltIdx );						/**< (float) Fade-off exponent of a spotlight. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].spotCutoffAngle", ltIdx ), kCC3SemanticLightSpotCutoffAngle, ltIdx );				/**< (float) Cutoff angle of a spotlight (degrees). */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3Lights[%d].spotCutoffAngleCosine", ltIdx ), kCC3SemanticLightSpotCutoffAngleCosine, ltIdx );	/**< (float) Cosine of cutoff angle of a spotlight. */
 	}
 	
 	mapVarName( "u_cc3Fog.isEnabled", kCC3SemanticFogIsEnabled );				/**< (bool) Whether scene fogging is enabled. */
@@ -1953,22 +1953,22 @@ void CC3ShaderSemanticsByVarName::populateWithLegacyVariableNameMappings()
 	// In most shaders, these will be left unused in favor of customized the texture combining in code.
 	for (GLuint tuIdx = 0; tuIdx < 4; tuIdx++) 
 	{
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].color", tuIdx), kCC3SemanticTexUnitConstantColor, tuIdx );						/**< (vec4) The constant color of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].mode", tuIdx), kCC3SemanticTexUnitMode, tuIdx );									/**< (int) Environment mode of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].combineRGBFunction", tuIdx), kCC3SemanticTexUnitCombineRGBFunction, tuIdx );		/**< (int) RBG combiner function of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbSource0", tuIdx), kCC3SemanticTexUnitSource0RGB, tuIdx );						/**< (int) The RGB of source 0 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbSource1", tuIdx), kCC3SemanticTexUnitSource1RGB, tuIdx );						/**< (int) The RGB of source 1 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbSource2", tuIdx), kCC3SemanticTexUnitSource2RGB, tuIdx );						/**< (int) The RGB of source 2 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbOperand0", tuIdx), kCC3SemanticTexUnitOperand0RGB, tuIdx );					/**< (int) The RGB combining operand of source 0 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbOperand1", tuIdx), kCC3SemanticTexUnitOperand1RGB, tuIdx );					/**< (int) The RGB combining operand of source 1 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbOperand2", tuIdx), kCC3SemanticTexUnitOperand2RGB, tuIdx );					/**< (int) The RGB combining operand of source 2 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].combineAlphaFunction", tuIdx), kCC3SemanticTexUnitCombineAlphaFunction, tuIdx );	/**< (int) Alpha combiner function of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaSource0", tuIdx), kCC3SemanticTexUnitSource0Alpha, tuIdx );					/**< (int) The alpha of source 0 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaSource1", tuIdx), kCC3SemanticTexUnitSource1Alpha, tuIdx );					/**< (int) The alpha of source 1 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaSource2", tuIdx), kCC3SemanticTexUnitSource2Alpha, tuIdx );					/**< (int) The alpha of source 2 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaOperand0", tuIdx), kCC3SemanticTexUnitOperand0Alpha, tuIdx );				/**< (int) The alpha combining operand of source 0 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaOperand1", tuIdx), kCC3SemanticTexUnitOperand1Alpha, tuIdx );				/**< (int) The alpha combining operand of source 1 of a texture unit. */
-		mapVarName( stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaOperand2", tuIdx), kCC3SemanticTexUnitOperand2Alpha, tuIdx );				/**< (int) The alpha combining operand of source 2 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].color", tuIdx), kCC3SemanticTexUnitConstantColor, tuIdx );						/**< (vec4) The constant color of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].mode", tuIdx), kCC3SemanticTexUnitMode, tuIdx );									/**< (int) Environment mode of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].combineRGBFunction", tuIdx), kCC3SemanticTexUnitCombineRGBFunction, tuIdx );		/**< (int) RBG combiner function of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbSource0", tuIdx), kCC3SemanticTexUnitSource0RGB, tuIdx );						/**< (int) The RGB of source 0 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbSource1", tuIdx), kCC3SemanticTexUnitSource1RGB, tuIdx );						/**< (int) The RGB of source 1 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbSource2", tuIdx), kCC3SemanticTexUnitSource2RGB, tuIdx );						/**< (int) The RGB of source 2 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbOperand0", tuIdx), kCC3SemanticTexUnitOperand0RGB, tuIdx );					/**< (int) The RGB combining operand of source 0 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbOperand1", tuIdx), kCC3SemanticTexUnitOperand1RGB, tuIdx );					/**< (int) The RGB combining operand of source 1 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].rgbOperand2", tuIdx), kCC3SemanticTexUnitOperand2RGB, tuIdx );					/**< (int) The RGB combining operand of source 2 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].combineAlphaFunction", tuIdx), kCC3SemanticTexUnitCombineAlphaFunction, tuIdx );	/**< (int) Alpha combiner function of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaSource0", tuIdx), kCC3SemanticTexUnitSource0Alpha, tuIdx );					/**< (int) The alpha of source 0 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaSource1", tuIdx), kCC3SemanticTexUnitSource1Alpha, tuIdx );					/**< (int) The alpha of source 1 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaSource2", tuIdx), kCC3SemanticTexUnitSource2Alpha, tuIdx );					/**< (int) The alpha of source 2 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaOperand0", tuIdx), kCC3SemanticTexUnitOperand0Alpha, tuIdx );				/**< (int) The alpha combining operand of source 0 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaOperand1", tuIdx), kCC3SemanticTexUnitOperand1Alpha, tuIdx );				/**< (int) The alpha combining operand of source 1 of a texture unit. */
+		mapVarName( CC3String::stringWithFormat( (char*)"u_cc3TextureUnits[%d].alphaOperand2", tuIdx), kCC3SemanticTexUnitOperand2Alpha, tuIdx );				/**< (int) The alpha combining operand of source 2 of a texture unit. */
 	}
 	
 	// MODEL ----------------

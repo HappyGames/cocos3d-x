@@ -192,8 +192,8 @@ CCObject* CC3PerformanceStatistics::copyWithZone( CCZone* zone )
 
 std::string CC3PerformanceStatistics::fullDescription()
 {
-	std::string desc = stringWithFormat( (char*)"%CC3PerformanceStatistics fps: %.0f", getFrameRate() );
-	return  stringWithFormat( (char*)"%s nodes drawn: %.0f, GL calls: %.0f, faces: %.0f",
+	std::string desc = CC3String::stringWithFormat( (char*)"%CC3PerformanceStatistics fps: %.0f", getFrameRate() );
+	return  CC3String::stringWithFormat( (char*)"%s nodes drawn: %.0f, GL calls: %.0f, faces: %.0f",
 			desc.c_str(), getAverageNodesDrawnPerFrame(),
 			getAverageDrawingCallsMadePerFrame(), getAverageFacesPresentedPerFrame() );
 }

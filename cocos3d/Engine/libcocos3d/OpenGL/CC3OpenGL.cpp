@@ -893,7 +893,7 @@ std::string CC3OpenGL::dumpTextureBindings()
 	for (GLuint tuIdx = 0; tuIdx < value_MaxTextureUnitsUsed; tuIdx++) 
 	{
 		activateTextureUnit( tuIdx );
-		desc += stringWithFormat( (char*)"\n\tTexture Unit %d: %s", tuIdx, dumpTextureBindingsAt( tuIdx ).c_str() );
+		desc += CC3String::stringWithFormat( (char*)"\n\tTexture Unit %d: %s", tuIdx, dumpTextureBindingsAt( tuIdx ).c_str() );
 	}
 	return desc;
 }
@@ -1916,7 +1916,7 @@ bool CC3CheckGLfloatAt(GLuint idx, GLfloat val, GLfloat* stateArray, GLbitfield*
 
 bool CC3CheckGLVectorAt(GLuint idx, CC3Vector val, CC3Vector* stateArray, GLbitfield* isKnownBits)
 {
-	bool needsUpdate = !CC3VectorsAreEqual(stateArray[idx], val) || CC3IsBitClear(*isKnownBits, idx);
+	bool needsUpdate = !stateArray[idx].equals( val ) || CC3IsBitClear(*isKnownBits, idx);
 	if (needsUpdate)
 	{
 		stateArray[idx] = val;

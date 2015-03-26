@@ -149,7 +149,7 @@ void CC3MeshParticle::setLocation( const CC3Vector& aLocation )
 
 void CC3MeshParticle::translateBy( const CC3Vector& aVector )
 {
-	setLocation( CC3VectorAdd(getLocation(), aVector) );  
+	setLocation( getLocation().add( aVector ) );  
 }
 
 CC3Vector CC3MeshParticle::getRotation()
@@ -160,7 +160,7 @@ CC3Vector CC3MeshParticle::getRotation()
 void CC3MeshParticle::setRotation( const CC3Vector& aRotation )
 {
 	// This test for change avoids unnecessarily creating and transforming a mutable rotator
-	if ( !shouldTrackTarget() && !CC3VectorsAreEqual(aRotation, _rotator->getRotation()) ) 
+	if ( !shouldTrackTarget() && !aRotation.equals( _rotator->getRotation() ) ) 
 	{
 		getMutableRotator()->setRotation( aRotation );
 		markTransformDirty();
@@ -208,7 +208,7 @@ CC3Vector CC3MeshParticle::getRotationAxis()
 void CC3MeshParticle::setRotationAxis( const CC3Vector& aDirection )
 {
 	// This test for change avoids unnecessarily creating and transforming a mutable rotator
-	if ( !shouldTrackTarget() && !CC3VectorsAreEqual(aDirection, _rotator->getRotationAxis()) ) 
+	if ( !shouldTrackTarget() && !aDirection.equals( _rotator->getRotationAxis() ) ) 
 	{
 		getMutableRotator()->setRotationAxis( aDirection );
 		markTransformDirty();
@@ -461,7 +461,7 @@ void CC3MeshParticle::translateVertices()
 	for (GLuint vtxIdx = 0; vtxIdx < vtxCount; vtxIdx++) 
 	{
 		CC3Vector vtxLoc = _templateMesh->getVertexLocationAt( vtxIdx );
-		setVertexLocation( CC3VectorAdd(vtxLoc, _location), vtxIdx );
+		setVertexLocation( vtxLoc.add( _location ), vtxIdx );
 	}
 }
 
@@ -663,7 +663,7 @@ bool CC3MeshParticle::init()
 	{
 		setRotator( CC3Rotator::rotator() );
 		_templateMesh = NULL;
-		_location = kCC3VectorZero;
+		_location = CC3Vector::kCC3VectorZero;
 		_firstVertexOffset = 0;
 		_firstVertexIndexOffset = 0;
 		_isTransformDirty = true;		// Force transform on first update
@@ -732,7 +732,7 @@ GLfloat CC3ScalableMeshParticle::getUniformScale()
 {
 	return (isUniformlyScaledLocally())
 					? _scale.x
-					: CC3VectorLength(_scale) / kCC3VectorUnitCubeLength;
+					: _scale.length() / CC3Vector::kCC3VectorUnitCubeLength;
 }
 
 void CC3ScalableMeshParticle::setUniformScale( GLfloat aValue )
@@ -753,7 +753,7 @@ bool CC3ScalableMeshParticle::doesUseTranslationOnly()
 
 bool CC3ScalableMeshParticle::isTransformRigid() 
 {
-	return CC3VectorsAreEqual(_scale, kCC3VectorUnitCube); 
+	return _scale.equals( CC3Vector::kCC3VectorUnitCube ); 
 }
 
 /** Invoke super, then apply the scaling transforms to the specified matrix data. */
@@ -767,14 +767,14 @@ void CC3ScalableMeshParticle::applyLocalTransformsTo( CC3Matrix4x3* mtx )
 void CC3ScalableMeshParticle::applyScalingTo( CC3Matrix4x3* mtx )
 {
 	CC3Matrix4x3ScaleBy(mtx, CC3EnsureMinScaleVector(getScale()));
-	CC3_TRACE("CC3ScalableMeshParticle scaled to %s", stringFromCC3Vector(getScale()).c_str());
+	CC3_TRACE("CC3ScalableMeshParticle scaled to %s", getScale().stringfy().c_str());
 }
 
 bool CC3ScalableMeshParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_scale = kCC3VectorUnitCube;
+		_scale = CC3Vector::kCC3VectorUnitCube;
 		return true;
 	}
 

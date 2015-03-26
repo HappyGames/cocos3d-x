@@ -84,7 +84,7 @@ CC3Vector CC3PointParticle::getLocation()
 	if ( _emitter )
 		return _emitter->getVertexLocationAt( _particleIndex ); 
 
-	return kCC3VectorZero;
+	return CC3Vector::kCC3VectorZero;
 }
 
 void CC3PointParticle::setLocation( const CC3Vector& aLocation )
@@ -98,7 +98,7 @@ CC3Vector CC3PointParticle::getNormal()
 	if ( _emitter )
 		return _emitter->getVertexNormalAt( _particleIndex ); 
 
-	return kCC3VectorZero;
+	return CC3Vector::kCC3VectorZero;
 }
 
 void CC3PointParticle::setNormal( const CC3Vector& aNormal )
@@ -166,7 +166,7 @@ std::string CC3PointParticle::fullDescription()
 
 void CC3PointParticle::pointNormalAt( const CC3Vector& camLoc )
 {
-	setNormal( CC3VectorNormalize(CC3VectorDifference(camLoc, getLocation())) );
+	setNormal( camLoc.difference( getLocation() ).normalize() );
 }
 
 bool CC3PointParticle::init()

@@ -40,7 +40,7 @@ std::string stringFromCC3GLSLVariableScope( CC3GLSLVariableScope scope )
 		case kCC3GLSLVariableScopeNode: return "kCC3GLSLVariableScopeNode";
 		case kCC3GLSLVariableScopeDraw: return "kCC3GLSLVariableScopeDraw";
 			
-		default: return stringWithFormat( (char*)"Unknown variable scope (%d)", scope );
+		default: return CC3String::stringWithFormat( (char*)"Unknown variable scope (%d)", scope );
 	}
 }
 
@@ -714,42 +714,42 @@ std::string CC3GLSLUniform::valueDescription()
 		switch (_type) 
 		{
 			case GL_FLOAT:
-				desc += stringWithFormat( (char*)"%.3f", ((GLfloat*)_varValue)[vIdx] );
+				desc += CC3String::stringWithFormat( (char*)"%.3f", ((GLfloat*)_varValue)[vIdx] );
 				break;
 			case GL_FLOAT_VEC2:
-				desc += stringWithFormat( (char*)"%s", stringFromCCPoint(((CCPoint*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCCPoint(((CCPoint*)_varValue)[vIdx]).c_str() );
 				break;
 			case GL_FLOAT_VEC3:
-				desc += stringWithFormat( (char*)"%s", stringFromCC3Vector(((CC3Vector*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", ((CC3Vector*)_varValue)[vIdx].stringfy().c_str() );
 				break;
 			case GL_FLOAT_VEC4:
 			case GL_FLOAT_MAT2:
-				desc += stringWithFormat( (char*)"%s", stringFromCC3Vector4(((CC3Vector4*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Vector4(((CC3Vector4*)_varValue)[vIdx]).c_str() );
 				break;
 				
 			case GL_FLOAT_MAT3:
-				desc += stringWithFormat( (char*)"%s", stringFromCC3Matrix3x3(&(((CC3Matrix3x3*)_varValue)[vIdx])).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Matrix3x3(&(((CC3Matrix3x3*)_varValue)[vIdx])).c_str() );
 				break;
 			case GL_FLOAT_MAT4:
-				desc += stringWithFormat( (char*)"%s", stringFromCC3Matrix4x4(&(((CC3Matrix4x4*)_varValue)[vIdx])).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Matrix4x4(&(((CC3Matrix4x4*)_varValue)[vIdx])).c_str() );
 				break;
 			case GL_SAMPLER_2D:
 			case GL_SAMPLER_CUBE:
 			case GL_INT:
 			case GL_BOOL:
-				desc += stringWithFormat( (char*)"%d", ((GLint*)_varValue)[vIdx] );
+				desc += CC3String::stringWithFormat( (char*)"%d", ((GLint*)_varValue)[vIdx] );
 				break;
 			case GL_INT_VEC2:
 			case GL_BOOL_VEC2:
-				desc += stringWithFormat( (char*)"%s", stringFromCC3IntPoint(((CC3IntPoint*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntPoint(((CC3IntPoint*)_varValue)[vIdx]).c_str() );
 				break;
 			case GL_INT_VEC3:
 			case GL_BOOL_VEC3:
-				desc += stringWithFormat( (char*)"%s", stringFromCC3IntVector(((CC3IntVector*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntVector(((CC3IntVector*)_varValue)[vIdx]).c_str() );
 				break;
 			case GL_INT_VEC4:
 			case GL_BOOL_VEC4:
-				desc += stringWithFormat( (char*)"%s", stringFromCC3IntVector4(((CC3IntVector4*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntVector4(((CC3IntVector4*)_varValue)[vIdx]).c_str() );
 				break;
 				
 			default:

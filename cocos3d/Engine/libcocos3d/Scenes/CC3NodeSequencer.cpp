@@ -628,7 +628,7 @@ void CC3NodeArrayZOrderSequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequ
 		else 
 		{
 			// Get vector from node's center of geometry to camera.
-			CC3Vector node2Cam = CC3VectorDifference(aNode->getGlobalCenterOfGeometry(), camGlobalLoc);
+			CC3Vector node2Cam = aNode->getGlobalCenterOfGeometry().difference( camGlobalLoc );
 
 			// Determine the direction in which to measure from the camera. This will either be
 			// in the direction of a straight line between the camera and the node, or will be
@@ -640,7 +640,7 @@ void CC3NodeArrayZOrderSequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequ
 			// In the case of measuring along the line between the node and camera, it will be
 			// the square of the distance. Comparing the squares of the distance instead of the
 			// distance itself also has the benefit of avoiding expensive square-root calculations.
-			GLfloat camDistProd = CC3VectorDot(node2Cam, measureDir);
+			GLfloat camDistProd = node2Cam.dot( measureDir );
 			aNode->setCameraDistanceProduct( camDistProd );
 
 			// If this node is closer than the previous node in the array, update the

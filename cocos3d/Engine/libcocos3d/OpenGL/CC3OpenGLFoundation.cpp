@@ -69,7 +69,7 @@ std::string GetGLErrorText(GLenum errCode)
 		case GL_INVALID_FRAMEBUFFER_OPERATION:
 			return "GL_INVALID_FRAMEBUFFER_OPERATION: Operation not allowed on frame buffer";
 		default:
-			return stringWithFormat( (char*)"Unknown GL error (0x%04X)", errCode );
+			return CC3String::stringWithFormat( (char*)"Unknown GL error (0x%04X)", errCode );
 	}
 }
 
@@ -102,7 +102,7 @@ void DoLogGLErrorState(const char* fmt, ...)
 	GLenum errCode = glGetError();
 	if (errCode) 
 	{
-		glTxt = stringWithFormat( (char*)"[***GL ERROR***] %s from %s",  GetGLErrorText(errCode).c_str(), glTxt.c_str() );
+		glTxt = CC3String::stringWithFormat( (char*)"[***GL ERROR***] %s from %s",  GetGLErrorText(errCode).c_str(), glTxt.c_str() );
 		CLoggers::sharedLoggers()->logMessageDirectly( CC3_LOG_INFO, glTxt );
 	}
 	else if (_shouldLogGLCalls) 

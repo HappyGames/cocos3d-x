@@ -76,8 +76,8 @@ void IntroducingPODLight::applyColorWithVisitor( CC3NodeDrawingVisitor* visitor 
 void PhysicsMeshNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	velocity = kCC3VectorZero;
-	previousGlobalLocation = kCC3VectorZero;
+	velocity = CC3Vector::kCC3VectorZero;
+	previousGlobalLocation = CC3Vector::kCC3VectorZero;
 }
 
 CC3Vector PhysicsMeshNode::getPreviousGlobalLocation()
@@ -93,8 +93,8 @@ CC3Vector PhysicsMeshNode::getVelocity()
 void PhysicsMeshNode::updateAfterTransform( CC3NodeUpdatingVisitor* visitor )
 {
 	CC3Vector currGlobalLoc = getGlobalLocation();
-	CC3Vector movement = CC3VectorDifference(currGlobalLoc, getPreviousGlobalLocation());
-	velocity = CC3VectorScaleUniform(movement, 1.0f / visitor->getDeltaTime());
+	CC3Vector movement = currGlobalLoc.difference(getPreviousGlobalLocation());
+	velocity = movement.scaleUniform( 1.0f / visitor->getDeltaTime() );
 	previousGlobalLocation = currGlobalLoc;
 }
 
@@ -135,7 +135,7 @@ void DoorMeshNode::setIsOpen( bool isOpen )
 void SpinningNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	setSpinAxis( kCC3VectorZero );
+	setSpinAxis( CC3Vector::kCC3VectorZero );
 	setSpinSpeed( 0.0f );
 	setFriction( 0.0f );
 	setIsFreeWheeling( false );
@@ -367,9 +367,9 @@ void HangingMeshParticle::initializeParticle()
 	// Apply a texture rectangle based on the particleIndex.
 	setTextureRectangle( getTextureRectangle() );
 	
-	setRotationAxis( CC3VectorNormalize(cc3v(CC3RandomFloatBetween(0.0, 1.0),
+	setRotationAxis( cc3v(CC3RandomFloatBetween(0.0, 1.0),
 												CC3RandomFloatBetween(0.0, 1.0),
-												CC3RandomFloatBetween(0.0, 1.0))) );
+												CC3RandomFloatBetween(0.0, 1.0)).normalize() );
 	setRotationSpeed( CC3RandomFloatBetween(-30.0, 30.0) );
 	
 	// To improve performance, accumulate rotational changes and apply
@@ -467,9 +467,9 @@ void RotatingFadingMeshParticle::initializeParticle()
 	super::initializeParticle();
 	
 	// Select a random rotation axis and velocity
-	setRotationAxis( CC3VectorNormalize(cc3v(CC3RandomFloatBetween(0.0, 1.0),
+	setRotationAxis( cc3v(CC3RandomFloatBetween(0.0, 1.0),
 												CC3RandomFloatBetween(0.0, 1.0),
-												CC3RandomFloatBetween(0.0, 1.0))) );
+												CC3RandomFloatBetween(0.0, 1.0)).normalize() );
 	
 	// Alternate between rotating right or left.
 	// Particles are always emitted at the end, so particle index should be randomly odd/even.

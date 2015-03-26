@@ -758,7 +758,7 @@ void CC3HelloWorldScene::addPointHose()
 
 	// Wrap the cube in a spinner node to allow it to be rotated by touch swipes.
 	// Give the spinner some friction so that it slows down over time one released.
-	itemName = stringWithFormat( (char*)"%s-Spinner", texCube->getName().c_str() );
+	itemName = CC3String::stringWithFormat( (char*)"%s-Spinner", texCube->getName().c_str() );
 	SpinningNode* _texCubeSpinner = SpinningNode::nodeWithName( itemName );
 	_texCubeSpinner->setFriction( 1.0f );
 	_texCubeSpinner->setLocation( cc3v(-0, 75.0, 0.0) );

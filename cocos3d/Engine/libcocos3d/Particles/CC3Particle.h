@@ -317,14 +317,14 @@ public:
 	virtual void				setLifeSpan( GLfloat lifeSpan ) {  }
 	virtual GLfloat				getTimeToLive() { return 0.f; }
 
-	virtual CC3Vector			getVelocity() { return kCC3VectorZero; }
+	virtual CC3Vector			getVelocity() { return CC3Vector::kCC3VectorZero; }
 	virtual void				setVelocity( const CC3Vector& velocity ) {  }
 
-	virtual CC3Vector			getRotation() { return kCC3VectorZero; }
+	virtual CC3Vector			getRotation() { return CC3Vector::kCC3VectorZero; }
 	virtual void				setRotation( const CC3Vector& rotation ) {  }
-	virtual CC3Vector			getRotationVelocity() { return kCC3VectorZero; }
+	virtual CC3Vector			getRotationVelocity() { return CC3Vector::kCC3VectorZero; }
 	virtual void				setRotationVelocity( const CC3Vector& rotation ) {  }
-	virtual CC3Vector			getRotationAxis() { return kCC3VectorZero; }
+	virtual CC3Vector			getRotationAxis() { return CC3Vector::kCC3VectorZero; }
 	virtual void				setRotationAxis( const CC3Vector& rotation ) {  }
 	virtual GLfloat				getRotationAngle() { return 0.f; }
 	virtual void				setRotationAngle( GLfloat angle ) {  }

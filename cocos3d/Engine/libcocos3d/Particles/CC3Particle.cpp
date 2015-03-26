@@ -56,7 +56,7 @@ void CC3Particle::setIsAlive( bool alive )
 
 CC3Vector CC3Particle::getLocation() 
 {
-	return kCC3VectorNull; 
+	return CC3Vector::kCC3VectorNull; 
 }
 
 void CC3Particle::setLocation( const CC3Vector& aLocation )
@@ -164,10 +164,10 @@ void CC3Particle::updateDisplayedOpacity( CCOpacity opacity )
 std::string CC3Particle::fullDescription()
 {
 	std::string desc = "";
-	desc += stringWithFormat( (char*)"\n\tlocation: %s", stringFromCC3Vector(getLocation()).c_str() );
+	desc += CC3String::stringWithFormat( (char*)"\n\tlocation: %s", getLocation().stringfy().c_str() );
 	if (hasColor()) 
 	{
-		desc += stringWithFormat( (char*)", colored: %s", stringFromCCC4F(getColor4F()).c_str() );
+		desc += CC3String::stringWithFormat( (char*)", colored: %s", stringFromCCC4F(getColor4F()).c_str() );
 	}
 	return desc;
 }

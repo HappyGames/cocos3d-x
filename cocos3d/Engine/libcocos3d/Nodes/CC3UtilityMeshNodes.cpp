@@ -63,8 +63,8 @@ void CC3SimpleLineNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_lineVertices[0] = kCC3VectorZero;
-		_lineVertices[1] = kCC3VectorZero;
+		_lineVertices[0] = CC3Vector::kCC3VectorZero;
+		_lineVertices[1] = CC3Vector::kCC3VectorZero;
 		populateAsLineStripWith( 2, _lineVertices, false );
 		retainVertexLocations();
 	}
@@ -562,7 +562,7 @@ CC3Vector CC3DirectionMarkerNode::getMarkerDirection()
 
 void CC3DirectionMarkerNode::setMarkerDirection( const CC3Vector& aDirection )
 {
-	_markerDirection = CC3VectorNormalize(aDirection); 
+	_markerDirection = aDirection.normalize(); 
 }
 
 void CC3DirectionMarkerNode::setParent( CC3Node* aNode )
@@ -582,18 +582,18 @@ CC3Box CC3DirectionMarkerNode::getParentBoundingBox()
 	if ( !CC3BoxIsZero(pbb) ) 
 		return pbb;
 
-	CC3Vector bbDim = kCC3VectorZero;
+	CC3Vector bbDim = CC3Vector::kCC3VectorZero;
 	CC3Scene* pScene = getScene();
 	if ( pScene )
-		bbDim = CC3VectorScaleUniform(CC3BoxSize(getScene()->getBoundingBox()), 0.05f);
+		bbDim = CC3BoxSize(getScene()->getBoundingBox()).scaleUniform( 0.05f );
 		
-	return CC3BoxFromMinMax(CC3VectorNegate(bbDim), bbDim);
+	return CC3BoxFromMinMax( bbDim.negate(), bbDim );
 }
 
 void CC3DirectionMarkerNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_markerDirection = kCC3VectorUnitZNegative;
+	_markerDirection = CC3Vector::kCC3VectorUnitZNegative;
 }
 
 void CC3DirectionMarkerNode::populateFrom( CC3DirectionMarkerNode* another )
@@ -695,12 +695,12 @@ CC3Vector CC3DirectionMarkerNode::calculateLineEnd()
 
 	// Ensure that the direction marker has the minimum length specified by directionMarkerMinimumLength
 	if (directionMarkerMinimumLength) {
-		GLfloat gblUniScale = CC3VectorLength(getGlobalScale()) / kCC3VectorUnitCubeLength;
+		GLfloat gblUniScale = getGlobalScale().length() / CC3Vector::kCC3VectorUnitCubeLength;
 		GLfloat minScale = directionMarkerMinimumLength / gblUniScale;
 		dirScale = MAX(dirScale, minScale);
 	}
 
-	CC3Vector lineEnd = CC3VectorScaleUniform(md, dirScale);
+	CC3Vector lineEnd = md.scaleUniform( dirScale );
 	//LogTrace(@"%@ calculated line end %@ from pbb scale %@ and dir scale %.3f and min global length: %.3f", self,
 	//		 NSStringFromCC3Vector(lineEnd), NSStringFromCC3Vector(pbbDirScale), dirScale, directionMarkerMinimumLength);
 	return lineEnd;

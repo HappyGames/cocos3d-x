@@ -1038,7 +1038,7 @@ void CC3EnvironmentMapTexture::setName( const std::string& name )
 {
 	super::setName( name );
 	if ( _renderSurface )
-		_renderSurface->setName( stringWithFormat( (char*)"%s surface", name.c_str() ) );
+		_renderSurface->setName( CC3String::stringWithFormat( (char*)"%s surface", name.c_str() ) );
 }
 
 // Clamp to between zero and six
@@ -1195,22 +1195,22 @@ CC3Vector CC3EnvironmentMapTexture::getCameraDirection()
 	switch (_currentFace) 
 	{
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
-			return kCC3VectorUnitXPositive;
+			return CC3Vector::kCC3VectorUnitXPositive;
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
-			return kCC3VectorUnitXNegative;
+			return CC3Vector::kCC3VectorUnitXNegative;
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
-			return kCC3VectorUnitYPositive;
+			return CC3Vector::kCC3VectorUnitYPositive;
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
-			return kCC3VectorUnitYNegative;
+			return CC3Vector::kCC3VectorUnitYNegative;
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
-			return kCC3VectorUnitZPositive;
+			return CC3Vector::kCC3VectorUnitZPositive;
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
-			return kCC3VectorUnitZNegative;
+			return CC3Vector::kCC3VectorUnitZNegative;
 		default:
 			break;
 	}
 	//CC3Assert(NO, @"%@ encountered unknown cube-map face %@", self, NSStringFromGLEnum(_currentFace));
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 /** Returns the direction to orient the top of the camera to render the current cube-map face. */
@@ -1219,22 +1219,22 @@ CC3Vector CC3EnvironmentMapTexture::getUpDirection()
 	switch (_currentFace) 
 	{
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
-			return kCC3VectorUnitYNegative;
+			return CC3Vector::kCC3VectorUnitYNegative;
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
-			return kCC3VectorUnitYNegative;
+			return CC3Vector::kCC3VectorUnitYNegative;
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
-			return kCC3VectorUnitZPositive;
+			return CC3Vector::kCC3VectorUnitZPositive;
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
-			return kCC3VectorUnitZNegative;
+			return CC3Vector::kCC3VectorUnitZNegative;
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
-			return kCC3VectorUnitYNegative;
+			return CC3Vector::kCC3VectorUnitYNegative;
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
-			return kCC3VectorUnitYNegative;
+			return CC3Vector::kCC3VectorUnitYNegative;
 		default:
 			break;
 	}
 	//CC3Assert(NO, @"%@ encountered unknown cube-map face %@", self, NSStringFromGLEnum(_currentFace));
-	return kCC3VectorNull;
+	return CC3Vector::kCC3VectorNull;
 }
 
 void CC3EnvironmentMapTexture::initCubeWithSideLength( GLuint sideLength )
@@ -1807,7 +1807,7 @@ std::string CC3FramebufferAttachmentName( CC3GLFramebuffer* framebuffer, GLenum 
 			break;
 	}
 
-	return stringWithFormat( (char*)"%s-%s", fbName.c_str(), attachmentName.c_str() );
+	return CC3String::stringWithFormat( (char*)"%s-%s", fbName.c_str(), attachmentName.c_str() );
 }
 
 NS_COCOS3D_END

@@ -145,7 +145,7 @@ void CC3PointParticleEmitter::doNotBufferVertexPointSizes()
 void CC3PointParticleEmitter::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_globalCameraLocation = kCC3VectorNull;
+	_globalCameraLocation = CC3Vector::kCC3VectorNull;
 	_areParticleNormalsDirty = false;
 	setParticleSize( kCC3DefaultParticleSize );
 	_particleSizeMinimum = kCC3ParticleSizeMinimumNone;
@@ -249,20 +249,20 @@ void CC3PointParticleEmitter::updateParticleNormals( CC3NodeUpdatingVisitor* vis
 	{
 		// If we haven't already registered as a camera listener, do so now.
 		// Get the current cam location, because cam might not immediately callback.
-		if ( CC3VectorIsNull(_globalCameraLocation) ) 
+		if ( _globalCameraLocation.isNull() ) 
 		{
 			CC3Camera* cam = getActiveCamera();
 			_globalCameraLocation = cam->getGlobalLocation();
 			cam->addTransformListener( this );
-			CC3_TRACE("[ptc]CC3PointParticleEmitter registered as listener of camera at %s", stringFromCC3Vector(_globalCameraLocation).c_str());
+			CC3_TRACE("[ptc]CC3PointParticleEmitter registered as listener of camera at %s", _globalCameraLocation.stringfy().c_str());
 		}
 
 		if (_areParticleNormalsDirty) 
 		{
-			CC3_TRACE("[ptc]CC3PointParticleEmitter updating particle normals from camera location %s", stringFromCC3Vector(_globalCameraLocation).c_str());
+			CC3_TRACE("[ptc]CC3PointParticleEmitter updating particle normals from camera location %s", _globalCameraLocation.stringfy().c_str());
 			
 			// Get the direction to the camera and transform it to local coordinates
-			CC3Vector camDir = CC3VectorDifference(_globalCameraLocation, getGlobalLocation());
+			CC3Vector camDir = _globalCameraLocation.difference( getGlobalLocation() );
 			camDir = getGlobalTransformMatrixInverted()->transformDirection( camDir );
 
 			CCObject* pObj = NULL;
@@ -289,7 +289,7 @@ void CC3PointParticleEmitter::setParticleNormal( CC3Particle* pointParticle )
 {
 	if ( hasIlluminatedNormals() )
 	{
-		CC3Vector camDir = CC3VectorDifference(_globalCameraLocation, getGlobalLocation());
+		CC3Vector camDir = _globalCameraLocation.difference( getGlobalLocation() );
 		camDir = getGlobalTransformMatrixInverted()->transformDirection( camDir );
 		pointParticle->pointNormalAt( camDir );
 	}
