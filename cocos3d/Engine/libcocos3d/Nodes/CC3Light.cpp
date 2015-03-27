@@ -1220,7 +1220,7 @@ void CC3CameraShadowVolume::buildPlanes()
 		// and then move it out an infinite distance, in the same direction.
 		_planes[kCC3FarIdx] = CC3PlaneNegate(_planes[kCC3NearIdx]);
 		_planes[kCC3FarIdx].d = -lightPos.dot( CC3PlaneNormal(_planes[kCC3FarIdx]) );
-		_planes[kCC3FarIdx].d = SIGN(_planes[kCC3FarIdx].d) * INFINITY;
+		_planes[kCC3FarIdx].d = SIGN(_planes[kCC3FarIdx].d) * FLOAT_INFINITY;
 
 	} else {
 		

@@ -82,7 +82,7 @@ NS_COCOS3D_BEGIN
 #endif
 
 #ifndef FEQUAL
-#define FEQUAL( a, b ) ( (a)==(b) )
+#define FEQUAL( a, b ) ((fabsf(((a)-(b)))) <= kCC3FloatEpsilon)
 #endif
 
 #define  CC3WeightedAverage WAVG

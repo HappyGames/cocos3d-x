@@ -7,7 +7,7 @@ NS_COCOS3D_BEGIN
 const CC3Vector	CC3Vector::kCC3VectorZero( 0.0f, 0.0f, 0.0f );
 
 /** The null CC3Vector. It cannot be drawn, but is useful for marking an uninitialized vector. */
-const CC3Vector	CC3Vector::kCC3VectorNull( INFINITY, INFINITY, INFINITY );
+const CC3Vector	CC3Vector::kCC3VectorNull( FLOAT_INFINITY, FLOAT_INFINITY, FLOAT_INFINITY );
 
 /** A CC3Vector with each component equal to one, representing the diagonal of a unit cube. */
 const CC3Vector	CC3Vector::kCC3VectorUnitCube( 1.0f, 1.0f, 1.0f );

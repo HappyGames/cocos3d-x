@@ -130,6 +130,7 @@ CC3Box CC3LocalContentNode::getBoundingBoxRelativeTo( CC3Node* ancestor )
 	CC3Box lcbb = (shouldContributeToParentBoundingBox()
 				   ? getLocalContentBoundingBoxRelativeTo( ancestor )
 				   : kCC3BoxNull);
+
 	return CC3BoxUnion(lcbb, super::getBoundingBoxRelativeTo(ancestor));
 }
 

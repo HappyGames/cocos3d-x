@@ -138,7 +138,7 @@ public:
 	/** Returns whether the specified vector is equal to the null vector, specified by kCC3Vector4Null. */
 	inline bool isNull() const
 	{
-		return this->equals( kCC3Vector4Null ); 
+		return this->equals( kCC3Vector4Null );
 	}
 
 	/**

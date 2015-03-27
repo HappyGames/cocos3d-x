@@ -1615,7 +1615,7 @@ void CC3FlipVertically(GLubyte* rowMajorData, GLuint rowCount, GLuint bytesPerRo
 /** Resume compiler warnings of unimplemented selectors. */
 #define CC3_POP_NOSELECTOR	_Pragma("GCC diagnostic pop")
 
-const static CCRect CCRectNull = CCRectMake( INFINITY, INFINITY, 0, 0 );
+const static CCRect CCRectNull = CCRectMake( FLOAT_INFINITY, FLOAT_INFINITY, 0, 0 );
 static inline CCRect CCRectUnion( const CCRect& a, const CCRect& b )
 {
 	if ( a.equals( CCRectNull ) )

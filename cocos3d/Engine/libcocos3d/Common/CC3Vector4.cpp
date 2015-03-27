@@ -4,11 +4,11 @@ NS_COCOS3D_BEGIN
 
 const CC3Vector4 CC3Vector4::kCC3Vector4Zero( CC3Vector(0.0, 0.0, 0.0), 0.0 );
 const CC3Vector4 CC3Vector4::kCC3Vector4ZeroLocation( CC3Vector(0.0, 0.0, 0.0), 1.0 );
-const CC3Vector4 CC3Vector4::kCC3Vector4Null( CC3Vector::kCC3VectorNull, INFINITY );
+const CC3Vector4 CC3Vector4::kCC3Vector4Null( CC3Vector::kCC3VectorNull, FLOAT_INFINITY );
 
 const CC3Vector4 CC3Vector4::kCC3QuaternionIdentity ( 0.0, 0.0, 0.0, 1.0 );
 const CC3Vector4 CC3Vector4::kCC3QuaternionZero ( 0.0, 0.0, 0.0, 0.0 );
-const CC3Vector4 CC3Vector4::kCC3QuaternionNull ( INFINITY, INFINITY, INFINITY, INFINITY );
+const CC3Vector4 CC3Vector4::kCC3QuaternionNull ( FLOAT_INFINITY, FLOAT_INFINITY, FLOAT_INFINITY, FLOAT_INFINITY );
 
 // Simple function, but too much expanded code to make inline
 CC3Vector4 CC3Vector4::fromRotation( const CC3Vector& aRotation )

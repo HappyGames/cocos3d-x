@@ -425,6 +425,14 @@ void CC3Matrix::implScaleBy( CC3Vector aScale )
 // Short-circuit the identity transform. isRigid unchanged under translation.
 void CC3Matrix::translateBy( CC3Vector aTranslation )
 {
+	if ( aTranslation.isNull() )
+	{
+		int a = 100;
+		a++;
+	}
+
+	bool isNull = aTranslation.isNull();
+
 	if ( !aTranslation.isZero() ) 
 	{
 		implTranslateBy( aTranslation );

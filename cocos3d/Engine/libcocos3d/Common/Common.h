@@ -25,6 +25,7 @@
  */
 #ifndef _CCL_CC3_COMMON_H_
 #define _CCL_CC3_COMMON_H_
+#include <limits>
 #include "cocos2d.h"
 #include "cocos-ext.h"
 
@@ -129,10 +130,8 @@ public:
 #define DISABLE_CODE_BLOCK_END		} 
 #endif
 
-#ifdef _WIN32
-#ifndef INFINITY
-#define INFINITY (float)(HUGE_VAL)
-#endif
+#ifndef FLOAT_INFINITY
+#define FLOAT_INFINITY				kCC3MaxGLfloat
 #endif
 
 #endif
