@@ -115,4 +115,18 @@ void CC3ActionManager::removeAction( CCObject* action )
 		CCActionManager::removeAction( pAction );
 }
 
+void CC3ActionManager::active()
+{
+	//////////////////////////////////////////////////////////////////////////
+	// Use a customized action manager
+	// Unschedule first
+	CCDirector *pDirector = CCDirector::sharedDirector();
+	CCActionManager* pMgr = pDirector->getActionManager();
+	pDirector->getScheduler()->unscheduleUpdateForTarget( pMgr );
+	CC3ActionManager* pActionMgr = new CC3ActionManager;
+	pDirector->setActionManager( pActionMgr );
+	// Reschedule action manager
+	pDirector->getScheduler()->scheduleUpdateForTarget( pActionMgr, kCCPrioritySystem, false );
+}
+
 NS_COCOS3D_END

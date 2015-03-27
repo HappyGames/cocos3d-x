@@ -37,13 +37,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	//////////////////////////////////////////////////////////////////////////
 	// Use a customized action manager
-	// Unschedule first
-	CCActionManager* pMgr = pDirector->getActionManager();
-	 pDirector->getScheduler()->unscheduleUpdateForTarget( pMgr );
-	CC3ActionManager* pActionMgr = new CC3ActionManager;
-	pDirector->setActionManager( pActionMgr );
-	// Reschedule action manager
-	pDirector->getScheduler()->scheduleUpdateForTarget( pActionMgr, kCCPrioritySystem, false );
+	CC3ActionManager::active();
 
 	TargetPlatform target = getTargetPlatform();
 
