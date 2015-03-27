@@ -91,27 +91,27 @@ void CC3AffineMatrix::populateCC3Matrix4x4( CC3Matrix4x4* mtx )
 	CC3Matrix4x4PopulateFrom4x3( mtx, &m_contents ); 
 }
 
-void CC3AffineMatrix::implPopulateFromRotation( CC3Vector aRotation )
+void CC3AffineMatrix::implPopulateFromRotation( const CC3Vector& aRotation )
 {
 	CC3Matrix4x3PopulateFromRotationYXZ( &m_contents, aRotation );
 }
 
-void CC3AffineMatrix::implPopulateFromQuaternion( CC3Quaternion aQuaternion )
+void CC3AffineMatrix::implPopulateFromQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CC3Matrix4x3PopulateFromQuaternion( &m_contents, aQuaternion );
 }
 
-void CC3AffineMatrix::implPopulateFromScale( CC3Vector aScale )
+void CC3AffineMatrix::implPopulateFromScale( const CC3Vector& aScale )
 {
 	CC3Matrix4x3PopulateFromScale( &m_contents, aScale );
 }
 
-void CC3AffineMatrix::implPopulateFromTranslation( CC3Vector aTranslation )
+void CC3AffineMatrix::implPopulateFromTranslation( const CC3Vector& aTranslation )
 {
 	CC3Matrix4x3PopulateFromTranslation( &m_contents, aTranslation );
 }
 
-void CC3AffineMatrix::implPopulateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection )
+void CC3AffineMatrix::implPopulateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection )
 {
 	CC3Matrix4x3PopulateToPointTowards( &m_contents, fwdDirection, upDirection );
 }
@@ -156,12 +156,12 @@ CC3Vector CC3AffineMatrix::extractTranslation()
 	return CC3Matrix4x3ExtractTranslation( &m_contents ); 
 }
 
-void CC3AffineMatrix::implRotateBy( CC3Vector aRotation )
+void CC3AffineMatrix::implRotateBy( const CC3Vector& aRotation )
 { 
 	CC3Matrix4x3RotateYXZBy( &m_contents, aRotation ); 
 }
 
-void CC3AffineMatrix::implRotateByQuaternion( CC3Quaternion aQuaternion )
+void CC3AffineMatrix::implRotateByQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CC3Matrix4x3RotateByQuaternion( &m_contents, aQuaternion );
 }
@@ -171,12 +171,12 @@ void CC3AffineMatrix::orthonormalizeRotationStartingWith( unsigned int startColN
 	CC3Matrix4x3Orthonormalize( &m_contents, startColNum );
 }
 
-void CC3AffineMatrix::implScaleBy( CC3Vector aScale )
+void CC3AffineMatrix::implScaleBy( const CC3Vector& aScale )
 { 
 	CC3Matrix4x3ScaleBy( &m_contents, aScale ); 
 }
 
-void CC3AffineMatrix::implTranslateBy( CC3Vector aTranslation )
+void CC3AffineMatrix::implTranslateBy( const CC3Vector& aTranslation )
 { 
 	CC3Matrix4x3TranslateBy( &m_contents, aTranslation ); 
 }
@@ -339,7 +339,7 @@ void CC3AffineMatrix::leftMultiplyByCC3Matrix4x4( CC3Matrix4x4* mtx )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3AffineMatrix::transformLocation( CC3Vector v )
+CC3Vector CC3AffineMatrix::transformLocation( const CC3Vector& v )
 {
 	if (m_isIdentity) 
 		return v;
@@ -348,7 +348,7 @@ CC3Vector CC3AffineMatrix::transformLocation( CC3Vector v )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3AffineMatrix::transformDirection( CC3Vector v )
+CC3Vector CC3AffineMatrix::transformDirection( const CC3Vector& v )
 {
 	if (m_isIdentity) 
 		return v;
@@ -357,7 +357,7 @@ CC3Vector CC3AffineMatrix::transformDirection( CC3Vector v )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector4 CC3AffineMatrix::transformHomogeneousVector( CC3Vector4 aVector )
+CC3Vector4 CC3AffineMatrix::transformHomogeneousVector( const CC3Vector4& aVector )
 {
 	if (m_isIdentity) 
 		return aVector;

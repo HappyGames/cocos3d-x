@@ -90,28 +90,28 @@ void CC3LinearMatrix::populateCC3Matrix4x4( CC3Matrix4x4* mtx )
 	CC3Matrix4x4PopulateFrom3x3(mtx, &_contents); 
 }
 
-void CC3LinearMatrix::implPopulateFromRotation( CC3Vector aRotation )
+void CC3LinearMatrix::implPopulateFromRotation( const CC3Vector& aRotation )
 {
 	CC3Matrix3x3PopulateFromRotationYXZ(&_contents, aRotation);
 }
 
-void CC3LinearMatrix::implPopulateFromQuaternion( CC3Quaternion aQuaternion )
+void CC3LinearMatrix::implPopulateFromQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CC3Matrix3x3PopulateFromQuaternion(&_contents, aQuaternion);
 }
 
-void CC3LinearMatrix::implPopulateFromScale( CC3Vector aScale )
+void CC3LinearMatrix::implPopulateFromScale( const CC3Vector& aScale )
 { 
 	CC3Matrix3x3PopulateFromScale(&_contents, aScale); 
 }
 
 // Linear matrix unaffected by translation
-void CC3LinearMatrix::implPopulateFromTranslation( CC3Vector aTranslation )
+void CC3LinearMatrix::implPopulateFromTranslation( const CC3Vector& aTranslation )
 { 
 	implPopulateIdentity(); 
 }
 
-void CC3LinearMatrix::implPopulateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection )
+void CC3LinearMatrix::implPopulateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection )
 {
 	CC3Matrix3x3PopulateToPointTowards(&_contents, fwdDirection, upDirection);
 }
@@ -146,12 +146,12 @@ CC3Vector CC3LinearMatrix::extractTranslation()
 	return CC3Vector::kCC3VectorZero; 
 }
 
-void CC3LinearMatrix::implRotateBy( CC3Vector aRotation )
+void CC3LinearMatrix::implRotateBy( const CC3Vector& aRotation )
 {
 	CC3Matrix3x3RotateYXZBy(&_contents, aRotation); 
 }
 
-void CC3LinearMatrix::implRotateByQuaternion( CC3Quaternion aQuaternion )
+void CC3LinearMatrix::implRotateByQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CC3Matrix3x3RotateByQuaternion(&_contents, aQuaternion);
 }
@@ -161,13 +161,13 @@ void CC3LinearMatrix::orthonormalizeRotationStartingWith( unsigned int startColN
 	CC3Matrix3x3Orthonormalize(&_contents, startColNum);
 }
 
-void CC3LinearMatrix::implScaleBy( CC3Vector aScale )
+void CC3LinearMatrix::implScaleBy( const CC3Vector& aScale )
 { 
 	CC3Matrix3x3ScaleBy(&_contents, aScale); 
 }
 
 // Linear matrix unaffected by translation
-void CC3LinearMatrix::implTranslateBy( CC3Vector aTranslation )
+void CC3LinearMatrix::implTranslateBy( const CC3Vector& aTranslation )
 {}
 
 void CC3LinearMatrix::implMultiplyBy( CC3Matrix* aMatrix )
@@ -303,23 +303,24 @@ void CC3LinearMatrix::leftMultiplyByCC3Matrix4x4( CC3Matrix4x4* mtx )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3LinearMatrix::transformLocation( CC3Vector aLocation )
+CC3Vector CC3LinearMatrix::transformLocation( const CC3Vector& aLocation )
 {
 	if (m_isIdentity) return aLocation;
 	return CC3Matrix3x3TransformCC3Vector(&_contents, aLocation);
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3LinearMatrix::transformDirection( CC3Vector aDirection )
+CC3Vector CC3LinearMatrix::transformDirection( const CC3Vector& aDirection )
 {
 	if (m_isIdentity) return aDirection;
 	return CC3Matrix3x3TransformCC3Vector(&_contents, aDirection);
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector4 CC3LinearMatrix::transformHomogeneousVector( CC3Vector4  v )
+CC3Vector4 CC3LinearMatrix::transformHomogeneousVector( const CC3Vector4& v )
 {
-	if (m_isIdentity) return v;
+	if (m_isIdentity) 
+		return v;
 	
 	CC3Vector4 vOut;
 	vOut.x = (_contents.c1r1 * v.x) + (_contents.c2r1 * v.y) + (_contents.c3r1 * v.z);

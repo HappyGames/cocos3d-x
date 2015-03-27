@@ -53,7 +53,7 @@ class CC3Matrix : public CCObject
 public:
 	CC3Matrix();
 
-	virtual	CCObject*		copyWithZone(CCZone* pZone);
+	virtual	CCObject*		copyWithZone( CCZone* pZone );
 
 	/** 
 	 * Indicates whether this matrix is an identity matrix.
@@ -207,7 +207,7 @@ public:
 	 * matrix, and then transformed by the specified rotation. Elements that are not affected by
 	 * the specified rotation will be populated as in an identity matrix.
 	 */
-	virtual void			populateFromRotation( CC3Vector aRotation );
+	virtual void			populateFromRotation( const CC3Vector& aRotation );
 
 	/**
 	 * Populates this instance from the specified quaternion.
@@ -216,7 +216,7 @@ public:
 	 * matrix, and then transformed by the specified quaternion. Elements that are not affected by
 	 * the specified quaternion will be populated as in an identity matrix.
 	 */
-	virtual void			populateFromQuaternion( CC3Quaternion aQuaternion );
+	virtual void			populateFromQuaternion( const CC3Quaternion& aQuaternion );
 
 	/**
 	 * Populates this instance from specified scaling vector.
@@ -225,7 +225,7 @@ public:
 	 * matrix, and then transformed by the specified scale vector. Elements that are not affected by
 	 * the specified scale vector will be populated as in an identity matrix.
 	 */
-	virtual void			populateFromScale( CC3Vector aScale );
+	virtual void			populateFromScale( const CC3Vector& aScale );
 
 	/**
 	 * Populates this instance from the specified translation vector.
@@ -237,7 +237,7 @@ public:
 	 * If this matrix is of a subclass type that does not support translation, this matrix will be
 	 * populated as an identity matrix.
 	 */
-	virtual void			populateFromTranslation( CC3Vector aTranslation );
+	virtual void			populateFromTranslation( const CC3Vector& aTranslation );
 
 	/**
 	 * Populates this matrix so that it will transform a vector pointed down the negative Z-axis to
@@ -250,7 +250,7 @@ public:
 	 * This method works in model-space, and does not include an implied inversion. So, when applied to
 	 * the camera, this matrix must be subsequently inverted to transform from model-space to view-space.
 	 */
-	virtual void			populateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection );
+	virtual void			populateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection );
 
 	/**
 	 * Populates this matrix so that it will transform a vector between the targetLocation and the eyeLocation
@@ -265,7 +265,7 @@ public:
 	 * populated to look in the correct direction, but will not be looking at the target location,
 	 * as the matrix cannot be translated to the location of the eye.
 	 */
-	virtual void			populateToLookAt( CC3Vector targetLocation, CC3Vector eyeLocation, CC3Vector upDirection );
+	virtual void			populateToLookAt( const CC3Vector& targetLocation, const CC3Vector& eyeLocation, const CC3Vector& upDirection );
 
 	/**
 	 * Populates this matrix as a perspective projection matrix with the specified frustum dimensions.
@@ -335,7 +335,7 @@ public:
 	 * In mathematical terms, the incoming rotation is converted to matrix form, and is
 	 * left-multiplied to this matrix. 
 	 */
-	virtual void			rotateBy( CC3Vector aVector );
+	virtual void			rotateBy( const CC3Vector& aVector );
 
 	/**
 	 * Rotates this matrix by the rotation specified in the given quaternion.
@@ -348,7 +348,7 @@ public:
 	 * In mathematical terms, the incoming rotation is converted to matrix form, and is
 	 * left-multiplied to this matrix. 
 	 */
-	virtual void			rotateByQuaternion( CC3Quaternion aQuaternion );
+	virtual void			rotateByQuaternion( const CC3Quaternion& aQuaternion );
 
 	/**
 	 * Orthonormalizes the rotation component of this matrix, using a Gram-Schmidt process, and
@@ -371,14 +371,14 @@ public:
 	 * Scales this matrix in three dimensions by the specified scaling vector. Non-uniform scaling
 	 * can be achieved by specifying different values for each element of the scaling vector.
 	 */
-	virtual void			scaleBy( CC3Vector aVector ); 
+	virtual void			scaleBy( const CC3Vector& aVector ); 
 
 	/**
 	 * Translates this matrix in three dimensions by the specified translation vector.
 	 * 
 	 * If this matrix is of a subclass type that does not support translation, this method will have no effect on the matrix.
 	 */
-	virtual void			translateBy( CC3Vector aVector );
+	virtual void			translateBy( const CC3Vector& aVector );
 
 	/**
 	 * Multiplies this matrix by the specified matrix, where, in the matrix multiplication equation,
@@ -504,7 +504,7 @@ public:
 	 *
 	 * This matrix and the original specified location vector remain unchanged.
 	 */
-	virtual CC3Vector		transformLocation( CC3Vector aLocation );
+	virtual CC3Vector		transformLocation( const CC3Vector& aLocation );
 
 	/**
 	 * Transforms the specified direction vector using this matrix, and returns the transformed direction.
@@ -514,14 +514,14 @@ public:
 	 *
 	 * This matrix and the original specified location vector remain unchanged.
 	 */
-	virtual CC3Vector		transformDirection( CC3Vector aDirection );
+	virtual CC3Vector		transformDirection( const CC3Vector& aDirection );
 
 	/**
 	 * Transforms the specified homogeneous vector using this matrix, and returns the transformed vector.
 	 *
 	 * This matrix and the original specified homogeneous vector remain unchanged.
 	 */
-	virtual CC3Vector4		transformHomogeneousVector( CC3Vector4 aVector );
+	virtual CC3Vector4		transformHomogeneousVector( const CC3Vector4& aVector );
 
 	/**
 	 * Transforms the specified ray using this matrix, and returns the transformed ray.
@@ -532,7 +532,7 @@ public:
 	 *
 	 * This matrix and the original specified direction vector remain unchanged.
 	 */
-	virtual CC3Ray			transformRay( CC3Ray aRay );
+	virtual CC3Ray			transformRay( const CC3Ray& aRay );
 
 	/** Transposes this matrix. The contents of this matrix are changed. */
 	virtual void			transpose();
@@ -589,20 +589,20 @@ protected:
 	virtual void			implPopulateFromCC3Matrix3x3( CC3Matrix3x3* mtx );
 	virtual void			implPopulateFromCC3Matrix4x3( CC3Matrix4x3* mtx );
 	virtual void			implPopulateFromCC3Matrix4x4( CC3Matrix4x4* mtx );
-	virtual void			implPopulateFromRotation( CC3Vector aRotation );
-	virtual void			implPopulateFromQuaternion( CC3Quaternion aQuaternion );
-	virtual void			implPopulateFromScale( CC3Vector aScale );
+	virtual void			implPopulateFromRotation( const CC3Vector& aRotation );
+	virtual void			implPopulateFromQuaternion( const CC3Quaternion& aQuaternion );
+	virtual void			implPopulateFromScale( const CC3Vector& aScale );
 
-	virtual void			implPopulateFromTranslation( CC3Vector aTranslation );
-	virtual void			implPopulateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection );
+	virtual void			implPopulateFromTranslation( const CC3Vector& aTranslation );
+	virtual void			implPopulateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection );
 	virtual void			implPopulateFromFrustumLeft( GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval, GLfloat farval );
 	virtual void			implPopulateFromFrustumLeft( GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval );
 	virtual void			implPopulateOrthoFromFrustumLeft(GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval, GLfloat farval );
 	virtual void			implPopulateOrthoFromFrustumLeft(GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval );
-	virtual void			implRotateBy( CC3Vector aRotation );
-	virtual void			implRotateByQuaternion( CC3Quaternion aQuaternion );
-	virtual void			implScaleBy( CC3Vector aScale );
-	virtual void			implTranslateBy( CC3Vector aTranslation );
+	virtual void			implRotateBy( const CC3Vector& aRotation );
+	virtual void			implRotateByQuaternion( const CC3Quaternion& aQuaternion );
+	virtual void			implScaleBy( const CC3Vector& aScale );
+	virtual void			implTranslateBy( const CC3Vector& aTranslation );
 	virtual void			implMultiplyBy( CC3Matrix* aMatrix );
 	virtual void			implLeftMultiplyBy( CC3Matrix* aMatrix );
 

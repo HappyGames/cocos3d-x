@@ -89,27 +89,27 @@ void CC3ProjectionMatrix::populateCC3Matrix4x4( CC3Matrix4x4* mtx )
 	CC3Matrix4x4PopulateFrom4x4(mtx, &_contents); 
 }
 
-void CC3ProjectionMatrix::implPopulateFromRotation( CC3Vector aRotation )
+void CC3ProjectionMatrix::implPopulateFromRotation( const CC3Vector& aRotation )
 {
 	CC3Matrix4x4PopulateFromRotationYXZ(&_contents, aRotation);
 }
 
-void CC3ProjectionMatrix::implPopulateFromQuaternion( CC3Quaternion aQuaternion )
+void CC3ProjectionMatrix::implPopulateFromQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CC3Matrix4x4PopulateFromQuaternion(&_contents, aQuaternion);
 }
 
-void CC3ProjectionMatrix::implPopulateFromScale( CC3Vector aScale )
+void CC3ProjectionMatrix::implPopulateFromScale( const CC3Vector& aScale )
 {
 	CC3Matrix4x4PopulateFromScale(&_contents, aScale);
 }
 
-void CC3ProjectionMatrix::implPopulateFromTranslation( CC3Vector aTranslation )
+void CC3ProjectionMatrix::implPopulateFromTranslation( const CC3Vector& aTranslation )
 {
 	CC3Matrix4x4PopulateFromTranslation(&_contents, aTranslation);
 }
 
-void CC3ProjectionMatrix::implPopulateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection )
+void CC3ProjectionMatrix::implPopulateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection )
 {
 	CC3Matrix4x4PopulateToPointTowards(&_contents, fwdDirection, upDirection);
 }
@@ -147,9 +147,9 @@ CC3Vector CC3ProjectionMatrix::extractRightDirection() { return CC3Matrix4x4Extr
 CC3Vector CC3ProjectionMatrix::extractTranslation() { return CC3Matrix4x4ExtractTranslation(&_contents); }
 
 
-void CC3ProjectionMatrix::implRotateBy( CC3Vector aRotation ) { CC3Matrix4x4RotateYXZBy(&_contents, aRotation); }
+void CC3ProjectionMatrix::implRotateBy( const CC3Vector& aRotation ) { CC3Matrix4x4RotateYXZBy(&_contents, aRotation); }
 
-void CC3ProjectionMatrix::implRotateByQuaternion( CC3Quaternion aQuaternion )
+void CC3ProjectionMatrix::implRotateByQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CC3Matrix4x4RotateByQuaternion(&_contents, aQuaternion);
 }
@@ -159,12 +159,12 @@ void CC3ProjectionMatrix::orthonormalizeRotationStartingWith( unsigned int start
 	CC3Matrix4x4Orthonormalize(&_contents, startColNum);
 }
 
-void CC3ProjectionMatrix::implScaleBy( CC3Vector aScale )
+void CC3ProjectionMatrix::implScaleBy( const CC3Vector& aScale )
 { 
 	CC3Matrix4x4ScaleBy(&_contents, aScale); 
 }
 
-void CC3ProjectionMatrix::implTranslateBy( CC3Vector aTranslation )
+void CC3ProjectionMatrix::implTranslateBy( const CC3Vector& aTranslation )
 { 
 	CC3Matrix4x4TranslateBy(&_contents, aTranslation); 
 }
@@ -302,21 +302,21 @@ void CC3ProjectionMatrix::leftMultiplyByCC3Matrix4x4( CC3Matrix4x4* mtx )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3ProjectionMatrix::transformLocation( CC3Vector v )
+CC3Vector CC3ProjectionMatrix::transformLocation( const CC3Vector& v )
 {
 	if (m_isIdentity) return v;
 	return CC3Matrix4x4TransformLocation(&_contents, v);
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3ProjectionMatrix::transformDirection( CC3Vector v )
+CC3Vector CC3ProjectionMatrix::transformDirection( const CC3Vector& v )
 {
 	if (m_isIdentity) return v;
 	return CC3Matrix4x4TransformDirection(&_contents, v);
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector4 CC3ProjectionMatrix::transformHomogeneousVector( CC3Vector4 aVector )
+CC3Vector4 CC3ProjectionMatrix::transformHomogeneousVector( const CC3Vector4& aVector )
 {
 	if (m_isIdentity) return aVector;
 	return CC3Matrix4x4TransformCC3Vector4(&_contents, aVector);

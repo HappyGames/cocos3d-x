@@ -191,7 +191,7 @@ void CC3Matrix::populateCC3Matrix4x4( CC3Matrix4x4* mtx )
 	CCAssert(false, "the populateCC3Matrix4x4: method is not implemented");
 }
 
-void CC3Matrix::populateFromRotation( CC3Vector aRotation )
+void CC3Matrix::populateFromRotation( const CC3Vector& aRotation )
 {
 	if ( aRotation.isZero() ) 
 	{
@@ -206,12 +206,12 @@ void CC3Matrix::populateFromRotation( CC3Vector aRotation )
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implPopulateFromRotation( CC3Vector aRotation )
+void CC3Matrix::implPopulateFromRotation( const CC3Vector& aRotation )
 {
 	CCAssert(false, "the implPopulateFromRotation: method is not implemented");
 }
 
-void CC3Matrix::populateFromQuaternion( CC3Quaternion aQuaternion )
+void CC3Matrix::populateFromQuaternion( const CC3Quaternion& aQuaternion )
 {
 	if ( aQuaternion.equals( CC3Quaternion::kCC3QuaternionIdentity ) ) 
 	{
@@ -226,12 +226,12 @@ void CC3Matrix::populateFromQuaternion( CC3Quaternion aQuaternion )
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implPopulateFromQuaternion( CC3Quaternion aQuaternion )
+void CC3Matrix::implPopulateFromQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CCAssert(false, "the implPopulateFromQuaternion: method is not implemented");
 }
 
-void CC3Matrix::populateFromScale( CC3Vector aScale ) 
+void CC3Matrix::populateFromScale( const CC3Vector& aScale ) 
 {
 	if ( aScale.equals( CC3Vector::kCC3VectorUnitCube )) {
 		populateIdentity();
@@ -243,12 +243,12 @@ void CC3Matrix::populateFromScale( CC3Vector aScale )
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implPopulateFromScale( CC3Vector aScale )
+void CC3Matrix::implPopulateFromScale( const CC3Vector& aScale )
 {
 	CCAssert(false, "the implPopulateFromScale: method is not implemented");
 }
 
-void CC3Matrix::populateFromTranslation( CC3Vector aTranslation ){
+void CC3Matrix::populateFromTranslation( const CC3Vector& aTranslation ){
 	if ( aTranslation.isZero() ) {
 		populateIdentity();
 	} else {
@@ -259,12 +259,12 @@ void CC3Matrix::populateFromTranslation( CC3Vector aTranslation ){
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implPopulateFromTranslation( CC3Vector aTranslation )
+void CC3Matrix::implPopulateFromTranslation( const CC3Vector& aTranslation )
 {
 	CCAssert(false, "the implPopulateFromTranslation: method is not implemented");
 }
 
-void CC3Matrix::populateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection )
+void CC3Matrix::populateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection )
 {
 	implPopulateToPointTowards( fwdDirection, upDirection );
 	m_isIdentity = false;
@@ -272,12 +272,12 @@ void CC3Matrix::populateToPointTowards( CC3Vector fwdDirection, CC3Vector upDire
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implPopulateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection )
+void CC3Matrix::implPopulateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection )
 {
 	CCAssert(false, "the implPopulateToPointTowards:withUp: method is not implemented");
 }
 
-void CC3Matrix::populateToLookAt( CC3Vector targetLocation, CC3Vector eyeLocation, CC3Vector upDirection )
+void CC3Matrix::populateToLookAt( const CC3Vector& targetLocation, const CC3Vector& eyeLocation, const CC3Vector& upDirection )
 {
 	CC3Vector fwdDir = targetLocation.difference( eyeLocation );
 	populateToPointTowards( fwdDir, upDirection );
@@ -371,7 +371,7 @@ CC3Vector CC3Matrix::extractTranslation() {
 }
 
 // Short-circuit the identity transform. isRigid unchanged under rotation.
-void CC3Matrix::rotateBy( CC3Vector aRotation ) {
+void CC3Matrix::rotateBy( const CC3Vector& aRotation ) {
 	if ( !aRotation.isZero() ) {
 		implRotateBy( aRotation );
 		m_isIdentity = false;
@@ -379,13 +379,13 @@ void CC3Matrix::rotateBy( CC3Vector aRotation ) {
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implRotateBy( CC3Vector aRotation )
+void CC3Matrix::implRotateBy( const CC3Vector& aRotation )
 {
 	CCAssert(false, "the implRotateBy: method is not implemented");
 }
 
 // Short-circuit the identity transform. isRigid unchanged under rotation.
-void CC3Matrix::rotateByQuaternion( CC3Quaternion aQuaternion ){
+void CC3Matrix::rotateByQuaternion( const CC3Quaternion& aQuaternion ){
 	if ( !aQuaternion.equals( CC3Quaternion::kCC3QuaternionIdentity ) ) 
 	{
 		implRotateByQuaternion( aQuaternion );
@@ -394,7 +394,7 @@ void CC3Matrix::rotateByQuaternion( CC3Quaternion aQuaternion ){
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implRotateByQuaternion( CC3Quaternion aQuaternion )
+void CC3Matrix::implRotateByQuaternion( const CC3Quaternion& aQuaternion )
 {
 	CCAssert(false, "the implRotateByQuaternion: method is not implemented");
 }
@@ -406,7 +406,7 @@ void CC3Matrix::orthonormalizeRotationStartingWith( unsigned int startColNum )
 }
 
 // Short-circuit the identity transform
-void CC3Matrix::scaleBy( CC3Vector aScale )
+void CC3Matrix::scaleBy( const CC3Vector& aScale )
 {
 	if ( !aScale.equals( CC3Vector::kCC3VectorUnitCube ) ) 
 	{
@@ -417,22 +417,14 @@ void CC3Matrix::scaleBy( CC3Vector aScale )
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implScaleBy( CC3Vector aScale )
+void CC3Matrix::implScaleBy( const CC3Vector& aScale )
 {
 	CCAssert(false, "the implScaleBy: method is not implemented");
 }
 
 // Short-circuit the identity transform. isRigid unchanged under translation.
-void CC3Matrix::translateBy( CC3Vector aTranslation )
+void CC3Matrix::translateBy( const CC3Vector& aTranslation )
 {
-	if ( aTranslation.isNull() )
-	{
-		int a = 100;
-		a++;
-	}
-
-	bool isNull = aTranslation.isNull();
-
 	if ( !aTranslation.isZero() ) 
 	{
 		implTranslateBy( aTranslation );
@@ -441,7 +433,7 @@ void CC3Matrix::translateBy( CC3Vector aTranslation )
 }
 
 /** Template method. Subclasses will provide implementation. */
-void CC3Matrix::implTranslateBy( CC3Vector aTranslation )
+void CC3Matrix::implTranslateBy( const CC3Vector& aTranslation )
 {
 	CCAssert(false, "the implTranslateBy: method is not implemented");
 }
@@ -586,7 +578,7 @@ void CC3Matrix::leftMultiplyByCC3Matrix4x4( CC3Matrix4x4* mtx )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3Matrix::transformLocation( CC3Vector aLocation )
+CC3Vector CC3Matrix::transformLocation( const CC3Vector& aLocation )
 {
 	if (m_isIdentity) 
 		return aLocation;
@@ -596,7 +588,7 @@ CC3Vector CC3Matrix::transformLocation( CC3Vector aLocation )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector CC3Matrix::transformDirection( CC3Vector aDirection )
+CC3Vector CC3Matrix::transformDirection( const CC3Vector& aDirection )
 {
 	if (m_isIdentity) 
 		return aDirection;
@@ -606,7 +598,7 @@ CC3Vector CC3Matrix::transformDirection( CC3Vector aDirection )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Vector4 CC3Matrix::transformHomogeneousVector( CC3Vector4 aVector )
+CC3Vector4 CC3Matrix::transformHomogeneousVector( const CC3Vector4& aVector )
 {
 	if (m_isIdentity) 
 		return aVector;
@@ -616,7 +608,7 @@ CC3Vector4 CC3Matrix::transformHomogeneousVector( CC3Vector4 aVector )
 }
 
 // Short-circuit if this is an identity matrix
-CC3Ray CC3Matrix::transformRay( CC3Ray aRay )
+CC3Ray CC3Matrix::transformRay( const CC3Ray& aRay )
 {
 	if ( m_isIdentity ) 
 		return aRay;

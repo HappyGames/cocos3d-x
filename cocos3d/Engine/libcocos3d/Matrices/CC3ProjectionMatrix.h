@@ -79,9 +79,9 @@ public:
 	virtual void			leftMultiplyByCC3Matrix4x3( CC3Matrix4x3* mtx );
 	virtual void			leftMultiplyIntoCC3Matrix4x4( CC3Matrix4x4* mtx );
 	virtual void			leftMultiplyByCC3Matrix4x4( CC3Matrix4x4* mtx );
-	virtual CC3Vector		transformLocation( CC3Vector aLocation );
-	virtual CC3Vector		transformDirection( CC3Vector aDirection );
-	virtual CC3Vector4		transformHomogeneousVector( CC3Vector4 aVector );
+	virtual CC3Vector		transformLocation( const CC3Vector& aLocation );
+	virtual CC3Vector		transformDirection( const CC3Vector& aDirection );
+	virtual CC3Vector4		transformHomogeneousVector( const CC3Vector4& aVector );
 
 protected:
 	virtual void			implPopulateZero();
@@ -90,20 +90,20 @@ protected:
 	virtual void			implPopulateFromCC3Matrix3x3( CC3Matrix3x3* mtx );
 	virtual void			implPopulateFromCC3Matrix4x3( CC3Matrix4x3* mtx );
 	virtual void			implPopulateFromCC3Matrix4x4( CC3Matrix4x4* mtx );
-	virtual void			implPopulateFromRotation( CC3Vector aRotation );
-	virtual void			implPopulateFromQuaternion( CC3Quaternion aQuaternion );
-	virtual void			implPopulateFromScale( CC3Vector aScale );
+	virtual void			implPopulateFromRotation( const CC3Vector& aRotation );
+	virtual void			implPopulateFromQuaternion( const CC3Quaternion& aQuaternion );
+	virtual void			implPopulateFromScale( const CC3Vector& aScale );
 
-	virtual void			implPopulateFromTranslation( CC3Vector aTranslation );
-	virtual void			implPopulateToPointTowards( CC3Vector fwdDirection, CC3Vector upDirection );
+	virtual void			implPopulateFromTranslation( const CC3Vector& aTranslation );
+	virtual void			implPopulateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection );
 	virtual void			implPopulateFromFrustumLeft( GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval, GLfloat farval );
 	virtual void			implPopulateFromFrustumLeft( GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval );
 	virtual void			implPopulateOrthoFromFrustumLeft(GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval, GLfloat farval );
 	virtual void			implPopulateOrthoFromFrustumLeft(GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearval );
-	virtual void			implRotateBy( CC3Vector aRotation );
-	virtual void			implRotateByQuaternion( CC3Quaternion aQuaternion );
-	virtual void			implScaleBy( CC3Vector aScale );
-	virtual void			implTranslateBy( CC3Vector aTranslation );
+	virtual void			implRotateBy( const CC3Vector& aRotation );
+	virtual void			implRotateByQuaternion( const CC3Quaternion& aQuaternion );
+	virtual void			implScaleBy( const CC3Vector& aScale );
+	virtual void			implTranslateBy( const CC3Vector& aTranslation );
 	virtual void			implMultiplyBy( CC3Matrix* aMatrix );
 	virtual void			implLeftMultiplyBy( CC3Matrix* aMatrix );
 
