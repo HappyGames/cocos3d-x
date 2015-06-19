@@ -820,5 +820,11 @@
     <ClInclude Include="..\Common\CC3Vector4.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\Common\CC3WeakRef.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Ref.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

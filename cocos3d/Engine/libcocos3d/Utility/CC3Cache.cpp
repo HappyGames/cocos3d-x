@@ -112,9 +112,16 @@ void CC3Cache::addObject( CC3Cacheable* obj )
 	std::string objName = obj->getName();
 	CCAssert(!objName.empty(), "obj cannot be added to the cache because its name property is nil.");
 
-	if ( getObjectNamed( objName ) )
+	CC3Cacheable* cached = getObjectNamed( objName );
+	if ( cached == obj )
 		return;
 	
+	if ( cached != NULL )
+	{
+		CC3_WARNING( "Duplicated objects 0x%04x and 0x%04x with the same name %s found", (unsigned long long)obj, 
+			(unsigned long long)cached, objName.c_str() );
+	}
+
 	CC3Cacheable* wrap = obj;
 	
 	_objectsByName->setObject( wrap, objName );

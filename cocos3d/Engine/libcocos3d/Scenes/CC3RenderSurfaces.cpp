@@ -212,7 +212,10 @@ CC3TextureFramebufferAttachment::CC3TextureFramebufferAttachment()
 
 CC3TextureFramebufferAttachment::~CC3TextureFramebufferAttachment()
 {
-	CC_SAFE_RELEASE( _texObj );
+	if ( shouldUseStrongReferenceToTexture() )
+	{
+		CC_SAFE_RELEASE( _texObj );	
+	}
 }
 
 CC3Texture* CC3TextureFramebufferAttachment::getTexture()
@@ -241,9 +244,11 @@ bool CC3TextureFramebufferAttachment::shouldUseStrongReferenceToTexture()
 
 void CC3TextureFramebufferAttachment::setShouldUseStrongReferenceToTexture( bool shouldUseStrongRef )
 {
-	if (shouldUseStrongRef == _shouldUseStrongReferenceToTexture) 
+	if ( shouldUseStrongRef == _shouldUseStrongReferenceToTexture ) 
 		return;
+
 	_shouldUseStrongReferenceToTexture = shouldUseStrongRef;
+
 	setTexObj( getTexture() );		// Update the reference type of the texture
 }
 
@@ -257,10 +262,10 @@ void CC3TextureFramebufferAttachment::setShouldUseStrongReferenceToTexture( bool
  */
 void CC3TextureFramebufferAttachment::setTexObj( CC3Texture* texture )
 {
-	CCObject* newTexObj = texture;
-	if (newTexObj == _texObj) 
+	CC3Ref<CC3Texture> newTexObj = shouldUseStrongReferenceToTexture() ? texture : CC3WeakRef<CC3Texture>( texture );
+	if ( newTexObj == _texObj ) 
 		return;
-	
+
 	CC_SAFE_RELEASE( _texObj );
 	_texObj = newTexObj;
 	CC_SAFE_RETAIN( newTexObj );
@@ -635,7 +640,7 @@ void CC3GLFramebuffer::setShouldBindGLAttachments( bool shouldBind )
 void CC3GLFramebuffer::setName( const std::string& name )
 {
 	super::setName( name );
-	if (!name.empty() && _fbID) 
+	if ( !name.empty() && _fbID ) 
 		CC3OpenGL::sharedGL()->setFrameBufferDebugLabel( name.c_str(), _fbID );
 
 	if ( _colorAttachment )
@@ -709,7 +714,7 @@ void CC3GLFramebuffer::setColorAttachment( CC3FramebufferAttachment* colorAttach
 	}
 
 	_colorAttachment = colorAttachment;
-	CC_SAFE_RETAIN(colorAttachment);
+	CC_SAFE_RETAIN( colorAttachment );
 	alignSizeOfAttachment( _colorAttachment );		// After attaching, as may change size of attachments.
 	bind( _colorAttachment, GL_COLOR_ATTACHMENT0 );
 	
@@ -1158,9 +1163,9 @@ ccColor4B CC3EnvironmentMapTexture::getFaceColor()
 GLuint CC3EnvironmentMapTexture::getFacesToGenerate()
 {
 	_faceCount += _numberOfFacesPerSnapshot;
-	GLuint facesToGenerate = _faceCount;		// Convert to int (rounding down)
+	GLfloat facesToGenerate = _faceCount;		// Convert to int (rounding down)
 	_faceCount -= facesToGenerate;				// Reduce by number that will be done now
-	return facesToGenerate;
+	return (GLuint)facesToGenerate;
 }
 
 /** 

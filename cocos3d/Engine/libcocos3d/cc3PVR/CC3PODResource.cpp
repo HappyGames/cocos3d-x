@@ -42,9 +42,20 @@ CC3PODResource::CC3PODResource()
 
 CC3PODResource::~CC3PODResource()
 {
+	if ( _allNodes )
+		_allNodes->removeAllObjects();
 	CC_SAFE_RELEASE(_allNodes);
+
+	if ( _meshes )
+		_meshes->removeAllObjects();
 	CC_SAFE_RELEASE(_meshes);
+
+	if ( _materials )
+		_materials->removeAllObjects();
 	CC_SAFE_RELEASE(_materials);
+
+	if ( _textures )
+		_textures->removeAllObjects();
 	CC_SAFE_RELEASE(_textures);
 
 	deleteCPVRTModelPOD();

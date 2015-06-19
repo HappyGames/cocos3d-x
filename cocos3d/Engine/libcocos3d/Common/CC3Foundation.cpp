@@ -41,6 +41,7 @@ void Cocos3d::shutdown()
 	CUIRecognizer::purge();
 	CTilesetManager::purge();
 	CMapResManager::purge();*/
+	CC3ModelSampleFactory::deleteFactory();
 	CC3BitmapFontConfiguration::clearFontConfigurations();
 	CC3ViewSurfaceManager::purge();
 	CC3OpenGL::terminateOpenGL();

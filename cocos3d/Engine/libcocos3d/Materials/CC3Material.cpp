@@ -39,6 +39,8 @@ CC3Material::CC3Material()
 
 CC3Material::~CC3Material()
 {
+	removeAllTextures();
+
 	CC_SAFE_RELEASE( _texture );
 	CC_SAFE_RELEASE( _textureOverlays );
 }

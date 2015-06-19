@@ -553,7 +553,8 @@ bool CC3Texture::loadTarget( GLenum target, const std::string& filePath )
 	CC3Texture2DContent* content = new CC3Texture2DContent;
 	if ( !content->initFromFile( filePath ) )
 	{
-		CC3_TRACE("CC3Texture could not load texture from file %s", filePath.c_str());
+		content->release();
+		CC3_TRACE( "CC3Texture could not load texture from file %s", filePath.c_str() );
 		return false;
 	}
 
@@ -829,8 +830,7 @@ CC3Texture* CC3Texture::textureCubeWithSideLength( GLuint sideLength, GLenum for
 
 CC3Texture* CC3Texture::textureFromFile( const char* filePath )
 {
-	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename( filePath );
-	CC3Texture* tex = getTextureNamed( fullPath );
+	CC3Texture* tex = getTextureNamed( textureNameFromFilePath( filePath ) );
 	if ( tex )
 		return tex;
 
@@ -850,9 +850,8 @@ CC3Texture* CC3Texture::textureFromFile( const char* filePath )
 
 std::string CC3Texture::textureNameFromFilePath( const std::string& filePath )
 { 
-	//CCAssert( false, "not implemented" );
-	//return "";
-	return CC3String::getFileName( filePath );
+	return filePath;
+	// return CC3String::getFileName( filePath );
 }
 
 void CC3Texture::remove()

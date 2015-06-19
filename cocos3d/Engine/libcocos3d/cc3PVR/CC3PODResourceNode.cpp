@@ -56,12 +56,12 @@ bool CC3PODResourceNode::initWithName( const std::string& aName, const std::stri
 
 
 /** Overridden to extract the animation frame count and rate. */
-void CC3PODResourceNode::populateFromResource( CC3PODResource* resource )
+void CC3PODResourceNode::populateFromResource( CC3NodesResource* resource )
 {
 	super::populateFromResource(resource);
 	
-	_animationFrameCount = resource->getAnimationFrameCount();
-	_animationFrameRate = resource->getAnimationFrameRate();
+	_animationFrameCount = ((CC3PODResource*)resource)->getAnimationFrameCount();
+	_animationFrameRate = ((CC3PODResource*)resource)->getAnimationFrameRate();
 }
 
 void CC3PODResourceNode::populateFrom( CC3PODResourceNode* another )

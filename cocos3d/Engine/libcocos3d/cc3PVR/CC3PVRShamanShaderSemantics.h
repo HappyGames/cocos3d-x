@@ -85,7 +85,9 @@ public:
 
 	/** Handles populating PVRShaman-specific content and delegates remainder to the standard population mechanisms.  */
 	bool						populateUniform( CC3GLSLUniform* uniform, CC3NodeDrawingVisitor* visitor );
+
 	static void					ensurePVRShamanSemanticMap();
+	static void					purgePVRShamanSemanticMap();
 };
 
 NS_COCOS3D_END

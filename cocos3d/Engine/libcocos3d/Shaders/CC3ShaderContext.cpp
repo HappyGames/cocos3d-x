@@ -186,6 +186,9 @@ void CC3ShaderContext::removeAllUniformOverrides()
 	if ( _uniformOverrides )
 		_uniformOverrides->removeAllObjects();
 
+	if ( _uniformOverridesByName )
+		_uniformOverridesByName->removeAllObjects();
+
 	CC_SAFE_RELEASE( _uniformOverridesByName );
 	CC_SAFE_RELEASE( _uniformOverrides );
 }

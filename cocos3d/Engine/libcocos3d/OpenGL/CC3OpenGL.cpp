@@ -1649,6 +1649,7 @@ void CC3OpenGL::clearOpenGLResourceCaches()
 	CC3Shader::removeAllShaders();
 	CC3ShaderProgram::removeAllPrograms();
 	CC3ShaderSourceCode::removeAllShaderSourceCode();
+	CC3PVRShamanShaderSemantics::purgePVRShamanSemanticMap();
 }
 
 void CC3OpenGL::initWithTag( GLuint aTag, const std::string& aName )

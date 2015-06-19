@@ -218,4 +218,9 @@ void CC3PVRShamanShaderSemantics::ensurePVRShamanSemanticMap()
 	addSemantic( kCC3SemanticRandomNumber, "RANDOM" );
 }
 
+void CC3PVRShamanShaderSemantics::purgePVRShamanSemanticMap()
+{
+	CC_SAFE_RELEASE( _semanticsByPVRShamanSemanticName );
+}
+
 NS_COCOS3D_END

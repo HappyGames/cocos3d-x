@@ -242,9 +242,11 @@
     <ClInclude Include="..\Animations\CC3Actions.h" />
     <ClInclude Include="..\Animations\CC3NodeAnimation.h" />
     <ClInclude Include="..\Common\CC3Platform.h" />
+    <ClInclude Include="..\Common\CC3Ref.h" />
     <ClInclude Include="..\Common\CC3String.h" />
     <ClInclude Include="..\Common\CC3Vector.h" />
     <ClInclude Include="..\Common\CC3Vector4.h" />
+    <ClInclude Include="..\Common\CC3WeakRef.h" />
     <ClInclude Include="..\Common\Common.h" />
     <ClInclude Include="..\Common\LineScanner.h" />
     <ClInclude Include="..\Common\LogManager.h" />

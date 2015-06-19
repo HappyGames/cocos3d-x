@@ -549,7 +549,6 @@ CC3ShaderProgram::~CC3ShaderProgram()
 		_uniformsNodeScope->removeAllObjects();
 	CC_SAFE_RELEASE( _uniformsNodeScope );
 
-
 	if ( _uniformsDrawScope )
 		_uniformsDrawScope->removeAllObjects();
 	CC_SAFE_RELEASE( _uniformsDrawScope );
@@ -1215,13 +1214,8 @@ CC3ShaderProgram* CC3ShaderProgram::programWithSemanticDelegate( CC3ShaderSemant
 	
 	program = new CC3ShaderProgram; 
 	program->initWithSemanticDelegate( semanticDelegate, vertexShader, fragmentShader );
-
-	CHECK_GL_ERROR_DEBUG();
-
 	program->autorelease();
 	addProgram( program );
-	
-	CHECK_GL_ERROR_DEBUG();
 	
 	return program;
 }

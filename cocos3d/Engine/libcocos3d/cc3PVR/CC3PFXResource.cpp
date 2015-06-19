@@ -39,6 +39,12 @@ CC3PFXResource::CC3PFXResource()
 
 CC3PFXResource::~CC3PFXResource()
 {
+	if ( _effectsByName )
+		_effectsByName->removeAllObjects();
+
+	if ( _texturesByName )
+		_texturesByName->removeAllObjects();
+
 	CC_SAFE_RELEASE( _effectsByName );
 	CC_SAFE_RELEASE( _texturesByName );
 }
@@ -250,6 +256,12 @@ CC3PFXEffect::CC3PFXEffect()
 
 CC3PFXEffect::~CC3PFXEffect()
 {
+	if ( _textures )
+		_textures->removeAllObjects();
+
+	if ( _variables )
+		_variables->removeAllObjects();
+
 	CC_SAFE_RELEASE( _textures );
 	CC_SAFE_RELEASE( _shaderProgram );
 	CC_SAFE_RELEASE( _variables );
@@ -341,13 +353,17 @@ void CC3PFXEffect::initTexturesForPFXEffect( SPVRTPFXParserEffect* pfxEffect, CP
 		// Retrieve the texture from the PFX resource and add a CC3PFXEffectTexture
 		// linking the texture to the texture unit
 		CC3Texture* tex = (CC3Texture*)pfxRez->getTextureNamed(texName);
-		if (tex) {
+		if ( tex ) 
+		{
 			CC3PFXEffectTexture* effectTex = new CC3PFXEffectTexture;
 			effectTex->setTexture( tex );
 			effectTex->setName( texName );
 			effectTex->setTextureUnitIndex( tuIdx );
 			_textures->addObject( effectTex );
-		} else {
+			effectTex->release();
+		}
+		else 
+		{
 			CCLOGERROR("%CC3PFXEffect could not find texture named %s", texName.c_str() );
 		}
 	}

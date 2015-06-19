@@ -41,6 +41,8 @@
 #include "Common/CC3Vector.h"
 #include "Common/CC3Vector4.h"
 #include "Common/CC3Foundation.h"
+#include "Common/CC3WeakRef.h"
+#include "Common/CC3Ref.h"
 
 /// matrices
 #include "Matrices/CC3Matrix3x3.h"

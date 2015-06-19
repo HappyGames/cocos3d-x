@@ -44,6 +44,8 @@ class CC3GLFramebuffer;
 class CC3RenderSurfaceAttachment : public CC3Identifiable
 {
 public:
+	virtual ~CC3RenderSurfaceAttachment() { }
+
 	/** The size of this attachment in pixels. */
 	virtual CC3IntSize			getSize() { return kCC3IntSizeZero; }
 	virtual void				setSize( const CC3IntSize& size ) {  }

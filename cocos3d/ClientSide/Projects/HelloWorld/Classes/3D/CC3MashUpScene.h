@@ -574,6 +574,8 @@ class CC3MashUpScene : public CC3Scene
 public:
 	CREATE_FUNC( CC3MashUpScene );
 	CC3MashUpScene();
+	~CC3MashUpScene();
+
 	/**
 	 * A weak reference back to the primary CC3MashUpLayer that is displaying this scene.
 	 *

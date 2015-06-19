@@ -51,7 +51,7 @@ public:
 	/** The frame rate of animation in the POD file, in frames per second. */
 	GLfloat						getAnimationFrameRate();
 
-	void						populateFromResource( CC3PODResource* resource );
+	void						populateFromResource( CC3NodesResource* resource );
 
 	void						populateFrom( CC3PODResourceNode* another );
 	virtual CCObject*			copyWithZone( CCZone* zone ); 

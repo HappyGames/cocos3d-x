@@ -744,12 +744,10 @@ void CC3MeshNode::populateFrom( CC3MeshNode* another )
 	CC_SAFE_RETAIN( _mesh );					// retained - Mesh shared between original and copy
 
 	CC_SAFE_RELEASE( _material );
-	_material = (CC3Material*)another->getMaterial()->copy();			// retained
-	CC_SAFE_RETAIN( _material );
+	_material = (CC3Material*)another->getMaterial()->copy();					// retained
 	
 	CC_SAFE_RELEASE( _shaderContext );
 	_shaderContext = (CC3ShaderContext*)another->getShaderContext()->copy();	// retained
-	CC_SAFE_RETAIN( _shaderContext );
 	
 	_shouldUseSmoothShading = another->shouldUseSmoothShading();
 	_shouldCullBackFaces = another->shouldCullBackFaces();
@@ -771,7 +769,6 @@ CCObject* CC3MeshNode::copyWithZone( CCZone* zone )
 	CC3MeshNode* pMeshNode = new CC3MeshNode;
 	pMeshNode->init();
 	pMeshNode->populateFrom( this );
-
 	pMeshNode->addCopiesOfChildrenFrom( this );
 
 	return pMeshNode;

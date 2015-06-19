@@ -1755,16 +1755,16 @@ void CC3Node::populateFrom( CC3Node* another )
 	CC_SAFE_RELEASE( m_rotator );
 	if ( another->getRotator() )
 	{
-		m_rotator = (CC3Rotator*)another->getRotator()->copy();					// retained
-		CC_SAFE_RETAIN( m_rotator );
+		m_rotator = (CC3Rotator*)another->getRotator()->copy();					
+		//CC_SAFE_RETAIN( m_rotator );
 	}
 
 	CC_SAFE_RELEASE( m_pBoundingVolume );
 	if ( another->getBoundingVolume() )
 	{
-		m_pBoundingVolume = (CC3NodeBoundingVolume*)another->getBoundingVolume()->copy();	// retained
+		m_pBoundingVolume = (CC3NodeBoundingVolume*)another->getBoundingVolume()->copy();
 		m_pBoundingVolume->setNode( this );
-		CC_SAFE_RETAIN( m_pBoundingVolume );
+		//CC_SAFE_RETAIN( m_pBoundingVolume );
 	}
 	m_fBoundingVolumePadding = another->getBoundingVolumePadding();
 	m_shouldUseFixedBoundingVolume = another->shouldUseFixedBoundingVolume();
@@ -3513,7 +3513,10 @@ bool CC3Node::doesIntersectBoundingVolume( CC3BoundingVolume* otherBoundingVolum
 
 bool CC3Node::doesIntersectNode( CC3Node* otherNode )
 {
-	return doesIntersectBoundingVolume( otherNode->getBoundingVolume() );
+	if ( otherNode )
+		return doesIntersectBoundingVolume( otherNode->getBoundingVolume() );
+	
+	return false;
 }
 
 bool CC3Node::doesIntersectGlobalRay( const CC3Ray& aRay )

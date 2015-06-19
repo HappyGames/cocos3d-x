@@ -103,8 +103,8 @@ USING_NS_COCOS3D;
 static CC3IntSize kTVTexSize = { (16 * kTVScale), (9 * kTVScale) };
 
 // Locations for the brick wall in open and closed position
-static CC3Vector kBrickWallOpenLocation ( -190, 150, -840 );
-static CC3Vector kBrickWallClosedLocation ( -115, 150, -765 );
+static CC3Vector kBrickWallOpenLocation( -190, 150, -840 );
+static CC3Vector kBrickWallClosedLocation( -115, 150, -765 );
 
 CC3MashUpScene::CC3MashUpScene()
 {
@@ -113,6 +113,12 @@ CC3MashUpScene::CC3MashUpScene()
 	_teapotSatellite = NULL;
 	_teapotTextured = NULL;
 	_bumpMapLightTracker = NULL;
+	_brickWall = NULL;
+}
+
+CC3MashUpScene::~CC3MashUpScene()
+{
+	CC_SAFE_RELEASE( _tvDrawingVisitor );
 }
 
 CC3MashUpLayer* CC3MashUpScene::getPrimaryCC3MashUpLayer()
@@ -142,13 +148,12 @@ void CC3MashUpScene::initializeScene()
 	addBackdrop();				// Add a static solid sky-blue backdrop, or optional textured backdrop.
 
 	addGround();				// Add a ground plane to provide some perspective to the user
-	
+
 //	addSkyBox();				// Add a skybox around the scene. This is the skybox that is reflected
 								// in the reflective runner added in the addSkinnedRunners method
 
 	addRobot();					// Add an animated robot arm, a light, and a camera. This POD file
 								// contains the primary camera of this scene.
-	
 	addProjectedLabel();		// Attach a text label to the hand of the animated robot.
 	
 //	addPointParticles();		// Uncomment to add a platform of multi-colored, light-interactive,
@@ -164,7 +169,6 @@ void CC3MashUpScene::initializeScene()
 							// The hose is turned on and off when the robot arm is touched.
 	
 	addSun();					// Add a Cocos2D particle emitter as the sun in the sky.
-
 	
 	addSpotlight();			// Add a spotlight to the camera.
 							// This spotlight will be turned on when the sun is turned off.
@@ -188,7 +192,7 @@ void CC3MashUpScene::addSceneContentAsynchronously()
 {
 	pauseDramatically();
 	addAxisMarkers();			// Add colored teapots to mark each coordinate axis
-
+		
 	pauseDramatically();
 	addLightMarker();			// Add a small white teapot to show the direction toward the light
 
@@ -216,9 +220,9 @@ void CC3MashUpScene::addSceneContentAsynchronously()
 								// periodically. This demonstrates managing opacity and translucency
 								// at both the texture and material level.
 
+
 	pauseDramatically();
 	addBeachBall();				// Add a transparent bouncing beach ball...exported from Blender
-
 
 	pauseDramatically();
 	addTelevision();			// Add a television showing the view from the runner camera
@@ -718,11 +722,11 @@ void CC3MashUpScene::addDieCube()
 	// is loaded from the POD file. We can swap it out by creating a copy of the loaded
 	// POD node, using a different node class as the base.
 	CC3Node* pNode = (CC3Node*)podDieCube->copyWithName( kDieCubeName );
-	_dieCube = new SpinningNode();
+
+	_dieCube = new SpinningNode;
 	_dieCube->init();
 	_dieCube->populateFrom( pNode );
 	_dieCube->addCopiesOfChildrenFrom( pNode );
-
 	// Now set some properties, including the friction, and add the die cube to the scene
 	_dieCube->setUniformScale( 30.0f );
 	_dieCube->setLocation( cc3v(-200.0, 200.0, 0.0) );
@@ -732,6 +736,9 @@ void CC3MashUpScene::addDieCube()
 	// Cube is added on on background thread. Configure it for the scene, and fade it in slowly.
 	configureForScene( _dieCube, kFadeInDuration );
 	addChild( _dieCube );
+
+	pNode->release();
+	_dieCube->release();
 }
 
 void CC3MashUpScene::addTexturedCube()
@@ -797,10 +804,10 @@ void CC3MashUpScene::addTeapotAndSatellite()
 	// are updated, to trade off real-time accuracy and performance.
 	_envMapTex = CC3EnvironmentMapTexture::textureCubeWithSideLength( 256 );
 	_envMapTex->setName( "TeapotMirror" );				// Give it a name to help with troubleshooting
-	_envMapTex->setNumberOfFacesPerSnapshot( 1.0f );		// Update only one side of the cube in each frame
-	
+	_envMapTex->setNumberOfFacesPerSnapshot( 1.0f );	// Update only one side of the cube in each frame
+
 	_teapotTextured->addTexture( _envMapTex );
-	_teapotTextured->setReflectivity( 0.7f );		// Modify this (0-1) to change how reflective the teapot is
+	_teapotTextured->setReflectivity( 0.7f );			// Modify this (0-1) to change how reflective the teapot is
 	_teapotTextured->setShouldUseLighting( false );		// Ignore lighting to highlight reflections demo
 
 	// Add a brushed metal texture (with or without the reflective texture added above).
@@ -814,7 +821,7 @@ void CC3MashUpScene::addTeapotAndSatellite()
 	_teapotSatellite->setUniformScale( 0.4f );
 	_teapotSatellite->setTouchEnabled( true );		// allow this node to be selected by touch events
 	_teapotTextured->addChild( _teapotSatellite );
-	
+
 	_teapotTextured->setLocation( cc3v(0.0, 150.0, -650.0) );
 	_teapotTextured->setUniformScale( 500.0f );
 
@@ -940,20 +947,22 @@ void CC3MashUpScene::addAxisMarkers()
 	CC3Node* teapotGreen = (CC3Node*)teapotRed->copyWithName( kTeapotGreenName );
 	teapotGreen->setDiffuseColor( ccc4f(0.0f, 0.7f, 0.0f, 1.0f) );
 	teapotGreen->setLocation( cc3v(0.0, 100.0, 0.0) );
-
 	// Teapot is added on on background thread. Configure it for the scene, and fade it in slowly.
 	configureForScene( teapotGreen, kFadeInDuration );
 	addChild( teapotGreen );
-	
+	/// Should release manualy here
+	teapotGreen->release();
+
 	// Blue teapot is at postion 100 on the Z-axis
 	// Create it by copying the red teapot.
 	CC3Node* teapotBlue = (CC3Node*)teapotRed->copyWithName( kTeapotBlueName );
 	teapotBlue->setDiffuseColor( ccc4f(0.0f, 0.0f, 0.7f, 1.0f) );
 	teapotBlue->setLocation( cc3v(0.0, 0.0, 100.0) );
-
 	// Teapot is added on on background thread. Configure it for the scene, and fade it in slowly.
 	configureForScene( teapotBlue, kFadeInDuration );
 	addChild( teapotBlue );
+	/// Should release manualy here
+	teapotBlue->release();
 }
 
 void CC3MashUpScene::addLightMarker()
@@ -1176,6 +1185,8 @@ void CC3MashUpScene::addMascots()
 //	[distractedMascot addAxesDirectionMarkers];
 //	[distractedMascotHolder addAxesDirectionMarkers];
 //	distractedMascot.location = cc3v(0, 20, 0);
+
+	distractedMascot->release();
 }
 
 void CC3MashUpScene::addSun()
@@ -1450,6 +1461,7 @@ void CC3MashUpScene::addSkinnedRunners()
 	// towards 1 will make him appear like a little liquid-metal Terminator 2!
 	littleBrother->addTexture( CC3Texture::textureCubeFromFilePattern( "EnvMap/EnvMap%s.jpg" ) );
 	littleBrother->setReflectivity( 0.4f );
+	littleBrother->release();
 
 	// Runners are added on on background thread. Configure it for the scene, and fade it in slowly.
 	configureForScene( runningTrack, kFadeInDuration );
@@ -1480,6 +1492,7 @@ void CC3MashUpScene::addTelevision()
 	_runnerCam->getParent()->addChild( tvCam );
 	tvCam->setViewport( kCC3ViewportZero );		// Clear the camera viewport, so it will be set to match the TV surface
 	_tvDrawingVisitor->setCamera( tvCam );
+	tvCam->release();
 	
 	// Load a television model, extract the mesh node corresponding to the screen, and attach
 	// the TV test card image as its texture. Since this is a TV, it should not interact with
@@ -1944,6 +1957,7 @@ void CC3MashUpScene::addReflectiveMask()
 	//NSString* podPath = [docDir stringByAppendingPathComponent: kReflectiveMaskPODFile];
 	CC3ResourceNode* podRezNode = CC3PODResourceNode::nodeFromFile( kReflectiveMaskPODFile );
 	CC3MeshNode* mask = (CC3MeshNode*)podRezNode->getNodeNamed( "maskmain" );
+
 	
 	// The mask animation locates the mask at a distant location and scale. Wrap it in a holder
 	// to move it to a more convenient location and scale. Remember that the location of the mask
