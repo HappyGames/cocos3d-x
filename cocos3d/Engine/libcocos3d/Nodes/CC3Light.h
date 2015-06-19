@@ -418,10 +418,10 @@ public:
 	 * This method is invoked automatically when a shadow is added to a mesh node.
 	 * Usually, the application never needs to invoke this method directly.
 	 */
-	void						addShadow( CC3ShadowProtocol* shadowNode );
+	void						addShadow( CC3ShadowVolumeMeshNode* shadowNode );
 
 	/** Removes a shadow from the shadows cast by this light. */
-	void						removeShadow( CC3ShadowProtocol* shadowNode );
+	void						removeShadow( CC3ShadowVolumeMeshNode* shadowNode );
 
 	/**
 	 * Returns whether this light is casting shadows.
@@ -652,8 +652,8 @@ public:
 	 * Template method that sets the spot direction, spot exponent, and spot cutoff angle of this light
 	 * in the GL engine to the values of the globalForwardDirection, spotExponent and spotCutoffAngle
 	 * properties of this node, respectively. The direction and exponent are only valid if a cutoff has
-	 * been specified and less than 90 degrees, otherwise the light is treated as omnidirectional.
-	 * OpenGL ES only supports angles less than 90 degrees, so anything above is treated as omnidirectional.
+	 * been specified and less than 90 degrees, otherwise the light is treated as omni directional.
+	 * OpenGL ES only supports angles less than 90 degrees, so anything above is treated as omni directional.
 	 */
 	virtual void				applyDirectionWithVisitor( CC3NodeDrawingVisitor* visitor );
 
@@ -679,10 +679,10 @@ public:
 	 * the shadow node are in place, and then an operation to add the specified shadow is queued to
 	 * the thread that is performing rendering.
 	 */
-	void						addShadowFromBackgroundThread( CC3ShadowProtocol* aShadowNode );
+	void						addShadowFromBackgroundThread( CC3ShadowVolumeMeshNode* aShadowNode );
 
 	/** Adds the specified shadow to this light without queuing. */
-	void						addShadowNow( CC3ShadowProtocol* aShadowNode );
+	void						addShadowNow( CC3ShadowVolumeMeshNode* aShadowNode );
 
 	/**
 	 * If there are shadows and the shadow casting volume has not been added, add it now,
@@ -732,7 +732,7 @@ protected:
  * CAUTION: The signature of this protocol may evolve as additional shadowing
  *          techniques are introduced.
  */
-class CC3ShadowProtocol : public CC3NodeTransformListenerProtocol
+class CC3ShadowProtocol/* : public CC3NodeTransformListenerProtocol*/
 {
 public:	
 	/** The light casting this shadow. */
@@ -834,6 +834,7 @@ class CC3ShadowCastingVolume : public CC3LightCameraBridgeVolume
 {
 public:
 	static CC3ShadowCastingVolume* boundingVolume();
+	CC3ShadowCastingVolume();
 
 	void						buildPlanes();
 

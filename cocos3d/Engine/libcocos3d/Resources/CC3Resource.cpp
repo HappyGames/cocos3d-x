@@ -207,9 +207,10 @@ void CC3Resource::removeResourceNamed( const std::string& name )
 
 void CC3Resource::removeAllResources()
 { 
-#pragma _NOTE_TODO( "CC3Resource::removeAllResources()" )
 	if ( _resourceCache )
 		_resourceCache->removeAllObjectsOfType( 0 );
+
+	CC_SAFE_RELEASE( _resourceCache );
 }
 
 bool CC3Resource::isPreloading()

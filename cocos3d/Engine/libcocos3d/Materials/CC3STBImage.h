@@ -156,6 +156,7 @@ public:
 	 * string before being compared against the file extensions in the useForFileExtensions property
 	 */
 	static bool				shouldUseForFileExtension( const std::string& fileExtension );
+	static void				purgeExtensions();
 
 protected:
 	void					deleteImageData();

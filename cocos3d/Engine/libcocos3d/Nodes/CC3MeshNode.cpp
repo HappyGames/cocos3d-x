@@ -1568,22 +1568,22 @@ void CC3MeshNode::addShadowVolumesForLight( CC3Light* aLight )
 		return;
 
 #pragma _NOTE_TODO( "CC3MeshNode::addShadowVolumesForLight( CC3Light* aLight )" )
-	//std::string svName = stringWithFormat( "%s-SV-%s", getName().c_str(), aLight->getName().c_str() );
-	//CC3Node<CC3ShadowProtocol>* sv = [[self shadowVolumeClass] nodeWithName: svName];
-	//sv->selectShaders();
+	std::string svName = CC3String::stringWithFormat( "%s-SV-%s", getName().c_str(), aLight->getName().c_str() );
+	CC3ShadowVolumeMeshNode* sv = CC3ShadowVolumeMeshNode::nodeWithName( svName );
+	sv->selectShaders();
 
-	//// Retain data required to build shadow volume mesh
-	//retainVertexLocations();
-	//retainVertexIndices();
-	//setShouldCacheFaces( true );
+	// Retain data required to build shadow volume mesh
+	retainVertexLocations();
+	retainVertexIndices();
+	setShouldCacheFaces( true );
 
-	//prewarmForShadowVolumes();		// Force heavy face calcs now instead of lazily during drawing.
+	prewarmForShadowVolumes();		// Force heavy face calcs now instead of lazily during drawing.
 
-	//// Set the active camera to infinite depth of field to accomodate infinite shadow volumes
-	//getActiveCamera()->setHasInfiniteDepthOfField( true );
+	// Set the active camera to infinite depth of field to accomodate infinite shadow volumes
+	getActiveCamera()->setHasInfiniteDepthOfField( true );
 
-	//aLight->addShadow( sv );			// Add to light before notifying scene a descendant has been added
-	//addChild( sv );			// The last thing we do is add the SV to the scene...
+	aLight->addShadow( sv );			// Add to light before notifying scene a descendant has been added
+	addChild( sv );			// The last thing we do is add the SV to the scene...
 	// ...because we might be doing this on a background thread.
 	//LogTrace(@"Added shadow volume %@ to %@", sv, self);
 

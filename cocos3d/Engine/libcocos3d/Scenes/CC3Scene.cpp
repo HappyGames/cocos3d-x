@@ -985,7 +985,8 @@ void CC3Scene::checkNeedShadowVisitor()
 
 void CC3Scene::touchEvent( GLuint touchType, const CCPoint& touchPoint )
 {
-	switch (touchType) {
+	switch (touchType) 
+	{
 		case kCCTouchBegan:
 			pickNodeFromTouchEvent( touchType, touchPoint );
 			break;

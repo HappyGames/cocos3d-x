@@ -41,22 +41,26 @@ std::string NSStringFromSPODNode(PODStructPtr pSPODNode)
 	desc += CC3String::stringWithFormat( (char*)", material index: %d ", psn->nIdxMaterial );
 	desc += CC3String::stringWithFormat( (char*)",\n\tanimation flags: %d", psn->nAnimFlags );
 	bool first = true;
-	if (psn->nAnimFlags & ePODHasPositionAni) {
+	if (psn->nAnimFlags & ePODHasPositionAni) 
+	{
 		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
 		desc += CC3String::stringWithFormat( (char*)"ePODHasPositionAni" );
 		first = false;
 	}
-	if (psn->nAnimFlags & ePODHasRotationAni) {
+	if (psn->nAnimFlags & ePODHasRotationAni) 
+	{
 		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
 		desc += CC3String::stringWithFormat( (char*)"ePODHasRotationAni" );
 		first = false;
 	}
-	if (psn->nAnimFlags & ePODHasScaleAni) {
+	if (psn->nAnimFlags & ePODHasScaleAni) 
+	{
 		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
 		desc += CC3String::stringWithFormat( (char*)"ePODHasScaleAni" );
 		first = false;
 	}
-	if (psn->nAnimFlags & ePODHasMatrixAni) {
+	if (psn->nAnimFlags & ePODHasMatrixAni)
+	{
 		desc += CC3String::stringWithFormat( (char*)"%s", first ? " (" : " + " );
 		desc += CC3String::stringWithFormat( (char*)"ePODHasMatrixAni" );
 		first = false;
@@ -75,7 +79,8 @@ std::string NSStringFromSPODMesh(PODStructPtr pSPODNode)
 	SPODMesh* psm = (SPODMesh*)pSPODNode;
 	std::string desc = "";
 	desc += "SPODMesh drawing ";
-	switch (psm->ePrimitiveType) {
+	switch (psm->ePrimitiveType) 
+	{
 		case ePODTriangles:
 			desc += "ePODTriangles";
 			break;
@@ -104,11 +109,13 @@ std::string NSStringFromSPODMesh(PODStructPtr pSPODNode)
 	int batchCount = psm->sBoneBatches.nBatchCnt;
 	desc += CC3String::stringWithFormat( (char*)", bone batches: %d", batchCount );
 	
-	for (int bbi = 0; bbi < psm->sBoneBatches.nBatchCnt; bbi++) {
+	for (int bbi = 0; bbi < psm->sBoneBatches.nBatchCnt; bbi++) 
+	{
 		int boneCount = psm->sBoneBatches.pnBatchBoneCnt[bbi];
 		desc += CC3String::stringWithFormat( (char*)"\n\t\tbatch with %d bone nodes:", boneCount );
 		bool firstBone = true;
-		for (int bi = 0; bi < boneCount; bi++) {
+		for (int bi = 0; bi < boneCount; bi++) 
+		{
 			desc += CC3String::stringWithFormat( (char*)"%s", firstBone ? " (" : ", " );
 			desc += CC3String::stringWithFormat( (char*)"%d", psm->sBoneBatches.pnBatches[bbi * psm->sBoneBatches.nBatchBoneMax + bi] );
 			firstBone = false;
@@ -129,7 +136,8 @@ std::string NSStringFromCPODData(PODClassPtr aCPODData)
 	return desc;
 }
 
-std::string NSStringFromCPVRTBoneBatches(PODClassPtr aCPVRTBoneBatches) {
+std::string NSStringFromCPVRTBoneBatches(PODClassPtr aCPVRTBoneBatches) 
+{
 	CPVRTBoneBatches* pbb = (CPVRTBoneBatches*)aCPVRTBoneBatches;
 	int batchCount = pbb->nBatchCnt;
 	std::string desc = "";
@@ -139,13 +147,15 @@ std::string NSStringFromCPVRTBoneBatches(PODClassPtr aCPVRTBoneBatches) {
 	if (batchCount) 
 	{
 		desc += CC3String::stringWithFormat( (char*)"\n\t\tbone counts: (%d", pbb->pnBatchBoneCnt[0] );
-		for (int i = 1; i < batchCount; i++) {
+		for (int i = 1; i < batchCount; i++) 
+		{
 			desc += CC3String::stringWithFormat( (char*)", %d", pbb->pnBatchBoneCnt[i] );
 		}
 		desc += ")";
 
 		desc += CC3String::stringWithFormat( (char*)"\n\t\tbone vertex offsets: (%d", pbb->pnBatchOffset[0] );
-		for (int i = 1; i < batchCount; i++) {
+		for (int i = 1; i < batchCount; i++) 
+		{
 			desc += CC3String::stringWithFormat( (char*)", %d", pbb->pnBatchOffset[i] );
 		}
 		desc += ")";
@@ -153,8 +163,10 @@ std::string NSStringFromCPVRTBoneBatches(PODClassPtr aCPVRTBoneBatches) {
 	return desc;
 }
 
-GLenum GLElementTypeFromEPVRTDataType(GLuint ePVRTDataType) {
-	switch (ePVRTDataType) {
+GLenum GLElementTypeFromEPVRTDataType(GLuint ePVRTDataType) 
+{
+	switch (ePVRTDataType) 
+	{
 		case EPODDataFloat:
 			return GL_FLOAT;
 		case EPODDataInt:
@@ -181,8 +193,10 @@ GLenum GLElementTypeFromEPVRTDataType(GLuint ePVRTDataType) {
 	}
 }
 
-bool CC3ShouldNormalizeEPVRTDataType(GLuint ePVRTDataType) {
-	switch (ePVRTDataType) {
+bool CC3ShouldNormalizeEPVRTDataType(GLuint ePVRTDataType) 
+{
+	switch (ePVRTDataType) 
+	{
 		case EPODDataByteNorm:
 		case EPODDataUnsignedByteNorm:
 		case EPODDataShortNorm:
@@ -195,8 +209,10 @@ bool CC3ShouldNormalizeEPVRTDataType(GLuint ePVRTDataType) {
 	}
 }
 
-std::string NSStringFromEPVRTDataType(GLuint ePVRTDataType) {
-	switch (ePVRTDataType) {
+std::string NSStringFromEPVRTDataType(GLuint ePVRTDataType) 
+{
+	switch (ePVRTDataType) 
+	{
 		case EPODDataNone:
 			return "EPODDataNone";
 		case EPODDataFloat:
@@ -238,7 +254,8 @@ std::string NSStringFromEPVRTDataType(GLuint ePVRTDataType) {
 	}
 }
 
-GLenum GLDrawingModeForSPODMesh(PODStructPtr aSPODMesh) {
+GLenum GLDrawingModeForSPODMesh(PODStructPtr aSPODMesh) 
+{
 	SPODMesh* psm = (SPODMesh*)aSPODMesh;
 	bool usingStrips = psm->nNumStrips > 0;
 	switch (psm->ePrimitiveType) {
@@ -252,7 +269,8 @@ GLenum GLDrawingModeForSPODMesh(PODStructPtr aSPODMesh) {
 	}
 }
 
-std::string NSStringFromSPODCamera(PODStructPtr pSPODCamera) {
+std::string NSStringFromSPODCamera(PODStructPtr pSPODCamera) 
+{
 	SPODCamera* psc = (SPODCamera*)pSPODCamera;
 	std::string desc = "";
 	desc += CC3String::stringWithFormat( (char*)"SPODCamera fov: %.2f", psc->fFOV );
@@ -263,7 +281,8 @@ std::string NSStringFromSPODCamera(PODStructPtr pSPODCamera) {
 	return desc;
 }
 
-std::string NSStringFromSPODLight(PODStructPtr pSPODLight) {
+std::string NSStringFromSPODLight(PODStructPtr pSPODLight) 
+{
 	SPODLight* psl = (SPODLight*)pSPODLight;
 	std::string desc = "";
 	desc += CC3String::stringWithFormat( (char*)"SPODLight type: %s", NSStringFromEPODLight(psl->eType).c_str() );
@@ -277,8 +296,10 @@ std::string NSStringFromSPODLight(PODStructPtr pSPODLight) {
 	return desc;
 }
 
-std::string NSStringFromEPODLight(GLuint ePODLight) {
-	switch (ePODLight) {
+std::string NSStringFromEPODLight(GLuint ePODLight) 
+{
+	switch (ePODLight) 
+	{
 		case ePODPoint:
 			return "ePODPoint";
 		case ePODDirectional:
@@ -290,7 +311,8 @@ std::string NSStringFromEPODLight(GLuint ePODLight) {
 	}
 }
 
-std::string NSStringFromSPODMaterial(PODStructPtr pSPODMaterial) {
+std::string NSStringFromSPODMaterial(PODStructPtr pSPODMaterial) 
+{
 	SPODMaterial* psm = (SPODMaterial*)pSPODMaterial;
 	std::string desc = "";
 	desc += CC3String::stringWithFormat( (char*)"SPODMaterial named %s", psm->pszName );
@@ -325,8 +347,10 @@ std::string NSStringFromSPODMaterial(PODStructPtr pSPODMaterial) {
 	return desc;
 }
 
-GLenum GLBlendFuncFromEPODBlendFunc(GLuint ePODBlendFunc) {
-	switch (ePODBlendFunc) {
+GLenum GLBlendFuncFromEPODBlendFunc(GLuint ePODBlendFunc) 
+{
+	switch (ePODBlendFunc) 
+	{
 		case ePODBlendFunc_ZERO:
 		case ePODBlendFunc_ONE:
 		case ePODBlendFunc_SRC_COLOR:
@@ -345,8 +369,10 @@ GLenum GLBlendFuncFromEPODBlendFunc(GLuint ePODBlendFunc) {
 	}
 }
 
-std::string NSStringFromEPODBlendFunc(GLuint ePODBlendFunc) {
-	switch (ePODBlendFunc) {
+std::string NSStringFromEPODBlendFunc(GLuint ePODBlendFunc)
+{
+	switch (ePODBlendFunc) 
+	{
 		case ePODBlendFunc_ZERO:
 			return "ePODBlendFunc_ZERO";
 		case ePODBlendFunc_ONE:
@@ -386,8 +412,10 @@ std::string NSStringFromEPODBlendFunc(GLuint ePODBlendFunc) {
 	}
 }
 
-std::string NSStringFromEPODBlendOp(GLuint ePODBlendOp) {
-	switch (ePODBlendOp) {
+std::string NSStringFromEPODBlendOp(GLuint ePODBlendOp) 
+{
+	switch (ePODBlendOp) 
+	{
 		case ePODBlendOp_ADD:
 			return "ePODBlendOp_ADD";
 		case ePODBlendOp_MIN:
@@ -403,12 +431,14 @@ std::string NSStringFromEPODBlendOp(GLuint ePODBlendOp) {
 	}
 }
 
-std::string NSStringFromSPODTexture(PODStructPtr pSPODTexture) {
+std::string NSStringFromSPODTexture(PODStructPtr pSPODTexture) 
+{
 	SPODTexture* pst = (SPODTexture*)pSPODTexture;
 	return CC3String::stringWithFormat( (char*)"\nSPODTexture filename %s", pst->pszName );
 }
 
-std::string NSStringFromSPVRTPFXParserEffect(PFXClassPtr pSPVRTPFXParserEffect) {
+std::string NSStringFromSPVRTPFXParserEffect( PFXClassPtr pSPVRTPFXParserEffect ) 
+{
 	SPVRTPFXParserEffect* pfxEffect = (SPVRTPFXParserEffect*)pSPVRTPFXParserEffect;
 	std::string desc = "";
 	desc += CC3String::stringWithFormat( (char*)"SPVRTPFXParserEffect" );
@@ -511,7 +541,8 @@ std::string NSStringFromSPVRTPFXRenderPass(PFXClassPtr pSPVRTPFXRenderPass)
 
 GLenum GLTextureWrapFromETextureWrap(GLuint eTextureWrap) 
 {
-	switch (eTextureWrap) {
+	switch (eTextureWrap) 
+	{
 		case eWrap_Clamp:
 			return GL_CLAMP_TO_EDGE;
 		case eWrap_Repeat:
@@ -524,7 +555,8 @@ GLenum GLTextureWrapFromETextureWrap(GLuint eTextureWrap)
 
 std::string NSStringFromETextureWrap(GLuint eTextureWrap) 
 {
-	switch (eTextureWrap) {
+	switch (eTextureWrap) 
+	{
 		case eWrap_Clamp:
 			return "eWrap_Clamp";
 		case eWrap_Repeat:
@@ -553,7 +585,8 @@ GLenum GLMinifyingFunctionFromMinAndMipETextureFilters(GLuint minETextureFilter,
 	switch(mipETextureFilter) 
 	{
 		case eFilter_Nearest:							// Standard mipmapping
-			switch(minETextureFilter) {
+			switch(minETextureFilter) 
+			{
 				case eFilter_Nearest:
 					return GL_NEAREST_MIPMAP_NEAREST;	// Nearest	- std. Mipmap
 				case eFilter_Linear:
@@ -562,7 +595,8 @@ GLenum GLMinifyingFunctionFromMinAndMipETextureFilters(GLuint minETextureFilter,
 		}
 
 		case eFilter_Linear:							// Trilinear mipmapping
-			switch(minETextureFilter) {
+			switch(minETextureFilter) 
+			{
 				case eFilter_Nearest:
 					return GL_NEAREST_MIPMAP_LINEAR;	// Nearest - Trilinear
 				case eFilter_Linear:
@@ -572,7 +606,8 @@ GLenum GLMinifyingFunctionFromMinAndMipETextureFilters(GLuint minETextureFilter,
 
 		case eFilter_None:								// No mipmapping
 		default:
-			switch(minETextureFilter) {
+			switch(minETextureFilter) 
+			{
 				case eFilter_Nearest:
 					return GL_NEAREST;					// Nearest - no Mipmap
 				case eFilter_Linear:
@@ -584,7 +619,8 @@ GLenum GLMinifyingFunctionFromMinAndMipETextureFilters(GLuint minETextureFilter,
 
 std::string NSStringFromETextureFilter(GLuint eTextureFilter) 
 {
-	switch (eTextureFilter) {
+	switch (eTextureFilter)
+	{
 		case eFilter_Nearest:
 			return "eFilter_Nearest";
 		case eFilter_Linear:

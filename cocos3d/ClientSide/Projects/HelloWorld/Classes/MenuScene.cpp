@@ -7,12 +7,10 @@
 
 bool CMainMenu::init()
 {
-	if( CCScene::init() )
+	if ( CCScene::init() )
 	{
 		m_pLayer = CMenuLayer::create();
-		m_pLayer->retain();
-		this->addChild(m_pLayer);
-
+		this->addChild( m_pLayer );
 		m_pLayer->setTouchEnabled( true );
 		return true;
 	}
@@ -24,11 +22,13 @@ bool CMainMenu::init()
 
 CMainMenu::~CMainMenu()
 {
-	if (m_pLayer)
-	{
-		m_pLayer->release();
-		m_pLayer = NULL;
-	}
+	/// Force remove all children before cocos3d' shutdown
+	removeAllChildren();
+	/// Clear unreleased cocos3d objects
+	CCPoolManager::sharedPoolManager()->pop();
+
+	/// 
+	Cocos3d::shutdown();
 }
 
 
@@ -67,7 +67,7 @@ bool CMenuLayer::init()
 
 CMenuLayer::~CMenuLayer()
 {
-	
+
 }
 
 void CMenuLayer::onEnter()

@@ -67,6 +67,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
+      </ForcedIncludeFiles>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\OGLES\PVRTglesExt.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -438,7 +440,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_WINDOWS;COCOS_EXPORT;_CRT_SECURE_NO_WARNINGS;_EDITOR_;COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/win32;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32/OGLES;../../../engine/dependencies/win32/pthread/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/win32;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32/OGLES;../../../engine/dependencies/win32/pthread/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/wd4251 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeaderFile>cocos3d.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -455,7 +457,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_WINDOWS;COCOS_EXPORT;_CRT_SECURE_NO_WARNINGS;_EDITOR_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/win32;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32/OGLES;../../../engine/dependencies/win32/pthread/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/win32;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32;../../../engine/cocos2dx/cocos2dx/platform/third_party/win32/OGLES;../../../engine/dependencies/win32/pthread/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/wd4251 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeaderFile>cocos3d.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -479,7 +481,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/android/prebuilt/libcurl/include;../../../engine/cocos2dx/cocos2dx/platform/android;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../engine/cocos2dx/cocos2dx;../../../engine/cocos2dx/cocos2dx/include;../../../engine/cocos2dx/cocos2dx/platform/third_party/android/prebuilt/libcurl/include;../../../engine/cocos2dx/cocos2dx/platform/android;../../../engine/cocos2dx/cocos2dx/kazmath/include;../../../engine/cocos2dx/external;../../../engine/cocos2dx/CocosDenshion/include;../../../engine/cocos2dx/extensions;../../../engine/dependencies;../../mmUtil;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GccExceptionHandling>true</GccExceptionHandling>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>

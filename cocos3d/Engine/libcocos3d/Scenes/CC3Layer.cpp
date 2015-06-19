@@ -30,6 +30,7 @@
 #include "cocos3d.h"
 
 NS_COCOS3D_BEGIN
+
 CC3Layer::CC3Layer()
 {
 	_surfaceManager = NULL;
@@ -47,14 +48,12 @@ CC3Layer::~CC3Layer()
 
 CC3Scene* CC3Layer::getCC3Scene()
 {
-// 	if (!_cc3Scene) 
-// 		setCC3Scene( CC3Layer::scene() );
 	return _cc3Scene;
 }
 
 void CC3Layer::setCC3Scene( CC3Scene* aScene )
 {
-	 if (aScene == _cc3Scene) 
+	 if ( aScene == _cc3Scene ) 
 		 return;
 
 	 if ( _cc3Scene )
@@ -69,35 +68,9 @@ void CC3Layer::setCC3Scene( CC3Scene* aScene )
 	 CC_SAFE_RETAIN( aScene );
 
 	// _cc3Scene.deprecatedCC3Layer = self;					// Point the scene back here
-	 if (isRunningInActiveScene()) 
+	 if ( isRunningInActiveScene() ) 
 		 openCC3Scene();	// If already running, open the new scene right away
 }
-//
-//-(Class) cc3SceneClass {
-//	Class sceneClass = nil;
-//	NSString* baseName = nil;
-//	NSString* layerClassName = NSStringFromClass(self.class);
-//	
-//	// If layer class name ends in "Layer", strip it and try some combinations
-//	if ( [layerClassName hasSuffix: @"Layer"] ) {
-//		baseName = [layerClassName substringToIndex: (layerClassName.length - @"Layer".length)];
-//
-//		// Try HelloLayer -> HelloScene
-//		sceneClass = NSClassFromString([NSString stringWithFormat: @"%@Scene", baseName]);
-//		if (sceneClass && [sceneClass isSubclassOfClass: CC3Scene.class]) return sceneClass;
-//		
-//		// Try HelloLayer -> Hello
-//		sceneClass = NSClassFromString(baseName);
-//		if (sceneClass && [sceneClass isSubclassOfClass: CC3Scene.class]) return sceneClass;
-//	}
-//
-//	// Try Hello -> HelloScene (including HelloLayer -> HelloLayerScene)
-//	sceneClass = NSClassFromString([NSString stringWithFormat: @"%@Scene", layerClassName]);
-//	if (sceneClass && [sceneClass isSubclassOfClass: CC3Scene.class]) return sceneClass;
-//	
-//	CC3Assert(NO, @"%@ could not determine the appropriate class to instantiate to automatically populate the cc3Scene property.", self);
-//	return nil;
-//}
 
 /** 
  * Override to set the shouldAlwaysUpdateViewport to YES if the parent is not the root CCScene,

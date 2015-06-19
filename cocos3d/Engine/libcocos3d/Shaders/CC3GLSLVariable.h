@@ -270,7 +270,7 @@ class CC3GLSLUniform : public CC3GLSLVariable
 	DECLARE_SUPER( CC3GLSLVariable )
 public:
 	CC3GLSLUniform();
-	virtual ~CC3GLSLUniform();
+	~CC3GLSLUniform();
 
 	/**
 	 * Returns a symbolic constant indicating the type of content held by this variable.

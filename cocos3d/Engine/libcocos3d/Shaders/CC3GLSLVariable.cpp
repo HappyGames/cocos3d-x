@@ -991,13 +991,14 @@ void CC3GLSLUniformOverride::initForProgramUniform( CC3GLSLUniform* uniform, CC3
 {
 	CCAssert(uniform, "The overridden uniform must not be nil.");
 	super::init();
-	{
-		populateFrom( uniform );
-		_programUniform = uniform;						// retained
-		uniform->retain();
-		_pureColorProgramUniform = pureColorUniform;	// retained
-		pureColorUniform->retain();
-	}
+	populateFrom( uniform );
+
+	CC_SAFE_RELEASE( _programUniform ); 
+	_programUniform = uniform;						// retained
+	CC_SAFE_RETAIN( uniform );
+	CC_SAFE_RELEASE( _pureColorProgramUniform );
+	_pureColorProgramUniform = pureColorUniform;	// retained
+	CC_SAFE_RETAIN( pureColorUniform );
 }
 
 CC3GLSLUniformOverride* CC3GLSLUniformOverride::uniformOverrideForProgramUniform( CC3GLSLUniform* uniform, CC3GLSLUniform* pureColorUniform )

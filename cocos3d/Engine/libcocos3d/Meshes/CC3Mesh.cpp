@@ -503,26 +503,23 @@ CC3VertexTextureCoordinates* CC3Mesh::getTextureCoordinatesNamed( const std::str
 // recursively until one is found, or we reach first texture unit.
 CC3VertexTextureCoordinates* CC3Mesh::getTextureCoordinatesForTextureUnit( GLuint texUnit )
 {
-	if (texUnit == 0) {
+	if ( texUnit == 0) 
 		return _vertexTextureCoordinates;
-	} else if (texUnit < getTextureCoordinatesArrayCount()) {
+	else if (texUnit < getTextureCoordinatesArrayCount()) 
 		return (CC3VertexTextureCoordinates*)_overlayTextureCoordinates->objectAtIndex( texUnit - 1 );
-	} else {
-		return getTextureCoordinatesForTextureUnit( texUnit - 1 );
-	}
+	
+	return getTextureCoordinatesForTextureUnit( texUnit - 1 );
 }
 
 void CC3Mesh::setTextureCoordinates( CC3VertexTextureCoordinates* aTexCoords, GLuint texUnit )
 {
 	CCAssert(aTexCoords, "Overlay texture coordinates cannot be nil");
 	if (texUnit == 0) 
-	{
 		setVertexTextureCoordinates( aTexCoords );
-	} else if (texUnit < getTextureCoordinatesArrayCount()) {
+	else if (texUnit < getTextureCoordinatesArrayCount())
 		_overlayTextureCoordinates->replaceObjectAtIndex( texUnit - 1,  aTexCoords );
-	} else {
+	else 
 		addTextureCoordinates( aTexCoords );
-	}
 }
 
 CC3VertexArray* CC3Mesh::getVertexArrayForSemantic( GLenum semantic, GLuint semanticIndex )
@@ -841,7 +838,7 @@ bool CC3Mesh::ensureVertexCapacity( GLuint vtxCount )
 	if (currVtxCap > 0 && currVtxCap < vtxCount) 
 	{
 		setAllocatedVertexCapacity( (GLuint)(vtxCount * getCapacityExpansionFactor()) );
-		return (getAllocatedVertexCapacity() > currVtxCap);
+		return ( getAllocatedVertexCapacity() > currVtxCap );
 	}
 	return false;
 }
@@ -1230,10 +1227,12 @@ void CC3Mesh::setFaces( CC3FaceArray* aFaceArray )
 	if (aFaceArray == _faces) 
 		return;
 	
-	_faces->release();
+	CC_SAFE_RELEASE( _faces );
 	_faces = aFaceArray;
-	_faces->retain();
-	_faces->setMesh( this );
+	CC_SAFE_RETAIN( _faces );
+
+	if ( _faces )
+		_faces->setMesh( this );
 }
 
 bool CC3Mesh::shouldCacheFaces()
@@ -3044,6 +3043,7 @@ CC3FaceIndices CC3FaceArray::getIndicesAt( GLuint faceIndex )
 {
 	if (_shouldCacheFaces) 
 		return getIndices()[faceIndex];
+
 	return getUncachedIndicesAt( faceIndex );
 }
 
@@ -3358,7 +3358,6 @@ void CC3FaceArray::populateNeighbours()
 	// Iterate through all the faces
 	for (GLuint f1Idx = 0; f1Idx < faceCnt; f1Idx++)
 	{
-
 		// Get the neighbours of the current face, and if any of the edges still
 		// need to have a neighbour assigned, look for them. We check this early
 		// to avoid iterating through the remaining faces

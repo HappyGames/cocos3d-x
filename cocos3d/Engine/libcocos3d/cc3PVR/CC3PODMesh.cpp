@@ -47,8 +47,7 @@ void CC3PODMesh::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 
 	for (GLuint i = 0; i < psm->nNumUVW; i++) 
 	{
-		CC3VertexTextureCoordinates* texCoords;
-		texCoords = CC3VertexTextureCoordinates::arrayFromSPODMesh( psm, i );
+		CC3VertexTextureCoordinates* texCoords = CC3VertexTextureCoordinates::arrayFromSPODMesh( psm, i );
 		texCoords->setExpectsVerticallyFlippedTextures( aPODRez->expectsVerticallyFlippedTextures() );
 		addTextureCoordinates( texCoords );
 	}

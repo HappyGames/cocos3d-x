@@ -1887,6 +1887,7 @@ public:
 	 * This method must be invoked after the view has been established in the CCDirector.
 	 */
 	static CC3ViewSurfaceManager* sharedViewSurfaceManager();
+	static void					purge();
 
 	virtual bool				shouldUseDedicatedPickingSurface();
 	virtual void				setShouldUseDedicatedPickingSurface( bool shouldUseDedicatedPickingSurface );

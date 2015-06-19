@@ -154,6 +154,8 @@ void CC3BitmapFontConfiguration::clearFontConfigurations()
 {
 	if ( _fontConfigurations )
 		_fontConfigurations->removeAllObjects(); 
+
+	CC_SAFE_RELEASE( _fontConfigurations );
 }
 
 std::string CC3BitmapFontConfiguration::description()
@@ -796,6 +798,8 @@ void populateMeshAsBitmapFontLabelFromString( CC3Mesh* mesh, const std::string& 
 		CC3Vector locNew = locOld.difference( originLoc );
 		mesh->setVertexLocation( locNew, vIdx );
 	}
+
+	CC_SAFE_DELETE_ARRAY( lineSpecs );
 }
 
 NS_COCOS3D_END

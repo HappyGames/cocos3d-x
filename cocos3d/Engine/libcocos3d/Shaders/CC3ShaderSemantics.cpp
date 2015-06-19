@@ -1048,6 +1048,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 				CC3Node* lp = visitor->getLightProbeAt( semanticIndex + i );
 				uniform->setVector( visitor->transformGlobalLocationToEyeSpace( lp->getGlobalLocation() ) );
 			}
+			return true;
 		case kCC3SemanticLightProbeLocationModelSpace:
 			for (GLint i = 0; i < uniformSize; i++) 
 			{
@@ -1404,12 +1405,15 @@ CC3ShaderSemanticsByVarName::CC3ShaderSemanticsByVarName()
 
 CC3ShaderSemanticsByVarName::~CC3ShaderSemanticsByVarName()
 {
+	if ( _varConfigsByName )
+		_varConfigsByName->removeAllObjects();
+
 	CC_SAFE_RELEASE( _varConfigsByName );
 }
 
 void CC3ShaderSemanticsByVarName::init()
 {
-	_varConfigsByName = new CCDictionary;		// retained
+	_varConfigsByName = CCDictionary::create();		// retained
 	_varConfigsByName->retain();
 }
 

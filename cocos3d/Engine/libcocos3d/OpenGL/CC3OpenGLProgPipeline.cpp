@@ -61,9 +61,9 @@ void CC3OpenGLProgPipeline::bindVertexAttribute( CC3GLSLAttribute* attribute, CC
 			  " in the configureVariable: method of your semantic delegate implementation, or use"
 			  " a PFX file to define the semantic for the attribute name."/*, attribute.name*/);
 
-	CC3VertexArray* va = getVertexArrayForAttribute( attribute, visitor );
-	if ( va )
-		va->bindContentToAttributeAt( attribute->getLocation(), visitor );
+	CC3VertexArray* pVertexArray = getVertexArrayForAttribute( attribute, visitor );
+	if ( pVertexArray )
+		pVertexArray->bindContentToAttributeAt( attribute->getLocation(), visitor );
 }
 
 /** 
@@ -329,7 +329,7 @@ void CC3OpenGLProgPipeline::detachShader( GLuint shaderID, GLuint programID )
 {
 	if ( !shaderID || !programID ) 
 		return;		// Silently ignore zero IDs
-	
+
 	glDetachShader( programID, shaderID );
 
 	CHECK_GL_ERROR_DEBUG();

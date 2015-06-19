@@ -166,8 +166,8 @@ void CC3PODSkinSection::initFromBatchAtIndex( GLint aBatchIndex, PODStructPtr aS
 
 	if ( aNode->getMesh() )
 	{
-		_vertexStart = aNode->getMesh()->getVertexIndexCountFromFaceCount(currFaceOffset);
-		_vertexCount =  aNode->getMesh()->getVertexIndexCountFromFaceCount(nextFaceOffset - currFaceOffset);
+		_vertexStart = aNode->getMesh()->getVertexIndexCountFromFaceCount( currFaceOffset );
+		_vertexCount =  aNode->getMesh()->getVertexIndexCountFromFaceCount( nextFaceOffset - currFaceOffset );
 	}
 
 	_podBoneCount = pBatches->pnBatchBoneCnt[aBatchIndex];

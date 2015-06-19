@@ -464,7 +464,7 @@ void CC3Light::setShouldCastShadowsWhenInvisible( bool shouldCast )
  * scene being rendered, the operation is queued for execution on the rendering thread, to
  * avoid the possibility of adding a shadow in the middle of a render iteration.
  */
-void CC3Light::addShadow( CC3ShadowProtocol* aShadowNode )
+void CC3Light::addShadow( CC3ShadowVolumeMeshNode* aShadowNode )
 {
 	if ( !CC3OpenGL::sharedGL()->isRenderingContext() && getScene() )
 		addShadowFromBackgroundThread( aShadowNode );
@@ -473,17 +473,17 @@ void CC3Light::addShadow( CC3ShadowProtocol* aShadowNode )
 }
 
 /** Adds the specified shadow to this light without queuing. */
-void CC3Light::addShadowNow( CC3ShadowProtocol* aShadowNode )
+void CC3Light::addShadowNow( CC3ShadowVolumeMeshNode* aShadowNode )
 {
 	CCAssert(aShadowNode, "Shadow cannot be nil");		// Don't add if shadow is nil
 	
-#pragma _NOTE_TODO( "add shadow now" )
-	//if(!_shadows) 
-	//{
-	//	_shadows = CCArray::create();			// retained
-	//	_shadows->retain();
-	//}
-	//_shadows->addObject( aShadowNode );
+	if ( !_shadows ) 
+	{
+		_shadows = CCArray::create();			// retained
+		_shadows->retain();
+	}
+	_shadows->addObject( aShadowNode );
+
 	aShadowNode->setLight( this );
 	addTransformListener( aShadowNode );	// Update the shadow when this light moves.
 	
@@ -501,7 +501,7 @@ void CC3Light::addShadowNow( CC3ShadowProtocol* aShadowNode )
  * the shadow node are in place, and then an operation to add the specified shadow is queued to
  * the thread that is performing rendering.
  */
-void CC3Light::addShadowFromBackgroundThread( CC3ShadowProtocol* aShadowNode )
+void CC3Light::addShadowFromBackgroundThread( CC3ShadowVolumeMeshNode* aShadowNode )
 {
 	//[CC3OpenGL.sharedGL finish];
 	//[CC3OpenGL.renderThread runBlockAsync: ^{ [self addShadowNow: aShadowNode]; } ];
@@ -511,7 +511,7 @@ void CC3Light::addShadowFromBackgroundThread( CC3ShadowProtocol* aShadowNode )
 //	dispatch_async(dispatch_get_main_queue(), ^{ [self addShadowNow: aShadowNode]; });
 }
 
-void CC3Light::removeShadow( CC3ShadowProtocol* aShadowNode )
+void CC3Light::removeShadow( CC3ShadowVolumeMeshNode* aShadowNode )
 {
 #pragma _NOTE_TODO( "removeShadow( CC3ShadowProtocol* aShadowNode )" )
 	//_shadows->removeObject( aShadowNode );
@@ -524,6 +524,7 @@ void CC3Light::removeShadow( CC3ShadowProtocol* aShadowNode )
 		checkCameraShadowVolume();			// Remove the camera shadow volume
 		checkStencilledShadowPainter();	// Remove the stencilled shadow painter
 	}
+
 	removeTransformListener( aShadowNode );
 }
 
@@ -537,7 +538,7 @@ void CC3Light::updateShadows()
 	CCObject* pObj = NULL;
 	CCARRAY_FOREACH( _shadows, pObj )
 	{
-		CC3ShadowProtocol* sv = (CC3ShadowProtocol*)pObj;
+		CC3ShadowVolumeMeshNode* sv = (CC3ShadowVolumeMeshNode*)pObj;
 		sv->updateShadow();
 	}
 }
@@ -927,6 +928,12 @@ bool CC3LightCameraBridgeVolume::areAllVerticesInFrontOf( const CC3Plane& plane 
 	return isLightInFrontOfPlane(plane) && super::areAllVerticesInFrontOf(plane);
 }
 
+CC3ShadowCastingVolume::CC3ShadowCastingVolume()
+{
+	_vertexCount = 0; 
+	_planeCount = 0;
+}
+
 CC3ShadowCastingVolume* CC3ShadowCastingVolume::boundingVolume()
 {
 	CC3ShadowCastingVolume* pVolume = new CC3ShadowCastingVolume;
@@ -1132,6 +1139,7 @@ CC3Vector* CC3CameraShadowVolume::getVertices()
 GLuint CC3CameraShadowVolume::getVertexCount()
 {
 	updateIfNeeded();
+
 	return _light->isDirectionalOnly() ? 4 : 5;
 }
 

@@ -88,6 +88,7 @@ CC3ShaderSourceCode* CC3Shader::defaultShaderPreamble()
 		_defaultShaderPreamble = CC3ShaderSourceCode::shaderSourceCodeWithName( "DefaultShaderPreamble", defaultShaderPreambleString() );
 		_defaultShaderPreamble->retain();
 	}
+
 	return _defaultShaderPreamble;
 }
 
@@ -361,7 +362,8 @@ void CC3Shader::removeShaderNamed( const std::string& name )
 void CC3Shader::removeAllShaders()
 {
 	ensureCache();
-	_shaderCache->removeAllObjectsOfType( 0 );
+	_shaderCache->removeAllObjects();
+	CC_SAFE_RELEASE( _defaultShaderPreamble );
 }
 
 bool CC3Shader::isPreloading()
@@ -535,9 +537,21 @@ CC3ShaderProgram::~CC3ShaderProgram()
 
 	deleteGLProgram();
 
+	if ( _attributes )
+		_attributes->removeAllObjects();
 	CC_SAFE_RELEASE( _attributes );
+
+	if ( _uniformsSceneScope )
+		_uniformsSceneScope->removeAllObjects();
 	CC_SAFE_RELEASE( _uniformsSceneScope );
+
+	if ( _uniformsNodeScope )
+		_uniformsNodeScope->removeAllObjects();
 	CC_SAFE_RELEASE( _uniformsNodeScope );
+
+
+	if ( _uniformsDrawScope )
+		_uniformsDrawScope->removeAllObjects();
 	CC_SAFE_RELEASE( _uniformsDrawScope );
 }
 
@@ -1279,17 +1293,25 @@ CC3ShaderProgram* CC3ShaderProgram::getProgramNamed( const std::string& name )
 
 void CC3ShaderProgram::removeProgram( CC3ShaderProgram* program )
 {
-	_programCache->removeObject(program); 
+	if ( _programCache )
+		_programCache->removeObject(program); 
 }
 
 void CC3ShaderProgram::removeProgramNamed( const std::string& name )
 {
-	_programCache->removeObjectNamed( name ); 
+	if ( _programCache )
+		_programCache->removeObjectNamed( name ); 
 }
 
 void CC3ShaderProgram::removeAllPrograms()
 {
-	_programCache->removeAllObjectsOfType( 0 );
+	if ( _programCache )
+		_programCache->removeAllObjects();
+
+	setShaderMatcher( NULL );
+
+	CC_SAFE_RELEASE( _shaderCache );
+	CC_SAFE_RELEASE( _programCache );
 }
 
 static bool _shouldAutomaticallyPreloadMatchingPureColorPrograms = true;
@@ -1570,7 +1592,8 @@ void CC3ShaderSourceCode::removeShaderSourceCodeNamed( const std::string& name )
 
 void CC3ShaderSourceCode::removeAllShaderSourceCode()
 {
-	_shaderSourceCodeCache->removeAllObjectsOfType( 0 );
+	_shaderSourceCodeCache->removeAllObjects();
+	CC_SAFE_RELEASE( _shaderSourceCodeCache );
 }
 
 bool CC3ShaderSourceCode::isPreloading()
@@ -1645,6 +1668,20 @@ void CC3ShaderSourceCodeString::initWithTag( GLuint tag, const std::string& name
 	_sourceCodeString = "";
 }
 
+CC3ShaderSourceCodeLines::CC3ShaderSourceCodeLines()
+{
+	_sourceCodeLines = NULL;
+}
+
+CC3ShaderSourceCodeLines::~CC3ShaderSourceCodeLines()
+{
+	if ( _sourceCodeLines )
+		_sourceCodeLines->removeAllObjects();
+
+	CC_SAFE_RELEASE( _sourceCodeLines );
+}
+
+
 std::string CC3ShaderSourceCodeLines::getSourceCodeString()
 {
 	/*NSMutableString* srcCodeString = [NSMutableString stringWithCapacity: 1000];
@@ -1688,6 +1725,19 @@ void CC3ShaderSourceCodeLines::initWithTag( GLuint tag, const std::string& name 
 	super::initWithTag( tag, name );
 	_sourceCodeLines = CCArray::create();	// retained
 	_sourceCodeLines->retain();
+}
+
+CC3ShaderSourceCodeGroup::CC3ShaderSourceCodeGroup()
+{
+	_subsections = NULL;
+}
+
+CC3ShaderSourceCodeGroup::~CC3ShaderSourceCodeGroup()
+{
+	if ( _subsections )
+		_subsections->removeAllObjects();
+
+	CC_SAFE_RELEASE( _subsections );
 }
 
 CCArray* CC3ShaderSourceCodeGroup::getSubsections()

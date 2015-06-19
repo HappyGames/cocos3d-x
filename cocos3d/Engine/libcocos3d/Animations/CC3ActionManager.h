@@ -39,7 +39,7 @@ public:
     virtual void				addAction( CC3Action *pAction, CC3Node *pTarget, bool paused );
 	virtual void				removeAction( CCObject* action );
 
-	/** Active this action manager while will replace the original cocos2d action manager
+	/** Active this action manager which will replace the original cocos2d action manager
 	 Call this function once in AppDelegate mabye.
 	 */
 	static void					active();

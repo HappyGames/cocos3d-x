@@ -337,7 +337,7 @@ public:
 	std::string					constructorDescription();
 
 	/** Removes this shader instance from the cache. */
-	void						remove();
+	virtual void				remove();
 
 	/**
 	 * Adds the specified shader to the collection of loaded shaders.
@@ -1004,7 +1004,7 @@ public:
 	std::string					constructorDescription();
 
 	/** Removes this program instance from the cache. */
-	void						remove();
+	virtual void				remove();
 
 	/**
 	 * Adds the specified program to the collection of loaded programs.
@@ -1408,7 +1408,7 @@ public:
 	std::string					constructorDescription();
 
 	/** Removes this shader source instance from the cache. */
-	void						remove();
+	virtual void				remove();
 
 	/**
 	 * Adds the specified shader source to the collection of loaded shader sources.
@@ -1544,6 +1544,9 @@ class CC3ShaderSourceCodeLines : public CC3ShaderSourceCode
 {
 	DECLARE_SUPER( CC3ShaderSourceCode ); 
 public:
+	CC3ShaderSourceCodeLines();
+	~CC3ShaderSourceCodeLines();
+
 	std::string					getSourceCodeString();
 	GLuint						getLineCount();
 	void						appendSourceCodeString( const std::string& srcCode );
@@ -1572,6 +1575,9 @@ class CC3ShaderSourceCodeGroup : public CC3ShaderSourceCode
 {
 	DECLARE_SUPER( CC3ShaderSourceCode );
 public:	
+	CC3ShaderSourceCodeGroup();
+	~CC3ShaderSourceCodeGroup();
+
 	/** 
 	 * Adds the specified subsection of source code to the source code tree. Depending on the
 	 * class of the specified source code, it may contain a section of code before, between,

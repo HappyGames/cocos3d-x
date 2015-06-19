@@ -161,4 +161,9 @@ bool CC3STBImage::shouldUseForFileExtension( const std::string& fileExtension )
 	return false;
 }
 
+void CC3STBImage::purgeExtensions()
+{
+	CC_SAFE_RELEASE( _useForFileExtensions );
+}
+
 NS_COCOS3D_END

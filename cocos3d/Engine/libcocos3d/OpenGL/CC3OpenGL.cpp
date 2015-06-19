@@ -532,12 +532,12 @@ void CC3OpenGL::setPolygonOffsetFactor( GLfloat factor, GLfloat units )
 
 void CC3OpenGL::setScissor( const CC3Viewport& vp )
 {
-	cc3_CheckGLValue(vp, CC3ViewportsAreEqual(vp, value_GL_SCISSOR_BOX),
-					 value_GL_SCISSOR_BOX, isKnown_GL_SCISSOR_BOX);
+	cc3_CheckGLValue( vp, CC3ViewportsAreEqual(vp, value_GL_SCISSOR_BOX),
+					 value_GL_SCISSOR_BOX, isKnown_GL_SCISSOR_BOX );
 	if ( !needsUpdate )
 		return;
 
-	glScissor(vp.x, vp.y, vp.w, vp.h);
+	glScissor( vp.x, vp.y, vp.w, vp.h );
 	//LogGLErrorTrace(@"glScissor%@", NSStringFromCC3Viewport(vp));
 
 	CHECK_GL_ERROR_DEBUG();
@@ -559,7 +559,7 @@ void CC3OpenGL::setStencilFunc( GLenum func, GLint stencilRef, GLuint mask )
 		value_GL_STENCIL_REF = stencilRef;
 		value_GL_STENCIL_VALUE_MASK = mask;
 		isKnownStencilFunc = true;
-		glStencilFunc(func, stencilRef, mask);
+		glStencilFunc( func, stencilRef, mask );
 		//LogGLErrorTrace(@"glStencilFunc(%@, %i, %u)", NSStringFromGLEnum(func), ref, mask);
 
 		CHECK_GL_ERROR_DEBUG();
@@ -568,7 +568,7 @@ void CC3OpenGL::setStencilFunc( GLenum func, GLint stencilRef, GLuint mask )
 
 void CC3OpenGL::setStencilMask( GLuint mask )
 {
-	cc3_CheckGLPrim(mask, value_GL_STENCIL_WRITEMASK, isKnown_GL_STENCIL_WRITEMASK);
+	cc3_CheckGLPrim( mask, value_GL_STENCIL_WRITEMASK, isKnown_GL_STENCIL_WRITEMASK );
 	if ( !needsUpdate ) 
 		return;
 
@@ -589,7 +589,7 @@ void CC3OpenGL::setOpOnStencilFail( GLenum sFail, GLenum dFail, GLenum dPass )
 		value_GL_STENCIL_PASS_DEPTH_FAIL = dFail;
 		value_GL_STENCIL_PASS_DEPTH_PASS = dPass;
 		isKnownStencilOp = true;
-		glStencilOp(sFail, dFail, dPass);
+		glStencilOp( sFail, dFail, dPass );
 		//LogGLErrorTrace(@"glStencilOp(%@, %@, %@)", NSStringFromGLEnum(sFail), NSStringFromGLEnum(zFail), NSStringFromGLEnum(zPass));
 	
 		CHECK_GL_ERROR_DEBUG();
@@ -952,6 +952,7 @@ void CC3OpenGL::setGenerateMipmapHint( GLenum hint )
 	cc3_CheckGLPrim(hint, value_GL_GENERATE_MIPMAP_HINT, isKnown_GL_GENERATE_MIPMAP_HINT);
 	if ( !needsUpdate )
 		return;
+
 	glHint(GL_GENERATE_MIPMAP_HINT, hint);
 	//LogGLErrorTrace(@"glHint(%@, %@)", NSStringFromGLEnum(GL_GENERATE_MIPMAP_HINT), NSStringFromGLEnum(hint));
 
@@ -988,6 +989,7 @@ void CC3OpenGL::deleteFramebuffer( GLuint fbID )
 {
 	if ( !fbID )
 		return;		// Silently ignore zero ID
+
 	glDeleteFramebuffers(1, &fbID);
 	//LogGLErrorTrace(@"glDeleteFramebuffers(%i, %u)", 1,fbID);
 	
@@ -1054,12 +1056,14 @@ void CC3OpenGL::deleteRenderbuffer( GLuint rbID )
 {
 	if ( !rbID ) 
 		return;		// Silently ignore zero ID
+
 	glDeleteRenderbuffers(1, &rbID);
 	
 	// If the deleted buffer is currently bound, the GL engine will automatically
 	// bind to the empty buffer ID (0). Update the state tracking accordingly.
 	if (value_GL_RENDERBUFFER_BINDING == rbID) 
 		value_GL_RENDERBUFFER_BINDING = 0;
+
 	CHECK_GL_ERROR_DEBUG();
 }
 
@@ -1068,6 +1072,7 @@ void CC3OpenGL::bindRenderbuffer( GLuint rbID )
 	cc3_CheckGLPrim(rbID, value_GL_RENDERBUFFER_BINDING, isKnown_GL_RENDERBUFFER_BINDING);
 	if ( !needsUpdate ) 
 		return;
+
 	glBindRenderbuffer(GL_RENDERBUFFER, rbID);
 
 	CHECK_GL_ERROR_DEBUG();
@@ -1152,8 +1157,8 @@ void CC3OpenGL::setPixelPackingAlignment( GLint byteAlignment )
 	cc3_CheckGLPrim(byteAlignment, value_GL_PACK_ALIGNMENT, isKnown_GL_PACK_ALIGNMENT);
 	if ( !needsUpdate ) 
 		return;
+
 	glPixelStorei(GL_PACK_ALIGNMENT, byteAlignment);
-	//LogGLErrorTrace(@"glPixelStorei(%@, %i)", NSStringFromGLEnum(GL_PACK_ALIGNMENT), byteAlignment);
 }
 
 void CC3OpenGL::setPixelUnpackingAlignment( GLint byteAlignment )
@@ -1161,8 +1166,8 @@ void CC3OpenGL::setPixelUnpackingAlignment( GLint byteAlignment )
 	cc3_CheckGLPrim(byteAlignment, value_GL_UNPACK_ALIGNMENT, isKnown_GL_UNPACK_ALIGNMENT);
 	if ( !needsUpdate ) 
 		return;
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, byteAlignment);
-	//LogGLErrorTrace(@"glPixelStorei(%@, %i)", NSStringFromGLEnum(GL_UNPACK_ALIGNMENT), byteAlignment);
 }
 
 void CC3OpenGL::flush()
@@ -1405,9 +1410,9 @@ void CC3OpenGL::deleteShader( GLuint shaderID )
 
 }
 
-
 void CC3OpenGL::compileShader( GLuint shaderID, GLuint srcStrCount, const GLchar** srcCodeStrings )
 {
+
 }
 
 bool CC3OpenGL::getShaderWasCompiled( GLuint shaderID )
@@ -1577,7 +1582,6 @@ void CC3OpenGL::setVertexArrayDebugLabel( const char* label, GLuint vaID )
 
 void CC3OpenGL::alignFor2DDrawingWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	
 	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	
 	// Restore 2D standard blending
@@ -1636,26 +1640,21 @@ void CC3OpenGL::align3DVertexAttributeStateWithVisitor( CC3NodeDrawingVisitor* v
 
 void CC3OpenGL::clearOpenGLResourceCaches()
 {
-	//LogInfo(@"Clearing resource caches on thread %@.", NSThread.currentThread);
+	CHECK_GL_ERROR_DEBUG();
 	
 	setShaderProgramPrewarmer( NULL );
 	
 	CC3Resource::removeAllResources();
 	CC3Texture::removeAllTextures();
-	CC3ShaderProgram::removeAllPrograms();
 	CC3Shader::removeAllShaders();
+	CC3ShaderProgram::removeAllPrograms();
 	CC3ShaderSourceCode::removeAllShaderSourceCode();
-
-	// Dynamically reference model factory class, as it might not be present.
-	//[NSClassFromString(@"CC3ModelSampleFactory") deleteFactory];
 }
 
 void CC3OpenGL::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 
-	//LogInfoIfPrimary(@"Third dimension provided by %@", NSStringFromCC3Version());
-	//LogInfo(@"Starting GL context %@ on %@", self, NSThread.currentThread);
 	initDeletionDelay();
 	initGLContext();
 	initPlatformLimits();
@@ -1802,7 +1801,7 @@ CCThread* CC3OpenGL::renderThread()
 
 bool CC3OpenGL::isRenderThread()
 {
-	if (!_renderThread) 
+	if ( !_renderThread ) 
 		renderThread();
 
 	//return (NSThread.currentThread == _renderThread) || NSThread.isMainThread;
@@ -1812,55 +1811,36 @@ bool CC3OpenGL::isRenderThread()
 void CC3OpenGL::terminateOpenGL()
 {
 	CC3Texture::setShouldCacheAssociatedCCTextures( false );
-	CCDirector::sharedDirector()->end();
-	_renderGL->terminate();
-	_bgGL->terminate();
+	if ( _renderGL )
+		_renderGL->terminate();
+
+	// if ( _bgGL )   
+	// _bgGL->terminate();
 }
 
 void CC3OpenGL::terminate()
 {
-	/*if (isRenderingContext()) 
-	{
-		[self.class.renderThread runBlockAsync: ^{ [self clearOpenGLResourceCaches]; } ];
-		[self.class.renderThread runBlockAsync: ^{ [self terminateSoon]; } ];
-	} else {
-		[CC3Backgrounder.sharedBackgrounder runBlock: ^{ [self clearOpenGLResourceCaches]; }];
-		[CC3Backgrounder.sharedBackgrounder runBlock: ^{ [self terminateSoon]; }];
-	}*/
+	clearOpenGLResourceCaches();
+	terminateSoon();
 }
 
 void CC3OpenGL::terminateSoon()
 {
-	/*LogInfo(@"Requesting deletion of %@ on thread %@.", self, NSThread.currentThread);
-	if (self.isRenderingContext) {
-		[self.class.renderThread runBlock: ^{ [self terminateNow]; } after: _deletionDelay ];
-	} else {
-		[CC3Backgrounder.sharedBackgrounder runBlock: ^{ [self terminateNow]; } after: _deletionDelay];
-	}*/
+	terminateNow();
 }
 
 void CC3OpenGL::terminateNow()
 {
-	/*LogInfo(@"Deleting %@ now on thread %@.", self, NSThread.currentThread);
-	[self finish];
+	finish();
 	
-	if (self == _renderGL) {
-		[_renderGL release];
-		_renderGL = nil;
-	}
-	if (self == _bgGL) {
-		[_bgGL release];
-		_bgGL = nil;
-	}
-	
-	[self.class checkClearRenderThread];
-	[self.class checkTerminationNotify];*/
+	if (this == _renderGL)
+		CC_SAFE_RELEASE( _renderGL );
 }
 
 /** If BOTH the render context AND the background context have been deleted, release the render thread. */
 void CC3OpenGL::checkClearRenderThread()
 {
-	if (!_renderGL && !_bgGL) 
+	if ( !_renderGL && !_bgGL ) 
 		_renderThread = NULL;		// weak reference
 }
 
@@ -1885,75 +1865,86 @@ void CC3OpenGL::checkTerminationNotify()
 //		[_delegate performSelectorOnMainThread: selector withObject: arg waitUntilDone: NO];*/
 //}
 
-bool CC3CheckGLBooleanAt(GLuint idx, bool val, GLbitfield* stateBits, GLbitfield* isKnownBits)
+bool CC3CheckGLBooleanAt( GLuint idx, bool val, GLbitfield* stateBits, GLbitfield* isKnownBits )
 {
 	bool needsUpdate = (!CC3BooleansAreEqual(CC3IsBitSet(*stateBits, idx), val)) || CC3IsBitClear(*isKnownBits, idx);
-	if (needsUpdate) 
+	if ( needsUpdate ) 
 	{
-		CC3SetBit(stateBits, idx, val);
-		CC3SetBit(isKnownBits, idx, true);
+		CC3SetBit( stateBits, idx, val );
+		CC3SetBit( isKnownBits, idx, true );
 	}
+
 	return needsUpdate;
 }
 
-bool CC3CheckGLuintAt(GLuint idx, GLuint val, GLuint* stateArray, GLbitfield* isKnownBits) {
+bool CC3CheckGLuintAt( GLuint idx, GLuint val, GLuint* stateArray, GLbitfield* isKnownBits ) 
+{
 	bool needsUpdate = (stateArray[idx] != val) || CC3IsBitClear(*isKnownBits, idx);
-	if (needsUpdate) {
+	if ( needsUpdate ) 
+	{
 		stateArray[idx] = val;
-		CC3SetBit(isKnownBits, idx, true);
+		CC3SetBit( isKnownBits, idx, true );
 	}
+
 	return needsUpdate;
 }
 
-bool CC3CheckGLfloatAt(GLuint idx, GLfloat val, GLfloat* stateArray, GLbitfield* isKnownBits) {
+bool CC3CheckGLfloatAt( GLuint idx, GLfloat val, GLfloat* stateArray, GLbitfield* isKnownBits ) 
+{
 	bool needsUpdate = (stateArray[idx] != val) || CC3IsBitClear(*isKnownBits, idx);
-	if (needsUpdate) {
+	if ( needsUpdate ) 
+	{
 		stateArray[idx] = val;
-		CC3SetBit(isKnownBits, idx, true);
+		CC3SetBit( isKnownBits, idx, true );
 	}
+
 	return needsUpdate;
 }
 
-bool CC3CheckGLVectorAt(GLuint idx, CC3Vector val, CC3Vector* stateArray, GLbitfield* isKnownBits)
+bool CC3CheckGLVectorAt( GLuint idx, CC3Vector val, CC3Vector* stateArray, GLbitfield* isKnownBits )
 {
 	bool needsUpdate = !stateArray[idx].equals( val ) || CC3IsBitClear(*isKnownBits, idx);
-	if (needsUpdate)
+	if ( needsUpdate )
 	{
 		stateArray[idx] = val;
-		CC3SetBit(isKnownBits, idx, true);
+		CC3SetBit( isKnownBits, idx, true );
 	}
+
 	return needsUpdate;
 }
 
-bool CC3CheckGLVector4At(GLuint idx, CC3Vector4 val, CC3Vector4* stateArray, GLbitfield* isKnownBits) 
+bool CC3CheckGLVector4At( GLuint idx, CC3Vector4 val, CC3Vector4* stateArray, GLbitfield* isKnownBits ) 
 {
 	bool needsUpdate = !stateArray[idx].equals(val) || CC3IsBitClear(*isKnownBits, idx);
-	if (needsUpdate) 
+	if ( needsUpdate ) 
 	{
 		stateArray[idx] = val;
-		CC3SetBit(isKnownBits, idx, true);
+		CC3SetBit( isKnownBits, idx, true );
 	}
+
 	return needsUpdate;
 }
 
-bool CC3CheckGLColorAt(GLuint idx, ccColor4F val, ccColor4F* stateArray, GLbitfield* isKnownBits) {
-	bool needsUpdate = !CCC4FAreEqual(stateArray[idx], val) || CC3IsBitClear(*isKnownBits, idx);
-	if (needsUpdate) {
-		stateArray[idx] = val;
-		CC3SetBit(isKnownBits, idx, true);
-	}
-	return needsUpdate;
-}
-
-void CC3SetGLCapAt(GLenum cap, GLuint idx, bool onOff, GLbitfield* stateBits, GLbitfield* isKnownBits) 
+bool CC3CheckGLColorAt( GLuint idx, ccColor4F val, ccColor4F* stateArray, GLbitfield* isKnownBits ) 
 {
-	if (CC3CheckGLBooleanAt(idx, onOff, stateBits, isKnownBits))
+	bool needsUpdate = !CCC4FAreEqual(stateArray[idx], val) || CC3IsBitClear(*isKnownBits, idx);
+	if ( needsUpdate ) 
 	{
-		if (onOff)
-			glEnable(cap + idx);
+		stateArray[idx] = val;
+		CC3SetBit( isKnownBits, idx, true );
+	}
+
+	return needsUpdate;
+}
+
+void CC3SetGLCapAt( GLenum cap, GLuint idx, bool onOff, GLbitfield* stateBits, GLbitfield* isKnownBits ) 
+{
+	if ( CC3CheckGLBooleanAt( idx, onOff, stateBits, isKnownBits ) )
+	{
+		if ( onOff )
+			glEnable( cap + idx );
 		else
-			glDisable(cap + idx);
-		//LogGLErrorTrace(@"gl%@able(%@)", (onOff ? @"En" : @"Dis"), NSStringFromGLEnum(cap + idx));
+			glDisable( cap + idx );
 
 		CHECK_GL_ERROR_DEBUG();
 	}

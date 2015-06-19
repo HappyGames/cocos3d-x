@@ -149,6 +149,8 @@ public:
 	bool						hasShadowVolumes();
 	void						initWithTag( GLuint aTag, const std::string& aName );
 
+	static CC3ShadowVolumeMeshNode*	nodeWithName( const std::string& aName );
+
 	void						populateFrom( CC3ShadowVolumeMeshNode* another );
 	virtual CCObject*			copyWithZone( CCZone* zone );
 

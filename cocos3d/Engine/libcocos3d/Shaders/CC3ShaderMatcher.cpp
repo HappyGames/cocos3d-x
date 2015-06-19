@@ -63,7 +63,7 @@ CC3ShaderSemanticsDelegate* CC3ShaderMatcher::getSemanticDelegate()
 
 void CC3ShaderMatcher::setSemanticDelegate( CC3ShaderSemanticsDelegate* pDelegate )
 {
-	
+
 }
 
 CC3ShaderMatcherBase::CC3ShaderMatcherBase()
@@ -73,7 +73,7 @@ CC3ShaderMatcherBase::CC3ShaderMatcherBase()
 
 CC3ShaderMatcherBase::~CC3ShaderMatcherBase()
 {
-	CC_SAFE_RELEASE(_semanticDelegate);
+	CC_SAFE_RELEASE( _semanticDelegate );
 }
 
 CC3ShaderProgram* CC3ShaderMatcherBase::getProgramForMeshNode( CC3MeshNode* aMeshNode )

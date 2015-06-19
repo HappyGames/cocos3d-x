@@ -43,8 +43,8 @@ CC3ShaderContext::~CC3ShaderContext()
 {
 	CC_SAFE_RELEASE(_program);
 	CC_SAFE_RELEASE(_pureColorProgram);
-	CC_SAFE_RELEASE(_uniformOverrides);
-	CC_SAFE_RELEASE(_uniformOverridesByName);
+
+	removeAllUniformOverrides();
 }
 
 CC3ShaderProgram* CC3ShaderContext::getProgram()
@@ -183,6 +183,9 @@ void CC3ShaderContext::removeUniformOverride( CC3GLSLUniform* uniform )
 
 void CC3ShaderContext::removeAllUniformOverrides()
 {
+	if ( _uniformOverrides )
+		_uniformOverrides->removeAllObjects();
+
 	CC_SAFE_RELEASE( _uniformOverridesByName );
 	CC_SAFE_RELEASE( _uniformOverrides );
 }

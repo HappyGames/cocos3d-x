@@ -13,8 +13,10 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+	ObjectFactory::getInstance()->destroyInstance();
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->end();
-	Cocos3d::shutdown();
+	CCScriptEngineManager::purgeSharedManager();
+	CLoggers::purge();
 }
 
 bool AppDelegate::applicationDidFinishLaunching()

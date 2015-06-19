@@ -613,7 +613,7 @@ public:
 	virtual void				loadProjectionMatrix( const CC3Matrix4x4* mtx );
 
 	/** Activates the specified palette matrix stack and replaces the current matrix with the specified matrix. */
-	virtual void				loadPaletteMatrix(const CC3Matrix4x3* mtx, GLuint pmIdx );
+	virtual void				loadPaletteMatrix( const CC3Matrix4x3* mtx, GLuint pmIdx );
 	 
 	/** Activates the modelview matrix stack, pushes it down one level, and copies the old top to the new top. */
 	virtual void				pushModelviewMatrixStack();

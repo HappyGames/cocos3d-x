@@ -127,6 +127,7 @@ void CC3ActionManager::active()
 	pDirector->setActionManager( pActionMgr );
 	// Reschedule action manager
 	pDirector->getScheduler()->scheduleUpdateForTarget( pActionMgr, kCCPrioritySystem, false );
+	pActionMgr->release();
 }
 
 NS_COCOS3D_END

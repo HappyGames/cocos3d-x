@@ -775,7 +775,7 @@ void CC3DrawableVertexArray::allocateStripLengths( GLuint sCount )
 {
 	deallocateStripLengths();			// get rid of any existing array
 	
-	if (sCount) 
+	if ( sCount ) 
 	{
 		_stripCount = sCount;
 		_stripLengths = (GLuint*)calloc(_stripCount, sizeof(GLuint));
@@ -785,7 +785,7 @@ void CC3DrawableVertexArray::allocateStripLengths( GLuint sCount )
 
 void CC3DrawableVertexArray::deallocateStripLengths()
 {
-	if (_stripLengthsAreRetained) 
+	if ( _stripLengthsAreRetained ) 
 	{
 		free(_stripLengths);
 		_stripLengthsAreRetained = false;
@@ -911,7 +911,7 @@ CC3FaceIndices CC3DrawableVertexArray::getFaceIndicesAt( GLuint faceIndex )
 CC3FaceIndices CC3DrawableVertexArray::getFaceIndicesAt( GLuint faceIndex, GLuint stripLen )
 {
 	GLuint firstVtxIdx;			// The first index of the face.
-	switch (getDrawingMode()) 
+	switch ( _drawingMode ) 
 	{
 		case GL_TRIANGLES:
 			firstVtxIdx = faceIndex * 3;
@@ -1898,18 +1898,19 @@ GLenum CC3VertexIndices::getBufferTarget()
 GLuint CC3VertexIndices::getIndexAt( GLuint index )
 {
 	GLvoid* ptr = getAddressOfElement(index);
-	return _elementType == GL_UNSIGNED_BYTE ? *(GLubyte*)ptr : *(GLushort*)ptr;
+	if ( _elementType == GL_UNSIGNED_BYTE )
+		return *(GLubyte*)ptr;
+
+	return *(GLushort*)ptr;
 }
 
 void CC3VertexIndices::setIndex( GLuint vtxIdx, GLuint index )
 {
 	GLvoid* ptr = getAddressOfElement(index);
 	if (_elementType == GL_UNSIGNED_BYTE) 
-	{
 		*(GLubyte*)ptr = vtxIdx;
-	} else {
+	else
 		*(GLushort*)ptr = vtxIdx;
-	}
 }
 
 CC3FaceIndices CC3VertexIndices::getFaceIndicesAt( GLuint faceIndex )
@@ -2007,7 +2008,9 @@ void CC3VertexIndices::populateFromRunLengthArray( GLushort* runLenArray, GLuint
 	runNum = 0;
 	elemNum = 0;
 	rlaIdx = 0;
-	while(rlaIdx < rlaLen) {
+	
+	while( rlaIdx < rlaLen ) 
+	{
 		GLushort runLength = runLenArray[rlaIdx];
 		elemNum += runLength;
 		rlaIdx += runLength + 1;
@@ -2023,7 +2026,7 @@ void CC3VertexIndices::populateFromRunLengthArray( GLushort* runLenArray, GLuint
 	runNum = 0;
 	elemNum = 0;
 	rlaIdx = 0;
-	while(rlaIdx < rlaLen) 
+	while( rlaIdx < rlaLen ) 
 	{
 		GLushort runLength = runLenArray[rlaIdx++];
 		_stripLengths[runNum++] = runLength;

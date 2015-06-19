@@ -717,15 +717,15 @@ public:
 	void						setVertexCount( GLuint vertexCount );
 
 	/**
-	 * If indexed drawing is used by this mesh, indicates the number of vertex
-	 * indices in the mesh.
-	 *
-	 * If indexed drawing is not used by this mesh, this property has no effect,
-	 * and reading it will return zero.
-	 *
-	 * Usually, you should treat this property as read-only. However, there may be
-	 * occasions with meshes that contain dynamic content, such as particle systems,
-	 * where it may be appropriate to set the value of this property.
+	* If indexed drawing is used by this mesh, indicates the number of vertex
+	* indices in the mesh.
+	*
+	* If indexed drawing is not used by this mesh, this property has no effect,
+	* and reading it will return zero.
+	*
+	* Usually, you should treat this property as read-only. However, there may be
+	* occasions with meshes that contain dynamic content, such as particle systems,
+	* where it may be appropriate to set the value of this property.
 	 *
 	 * Setting the value of this property changes the amount of vertex content that
 	 * will be submitted to the GL engine during drawing.

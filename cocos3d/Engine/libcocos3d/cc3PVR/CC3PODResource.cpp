@@ -311,19 +311,19 @@ void CC3PODResource::buildNodes()
 CC3Node* CC3PODResource::buildNodeAtIndex( GLuint nodeIndex )
 {
 	// Mesh nodes are arranged first
-	if (nodeIndex < getMeshNodeCount()) 
+	if ( nodeIndex < getMeshNodeCount() ) 
 		return buildMeshNodeAtIndex(nodeIndex);
 
 	// Then light nodes
-	if (nodeIndex < getMeshNodeCount() + getLightCount())
+	if ( nodeIndex < getMeshNodeCount() + getLightCount() )
 		return buildLightAtIndex(nodeIndex - getMeshNodeCount());
 	
 	// Then camera nodes
-	if (nodeIndex < getMeshNodeCount() + getLightCount() + getCameraCount())
+	if ( nodeIndex < getMeshNodeCount() + getLightCount() + getCameraCount() )
 		return buildCameraAtIndex(nodeIndex - (getMeshNodeCount() + getLightCount()));
 
 	// Finally general nodes, including structural nodes or targets for lights or cameras
-	return buildStructuralNodeAtIndex(nodeIndex);
+	return buildStructuralNodeAtIndex( nodeIndex );
 }
 
 CC3Node* CC3PODResource::buildStructuralNodeAtIndex( GLuint nodeIndex )
@@ -430,10 +430,10 @@ CC3MeshNode* CC3PODResource::buildMeshNodeAtIndex( GLuint meshNodeIndex )
 {
 	SPODNode* psn = (SPODNode*)getMeshNodePODStructAtIndex(meshNodeIndex);
 	SPODMesh* psm = (SPODMesh*)getMeshPODStructAtIndex(psn->nIdx);
-	if (psm->sBoneBatches.nBatchCnt)
-		return CC3PODSkinMeshNode::nodeAtIndex(meshNodeIndex, this );
+	if ( psm->sBoneBatches.nBatchCnt )
+		return CC3PODSkinMeshNode::nodeAtIndex( meshNodeIndex, this );
 
-	return CC3PODMeshNode::nodeAtIndex(meshNodeIndex, this);
+	return CC3PODMeshNode::nodeAtIndex( meshNodeIndex, this );
 }
 
 // mesh nodes appear first in the node array

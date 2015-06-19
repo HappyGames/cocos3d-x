@@ -93,6 +93,8 @@ void CC3Texture::removeAllTextures()
 {
 	if ( _textureCache )
 		_textureCache->removeAllObjects();
+
+	CC_SAFE_RELEASE( _textureCache );
 }
 
 bool CC3Texture::isPreloading()

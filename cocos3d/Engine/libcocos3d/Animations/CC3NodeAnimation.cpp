@@ -130,6 +130,7 @@ void CC3NodeAnimation::establishFrameAt( float t, CC3NodeAnimationState* animSta
 		float frameDur = nextFrameTime - frameTime;
 		if ( frameDur != 0.0f ) 
 			frameInterpolation = (t - frameTime) / frameDur;
+
 		if ( frameInterpolation < _interpolationEpsilon ) 
 		{
 			frameInterpolation = 0.0f;		// use this frame
@@ -142,6 +143,7 @@ void CC3NodeAnimation::establishFrameAt( float t, CC3NodeAnimationState* animSta
 		//CCLOG_TRACE("CC3NodeAnimation animating at time %.3f between frame %u at %.3f and next frame at %.3f with interpolation fraction %.3f",
 		//		 t, frameIndex, frameTime, nextFrameTime, frameInterpolation);
 	}
+
 	establishFrame( frameIndex, frameInterpolation, animState );
 }
 
@@ -932,14 +934,18 @@ std::string CC3NodeAnimationState::describeStateForFrames( GLuint frameCount, fl
 	std::string desc = "";
 	desc += CC3String::stringWithFormat( (char*)"%s animated state on track %d over %d frames from %.4f to %.4f:", _node->getName().c_str(), _trackID, frameCount, startTime, endTime );
 	if (isAnimating() && frameCount > 0)
+	{
 		for (GLuint fIdx = 0; fIdx < frameCount; fIdx++) 
 		{
 			establishFrameAt( startTime + (frameDur * fIdx) );
 			desc += CC3String::stringWithFormat( (char*)"\n\t%s", describeCurrentState().c_str() );
 		}
+	}
 	else
+	{
 		desc += " No animation enabled.";
-	
+	}
+
 	// Return to where we were before the description was generated
 	establishFrameAt( currTime );
 	setIsEnabled( wasCurrentlyEnabled );

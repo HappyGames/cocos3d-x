@@ -92,21 +92,16 @@ void CC3Cache::removeAllObjectsOfType( int type )
 	{
 		for (unsigned int i = 0; i < names->count(); i++)
 		{
-			_objectsByName->removeObjectForKey( ((CCString*)names->objectAtIndex(i))->getCString() );
+			const char* key = ((CCString*)names->objectAtIndex(i))->getCString();
+			_objectsByName->removeObjectForKey( key );
 		}
 	}
 }
 
 void CC3Cache::removeAllObjects()
 {
-	CCArray* names = _objectsByName->allKeys();
-	if ( names )
-	{
-		for (unsigned int i = 0; i < names->count(); i++)
-		{
-			_objectsByName->removeObjectForKey( ((CCString*)names->objectAtIndex(i))->getCString() );
-		}
-	}
+	if ( _objectsByName )
+		_objectsByName->removeAllObjects();
 }
 
 void CC3Cache::addObject( CC3Cacheable* obj )

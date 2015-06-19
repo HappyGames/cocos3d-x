@@ -580,7 +580,7 @@ void CC3NodeDrawingVisitor::activateRenderSurface()
 /** If this visitor was started on a CC3Scene node, set up for drawing an entire scene. */
 void CC3NodeDrawingVisitor::openScene()
 {
-	if ( !_startingNode->isScene())
+	if ( !_startingNode->isScene() )
 		return;
 
 	CC3Scene* scene = getScene();

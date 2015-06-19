@@ -1318,6 +1318,9 @@ CC3SurfaceManager::CC3SurfaceManager()
 
 CC3SurfaceManager::~CC3SurfaceManager()
 {
+	if ( _resizeableSurfaces )
+		_resizeableSurfaces->removeAllObjects();
+
 	CC_SAFE_RELEASE( _resizeableSurfaces );
 }
 
@@ -1721,6 +1724,11 @@ CC3ViewSurfaceManager* CC3ViewSurfaceManager::sharedViewSurfaceManager()
 		_sharedViewSurfaceManager->initFromView( view );
 	}
 	return _sharedViewSurfaceManager;
+}
+
+void CC3ViewSurfaceManager::purge()
+{
+	CC_SAFE_DELETE( _sharedViewSurfaceManager );
 }
 
 GLenum CC3TexelFormatFromRenderbufferColorFormat( GLenum rbFormat )

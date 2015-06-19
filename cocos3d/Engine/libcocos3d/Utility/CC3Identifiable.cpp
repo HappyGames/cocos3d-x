@@ -52,7 +52,7 @@ bool CC3Identifiable::deriveNameFrom( CC3Identifiable* another )
 
 bool CC3Identifiable::deriveNameFrom( CC3Identifiable* another, const std::string& suffix )
 {
-	if (m_sName.empty()) 
+	if ( m_sName.empty() ) 
 		return false;
 	std::string otherName = another->getName();
 	if ( otherName.empty() ) 

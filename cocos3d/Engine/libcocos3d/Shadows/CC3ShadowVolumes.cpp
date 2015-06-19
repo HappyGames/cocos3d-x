@@ -205,6 +205,14 @@ void CC3ShadowVolumeMeshNode::initWithTag( GLuint aTag, const std::string& aName
 	setEmissionColor( kCCC4FYellow );				// For terminator lines
 }
 
+CC3ShadowVolumeMeshNode* CC3ShadowVolumeMeshNode::nodeWithName( const std::string& aName )
+{
+	CC3ShadowVolumeMeshNode* pNode = new CC3ShadowVolumeMeshNode;
+	pNode->initWithName( aName );
+	pNode->autorelease();
+	return pNode;
+}
+
 void CC3ShadowVolumeMeshNode::populateFrom( CC3ShadowVolumeMeshNode* another )
 {
 	super::populateFrom( another );
@@ -295,9 +303,8 @@ CC3Vector4 CC3ShadowVolumeMeshNode::getShadowVolumeVertexOffsetForLightAt( const
 	CC3Vector camLoc = getShadowCaster()->getGlobalTransformMatrixInverted()->transformLocation( getActiveCamera()->getGlobalLocation() );	
 
 	// Get a unit offset vector in the direction away from the light
-	CC3Vector offsetDir = (_light->isDirectionalOnly()
-												? lgtLoc.negate() 
-												: scLoc.difference( lgtLoc )).normalize();
+	CC3Vector offsetDir = _light->isDirectionalOnly() ? lgtLoc.negate() : scLoc.difference( lgtLoc );
+	offsetDir = offsetDir.normalize();
 
 	// Get the distance from the shadow caster CoG and the camera, and scale the
 	// unit offset vector by that distance and the shadowVolumeVertexOffsetFactor
@@ -338,27 +345,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 	
 	// Determine whether we want to nudge the shadow volume vertices away from the shadow caster
 	bool isNudgingVertices = (_shadowVolumeVertexOffsetFactor != 0.0f);
-	CC3Vector4 svVtxNudge = isNudgingVertices
-								? getShadowVolumeVertexOffsetForLightAt(localLightPosition)
-								: CC3Vector4::kCC3Vector4Zero;
-	
-	//	if (doesRequireCapping) LogDebug(@"Populating %@ with end caps", self);
-	
-	//	if ( [scNode.name isEqualToString: @"GeoSphere01"] ) {
-	//		LogDebug(@"Populating %@ with %i faces for light at %@ and %@ end caps",
-	//					  self, faceCnt, NSStringFromCC3Vector4(lightPosition),
-	//					  (doesRequireCapping ? @"including" : @"excluding"));
-	//	}
-	
-	/*LogTrace(@"Populating %@ with %i faces for light at %@ and %@ end caps",
-				  self, faceCnt, NSStringFromCC3Vector4(lightPosition),
-				  (doesRequireCapping ? @"including" : @"excluding"));
-	
-	LogTrace(@"%@ global light location: %@ shadow local light: %@ %@ inverted: %@",
-				  self, NSStringFromCC3Vector4(lightPosition),
-				  NSStringFromCC3Vector4(localLightPosition),
-				  scNode.globalTransformMatrix,
-				  scNode.globalTransformMatrixInverted);*/
+	CC3Vector4 svVtxNudge = isNudgingVertices ? getShadowVolumeVertexOffsetForLightAt(localLightPosition) : CC3Vector4::kCC3Vector4Zero;
 	
 	// Iterate through all the faces in the mesh of the shadow caster.
 	for (GLuint faceIdx = 0; faceIdx < faceCnt; faceIdx++) 
@@ -372,7 +359,8 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 		
 		// If needed, nudge the shadow volume face away from the
 		// shadow caster face in the direction away from the light
-		if (isNudgingVertices) {
+		if ( isNudgingVertices ) 
+		{
 			vertices4d[0] = vertices4d[0].add( svVtxNudge );
 			vertices4d[1] = vertices4d[1].add( svVtxNudge );
 			vertices4d[2] = vertices4d[2].add( svVtxNudge );
@@ -381,20 +369,14 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 		// Determine whether the face is illuminated.
 		bool isFaceLit = CC3Vector4IsInFrontOfPlane(localLightPosition, scNode->getDeformedFacePlaneAt(faceIdx));
 		
-		/*LogTrace(@"Face %i of %@ is %@. Indices: %@, Vertices: %@, plane: %@, neighbours: %@",
-					  faceIdx, scNode, (isFaceLit ? @"illuminated" : @"dark"),
-					  NSStringFromCC3FaceIndices([scNode faceIndicesAt: faceIdx]),
-					  NSStringFromCC3Face([scNode deformedFaceAt: faceIdx]),
-					  NSStringFromCC3Plane([scNode deformedFacePlaneAt: faceIdx]),
-					  NSStringFromCC3FaceNeighbours([scNode faceNeighboursAt: faceIdx]));*/
-		
 		// If we're drawing end-caps, and this face is part of an end-cap, draw it.
 		// It's part of an end-cap if it's a dark face and shadowing is based on front
 		// faces (typical), or it's a lit face and shadowing is (also) based on back faces
 		// (as with some open meshes).
-		if (doesRequireCapping &&
+		if ( doesRequireCapping &&
 			(isFaceLit ? _shouldShadowBackFaces : _shouldShadowFrontFaces) &&
-			!_shouldDrawTerminator) {
+			!_shouldDrawTerminator) 
+		{
 			/*LogTrace(@"%@ adding end cap for face %i", self, faceIdx);*/
 			wasMeshExpanded |= addShadowVolumeCapFor( isFaceLit,  vertices4d, localLightPosition, &shdwVtxIdx );
 		}
@@ -416,15 +398,18 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 			//     is accomplished by only accepting the neighbouring face if it has a
 			//     larger index than the current face.
 			bool isTerminatorEdge = false;
-			if (neighbourFaceIdx == kCC3FaceNoNeighbour) {
+			if ( neighbourFaceIdx == kCC3FaceNoNeighbour ) 
+			{
 				isTerminatorEdge = isFaceLit ? _shouldShadowFrontFaces : _shouldShadowBackFaces;
-			} else if (neighbourFaceIdx > faceIdx) {		// Don't double count edges
-				bool isNeighbourFaceLit = CC3Vector4IsInFrontOfPlane(localLightPosition, scNode->getDeformedFacePlaneAt(neighbourFaceIdx));
+			} 
+			else if ( neighbourFaceIdx > faceIdx ) 
+			{		// Don't double count edges
+				bool isNeighbourFaceLit = CC3Vector4IsInFrontOfPlane( localLightPosition, scNode->getDeformedFacePlaneAt(neighbourFaceIdx) );
 				isTerminatorEdge = (isNeighbourFaceLit != isFaceLit);
 			}
 			
-			if (isTerminatorEdge) {
-				
+			if ( isTerminatorEdge ) 
+			{
 				// We've found a terminator edge!
 				/*LogTrace(@"\tNeighbouring face %u is %@. We have a terminator edge.",
 				neighbourFaceIdx, ((neighbourFaceIdx == kCC3FaceNoNeighbour)
@@ -436,25 +421,35 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 				// winding of the extruded face to be the same as the dark face. So, choose
 				// the start and end of the edge based on which face of this pair is illuminated.
 				CC3Vector4 edgeStartLoc, edgeEndLoc;
-				if (isFaceLit) {
+				if ( isFaceLit ) 
+				{
 					edgeStartLoc = vertices4d[edgeIdx];
 					edgeEndLoc = vertices4d[(edgeIdx < 2) ? (edgeIdx + 1) : 0];
-				} else {
+				} 
+				else 
+				{
 					edgeStartLoc = vertices4d[(edgeIdx < 2) ? (edgeIdx + 1) : 0];
 					edgeEndLoc = vertices4d[edgeIdx];
 				}
 				
-				if (shouldDrawTerminator() && isVisible()) {
+				if ( shouldDrawTerminator() && isVisible() ) 
+				{
 					// Draw the terminator line instead of a shadow
 					wasMeshExpanded |= addTerminatorLineFrom( edgeStartLoc, edgeEndLoc, &shdwVtxIdx );
-				} else if ( localLightPosition.isDirectional() ) {
+				} 
+				else if ( localLightPosition.isDirectional() ) 
+				{
 					// Draw the shadow from a directional light
 					wasMeshExpanded |= addShadowVolumeSideFrom( edgeStartLoc, edgeEndLoc, localLightPosition, &shdwVtxIdx );
-				} else {
+				} 
+				else 
+				{
 					// Draw the shadow from a locational light, possibly closing off the far end
 					wasMeshExpanded |= addShadowVolumeSideFrom( edgeStartLoc, edgeEndLoc, doesRequireCapping, localLightPosition, &shdwVtxIdx );
 				}
-			} else {
+			} 
+			else 
+			{
 				/*LogTrace(@"\tNeighbouring face %u is %@. Not a terminator edge.",
 							  neighbourFaceIdx, (isFaceLit ? @"illuminated" : @"dark"));*/
 			}
@@ -467,13 +462,15 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 	
 	// If the mesh is using GL VBO's, update them. If the mesh was expanded,
 	// recreate the VBO's, otherwise update them.
-	if (_mesh->isUsingGLBuffers()) 
+	if ( _mesh->isUsingGLBuffers() ) 
 	{
-		if (wasMeshExpanded)
+		if ( wasMeshExpanded )
 		{
 			_mesh->deleteGLBuffers();
 			_mesh->createGLBuffers();
-		} else {
+		} 
+		else 
+		{
 			_mesh->updateVertexLocationsGLBuffer();
 		}
 	}
@@ -537,13 +534,16 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeSta
 {
 	CC3Vector4 farStartLoc, farEndLoc;
 
-	if (doesRequireCapping) {
+	if ( doesRequireCapping )
+	{
 		// We need to cap this shadow volume at infinity, so allow the shadow volume
 		// to expand only for a distance equivalent to the distance from the light to
 		// the vertex, mulitiplied by the shadowExpansionLimitFactor property.
 		farStartLoc = expand( edgeStartLoc, lightPosition );
 		farEndLoc = expand( edgeEndLoc, lightPosition );
-	} else {
+	} 
+	else 
+	{
 		// We don't need to cap this shadow volume, so allow the shadow volume to expand
 		// to infinity in a direction away from the light, through the edge points.
 		// The W component of the result of each subtraction will be zero, indicating
@@ -566,7 +566,8 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeSta
 	_mesh->setVertexHomogeneousLocation( farEndLoc, (*shdwVtxIdx)++ );
 	_mesh->setVertexHomogeneousLocation( edgeEndLoc, (*shdwVtxIdx)++ );
 
-	if (doesRequireCapping) {
+	if ( doesRequireCapping ) 
+	{
 		// To cap, extend from the limited expansion points out to infinity in
 		// a direction away from the light, as if the light was directional.
 		// These segments will be parallel to each other, and the shadow will
@@ -606,21 +607,18 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeCapFor( bool isFaceLit, CC3Vector4*
 	// Add a single triangle face to the cap at the near end, built from the vertices
 	// of the shadow caster face at the specified index. If the face is lit, use the
 	// same winding order. If the face is dark, use the opposite winding.
-	if (isFaceLit) {
+	if ( isFaceLit ) 
+	{
 		_mesh->setVertexHomogeneousLocation( vertices[0], (*shdwVtxIdx)++ );
 		_mesh->setVertexHomogeneousLocation( vertices[1], (*shdwVtxIdx)++ );
 		_mesh->setVertexHomogeneousLocation( vertices[2], (*shdwVtxIdx)++ );
-	} else {															  
+	} 
+	else 
+	{															  
 		_mesh->setVertexHomogeneousLocation( vertices[0], (*shdwVtxIdx)++ );
 		_mesh->setVertexHomogeneousLocation( vertices[2], (*shdwVtxIdx)++ );
 		_mesh->setVertexHomogeneousLocation( vertices[1], (*shdwVtxIdx)++ );
 	}
-
-	/*LogTrace(@"%@ drawing shadow volume near %@end cap face (%@, %@, %@)",
-				  self, (CC3Vector4IsLocational(lightPosition) ? @"and far " : @""),
-				  NSStringFromCC3Vector4(vertices[0]),
-				  NSStringFromCC3Vector4(vertices[1]),
-				  NSStringFromCC3Vector4(vertices[2]));*/
 	
 	return wasMeshExpanded;
 }
