@@ -96,3 +96,58 @@ modify the implementation of void CCDirector::purgeDirector() as below after 'CH
 	to fix the compile error on android, include <cstdio>.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+COCOS2D-X CCScriptEngineManager memory leak fix
+
+1. Destructor of CCObject
+	/// Modified as the following codes
+	CCObject::~CCObject(void)
+	{
+		// if the object is managed, we should remove it
+		// from pool manager
+		if (m_uAutoReleaseCount > 0)
+		{
+			CCPoolManager::sharedPoolManager()->removeObject(this);
+		}
+
+		// if the object is referenced by Lua engine, remove it
+		CCScriptEngineManager* scriptManager = CCScriptEngineManager::sharedManager();
+		if ( scriptManager )
+		{
+			if (m_nLuaID)
+			{
+				CCScriptEngineManager::sharedManager()->getScriptEngine()->removeScriptObjectByCCObject(this);
+			}
+			else
+			{
+				CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()->getScriptEngine();
+				if (pEngine != NULL && pEngine->getScriptType() == kScriptTypeJavascript)
+				{
+					pEngine->removeScriptObjectByCCObject(this);
+				}
+			}
+		}
+	}
+	
+2. CCScriptSupport.cpp 
+	a. add 'static bool s_purged = false'; right after 'static CCScriptEngineManager* s_pSharedScriptEngineManager = NULL;'
+	b. modify CCScriptEngineManager::sharedManager and void CCScriptEngineManager::purgeSharedManager(void) as the following codes
+	CCScriptEngineManager* CCScriptEngineManager::sharedManager(void)
+	{
+		if ( !s_pSharedScriptEngineManager && !s_purged )
+		{
+			s_pSharedScriptEngineManager = new CCScriptEngineManager();
+		}
+		return s_pSharedScriptEngineManager;
+	}
+
+	void CCScriptEngineManager::purgeSharedManager(void)
+	{
+		if ( s_pSharedScriptEngineManager )
+		{
+			delete s_pSharedScriptEngineManager;
+			s_pSharedScriptEngineManager = NULL;
+			s_purged = true;
+		}
+	}
