@@ -4,20 +4,11 @@
    <Group
       location = "container:"
       name = "Dependencies">
-      <FileRef
-         location = "group:../../../Engine/dependencies/zlib/proj.ios/zlib.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:../../../Engine/mmUtil/mmUtil/proj.ios/mmUtil.xcodeproj">
-      </FileRef>
       <Group
          location = "container:"
          name = "Cocos">
          <FileRef
             location = "group:../../../Engine/libcocos3d/proj.ios/Cocos3d.xcodeproj">
-         </FileRef>
-         <FileRef
-            location = "group:../../../Engine/cocoslib/proj.ios/CocosLib.xcodeproj">
          </FileRef>
          <FileRef
             location = "group:../../../Engine/cocos2dx/extensions/proj.ios/CocosExtensions.xcodeproj">

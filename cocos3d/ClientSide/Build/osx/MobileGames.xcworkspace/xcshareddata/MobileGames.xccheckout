@@ -10,36 +10,31 @@
 	<string>MobileGames</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>AD8B60A0-ADC0-43F5-8758-4095FC2B7A34</key>
-		<string>https://192.168.1.173/svn/gamedev</string>
+		<key>27C64E0B1ED7EB9A2A1FF17E650D654985DA1844</key>
+		<string>https://github.com/michaelgamedev/cocos3d-x.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ClientSide/MobileGames/Build/osx/MobileGames.xcworkspace</string>
+	<string>cocos3d/ClientSide/Build/osx/MobileGames.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>AD8B60A0-ADC0-43F5-8758-4095FC2B7A34</key>
+		<key>27C64E0B1ED7EB9A2A1FF17E650D654985DA1844</key>
 		<string>../../../../..</string>
 	</dict>
-	<key>IDESourceControlProjectRepositoryRootDictionary</key>
-	<dict>
-		<key>AD8B60A0-ADC0-43F5-8758-4095FC2B7A34</key>
-		<string>https://192.168.1.173/svn/gamedev</string>
-	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://192.168.1.173/svn/gamedev/ClientSide/MobileGames/Build/osx/MobileGames.xcworkspace</string>
+	<string>https://github.com/michaelgamedev/cocos3d-x.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>AD8B60A0-ADC0-43F5-8758-4095FC2B7A34</string>
+	<string>27C64E0B1ED7EB9A2A1FF17E650D654985DA1844</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
+			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>AD8B60A0-ADC0-43F5-8758-4095FC2B7A34</string>
+			<string>27C64E0B1ED7EB9A2A1FF17E650D654985DA1844</string>
 			<key>IDESourceControlWCCName</key>
-			<string>gamedev</string>
+			<string>cocos3d-x</string>
 		</dict>
 	</array>
 </dict>

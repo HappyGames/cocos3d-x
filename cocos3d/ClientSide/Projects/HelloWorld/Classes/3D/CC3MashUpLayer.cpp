@@ -431,6 +431,7 @@ void touchMoved: (UITouch*) touch withEvent: (UIEvent*) event {
 
 #endif
 
+#if 0
 #if CC3_IOS
 #pragma mark Gesture support
 
@@ -596,4 +597,4 @@ void handleCameraMove: (UIPinchGestureRecognizer*) gesture {
 	}
 }
 #endif	// CC3_IOS
-
+#endif

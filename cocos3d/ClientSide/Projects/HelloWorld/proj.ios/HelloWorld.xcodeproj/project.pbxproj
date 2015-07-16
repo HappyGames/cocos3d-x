@@ -10,7 +10,6 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
-		4CBBBF521852FAE000E4F143 /* libmmUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBBBF511852FAE000E4F143 /* libmmUtil.a */; };
 		4CBBBF561852FB7000E4F143 /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBBBF551852FB7000E4F143 /* libBox2D.a */; };
 		4CBBBF581852FB9000E4F143 /* libCocosDenshion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBBBF571852FB9000E4F143 /* libCocosDenshion.a */; };
 		4CBBBF5C1852FD7600E4F143 /* libCocosExtensions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBBBF5B1852FD7600E4F143 /* libCocosExtensions.a */; };
@@ -22,17 +21,11 @@
 		5767FC9A1B55FAC40034DDD2 /* CC3MashUpScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5767FC911B55FAC40034DDD2 /* CC3MashUpScene.cpp */; };
 		5767FC9B1B55FAC40034DDD2 /* HUDLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5767FC931B55FAC40034DDD2 /* HUDLayer.cpp */; };
 		5767FC9C1B55FAC40034DDD2 /* HUDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5767FC951B55FAC40034DDD2 /* HUDScene.cpp */; };
-		5767FCA31B55FAD30034DDD2 /* Heightmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5767FC9E1B55FAD30034DDD2 /* Heightmap.cpp */; };
-		5767FCA41B55FAD30034DDD2 /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5767FCA11B55FAD30034DDD2 /* Terrain.cpp */; };
 		5767FCA91B55FADF0034DDD2 /* Models.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5767FCA51B55FADF0034DDD2 /* Models.cpp */; };
 		5767FCAF1B55FB5B0034DDD2 /* 3d in Resources */ = {isa = PBXBuildFile; fileRef = 5767FCAB1B55FB5B0034DDD2 /* 3d */; };
-		5767FCB01B55FB5B0034DDD2 /* car_c7_r.png in Resources */ = {isa = PBXBuildFile; fileRef = 5767FCAC1B55FB5B0034DDD2 /* car_c7_r.png */; };
-		5767FCB11B55FB5B0034DDD2 /* cc3mdl.mdl in Resources */ = {isa = PBXBuildFile; fileRef = 5767FCAD1B55FB5B0034DDD2 /* cc3mdl.mdl */; };
 		5767FCB21B55FB5B0034DDD2 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 5767FCAE1B55FB5B0034DDD2 /* images */; };
 		5767FCB41B55FFF70034DDD2 /* libCocos3d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5767FCB31B55FFF70034DDD2 /* libCocos3d.a */; };
 		5767FCB61B5600090034DDD2 /* libcocos2dx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5767FCB51B5600090034DDD2 /* libcocos2dx.a */; };
-		5767FCB81B5600140034DDD2 /* libCocosLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5767FCB71B5600140034DDD2 /* libCocosLib.a */; };
-		5767FCBA1B56001C0034DDD2 /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5767FCB91B56001C0034DDD2 /* libzlib.a */; };
 		BF1373EF128A898400D9F789 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF492D4B1289302400A09262 /* OpenGLES.framework */; };
 		BF1373F0128A899500D9F789 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF492C21128924A800A09262 /* libxml2.dylib */; };
 		BF1373F1128A899E00D9F789 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF492B6912891AC600A09262 /* libz.dylib */; };
@@ -73,16 +66,9 @@
 		5767FC941B55FAC40034DDD2 /* HUDLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HUDLayer.h; path = 3D/HUDLayer.h; sourceTree = "<group>"; };
 		5767FC951B55FAC40034DDD2 /* HUDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HUDScene.cpp; path = 3D/HUDScene.cpp; sourceTree = "<group>"; };
 		5767FC961B55FAC40034DDD2 /* HUDScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HUDScene.h; path = 3D/HUDScene.h; sourceTree = "<group>"; };
-		5767FC9E1B55FAD30034DDD2 /* Heightmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Heightmap.cpp; path = 3D/misc/Heightmap.cpp; sourceTree = "<group>"; };
-		5767FC9F1B55FAD30034DDD2 /* Heightmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Heightmap.h; path = 3D/misc/Heightmap.h; sourceTree = "<group>"; };
-		5767FCA01B55FAD30034DDD2 /* Table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Table.h; path = 3D/misc/Table.h; sourceTree = "<group>"; };
-		5767FCA11B55FAD30034DDD2 /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = 3D/misc/Terrain.cpp; sourceTree = "<group>"; };
-		5767FCA21B55FAD30034DDD2 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = 3D/misc/Terrain.h; sourceTree = "<group>"; };
 		5767FCA51B55FADF0034DDD2 /* Models.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Models.cpp; path = 3D/Models.cpp; sourceTree = "<group>"; };
 		5767FCA61B55FADF0034DDD2 /* Models.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Models.h; path = 3D/Models.h; sourceTree = "<group>"; };
 		5767FCAB1B55FB5B0034DDD2 /* 3d */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 3d; sourceTree = "<group>"; };
-		5767FCAC1B55FB5B0034DDD2 /* car_c7_r.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = car_c7_r.png; sourceTree = "<group>"; };
-		5767FCAD1B55FB5B0034DDD2 /* cc3mdl.mdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = cc3mdl.mdl; sourceTree = "<group>"; };
 		5767FCAE1B55FB5B0034DDD2 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		5767FCB31B55FFF70034DDD2 /* libCocos3d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCocos3d.a; path = "../../../../Engine/libcocos3d/proj.ios/build/Debug-iphoneos/libCocos3d.a"; sourceTree = "<group>"; };
 		5767FCB51B5600090034DDD2 /* libcocos2dx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcocos2dx.a; path = "../../../../Engine/cocos2dx/cocos2dx/proj.ios/build/Debug-iphoneos/libcocos2dx.a"; sourceTree = "<group>"; };
@@ -107,10 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5767FCBA1B56001C0034DDD2 /* libzlib.a in Frameworks */,
 				4CBBBF561852FB7000E4F143 /* libBox2D.a in Frameworks */,
-				4CBBBF521852FAE000E4F143 /* libmmUtil.a in Frameworks */,
-				5767FCB81B5600140034DDD2 /* libCocosLib.a in Frameworks */,
 				5767FCB61B5600090034DDD2 /* libcocos2dx.a in Frameworks */,
 				4CBBBF5C1852FD7600E4F143 /* libCocosExtensions.a in Frameworks */,
 				4CBBBF581852FB9000E4F143 /* libCocosDenshion.a in Frameworks */,
@@ -184,7 +167,6 @@
 			children = (
 				5767FCA51B55FADF0034DDD2 /* Models.cpp */,
 				5767FCA61B55FADF0034DDD2 /* Models.h */,
-				5767FC9D1B55FAC70034DDD2 /* misc */,
 				5767FC8B1B55FAC40034DDD2 /* CC3HelloWorldLayer.cpp */,
 				5767FC8C1B55FAC40034DDD2 /* CC3HelloWorldLayer.h */,
 				5767FC8D1B55FAC40034DDD2 /* CC3HelloWorldScene.cpp */,
@@ -201,24 +183,10 @@
 			name = 3D;
 			sourceTree = "<group>";
 		};
-		5767FC9D1B55FAC70034DDD2 /* misc */ = {
-			isa = PBXGroup;
-			children = (
-				5767FC9E1B55FAD30034DDD2 /* Heightmap.cpp */,
-				5767FC9F1B55FAD30034DDD2 /* Heightmap.h */,
-				5767FCA01B55FAD30034DDD2 /* Table.h */,
-				5767FCA11B55FAD30034DDD2 /* Terrain.cpp */,
-				5767FCA21B55FAD30034DDD2 /* Terrain.h */,
-			);
-			name = misc;
-			sourceTree = "<group>";
-		};
 		784521C214EBA449009D533B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				5767FCAB1B55FB5B0034DDD2 /* 3d */,
-				5767FCAC1B55FB5B0034DDD2 /* car_c7_r.png */,
-				5767FCAD1B55FB5B0034DDD2 /* cc3mdl.mdl */,
 				5767FCAE1B55FB5B0034DDD2 /* images */,
 			);
 			name = Resources;
@@ -302,9 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5767FCB21B55FB5B0034DDD2 /* images in Resources */,
-				5767FCB11B55FB5B0034DDD2 /* cc3mdl.mdl in Resources */,
 				5767FCAF1B55FB5B0034DDD2 /* 3d in Resources */,
-				5767FCB01B55FB5B0034DDD2 /* car_c7_r.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,8 +282,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5767FC891B55FAAC0034DDD2 /* AppDelegate.cpp in Sources */,
-				5767FCA41B55FAD30034DDD2 /* Terrain.cpp in Sources */,
-				5767FCA31B55FAD30034DDD2 /* Heightmap.cpp in Sources */,
 				BF365AA812A103F70050DCF4 /* AppController.mm in Sources */,
 				5767FC981B55FAC40034DDD2 /* CC3HelloWorldScene.cpp in Sources */,
 				5767FC8A1B55FAAC0034DDD2 /* MenuScene.cpp in Sources */,
