@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\win32">
+      <UniqueIdentifier>{0b804952-2fb1-4d37-a2f2-135e8568dfff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\android">
+      <UniqueIdentifier>{ed36109d-fa4c-46be-9e8a-088a647c309a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\android\jni">
+      <UniqueIdentifier>{b448177c-c4aa-4479-a92a-e73d5bd69795}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Export.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\MciPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SimpleAudioEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\android\jni\SimpleAudioEngineJni.h">
+      <Filter>Source Files\android\jni</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\win32\MciPlayer.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\SimpleAudioEngine.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\android\SimpleAudioEngine.cpp">
+      <Filter>Source Files\android</Filter>
+    </ClCompile>
+    <ClCompile Include="..\android\jni\SimpleAudioEngineJni.cpp">
+      <Filter>Source Files\android\jni</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
