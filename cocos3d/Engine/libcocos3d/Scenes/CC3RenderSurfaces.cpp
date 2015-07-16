@@ -262,13 +262,28 @@ void CC3TextureFramebufferAttachment::setShouldUseStrongReferenceToTexture( bool
  */
 void CC3TextureFramebufferAttachment::setTexObj( CC3Texture* texture )
 {
-	CC3Ref<CC3Texture> newTexObj = shouldUseStrongReferenceToTexture() ? texture : CC3WeakRef<CC3Texture>( texture );
+#if 0
+    CC3Ref<CC3Texture> newTexObj;
+    if ( shouldUseStrongReferenceToTexture() )
+        newTexObj = texture;
+    else
+        newTexObj = CC3WeakRef<CC3Texture>( texture );
+    
 	if ( newTexObj == _texObj ) 
 		return;
 
 	CC_SAFE_RELEASE( _texObj );
 	_texObj = newTexObj;
 	CC_SAFE_RETAIN( newTexObj );
+#else
+    CC3Ref<CC3Texture> newTexObj = shouldUseStrongReferenceToTexture() ? texture : (CC3Texture*)CC3WeakRef<CC3Texture>( texture );
+    if ( newTexObj == _texObj )
+        return;
+    
+    CC_SAFE_RELEASE( _texObj );
+    _texObj = newTexObj;
+    CC_SAFE_RETAIN( newTexObj );
+#endif
 }
 
 CC3IntSize CC3TextureFramebufferAttachment::getSize()
@@ -1692,14 +1707,20 @@ void CC3ViewSurfaceManager::initFromView( CCEGLView* view )
 	GLenum colorFormat = GL_RGBA;
 	GLenum depthFormat = GL_DEPTH_STENCIL/*GL_DEPTH24_STENCIL8*/;
 	GLuint viewFramebufferID = 0/*view->getDefaultFrameBuffer()*/;
+    
+#if CC_TARGET_PLATFORM == CC_TARGET_OS_IPHONE
+    viewFramebufferID = 1;
+    colorFormat = GL_RGBA8_OES;
+#endif
+    
 	GLuint msaaFramebufferID = 0/*view->getMsaaFrameBuffer()*/;
 	bool isMultiSampling = (msaaFramebufferID > 0);
 		
 	CC3GLFramebuffer* vSurf = CC3GLFramebuffer::surfaceWithFramebufferID( viewFramebufferID );
 	vSurf->setName( "Display surface" );
-	vSurf->setShouldBindGLAttachments( false );			// Attachments are bound already
+ 	vSurf->setShouldBindGLAttachments( false );		// Attachments are bound already
 	vSurf->setIsOnScreen( !isMultiSampling );		// View surface is off-screen when multisampling
-	vSurf->setColorAttachment( CC3GLRenderbuffer::renderbufferWithPixelFormat( colorFormat/*view->getColorRenderBuffer()*/ ) );
+	vSurf->setColorAttachment( CC3GLRenderbuffer::renderbufferWithPixelFormatAndRenderBuffer( colorFormat/*view->getColorRenderBuffer()*/, 1 ) );
 	setViewSurface( vSurf );
 		
 	if ( isMultiSampling ) 

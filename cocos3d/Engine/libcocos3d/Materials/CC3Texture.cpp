@@ -1171,6 +1171,7 @@ bool CC3Texture2DContent::initFromOSFile( const std::string& filePath )
 	pImage->release();
 
 	return true;
+#if 0
 #if CC3_IOS
 	// Resolve an absolute path in either the application bundle resource
 	// directory or the Cocos3D bundle resource directory.
@@ -1200,6 +1201,7 @@ bool CC3Texture2DContent::initFromOSFile( const std::string& filePath )
 	NSBitmapImageRep* image = [NSBitmapImageRep imageRepWithData: imgData];
 	return [self initWithCGImage: image.CGImage];
 #endif	// CC_OSX
+#endif
 }
 
 const GLvoid* CC3Texture2DContent::getImageData()

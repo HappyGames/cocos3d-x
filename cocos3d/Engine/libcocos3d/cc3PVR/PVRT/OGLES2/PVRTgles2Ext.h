@@ -11,6 +11,7 @@
 #define _PVRTGLES2EXT_H_
 
 #include "../../../OpenGL/CC3OpenGLFoundation.h"		// patched for Cocos3D by Bill Hollings
+#include "../../CC3PVROpenGLFoundation.h"
 
 #if CC3_OGLES_2							// patched for Cocos3D by Bill Hollings
 

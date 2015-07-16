@@ -109,7 +109,7 @@ void CC3ActionManager::removeAction( CC3Action *pAction )
 void CC3ActionManager::removeAction( CCObject* action )
 {
 	CCAction* pAction = (CCAction*)action;
-	if ( ((int)pAction->getUserData()) > 0 )
+	if ( ((long)pAction->getUserData()) > 0 )
 		removeAction( (CC3Action*)pAction );
 	else
 		CCActionManager::removeAction( pAction );

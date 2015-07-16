@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "Dependencies">
+      <FileRef
+         location = "group:../../../Engine/dependencies/zlib/proj.ios/zlib.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:../../../Engine/mmUtil/mmUtil/proj.ios/mmUtil.xcodeproj">
+      </FileRef>
+      <Group
+         location = "container:"
+         name = "Cocos">
+         <FileRef
+            location = "group:../../../Engine/libcocos3d/proj.ios/Cocos3d.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:../../../Engine/cocoslib/proj.ios/CocosLib.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:../../../Engine/cocos2dx/extensions/proj.ios/CocosExtensions.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:../../../Engine/cocos2dx/CocosDenshion/proj.ios/CocosDenshion.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:../../../Engine/cocos2dx/cocos2dx/proj.ios/Cocos2dx.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
+         location = "container:"
+         name = "Physics">
+         <FileRef
+            location = "group:../../../Engine/cocos2dx/external/Box2D/proj.ios/Box2D.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:../../../Engine/cocos2dx/external/chipmunk/proj.ios/Chipmunk.xcodeproj">
+         </FileRef>
+      </Group>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Games">
+      <FileRef
+         location = "group:../../Projects/HelloWorld/proj.ios/HelloWorld.xcodeproj">
+      </FileRef>
+   </Group>
+</Workspace>

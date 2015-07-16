@@ -40,6 +40,7 @@
 #	endif
 #endif
 
+
 /** Running on OSX - use ifdef instead of defined() operator to allow CC3_IOS to be used in expansions */
 #ifndef CC3_OSX
 #	ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
@@ -49,10 +50,6 @@
 #	endif
 #endif
 
-/** Running on Android via Apportable. Explicitly set as a build setting. */
-#ifndef APPORTABLE
-#	define APPORTABLE		1
-#endif
 
 /** Convenience tests for whether we are linking to specific Cocos2D versions or functionality. */
 #ifndef CC3_CC2_1
@@ -71,7 +68,7 @@
 #	define CC3_CC2_RENDER_QUEUE		(COCOS2D_VERSION >= 0x030100)
 #endif
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	/** Running OpenGL ES 2 under iOS and android. */
 	#ifndef CC3_OGLES_2
 	#	define CC3_OGLES_2		1
@@ -81,6 +78,17 @@
 	#ifndef CC3_OGL
 	#	define CC3_OGL			1
 	#endif
+#endif
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID 
+    /** Running on Android via Apportable. Explicitly set as a build setting. */
+    #ifndef APPORTABLE
+    #	define APPORTABLE		1
+    #endif
+#else
+    #ifndef APPORTABLE
+    #	define APPORTABLE		0
+    #endif
 #endif
 
 

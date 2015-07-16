@@ -107,6 +107,7 @@
 #include "Materials/CC3TextureUnit.h"
 
 /// cc3PVR
+#include "cc3PVR/CC3PVROpenGLFoundation.h"
 #include "cc3PVR/CC3PVRTPFXParser.h"
 #include "cc3PVR/CC3PFXResource.h"
 #include "cc3PVR/CC3PODResource.h"
@@ -124,7 +125,6 @@
 #include "cc3PVR/CC3PVRTTexture.h"
 #include "cc3PVR/CC3PODMaterial.h"
 #include "cc3PVR/CC3PODMeshNode.h"
-#include "cc3PVR/CC3PVROpenGLFoundation.h"
 
 /// controls
 #include "Controls/CCNodeAdornments.h"
