@@ -52,10 +52,10 @@ public:
 	CCData*						getData();
 
 	/** Returns the current position in the stream. */
-	unsigned int				getPosition();
+	unsigned long				getPosition();
 
 	/** Bytes remaining to be read. */
-	unsigned int				getBytesRemaining();
+	unsigned long				getBytesRemaining();
 
 	/** Returns YES if an attempt was made to read beyond the end of the data content. */
 	bool						wasReadBeyondEOF();

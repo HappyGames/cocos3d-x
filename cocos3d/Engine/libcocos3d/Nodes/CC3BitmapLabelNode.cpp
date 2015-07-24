@@ -795,7 +795,7 @@ void populateMeshAsBitmapFontLabelFromString( CC3Mesh* mesh, const std::string& 
 	for ( vIdx = 0; vIdx < vtxCnt; vIdx++ ) 
 	{
 		CC3Vector locOld = mesh->getVertexLocationAt( vIdx );
-		CC3Vector locNew = locOld.difference( originLoc );
+		CC3Vector locNew = locOld - originLoc;
 		mesh->setVertexLocation( locNew, vIdx );
 	}
 

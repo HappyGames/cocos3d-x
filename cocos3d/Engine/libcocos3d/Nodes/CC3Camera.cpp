@@ -468,7 +468,7 @@ void CC3Camera::moveToShowAllOf( CC3Node* aNode )
 void CC3Camera::moveToShowAllOf( CC3Node* aNode, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
+	CC3Vector moveDir = getGlobalLocation() - aNode->getGlobalLocation();
 	moveToShowAllOfLookAt( aNode, CC3Vector::kCC3VectorNull, moveDir, padding, false );
 }
 
@@ -490,7 +490,7 @@ void CC3Camera::moveToShowAllOfLookAt( CC3Node* aNode, const CC3Vector& targetLo
 void CC3Camera::moveToShowAllOfLookAt( CC3Node* aNode, const CC3Vector& targetLoc, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
+	CC3Vector moveDir = getGlobalLocation() - aNode->getGlobalLocation();
 	moveToShowAllOfLookAt( aNode, targetLoc, moveDir, padding, false );
 }
 
@@ -517,7 +517,7 @@ void CC3Camera::moveWithDuration( float t, CC3Node* aNode )
 void CC3Camera::moveWithDuration( float t, CC3Node* aNode, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
+	CC3Vector moveDir = getGlobalLocation() - aNode->getGlobalLocation();
 	moveWithDuration( t, aNode, CC3Vector::kCC3VectorNull, moveDir, padding, false );
 }
 
@@ -539,7 +539,7 @@ void CC3Camera::moveWithDurationLookAt( float t, const CC3Vector& targetLoc, CC3
 void CC3Camera::moveWithDurationLookAt( float t, CC3Node* aNode, const CC3Vector& targetLoc, GLfloat padding )
 {
 	ensureSceneUpdated( true );
-	CC3Vector moveDir = getGlobalLocation().difference( aNode->getGlobalLocation() );
+	CC3Vector moveDir = getGlobalLocation() - aNode->getGlobalLocation();
 	moveWithDuration( t, aNode, targetLoc, moveDir, padding, false );
 }
 
@@ -642,7 +642,7 @@ CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vect
 	for (int i = 0; i < 8; i++) 
 	{
 		// Get a vector from the target location to the vertex 
-		CC3Vector relVtx = bbVertices[i].difference( targetLoc );
+		CC3Vector relVtx = bbVertices[i] - targetLoc;
 		
 		// Project that vector onto each of the camera's new up and right directions,
 		// and use similar triangles to determine the distance at which to place the
@@ -762,7 +762,7 @@ CC3Vector CC3Camera::getProjectLocation( const CC3Vector& a3DLocation )
 	// to be the signed distance from the camera to the 3D location, with a positive sign
 	// indicating the location is in front of the camera, and a negative sign indicating
 	// the location is behind the camera.
-	CC3Vector camToLocVector = a3DLocation.difference( getGlobalLocation() );
+	CC3Vector camToLocVector = a3DLocation - getGlobalLocation();
 	GLfloat camToLocDist = camToLocVector.length();
 	GLfloat frontOrBack = (GLfloat)SIGN( camToLocVector.dot( getGlobalForwardDirection() ) );
 	projectedLoc.z = frontOrBack * camToLocDist;

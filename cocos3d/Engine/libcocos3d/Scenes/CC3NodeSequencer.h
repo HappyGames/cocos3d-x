@@ -103,7 +103,8 @@ class CC3LocalContentNodeEvaluator : public CC3NodeEvaluator
 {
 public:
 	/** Allocates and initializes an autoreleased instance. */
-	static CC3LocalContentNodeEvaluator*		evaluator();
+	static CC3LocalContentNodeEvaluator* evaluator();
+    
 	virtual bool				evaluate( CC3Node* aNode );
 	/**
 	 * Performs the evaluation defined by this class on the specified node, which must be a type

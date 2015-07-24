@@ -289,6 +289,7 @@ public:
 	void						setVertexContentTypes( CC3VertexContent vtxContentTypes );
 
 	void						initWithTag( GLuint aTag, const std::string& aName );
+    
 	/** Overridden to configure for blending. */
 	CC3Material*				makeMaterial();
 

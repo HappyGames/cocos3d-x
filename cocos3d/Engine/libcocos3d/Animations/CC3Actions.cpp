@@ -187,7 +187,7 @@ void CC3ActionScaleBy::startWithTarget( CC3Node* aTarget )
 {
 	super::startWithTarget( aTarget );
 	CC3Vector endVector = m_startVector.scale( m_diffVector );
-	m_scaleDiffVector = endVector.difference( m_startVector );
+	m_scaleDiffVector = endVector - m_startVector;
 }
 
 void CC3ActionScaleBy::initWithDuration( float t, const CC3Vector& aScale )  /// scaleBy
@@ -343,7 +343,7 @@ CC3ActionInterval* CC3ActionTransformTo::reverse()
 void CC3ActionTransformTo::startWithTarget( CC3Node* aTarget )
 {
 	super::startWithTarget( aTarget );
-	m_diffVector = m_endVector.difference( m_startVector );
+	m_diffVector = m_endVector - m_startVector;
 }
 
 std::string CC3ActionTransformTo::description()
@@ -535,7 +535,8 @@ CC3ActionRotateToLookAt* CC3ActionRotateToLookAt::actionWithDuration( float t, c
 
 void CC3ActionRotateToLookAt::startWithTarget( CC3Node* aTarget )
 {
-	m_endVector = m_endVector.difference(aTarget->getGlobalLocation()).normalize();
+    m_endVector = m_endVector - aTarget->getGlobalLocation();
+    m_endVector = m_endVector.normalize();
 	super::startWithTarget( aTarget );
 }
 

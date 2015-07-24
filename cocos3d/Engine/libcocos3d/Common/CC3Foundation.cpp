@@ -149,9 +149,9 @@ CC3BarycentricWeights CC3FaceBarycentricWeights(CC3Face face, CC3Vector aLocatio
 	CC3Vector* c = face.vertices;
 
 	// Create basis vectors using the first face corner (index 0) as the origin
-	CC3Vector vp = aLocation.difference( c[0] );
-	CC3Vector v1 = c[1].difference( c[0] );
-	CC3Vector v2 = c[2].difference( c[0] );
+	CC3Vector vp = aLocation - c[0];
+	CC3Vector v1 = c[1] - c[0];
+	CC3Vector v2 = c[2] - c[0];
 
 	// Create dot products required to solve the two equations and two unknowns
 	GLfloat dot11 = v1.dot( v1 );
@@ -187,8 +187,8 @@ void CC3VectorOrthonormalize( CC3Vector* vectors, GLuint vectorCount )
 		for (GLuint prevIdx = 0; prevIdx < currIdx; prevIdx++) 
 		{
 			CC3Vector prevVector = vectors[prevIdx];
-			CC3Vector projPrevVector = prevVector.scaleUniform( currVector.dot(prevVector) );
-			cleanedCurrVector = cleanedCurrVector.difference( projPrevVector );
+			CC3Vector projPrevVector = prevVector * ( currVector.dot(prevVector) );
+			cleanedCurrVector = cleanedCurrVector - projPrevVector;
 		}
 
 		// Replace the current vector with its orthonormalized version

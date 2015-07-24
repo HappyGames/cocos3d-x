@@ -58,12 +58,12 @@ CC3DataReader* CC3DataReader::readerOnData( CCData* data )
 	return pReader;
 }
 
-unsigned int CC3DataReader::getPosition()
+unsigned long CC3DataReader::getPosition()
 {
 	return _readRange.location; 
 }
 
-unsigned int CC3DataReader::getBytesRemaining()
+unsigned long CC3DataReader::getBytesRemaining()
 {
 	return _data->getSize() - _readRange.location; 
 }
