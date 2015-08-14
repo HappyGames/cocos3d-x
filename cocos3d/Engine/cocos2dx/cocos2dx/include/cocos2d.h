@@ -32,9 +32,6 @@ THE SOFTWARE.
 // 00   02 02 05
 #define COCOS2D_VERSION 0x00020206
 
-#ifdef _WIN32
-#include <vld.h>
-#endif
 //
 // all cocos2d include files
 //
