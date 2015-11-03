@@ -195,7 +195,7 @@ bool CC3CommonVertexArrayParticleEmitter::ensureParticleCapacityFor( CC3Particle
  */
 void CC3CommonVertexArrayParticleEmitter::addDirtyVertexRange( const CCRange& aRange )
 {
-	_dirtyVertexRange = CCUnionRange( _dirtyVertexRange, aRange );
+	_dirtyVertexRange = _dirtyVertexRange.unionRange( aRange );
 }
 
 /**
@@ -213,7 +213,7 @@ void CC3CommonVertexArrayParticleEmitter::addDirtyVertex( GLuint vtxIdx )
  */
 void CC3CommonVertexArrayParticleEmitter::addDirtyVertexIndexRange( const CCRange& aRange )
 {
-	_dirtyVertexIndexRange = CCUnionRange( _dirtyVertexIndexRange, aRange );
+	_dirtyVertexIndexRange = _dirtyVertexIndexRange.unionRange( aRange );
 }
 
 /**
@@ -258,11 +258,11 @@ void CC3CommonVertexArrayParticleEmitter::acceptParticle( CC3Particle* aParticle
 	super::acceptParticle( aParticle );
 
 	CCRange vtxRange = ((CC3CommonVertexArrayParticle*)aParticle)->getVertexRange();
-	setVertexCount( (GLuint)CCMaxRange(vtxRange) );
+	setVertexCount( (GLuint)vtxRange.maxRange() );
 	addDirtyVertexRange( vtxRange );
 
 	CCRange vtxIdxRange = ((CC3CommonVertexArrayParticle*)aParticle)->getVertexIndexRange();
-	setVertexIndexCount( (GLuint)CCMaxRange(vtxIdxRange) );
+	setVertexIndexCount( (GLuint)vtxIdxRange.maxRange() );
 	addDirtyVertexIndexRange( vtxIdxRange );
 }
 
@@ -340,7 +340,7 @@ CC3Particle* CC3CommonVertexArrayParticleEmitter::getParticleWithVertexAt( GLuin
 	for (GLuint pIdx = 0; pIdx < pCnt; pIdx++) 
 	{
 		CC3CommonVertexArrayParticle* cvap = getCommonVertexArrayParticleAt( pIdx );
-		if ( CCLocationInRange(vtxIndex, cvap->getVertexRange()) ) 
+		if ( cvap->getVertexRange().isInRange(vtxIndex) )
 			return cvap;
 	}
 	return NULL;
@@ -352,7 +352,7 @@ CC3Particle* CC3CommonVertexArrayParticleEmitter::getParticleWithVertexIndexAt( 
 	for (GLuint pIdx = 0; pIdx < pCnt; pIdx++) 
 	{
 		CC3CommonVertexArrayParticle* cvap = getCommonVertexArrayParticleAt( pIdx );
-		if ( CCLocationInRange(index, cvap->getVertexIndexRange()) ) 
+		if ( cvap->getVertexIndexRange().isInRange(index) )
 			return cvap;
 	}
 	return NULL;

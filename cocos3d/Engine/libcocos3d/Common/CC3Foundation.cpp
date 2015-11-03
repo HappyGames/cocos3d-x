@@ -88,7 +88,7 @@ CC3Vector4 CC3RayIntersectionWithPlane(CC3Ray ray, CC3Plane plane)
 	// where the two are equal: (rs + t*rd).pn + d = 0.
 	// Solving for t gives t = -(rs.pn + d) / rd.pn
 	// The denominator rd.pn will be zero if the ray is parallel to the plane.
-	CC3Vector pn = CC3PlaneNormal(plane);
+	CC3Vector pn = plane.getNormal();
 	CC3Vector rs = ray.startLocation;
 	CC3Vector rd = ray.direction;
 	GLfloat dirDotNorm = rd.dot( pn );
@@ -108,9 +108,9 @@ CC3Vector CC3TriplePlaneIntersection(CC3Plane p1, CC3Plane p2, CC3Plane p3)
 	//    pi = -( d1(n2 x n3) + d2(n3 x n1) + d3(n1 x n2) ) / ((n1 x n2).n3)
 	// If the denominator is zero, the planes do not intersect at a single point.
 
-	CC3Vector n1 = CC3PlaneNormal(p1);
-	CC3Vector n2 = CC3PlaneNormal(p2);
-	CC3Vector n3 = CC3PlaneNormal(p3);
+	CC3Vector n1 = p1.getNormal();
+	CC3Vector n2 = p2.getNormal();
+	CC3Vector n3 = p3.getNormal();
 
 	GLfloat n1xn2dotn3 = n1.cross(n2).dot( n3 );
 	if (n1xn2dotn3 == 0.0f) return CC3Vector::kCC3VectorNull;
@@ -122,53 +122,6 @@ CC3Vector CC3TriplePlaneIntersection(CC3Plane p1, CC3Plane p2, CC3Plane p3)
 	CC3Vector sum = d1n2xn3.add(d2n3xn1).add(d3n1xn2);
 
 	return sum.scaleUniform(-1.0f / n1xn2dotn3);
-}
-
-CC3Box CC3BoxEngulfLocation(CC3Box bb, CC3Vector aLoc) 
-{
-	CC3Box bbOut;
-	if(CC3BoxIsNull(bb)) {
-		bbOut.minimum = aLoc;
-		bbOut.maximum = aLoc;
-	} else {
-		bbOut.minimum.x = MIN(bb.minimum.x, aLoc.x);
-		bbOut.minimum.y = MIN(bb.minimum.y, aLoc.y);
-		bbOut.minimum.z = MIN(bb.minimum.z, aLoc.z);
-
-		bbOut.maximum.x = MAX(bb.maximum.x, aLoc.x);
-		bbOut.maximum.y = MAX(bb.maximum.y, aLoc.y);
-		bbOut.maximum.z = MAX(bb.maximum.z, aLoc.z);
-	}	
-	return bbOut;
-}
-
-CC3BarycentricWeights CC3FaceBarycentricWeights(CC3Face face, CC3Vector aLocation) 
-{
-	CC3BarycentricWeights bcw;
-	GLfloat* b = bcw.weights;
-	CC3Vector* c = face.vertices;
-
-	// Create basis vectors using the first face corner (index 0) as the origin
-	CC3Vector vp = aLocation - c[0];
-	CC3Vector v1 = c[1] - c[0];
-	CC3Vector v2 = c[2] - c[0];
-
-	// Create dot products required to solve the two equations and two unknowns
-	GLfloat dot11 = v1.dot( v1 );
-	GLfloat dot12 = v1.dot( v2 );
-	GLfloat dot1p = v1.dot( vp );
-	GLfloat dot22 = v2.dot( v2 );
-	GLfloat dot2p = v2.dot( vp );
-
-	GLfloat invDenom = 1.0f / (dot11 * dot22 - dot12 * dot12);	// Denominator
-
-	b[1] = (dot22 * dot1p - dot12 * dot2p) * invDenom;
-	b[2] = (dot11 * dot2p - dot12 * dot1p) * invDenom;
-	b[0] = 1.0f - b[1] - b[2];
-
-	//LogTrace(@"The barycentric weights of location %@ in triangle %@ are %@ using basis vectors",
-	//	NSStringFromCC3Vector(aLocation), NSStringFromCC3Face(face), NSStringFromCC3BarycentricWeights(bcw));
-	return bcw;
 }
 
 
@@ -197,50 +150,6 @@ void CC3VectorOrthonormalize( CC3Vector* vectors, GLuint vectorCount )
 
 	//LogTrace(@"Vectors AFTER orthonormalization: %@", NSStringFromCC3Vectors(vectors, vectorCount));
 }
-
-CC3Vector4 CC3RayIntersectionWithBoxSide(CC3Ray aRay, CC3Box bb, CC3Vector sideNormal, CC3Vector4 prevHit) 
-{
-	// Determine which corner to use from the direction of the edge plane normal,
-	// create the edge plane, and determine where the ray intersects the edge plane.
-	CC3Vector corner = (sideNormal.x + sideNormal.y + sideNormal.z > 0) ? bb.maximum : bb.minimum;
-	CC3Plane sidePlane = CC3PlaneFromNormalAndLocation(sideNormal, corner);
-	CC3Vector4 sideHit = CC3RayIntersectionWithPlane(aRay, sidePlane);
-
-	// If ray is parallel to edge plane, or if edge plane is behind the ray
-	// start, we have no intersection, so return the previous intersection.
-	if (sideHit.w < 0.0f || sideHit.isNull()) 
-		return prevHit;
-
-	// To avoid missed intersections due to rounding errors when checking if the
-	// intersection is within the bounding box, force the side plane intersection
-	// explicitly onto the appropriate side of the bounding box.
-	if (sideNormal.x) sideHit.x = corner.x;
-	if (sideNormal.y) sideHit.y = corner.y;
-	if (sideNormal.z) sideHit.z = corner.z;
-
-	// If the side intersection location is not within
-	// the bounding box, return the previous intersection.
-	if ( !CC3BoxContainsLocation(bb, sideHit.cc3Vector()) ) return prevHit;
-
-	// If the ray distance to this side is less than the previous intersection,
-	// return this intersection, otherwise return the previous intersection.
-	return sideHit.w < prevHit.w ? sideHit : prevHit;
-}
-
-
-CC3Vector  CC3RayIntersectionWithBox(CC3Ray aRay, CC3Box bb) 
-{
-	if (CC3BoxIsNull(bb)) return CC3Vector::kCC3VectorNull;	// Short-circuit null bounding box
-	CC3Vector4 closestHit = CC3Vector4::kCC3Vector4Null;
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitXPositive, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitXNegative, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitYPositive, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitYNegative, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitZPositive, closestHit);
-	closestHit = CC3RayIntersectionWithBoxSide(aRay, bb, CC3Vector::kCC3VectorUnitZNegative, closestHit);
-	return closestHit.cc3Vector();
-}
-
 
 CC3Vector CC3RayIntersectionWithSphere(CC3Ray aRay, CC3Sphere aSphere)
 {
@@ -340,7 +249,7 @@ CC3Plane CC3RaySphereIntersectionEquation(CC3Ray aRay, CC3Sphere aSphere)
 	//LogTrace(@"Intersection equation for ray %@ and sphere %@: %@",
 	//	NSStringFromCC3Ray(aRay), NSStringFromCC3Spere(aSphere),
 	//	NSStringFromCC3Plane(CC3PlaneMake(a, b, c, d)));
-	return CC3PlaneMake(a, b, c, d);
+	return CC3Plane(a, b, c, d);
 }
 
 void CC3FlipVertically( GLubyte* rowMajorData, GLuint rowCount, GLuint bytesPerRow ) 

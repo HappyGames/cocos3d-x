@@ -919,7 +919,7 @@ void CC3LightCameraBridgeVolume::nodeWasDestroyed( CC3Node* aNode )
  */
 bool CC3LightCameraBridgeVolume::isLightInFrontOfPlane( const CC3Plane& aPlane )
 {
-	return CC3Vector4IsInFrontOfPlane(_light->getGlobalHomogeneousPosition(), aPlane);
+	return aPlane.isInFront( _light->getGlobalHomogeneousPosition() );
 }
 
 /** Overridden to include the homogeneous location of the light into the vertex test. */
@@ -1003,7 +1003,7 @@ void CC3ShadowCastingVolume::checkPlaneEdge( const CC3Plane& edgePlane, const CC
 		CC3Vector v3 = _light->isDirectionalOnly()
 							? v2.add( getLightPosition() ) 
 							: getLightPosition();
-		addPlane( CC3PlaneFromLocations(v1, v2, v3) );
+		addPlane( CC3Plane::planeFromLocations(v1, v2, v3) );
 	}
 }
 
@@ -1207,7 +1207,7 @@ void CC3CameraShadowVolume::buildPlanes()
 	CC3Vector br = _vertices[kCC3BtmRgtIdx];
 	
 	// The near plane does not depend on the light position
-	_planes[kCC3NearIdx] = CC3PlaneFromLocations(bl, br, tr);
+	_planes[kCC3NearIdx] = CC3Plane::planeFromLocations(bl, br, tr);
 	
 	if (_light->isDirectionalOnly()) 
 	{	
@@ -1217,17 +1217,17 @@ void CC3CameraShadowVolume::buildPlanes()
 		// plane by adding the light direction to one of the locations on the edge. 
 		lightDir = lightPos;
 		
-		_planes[kCC3LeftIdx] = CC3PlaneFromLocations(bl, tl, tl.add( lightDir ));
-		_planes[kCC3RgtIdx] = CC3PlaneFromLocations(tr, br, br.add( lightDir ));
+		_planes[kCC3LeftIdx] = CC3Plane::planeFromLocations(bl, tl, tl.add( lightDir ));
+		_planes[kCC3RgtIdx] = CC3Plane::planeFromLocations(tr, br, br.add( lightDir ));
 		
-		_planes[kCC3TopIdx] = CC3PlaneFromLocations(tl, tr, tr.add( lightDir ));
-		_planes[kCC3BotmIdx] = CC3PlaneFromLocations(br, bl, bl.add( lightDir ));
+		_planes[kCC3TopIdx] = CC3Plane::planeFromLocations(tl, tr, tr.add( lightDir ));
+		_planes[kCC3BotmIdx] = CC3Plane::planeFromLocations(br, bl, bl.add( lightDir ));
 		
 		// The far plane is parallel to the near plane, but the normal points in
 		// the opposite direction. Locate the far plane at the light position,
 		// and then move it out an infinite distance, in the same direction.
-		_planes[kCC3FarIdx] = CC3PlaneNegate(_planes[kCC3NearIdx]);
-		_planes[kCC3FarIdx].d = -lightPos.dot( CC3PlaneNormal(_planes[kCC3FarIdx]) );
+        _planes[kCC3FarIdx] = CC3Plane::negate( _planes[kCC3NearIdx] );
+		_planes[kCC3FarIdx].d = -lightPos.dot( _planes[kCC3FarIdx].getNormal() );
 		_planes[kCC3FarIdx].d = SIGN(_planes[kCC3FarIdx].d) * FLOAT_INFINITY;
 
 	} else {
@@ -1236,16 +1236,16 @@ void CC3CameraShadowVolume::buildPlanes()
 		// The direction is taken from the center of the near clipping rectangle.
 		lightDir = lightPos.difference( tl.average( br ) );
 		
-		_planes[kCC3LeftIdx] = CC3PlaneFromLocations(bl, tl, lightPos);
-		_planes[kCC3RgtIdx] = CC3PlaneFromLocations(tr, br, lightPos);
+		_planes[kCC3LeftIdx] = CC3Plane::planeFromLocations(bl, tl, lightPos);
+		_planes[kCC3RgtIdx] = CC3Plane::planeFromLocations(tr, br, lightPos);
 		
-		_planes[kCC3TopIdx] = CC3PlaneFromLocations(tl, tr, lightPos);
-		_planes[kCC3BotmIdx] = CC3PlaneFromLocations(br, bl, lightPos);
+		_planes[kCC3TopIdx] = CC3Plane::planeFromLocations(tl, tr, lightPos);
+		_planes[kCC3BotmIdx] = CC3Plane::planeFromLocations(br, bl, lightPos);
 		
 		// The far plane is parallel to the near plane, but the normal points in
 		// the opposite direction. Locate the far plane at the light position.
-		_planes[kCC3FarIdx] = CC3PlaneNegate(_planes[kCC3NearIdx]);
-		_planes[kCC3FarIdx].d = -lightPos.dot( CC3PlaneNormal(_planes[kCC3FarIdx]) );
+        _planes[kCC3FarIdx] = CC3Plane::negate( _planes[kCC3NearIdx] );
+		_planes[kCC3FarIdx].d = -lightPos.dot( _planes[kCC3FarIdx].getNormal() );
 
 	}
 	
@@ -1258,12 +1258,12 @@ void CC3CameraShadowVolume::buildPlanes()
 	BOOL isBehindCamera = (camDir.dot( lightDir ) < 0);
 	
 	if ( isBehindCamera ) {
-		_planes[kCC3LeftIdx] = CC3PlaneNegate(_planes[kCC3LeftIdx]);
-		_planes[kCC3RgtIdx] = CC3PlaneNegate(_planes[kCC3RgtIdx]);
-		_planes[kCC3TopIdx] = CC3PlaneNegate(_planes[kCC3TopIdx]);
-		_planes[kCC3BotmIdx] = CC3PlaneNegate(_planes[kCC3BotmIdx]);
-		_planes[kCC3NearIdx] = CC3PlaneNegate(_planes[kCC3NearIdx]);
-		_planes[kCC3FarIdx] = CC3PlaneNegate(_planes[kCC3FarIdx]);
+        _planes[kCC3LeftIdx] = CC3Plane::negate(_planes[kCC3LeftIdx]);
+		_planes[kCC3RgtIdx] = CC3Plane::negate(_planes[kCC3RgtIdx]);
+		_planes[kCC3TopIdx] = CC3Plane::negate(_planes[kCC3TopIdx]);
+		_planes[kCC3BotmIdx] = CC3Plane::negate(_planes[kCC3BotmIdx]);
+		_planes[kCC3NearIdx] = CC3Plane::negate(_planes[kCC3NearIdx]);
+		_planes[kCC3FarIdx] = CC3Plane::negate(_planes[kCC3FarIdx]);
 	}
 	
 	//LogTrace(@"Built %@ from %@ light %@ the camera",

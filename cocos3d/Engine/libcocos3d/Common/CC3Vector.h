@@ -131,7 +131,7 @@ public:
 	 * Scaling can be different for each axis. This has the effect of multiplying each component
 	 * of the vector by the corresponding component in the scale vector.
 	 */
-	CC3Vector               scale( const CC3Vector& scl );
+	CC3Vector               scale( const CC3Vector& scl ) const;
 
 	/**
 	 * Returns the result of scaling the original vector by the corresponding scale
@@ -373,7 +373,7 @@ inline bool CC3Vector::isNull() const
 	return equals( kCC3VectorNull );
 }
 
-inline CC3Vector CC3Vector::scale( const CC3Vector& scl )
+inline CC3Vector CC3Vector::scale( const CC3Vector& scl ) const
 {
 	return CC3Vector( this->x * scl.x,
 		this->y * scl.y,

@@ -71,7 +71,7 @@ unsigned long CC3DataReader::getBytesRemaining()
 bool CC3DataReader::readAll( unsigned int count, char* bytes )
 {
 	_readRange.length = count;
-	unsigned int endRange = CCMaxRange(_readRange);
+	unsigned long endRange = _readRange.maxRange();
 	_wasReadBeyondEOF |= (endRange > _data->getSize());
 	if( !_wasReadBeyondEOF )
 	{

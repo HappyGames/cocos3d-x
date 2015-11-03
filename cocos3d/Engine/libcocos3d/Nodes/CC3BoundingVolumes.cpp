@@ -82,7 +82,7 @@ bool CC3BoundingVolume::init()
 	GLuint pCnt = getPlaneCount();
 	CC3Plane* pArray = getPlanes();
 	for (GLuint i = 0; i < pCnt; i++) 
-		pArray[i] = kCC3PlaneZero;
+		pArray[i] = CC3Plane::kCC3PlaneZero;
 
 	GLuint vCnt = getVertexCount();
 	CC3Vector* vArray = getVertices();
@@ -148,7 +148,7 @@ void CC3BoundingVolume::appendPlanesTo( std::string& desc )
 	CC3Plane* pArray = getPlanes();
 	for (GLuint pIdx = 0; pIdx < pCnt; pIdx++)
 	{
-		std::string sThis = CC3String::stringWithFormat( (char*)"\n\tplane: %s", stringFromCC3Plane( pArray[pIdx] ).c_str() );
+		std::string sThis = CC3String::stringWithFormat( (char*)"\n\tplane: %s", pArray[pIdx].stringfy().c_str() );
 		desc += sThis;
 	}
 }
@@ -223,7 +223,7 @@ bool CC3BoundingVolume::doesIntersectLocation( const CC3Vector& aLocation )
 	CC3Plane* pArray = getPlanes();
 	for (GLuint pIdx = 0; pIdx < pCnt; pIdx++) 
 	{
-		if ( CC3VectorIsInFrontOfPlane(aLocation, pArray[pIdx]) ) 
+		if ( pArray[pIdx].isInFront( aLocation ) )
 			return false;
 	}
 
@@ -249,7 +249,7 @@ bool CC3BoundingVolume::isRayBehindAllOtherPlanesAtPunctureOfPlane( const CC3Ray
 	for (GLuint pIdx = 0; pIdx < pCnt; pIdx++) 
 	{
 		if ( (pIdx != planeIndex) &&
-			CC3VectorIsInFrontOfPlane(punctureLoc, pArray[pIdx]) ) 
+			pArray[pIdx].isInFront( punctureLoc ) )
 			return false;
 	}
 
@@ -306,7 +306,7 @@ bool CC3BoundingVolume::doesIntersectSphere( const CC3Sphere& aSphere, CC3Boundi
 	GLuint pCnt = getPlaneCount();
 	CC3Plane* pArray = getPlanes();
 	for (GLuint pIdx = 0; pIdx < pCnt; pIdx++) {
-		GLfloat dist = CC3DistanceFromPlane(aSphere.center, pArray[pIdx]);
+		GLfloat dist = pArray[pIdx].distance( aSphere.center );
 		if (dist > aSphere.radius) {
 			/*CCLOG("Sphere %s from %s is in front of plane %s and does not intersect %s",
 						  stringFromCC3Spere(aSphere).c_str(), otherBoundingVolume->fullDescription().c_str(),
@@ -361,18 +361,12 @@ bool CC3BoundingVolume::areAllVerticesInFrontOf( const CC3Plane& plane )
 	CC3Vector* vArray = getVertices();
 	for (GLuint vIdx = 0; vIdx < vCnt; vIdx++) 
 	{
-		/*LogTrace(@"Location %@ from %@ is %@ plane %@",
-					  NSStringFromCC3Vector(vArray[vIdx]), self,
-					  ((CC3VectorIsInFrontOfPlane(vArray[vIdx], plane)) ? @"in front of" : @"behind"),
-					  NSStringFromCC3Plane(plane));*/
-		if ( !CC3VectorIsInFrontOfPlane(vArray[vIdx], plane) ) 
+		if ( !plane.isInFront(vArray[vIdx]) )
 			return false;
 	}
-	/*LogTrace(@"%@ all %i vertices are in front of plane %@",
-	self, vCnt, NSStringFromCC3Plane(plane));*/
+
 	return true;
 }
-
 
 CC3Plane CC3BoundingVolume::buildPlaneFromNormal( const CC3Vector& normal, const CC3Face& face, const CC3Vector& orientationAxis )
 {
@@ -380,29 +374,33 @@ CC3Plane CC3BoundingVolume::buildPlaneFromNormal( const CC3Vector& normal, const
 	
 	// First, assume the mesh is a box. Try making plane from the normal and one location.
 	// Will fail if normal is zero.
-	p = CC3PlaneFromNormalAndLocation(normal, face.vertices[0]);
-	if ( !CC3PlaneIsZero(p) ) return p;
+	p = CC3Plane::plane( normal, face.vertices[0] );
+	if ( !p.isZero() )
+        return p;
 	
 	// The mesh is no more than a plane.
 	// Next, try making plane from the three locations of the face.
 	// Will fail if two are co-linear,
-	p = CC3FacePlane(face);
-	if ( !CC3PlaneIsZero(p) ) return p;
+    p = CC3Plane::planeFromFace( face );
+	if ( !p.isZero() )
+        return p;
 	
 	// The mesh is no more than a line.
 	// Next, try making the plane from the line, using the orientationAxis to provide a
 	// third vertex by adding the orientation axis to one of the vertices on the line.
 	CC3Vector v3 = face.vertices[0].add( orientationAxis );
-	p = CC3PlaneFromLocations(face.vertices[1], face.vertices[0], v3);
-	if ( !CC3PlaneIsZero(p) ) return p;
+    p = CC3Plane::planeFromLocations( face.vertices[1], face.vertices[0], v3 );
+	if ( !p.isZero() )
+        return p;
 	
 	// Try the other possible line.
-	p = CC3PlaneFromLocations(face.vertices[2], face.vertices[0], v3);
-	if ( !CC3PlaneIsZero(p) ) return p;
+	p = CC3Plane::planeFromLocations(face.vertices[2], face.vertices[0], v3);
+	if ( !p.isZero() )
+        return p;
 	
 	// The mesh is just a single location.
 	// Finally, use the orienationAxis as the plane's normal.
-	return CC3PlaneFromNormalAndLocation(orientationAxis, face.vertices[0]);
+    return CC3Plane::plane(orientationAxis, face.vertices[0]);
 }
 
 CC3Vector CC3BoundingVolume::getGlobalLocationOfGlobalRayIntesection( const CC3Ray& aRay )
@@ -766,7 +764,7 @@ bool CC3NodeCenterOfGeometryBoundingVolume::doesIntersectRay( const CC3Ray& aRay
 	if (_shouldIgnoreRayIntersection) 
 		return false;
 
-	return CC3IsLocationOnRay(getGlobalCenterOfGeometry(), aRay);
+	return aRay.passes( getGlobalCenterOfGeometry() );
 }
 
 // Included to satisfy compiler because selector appears in interface for documentation purposes
@@ -789,7 +787,7 @@ bool CC3NodeCenterOfGeometryBoundingVolume::doesIntersectConvexHullOf( GLuint nu
 	CC3Vector gcog = getGlobalCenterOfGeometry();	// Retrieve as property to force update
 	for (GLuint pIdx = 0; pIdx < numOtherPlanes; pIdx++) 
 	{
-		if ( CC3VectorIsInFrontOfPlane(gcog, otherPlanes[pIdx]) ) 
+		if ( otherPlanes[pIdx].isInFront(gcog) )
 			return false;
 	}
 
@@ -803,7 +801,7 @@ CC3Vector CC3NodeCenterOfGeometryBoundingVolume::getLocationOfRayIntesection( co
 
 	CC3Vector cog = getCenterOfGeometry();
 
-	return ( CC3IsLocationOnRay(cog, localRay) ) ? cog : CC3Vector::kCC3VectorNull;
+	return localRay.passes(cog) ? cog : CC3Vector::kCC3VectorNull;
 }
 
 std::string CC3NodeCenterOfGeometryBoundingVolume::displayNodeNameSuffix()
@@ -966,7 +964,7 @@ bool CC3NodeSphericalBoundingVolume::doesIntersectRay( const CC3Ray& aRay )
  */
 bool CC3NodeSphericalBoundingVolume::isInFrontOfPlane( const CC3Plane& aPlane )
 {
-	GLfloat dist = CC3DistanceFromPlane(getGlobalCenterOfGeometry(), aPlane);
+	GLfloat dist = aPlane.distance( getGlobalCenterOfGeometry() );
 	return (dist > getGlobalRadius());
 }
 
@@ -1079,8 +1077,8 @@ void CC3NodeBoxBoundingVolume::buildVolume()
 		return;
 
 	CC3Box newBB = ((CC3MeshNode*)getNode())->getLocalContentBoundingBox();	// Includes possible padding
-	_boundingBox = _shouldMaximize ? CC3BoxUnion(newBB, _boundingBox) : newBB;
-	_centerOfGeometry = CC3BoxCenter(_boundingBox);
+	_boundingBox = _shouldMaximize ? newBB.boxUnion(_boundingBox) : newBB;
+	_centerOfGeometry = _boundingBox.getCenter();
 }
 
 CC3Box CC3NodeBoxBoundingVolume::getBoundingBox()
@@ -1177,27 +1175,27 @@ void CC3NodeBoxBoundingVolume::buildPlanes()
 	
 	// Front plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitZPositive ).normalize();
-	_planes[0] = CC3PlaneFromNormalAndLocation(normal, bbMax);
+    _planes[0] = CC3Plane::plane(normal, bbMax);
 	
 	// Back plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitZNegative ).normalize();
-	_planes[1] = CC3PlaneFromNormalAndLocation(normal, bbMin);
+	_planes[1] = CC3Plane::plane(normal, bbMin);
 	
 	// Right plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitXPositive ).normalize();
-	_planes[2] = CC3PlaneFromNormalAndLocation(normal, bbMax);
+	_planes[2] = CC3Plane::plane(normal, bbMax);
 	
 	// Left plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitXNegative ).normalize();
-	_planes[3] = CC3PlaneFromNormalAndLocation(normal, bbMin);
+	_planes[3] = CC3Plane::plane(normal, bbMin);
 	
 	// Top plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitYPositive ).normalize();
-	_planes[4] = CC3PlaneFromNormalAndLocation(normal, bbMax);
+	_planes[4] = CC3Plane::plane(normal, bbMax);
 	
 	// Bottom plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitYNegative ).normalize();
-	_planes[5] = CC3PlaneFromNormalAndLocation(normal, bbMin);
+	_planes[5] = CC3Plane::plane(normal, bbMin);
 }
 
 std::string CC3NodeBoxBoundingVolume::fullDescription()
@@ -1238,7 +1236,7 @@ void CC3NodeBoxBoundingVolume::populateDisplayNode()
 bool  CC3NodeBoxBoundingVolume::init()
 {
 	if ( super::init() ) {
-		_boundingBox = kCC3BoxZero;
+		_boundingBox = CC3Box::kCC3BoxZero;
 		return true;
 	}
 
@@ -1249,7 +1247,7 @@ bool CC3NodeBoxBoundingVolume::initFromBox( const CC3Box& box )
 {
 	if ( super::init() )
 	{
-		_centerOfGeometry = CC3BoxCenter(box);
+		_centerOfGeometry = box.getCenter();
 		_boundingBox = box;
 		_shouldBuildFromMesh = false;		// We want a fixed volume
 		return true;

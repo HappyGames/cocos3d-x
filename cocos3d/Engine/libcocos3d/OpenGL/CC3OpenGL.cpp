@@ -1765,25 +1765,13 @@ bool CC3OpenGL::isRenderingContext()
 
 CC3OpenGL* CC3OpenGL::sharedGL()
 {
-	// The unconventional separation of alloc & init here is required so the static var is set
-	// before the init is run, since several init operations require access to the static var.
-	//if ( isRenderThread() )
-	//{
-		if (!_renderGL) 
-		{
-			_renderGL = new CC3OpenGLClass;
-			_renderGL->initWithName( "Rendering Engine" );
-		}
+    if ( !_renderGL )
+    {
+        _renderGL = new CC3OpenGLClass;
+        _renderGL->initWithName( "Rendering Engine" );
+    }
 
-		return _renderGL;
-	//} else {
-	//	if (!_bgGL) {
-	//		_bgGL = [self alloc];			// retained
-	//		[_bgGL initWithName: @"Background Engine"];
-	//	}
-	//	return _bgGL;
-	//}
-	return NULL;
+    return _renderGL;
 }
 
 static CCThread* _renderThread = NULL;

@@ -56,7 +56,7 @@ CC3Plane CC3PlaneNode::getPlane()
 	p3 = getGlobalTransformMatrix()->transformLocation( p3 );
 	
 	// Create and return a plane from these points.
-	return CC3PlaneFromLocations(p1, p2, p3);
+	return CC3Plane::planeFromLocations( p1, p2, p3 );
 }
 
 void CC3SimpleLineNode::initWithTag( GLuint aTag, const std::string& aName )
@@ -117,7 +117,7 @@ CC3Box CC3TouchBox::getBox()
 
 void CC3TouchBox::setBox( const CC3Box& aBox )
 {
-	if (CC3BoxIsNull(aBox)) {
+	if ( aBox.isNull() ) {
 		setMesh( NULL );
 	} else {
 		populateBox( aBox );
@@ -139,7 +139,7 @@ std::string CC3TouchBox::getNameSuffix()
 
 CC3Box CC3TouchBox::getParentBoundingBox()
 {
-	return m_pParent ? m_pParent->getBoundingBox() : kCC3BoxNull; 
+	return m_pParent ? m_pParent->getBoundingBox() : CC3Box::kCC3BoxNull; 
 }
 
 bool CC3TouchBox::shouldContributeToParentBoundingBox()
@@ -515,11 +515,14 @@ void CC3WireframeBoundingBoxNode::updateFromParentBoundingBoxWithVisitor( CC3Nod
  */
 CC3Box CC3WireframeBoundingBoxNode::getParentBoundingBox()
 {
-	if (m_pParent) {
+	if ( m_pParent )
+    {
 		CC3Box pbb = m_pParent->getBoundingBox();
-		if (!CC3BoxIsNull(pbb)) return pbb;
+		if ( !pbb.isNull() )
+            return pbb;
 	}
-	return kCC3BoxZero;
+    
+	return CC3Box::kCC3BoxZero;
 }
 
 CC3WireframeBoundingBoxNode* CC3WireframeBoundingBoxNode::nodeWithName( const std::string& aName )
@@ -549,10 +552,11 @@ CC3Box CC3WireframeLocalContentBoundingBoxNode::getParentBoundingBox()
 	if (m_pParent && m_pParent->hasLocalContent()) 
 	{
 		CC3Box pbb = ((CC3LocalContentNode*)m_pParent)->getLocalContentBoundingBox();
-		if (!CC3BoxIsNull(pbb)) 
+		if ( !pbb.isNull() )
 			return pbb;
 	}
-	return kCC3BoxZero;
+    
+	return CC3Box::kCC3BoxZero;
 }
 
 CC3Vector CC3DirectionMarkerNode::getMarkerDirection()
@@ -579,15 +583,15 @@ void CC3DirectionMarkerNode::setParent( CC3Node* aNode )
 CC3Box CC3DirectionMarkerNode::getParentBoundingBox()
 {
 	CC3Box pbb = super::getParentBoundingBox();
-	if ( !CC3BoxIsZero(pbb) ) 
+	if ( !pbb.isZero() )
 		return pbb;
 
 	CC3Vector bbDim = CC3Vector::kCC3VectorZero;
 	CC3Scene* pScene = getScene();
 	if ( pScene )
-		bbDim = CC3BoxSize(getScene()->getBoundingBox()).scaleUniform( 0.05f );
+		bbDim = getScene()->getBoundingBox().getSize().scaleUniform( 0.05f );
 		
-	return CC3BoxFromMinMax( bbDim.negate(), bbDim );
+	return CC3Box( bbDim.negate(), bbDim );
 }
 
 void CC3DirectionMarkerNode::initWithTag( GLuint aTag, const std::string& aName )

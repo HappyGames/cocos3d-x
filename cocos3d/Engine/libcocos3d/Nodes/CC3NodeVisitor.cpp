@@ -1342,7 +1342,7 @@ void CC3NodePuncturingVisitor::processBeforeChildren( CC3Node* aNode )
 
 void CC3NodePuncturingVisitor::init()
 { 
-	return initWithRay( CC3RayFromLocDir(CC3Vector::kCC3VectorNull, CC3Vector::kCC3VectorNull) );
+	return initWithRay( CC3Ray(CC3Vector::kCC3VectorNull, CC3Vector::kCC3VectorNull) );
 }
 
 void CC3NodePuncturingVisitor::initWithRay( const CC3Ray& aRay )

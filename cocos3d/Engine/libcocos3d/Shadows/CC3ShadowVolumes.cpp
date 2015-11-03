@@ -367,7 +367,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 		}
 		
 		// Determine whether the face is illuminated.
-		bool isFaceLit = CC3Vector4IsInFrontOfPlane(localLightPosition, scNode->getDeformedFacePlaneAt(faceIdx));
+		bool isFaceLit = scNode->getDeformedFacePlaneAt(faceIdx).isInFront( localLightPosition );
 		
 		// If we're drawing end-caps, and this face is part of an end-cap, draw it.
 		// It's part of an end-cap if it's a dark face and shadowing is based on front
@@ -404,7 +404,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 			} 
 			else if ( neighbourFaceIdx > faceIdx ) 
 			{		// Don't double count edges
-				bool isNeighbourFaceLit = CC3Vector4IsInFrontOfPlane( localLightPosition, scNode->getDeformedFacePlaneAt(neighbourFaceIdx) );
+				bool isNeighbourFaceLit = scNode->getDeformedFacePlaneAt(neighbourFaceIdx).isInFront( localLightPosition );
 				isTerminatorEdge = (isNeighbourFaceLit != isFaceLit);
 			}
 			

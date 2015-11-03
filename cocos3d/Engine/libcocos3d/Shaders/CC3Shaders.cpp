@@ -2049,7 +2049,7 @@ CC3MeshNode* CC3ShaderPrewarmer::getPrewarmingMeshNode()
 		_prewarmingMeshNode->setVertexContentTypes( kCC3VertexContentLocation );
 		
 		// Populate the mesh as a single triangular face of zero dimensions
-		CC3Face triangle = CC3FaceMake(CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero);
+		CC3Face triangle = CC3Face(CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero);
 		ccTex2F texCoords[3] = { {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0} };				// unused
 		_prewarmingMeshNode->populateAsTriangle( triangle, texCoords, 1 );
 

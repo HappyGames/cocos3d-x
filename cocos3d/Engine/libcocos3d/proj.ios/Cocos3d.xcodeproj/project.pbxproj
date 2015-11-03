@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		21A83CEC17CC76E200276CA0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21A83CEB17CC76E200276CA0 /* Foundation.framework */; };
+		574AEB621BE32FDA006900FF /* CC3Box.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 574AEB601BE32FDA006900FF /* CC3Box.cpp */; };
+		574AEB651BE330F8006900FF /* CC3Face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 574AEB631BE330F8006900FF /* CC3Face.cpp */; };
+		574AEB681BE34BE1006900FF /* CC3Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 574AEB661BE34BE1006900FF /* CC3Plane.cpp */; };
 		57C6D8AD1B5524F200A20893 /* CC3ActionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D8A71B5524F200A20893 /* CC3ActionManager.cpp */; };
 		57C6D8AE1B5524F200A20893 /* CC3Actions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D8A91B5524F200A20893 /* CC3Actions.cpp */; };
 		57C6D8AF1B5524F200A20893 /* CC3NodeAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D8AB1B5524F200A20893 /* CC3NodeAnimation.cpp */; };
@@ -138,6 +141,15 @@
 /* Begin PBXFileReference section */
 		21A83CE817CC76E200276CA0 /* libCocos3d.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCocos3d.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		21A83CEB17CC76E200276CA0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		574AEB571BE30EB6006900FF /* CC3Range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Range.h; path = ../Common/CC3Range.h; sourceTree = "<group>"; };
+		574AEB5A1BE31445006900FF /* CC3Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Geometry.h; path = ../Common/CC3Geometry.h; sourceTree = "<group>"; };
+		574AEB5E1BE32F5B006900FF /* CC3Ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Ray.h; path = ../Common/CC3Ray.h; sourceTree = "<group>"; };
+		574AEB601BE32FDA006900FF /* CC3Box.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Box.cpp; path = ../Common/CC3Box.cpp; sourceTree = "<group>"; };
+		574AEB611BE32FDA006900FF /* CC3Box.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Box.h; path = ../Common/CC3Box.h; sourceTree = "<group>"; };
+		574AEB631BE330F8006900FF /* CC3Face.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Face.cpp; path = ../Common/CC3Face.cpp; sourceTree = "<group>"; };
+		574AEB641BE330F8006900FF /* CC3Face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Face.h; path = ../Common/CC3Face.h; sourceTree = "<group>"; };
+		574AEB661BE34BE1006900FF /* CC3Plane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Plane.cpp; path = ../Common/CC3Plane.cpp; sourceTree = "<group>"; };
+		574AEB671BE34BE1006900FF /* CC3Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Plane.h; path = ../Common/CC3Plane.h; sourceTree = "<group>"; };
 		57C6D8A71B5524F200A20893 /* CC3ActionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3ActionManager.cpp; path = ../Animations/CC3ActionManager.cpp; sourceTree = "<group>"; };
 		57C6D8A81B5524F200A20893 /* CC3ActionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3ActionManager.h; path = ../Animations/CC3ActionManager.h; sourceTree = "<group>"; };
 		57C6D8A91B5524F200A20893 /* CC3Actions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Actions.cpp; path = ../Animations/CC3Actions.cpp; sourceTree = "<group>"; };
@@ -444,6 +456,7 @@
 		21A83D1B17CC77A100276CA0 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				574AEB5C1BE32F3E006900FF /* Math */,
 				57C6D92D1B55258800A20893 /* CC3CC2Extensions.h */,
 				57C6D92E1B55258800A20893 /* CC3Foundation.cpp */,
 				57C6D92F1B55258800A20893 /* CC3Foundation.h */,
@@ -466,6 +479,8 @@
 				57C6D9401B55258800A20893 /* LogDelegate.h */,
 				57C6D9411B55258800A20893 /* LogManager.cpp */,
 				57C6D9421B55258800A20893 /* LogManager.h */,
+				574AEB571BE30EB6006900FF /* CC3Range.h */,
+				574AEB5A1BE31445006900FF /* CC3Geometry.h */,
 			);
 			name = common;
 			sourceTree = "<group>";
@@ -481,6 +496,20 @@
 				57C6D8AC1B5524F200A20893 /* CC3NodeAnimation.h */,
 			);
 			name = animations;
+			sourceTree = "<group>";
+		};
+		574AEB5C1BE32F3E006900FF /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				574AEB5E1BE32F5B006900FF /* CC3Ray.h */,
+				574AEB601BE32FDA006900FF /* CC3Box.cpp */,
+				574AEB611BE32FDA006900FF /* CC3Box.h */,
+				574AEB631BE330F8006900FF /* CC3Face.cpp */,
+				574AEB641BE330F8006900FF /* CC3Face.h */,
+				574AEB661BE34BE1006900FF /* CC3Plane.cpp */,
+				574AEB671BE34BE1006900FF /* CC3Plane.h */,
+			);
+			name = Math;
 			sourceTree = "<group>";
 		};
 		57C6D8B01B55250900A20893 /* cc3Extras */ = {
@@ -927,6 +956,7 @@
 				57C6D94A1B55258800A20893 /* LineScanner.cpp in Sources */,
 				57C6DA261B5526D300A20893 /* CC3Scene.cpp in Sources */,
 				57C6D9491B55258800A20893 /* CC3Vector4.cpp in Sources */,
+				574AEB621BE32FDA006900FF /* CC3Box.cpp in Sources */,
 				57C6D9BB1B55260000A20893 /* CC3OpenGLUtility.cpp in Sources */,
 				57C6D9A71B5525E800A20893 /* CC3MeshNode.cpp in Sources */,
 				57C6D9251B55255C00A20893 /* PVRTTextureAPI.cpp in Sources */,
@@ -961,6 +991,7 @@
 				57C6DA161B5526CA00A20893 /* CC3GLSLVariable.cpp in Sources */,
 				57C6D9C01B55260E00A20893 /* CC3OpenGL2.cpp in Sources */,
 				57C6D9E11B55262800A20893 /* CC3PointParticleEmitter.cpp in Sources */,
+				574AEB681BE34BE1006900FF /* CC3Plane.cpp in Sources */,
 				57C6DA041B5526B600A20893 /* CC3Cache.cpp in Sources */,
 				57C6D9111B55254000A20893 /* PVRTError.cpp in Sources */,
 				57C6D91A1B55254000A20893 /* PVRTTexture.cpp in Sources */,
@@ -993,6 +1024,7 @@
 				57C6D8E71B55252A00A20893 /* CC3PVRFoundation.cpp in Sources */,
 				57C6D8E21B55252A00A20893 /* CC3PODMeshNode.cpp in Sources */,
 				57C6D8E41B55252A00A20893 /* CC3PODResource.cpp in Sources */,
+				574AEB651BE330F8006900FF /* CC3Face.cpp in Sources */,
 				57C6D8E81B55252A00A20893 /* CC3PVRShamanShaderSemantics.cpp in Sources */,
 				57C6D9AB1B5525E800A20893 /* CC3UtilityMeshNodes.cpp in Sources */,
 				57C6DA071B5526B600A20893 /* CC3PerformanceStatistics.cpp in Sources */,

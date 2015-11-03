@@ -60,7 +60,7 @@ void CC3LocalContentNode::setZOrder( GLint zo )
 CC3Vector CC3LocalContentNode::getLocalContentCenterOfGeometry()
 {
 	CC3Box bb = getLocalContentBoundingBox();
-	return CC3BoxIsNull(bb) ? CC3Vector::kCC3VectorZero : CC3BoxCenter(bb);
+	return bb.isNull() ? CC3Vector::kCC3VectorZero : bb.getCenter();
 }
 
 CC3Vector CC3LocalContentNode::getGlobalLocalContentCenterOfGeometry()
@@ -76,13 +76,13 @@ CC3Box CC3LocalContentNode::getBoundingBox()
 
 CC3Box CC3LocalContentNode::getLocalContentBoundingBox()
 {
-	return kCC3BoxNull; 
+	return CC3Box::kCC3BoxNull; 
 }
 
 CC3Box CC3LocalContentNode::getGlobalLocalContentBoundingBox()
 {
 	// If the global bounding box is null, rebuild it, otherwise return it.
-	if (CC3BoxIsNull(_globalLocalContentBoundingBox))
+	if ( _globalLocalContentBoundingBox.isNull() )
 		_globalLocalContentBoundingBox = getLocalContentBoundingBoxRelativeTo( NULL );
 	return _globalLocalContentBoundingBox;
 }
@@ -118,9 +118,9 @@ CC3Box CC3LocalContentNode::getLocalContentBoundingBoxRelativeTo( CC3Node* ances
 	bbVertices[7] = CC3Matrix4x3TransformLocation(&tMtx, cc3v(bbMax.x, bbMax.y, bbMax.z));
 	
 	// Construct a transformed mesh bounding box that surrounds the eight global vertices
-	CC3Box bb = kCC3BoxNull;
+	CC3Box bb = CC3Box::kCC3BoxNull;
 	for (int i = 0; i < 8; i++) 
-		bb = CC3BoxEngulfLocation(bb, bbVertices[i]);
+		bb = bb.boxEngulfLocation( bbVertices[i] );
 	return bb;
 }
 
@@ -129,9 +129,9 @@ CC3Box CC3LocalContentNode::getBoundingBoxRelativeTo( CC3Node* ancestor )
 {
 	CC3Box lcbb = (shouldContributeToParentBoundingBox()
 				   ? getLocalContentBoundingBoxRelativeTo( ancestor )
-				   : kCC3BoxNull);
+				   : CC3Box::kCC3BoxNull);
 
-	return CC3BoxUnion(lcbb, super::getBoundingBoxRelativeTo(ancestor));
+	return lcbb.boxUnion( super::getBoundingBoxRelativeTo(ancestor) );
 }
 
 /** Notify up the ancestor chain...then check my children by invoking superclass implementation. */
@@ -144,7 +144,7 @@ void CC3LocalContentNode::checkDrawingOrder()
 void CC3LocalContentNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_globalLocalContentBoundingBox = kCC3BoxNull;
+	_globalLocalContentBoundingBox = CC3Box::kCC3BoxNull;
 	_zOrder = 0;
 }
 
@@ -175,7 +175,7 @@ CCObject* CC3LocalContentNode::copyWithZone( CCZone* zone )
 void CC3LocalContentNode::markTransformDirty()
 {
 	super::markTransformDirty();
-	_globalLocalContentBoundingBox = kCC3BoxNull;
+	_globalLocalContentBoundingBox = CC3Box::kCC3BoxNull;
 }
 
 /** Overridden to return local content box color */
@@ -221,7 +221,7 @@ void CC3LocalContentNode::setShouldDrawLocalContentWireframeBox( bool shouldDraw
 	if(!wf && shouldDraw) 
 	{
 		CC3Box mbb = getLocalContentBoundingBox();
-		if ( !CC3BoxIsNull(mbb) ) 
+		if ( !mbb.isNull() )
 		{
 			wf = CC3WireframeLocalContentBoundingBoxNode::nodeWithName( getLocalContentWireframeBoxName() );
 			wf->populateAsWireBox( mbb );

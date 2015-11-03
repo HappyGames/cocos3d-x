@@ -1111,7 +1111,7 @@ CC3Face CC3VertexLocations::getFaceAt( GLuint faceIndex )
 
 CC3Face CC3VertexLocations::getFaceFromIndices( const CC3FaceIndices& faceIndices )
 {
-	return CC3FaceMake(getLocationAt( faceIndices.vertices[0] ),
+	return CC3Face(getLocationAt( faceIndices.vertices[0] ),
 					   getLocationAt( faceIndices.vertices[1] ),
 					   getLocationAt( faceIndices.vertices[2] ));
 }
@@ -1176,7 +1176,7 @@ void CC3VertexLocations::buildBoundingBox()
 	}
 	_boundingBox.minimum = vlMin;
 	_boundingBox.maximum = vlMax;
-	_centerOfGeometry = CC3BoxCenter(_boundingBox);
+	_centerOfGeometry = _boundingBox.getCenter();
 	_boundaryIsDirty = false;
 }
 
@@ -1251,7 +1251,7 @@ void CC3VertexLocations::initWithTag( GLuint aTag, const std::string& aName )
 	{
 		_firstVertex = 0;
 		_centerOfGeometry = CC3Vector::kCC3VectorZero;
-		_boundingBox = kCC3BoxZero;
+		_boundingBox = CC3Box::kCC3BoxZero;
 		_radius = 0.0;
 		markBoundaryDirty();
 	}

@@ -797,14 +797,14 @@ CC3Face CC3DeformedFaceArray::getFaceAt( GLuint faceIndex )
 	if (_shouldCacheFaces) 
 	{
 		CC3Vector* vtxLocs = getDeformedVertexLocations();
-		return CC3FaceMake(vtxLocs[faceIndices.vertices[0]],
+		return CC3Face(vtxLocs[faceIndices.vertices[0]],
 						   vtxLocs[faceIndices.vertices[1]],
 						   vtxLocs[faceIndices.vertices[2]]);
 	} 
 	else 
 	{
 		CC3SkinSection* ss = _node->getSkinSectionForFaceIndex( faceIndex );
-		return CC3FaceMake(ss->getDeformedVertexLocationAt( faceIndices.vertices[0] ),
+		return CC3Face(ss->getDeformedVertexLocationAt( faceIndices.vertices[0] ),
 						   ss->getDeformedVertexLocationAt( faceIndices.vertices[1] ),
 						   ss->getDeformedVertexLocationAt( faceIndices.vertices[2] ));
 	}

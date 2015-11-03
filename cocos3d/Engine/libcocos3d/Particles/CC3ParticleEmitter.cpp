@@ -180,9 +180,10 @@ void CC3ParticleEmitter::setEmissionRate( GLfloat aRatePerSecond )
 	// Handle special cases first
 	if (aRatePerSecond <= 0.0f) 
 		_emissionInterval = kCC3ParticleInfiniteInterval;
-	if (aRatePerSecond == kCC3ParticleInfiniteEmissionRate) 
+	else if (aRatePerSecond == kCC3ParticleInfiniteEmissionRate)
 		_emissionInterval = 0.0f;
-	_emissionInterval = 1.0f / aRatePerSecond;
+    else
+        _emissionInterval = 1.0f / aRatePerSecond;
 }
 
 void CC3ParticleEmitter::initWithTag( GLuint aTag, const std::string& aName )

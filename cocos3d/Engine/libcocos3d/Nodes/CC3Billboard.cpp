@@ -214,7 +214,7 @@ void CC3Billboard::setShouldUpdateUnseenBillboard( bool update )
 CC3Box CC3Billboard::getLocalContentBoundingBox()
 {
 	CCRect bRect = getBillboardBoundingRect();
-	return CC3BoxMake(bRect.getMinX(), bRect.getMinY(), 0.0,
+	return CC3Box(bRect.getMinX(), bRect.getMinY(), 0.0,
 							  bRect.getMaxX(), bRect.getMaxY(), 0.0);
 }
 
@@ -880,27 +880,27 @@ void CC3BillboardBoundingBoxArea::buildPlanes()
 	
 	// Front plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitZPositive).normalize();
-	_planes[0] = CC3PlaneFromNormalAndLocation(normal, bbMax);
+    _planes[0] = CC3Plane::plane(normal, bbMax);
 	
 	// Back plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitZNegative).normalize();
-	_planes[1] = CC3PlaneFromNormalAndLocation(normal, bbMin);
+	_planes[1] = CC3Plane::plane(normal, bbMin);
 	
 	// Right plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitXPositive).normalize();
-	_planes[2] = CC3PlaneFromNormalAndLocation(normal, bbMax);
+	_planes[2] = CC3Plane::plane(normal, bbMax);
 	
 	// Left plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitXNegative).normalize();
-	_planes[3] = CC3PlaneFromNormalAndLocation(normal, bbMin);
+	_planes[3] = CC3Plane::plane(normal, bbMin);
 	
 	// Top plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitYPositive).normalize();
-	_planes[4] = CC3PlaneFromNormalAndLocation(normal, bbMax);
+	_planes[4] = CC3Plane::plane(normal, bbMax);
 	
 	// Bottom plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitYNegative).normalize();
-	_planes[5] = CC3PlaneFromNormalAndLocation(normal, bbMin);
+	_planes[5] = CC3Plane::plane(normal, bbMin);
 }
 
 CC3Vector CC3BillboardBoundingBoxArea::getLocationOfRayIntesection( const CC3Ray& localRay )
@@ -910,7 +910,7 @@ CC3Vector CC3BillboardBoundingBoxArea::getLocationOfRayIntesection( const CC3Ray
 
 	// Get the location where the ray intersects the plane of the billboard,
 	// which is the Z=0 plane, and ensure that the ray is not parallel to that plane.
-	CC3Plane bbPlane = CC3PlaneFromNormalAndLocation(CC3Vector::kCC3VectorUnitZPositive, CC3Vector::kCC3VectorZero);
+	CC3Plane bbPlane = CC3Plane::plane(CC3Vector::kCC3VectorUnitZPositive, CC3Vector::kCC3VectorZero);
 	CC3Vector4 pLoc4 = CC3RayIntersectionWithPlane(localRay, bbPlane);
 	if ( pLoc4.isNull() ) 
 		return CC3Vector::kCC3VectorNull;

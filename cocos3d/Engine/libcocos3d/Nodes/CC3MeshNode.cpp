@@ -1146,7 +1146,7 @@ CC3Box CC3MeshNode::getLocalContentBoundingBox()
 {
 	return _mesh
 			? CC3BoxAddUniformPadding(_mesh->getBoundingBox(), m_fBoundingVolumePadding)
-			: kCC3BoxNull;
+			: CC3Box::kCC3BoxNull;
 }
 
 void CC3MeshNode::moveMeshOriginTo( const CC3Vector& aLocation )
@@ -1705,7 +1705,7 @@ void CC3MeshNode::alignTextureUnit( GLuint texUnit )
 
 CC3Plane CC3MeshNode::getFacePlaneAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFacePlaneAt(faceIndex) : CC3PlaneMake( 0.0f, 0.0f, 0.0f, 0.0f );
+	return _mesh ? _mesh->getFacePlaneAt(faceIndex) : CC3Plane( 0.0f, 0.0f, 0.0f, 0.0f );
 }
 
 GLuint CC3MeshNode::getFaceCount()
@@ -1715,12 +1715,12 @@ GLuint CC3MeshNode::getFaceCount()
 
 CC3Face CC3MeshNode::getFaceAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceAt(faceIndex) : kCC3FaceZero;
+	return _mesh ? _mesh->getFaceAt(faceIndex) : CC3Face::kCC3FaceZero;
 }
 
 CC3Face CC3MeshNode::getFaceFromIndices( const CC3FaceIndices& faceIndices )
 {
-	return _mesh ? _mesh->getFaceFromIndices( faceIndices ) : kCC3FaceZero;
+	return _mesh ? _mesh->getFaceFromIndices( faceIndices ) : CC3Face::kCC3FaceZero;
 }
 
 CC3FaceIndices CC3MeshNode::getFaceIndicesAt( GLuint faceIndex )

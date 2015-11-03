@@ -1258,7 +1258,7 @@ GLuint CC3Mesh::getFaceCount()
 
 CC3Face CC3Mesh::getFaceFromIndices( const CC3FaceIndices& faceIndices )
 {
-	return _vertexLocations ? _vertexLocations->getFaceFromIndices( faceIndices ) : kCC3FaceZero;
+	return _vertexLocations ? _vertexLocations->getFaceFromIndices( faceIndices ) : CC3Face::kCC3FaceZero;
 }
 
 CC3FaceIndices CC3Mesh::getUncachedFaceIndicesAt( GLuint faceIndex )
@@ -1334,11 +1334,11 @@ GLuint CC3Mesh::findFirst( GLuint maxHitCount, CC3MeshIntersection* intersection
 		CC3MeshIntersection* hit = &intersections[hitIdx];
 		hit->faceIndex = faceIdx;
 		hit->face = getFaceAt( faceIdx );
-		hit->facePlane = CC3FacePlane(hit->face);
+        hit->facePlane = CC3Plane::planeFromFace( hit->face );
 		
 		// Check if the ray is not parallel to the face, is approaching from the front,
 		// or is approaching from the back and that is okay.
-		GLfloat dirDotNorm = aRay.direction.dot( CC3PlaneNormal(hit->facePlane) );
+		GLfloat dirDotNorm = aRay.direction.dot( hit->facePlane.getNormal() );
 		hit->wasBackFace = dirDotNorm > 0.0f;
 		if (dirDotNorm < 0.0f || (hit->wasBackFace && acceptBackFaces)) {
 			
@@ -1860,7 +1860,7 @@ CC3Vector CC3Mesh::getCenterOfGeometry()
 
 CC3Box CC3Mesh::getBoundingBox()
 {
-	return _vertexLocations ? _vertexLocations->getBoundingBox() : kCC3BoxNull; 
+	return _vertexLocations ? _vertexLocations->getBoundingBox() : CC3Box::kCC3BoxNull;
 }
 
 GLfloat CC3Mesh::getRadius()
@@ -2211,7 +2211,7 @@ void CC3Mesh::populateAsTriangle( const CC3Face& face, ccTex2F* tc, GLuint divsP
 	GLfloat divFrac = 1.0f / divsPerSide;
 
 	// Derive the normal. All vertices on the triangle will have the same normal.
-	CC3Vector vtxNml = CC3FaceNormal(face);
+	CC3Vector vtxNml = face.getNormal();
 
 	GLuint vertexCount = (GLuint)((divsPerSide + 2) * (divsPerSide + 1) / 2.0f);
 	GLuint triangleCount = divsPerSide * divsPerSide;
@@ -2882,7 +2882,7 @@ GLuint CC3FaceArray::getFaceCount()
 
 CC3Face CC3FaceArray::getFaceAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceAt( faceIndex ) : kCC3FaceZero; 
+	return _mesh ? _mesh->getFaceAt( faceIndex ) : CC3Face::kCC3FaceZero;
 }
 
 void CC3FaceArray::initWithTag( GLuint aTag, const std::string& aName )
@@ -3110,7 +3110,7 @@ CC3Vector CC3FaceArray::getCenterAt( GLuint faceIndex )
 {
 	if (_shouldCacheFaces) 
 		return getCenters()[faceIndex];
-	return CC3FaceCenter(getFaceAt( faceIndex ));
+	return getFaceAt( faceIndex ).getCenter();
 }
 
 CC3Vector* CC3FaceArray::allocateCenters()
@@ -3146,7 +3146,7 @@ void CC3FaceArray::populateCenters()
 	GLuint faceCount = getFaceCount();
 	for (GLuint faceIdx = 0; faceIdx < faceCount; faceIdx++) 
 	{
-		_centers[faceIdx] = CC3FaceCenter(getFaceAt(faceIdx));
+		_centers[faceIdx] = getFaceAt(faceIdx).getCenter();
 
 		//LogTrace(@"Face %i has vertices %@ and center %@", faceIdx,
 		//			  NSStringFromCC3Face([self faceAt: faceIdx]),
@@ -3178,7 +3178,7 @@ CC3Vector CC3FaceArray::getNormalAt( GLuint faceIndex )
 {
 	if (_shouldCacheFaces) 
 		return getNormals()[faceIndex];
-	return CC3FaceNormal(getFaceAt(faceIndex));
+	return getFaceAt(faceIndex).getNormal();
 }
 
 CC3Vector* CC3FaceArray::allocateNormals()
@@ -3214,7 +3214,7 @@ void CC3FaceArray::populateNormals()
 	GLuint faceCount = getFaceCount();
 	for (GLuint faceIdx = 0; faceIdx < faceCount; faceIdx++) 
 	{
-		_normals[faceIdx] = CC3FaceNormal(getFaceAt(faceIdx));
+		_normals[faceIdx] = getFaceAt(faceIdx).getNormal();
 		
 		//LogTrace(@"Face %i has vertices %@ and normal %@", faceIdx,
 		//			  NSStringFromCC3Face([self faceAt: faceIdx]),
@@ -3246,7 +3246,7 @@ CC3Plane CC3FaceArray::getPlaneAt( GLuint faceIndex )
 {
 	if (_shouldCacheFaces) 
 		return getPlanes()[faceIndex];
-	return CC3FacePlane(getFaceAt(faceIndex));
+    return CC3Plane::planeFromFace( getFaceAt(faceIndex) );
 }
 
 CC3Plane* CC3FaceArray::allocatePlanes()
@@ -3282,7 +3282,7 @@ void CC3FaceArray::populatePlanes()
 	GLuint faceCount = getFaceCount();
 	for (GLuint faceIdx = 0; faceIdx < faceCount; faceIdx++) 
 	{
-		_planes[faceIdx] = CC3FacePlane(getFaceAt(faceIdx));
+        _planes[faceIdx] = CC3Plane::planeFromFace( getFaceAt(faceIdx) );
 		
 		//LogTrace(@"Face %i has vertices %@ and plane %@", faceIdx,
 		//			  NSStringFromCC3Face([self faceAt: faceIdx]),

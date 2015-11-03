@@ -1315,7 +1315,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 			uniform->setVector( visitor->getCurrentMeshNode()->getMesh()->getBoundingBox().maximum );
 			return true;
 		case kCC3SemanticBoundingBoxSize:
-			uniform->setVector( CC3BoxSize(visitor->getCurrentMeshNode()->getMesh()->getBoundingBox()) );
+			uniform->setVector( visitor->getCurrentMeshNode()->getMesh()->getBoundingBox().getSize() );
 			return true;
 		case kCC3SemanticAnimationFraction:
 			uniform->setFloat( visitor->getCurrentMeshNode()->animationTimeOnTrack(0) );

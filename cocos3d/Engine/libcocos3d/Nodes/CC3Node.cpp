@@ -917,13 +917,13 @@ CC3Box CC3Node::getGlobalBoundingBox()
 
 CC3Box CC3Node::getBoundingBoxRelativeTo( CC3Node* ancestor )
 {
-	CC3Box bb = kCC3BoxNull;
+	CC3Box bb = CC3Box::kCC3BoxNull;
 	CCObject* child;
 	CCARRAY_FOREACH( m_pChildren, child )
 	{
 		CC3Node* pChild = (CC3Node*) child;
 		if (pChild )
-			bb = CC3BoxUnion( bb, pChild->getBoundingBoxRelativeTo( ancestor ) );
+			bb = bb.boxUnion( pChild->getBoundingBoxRelativeTo( ancestor ) );
 	}
 
 	return bb;
@@ -932,7 +932,7 @@ CC3Box CC3Node::getBoundingBoxRelativeTo( CC3Node* ancestor )
 CC3Vector CC3Node::getCenterOfGeometry() 
 {
 	CC3Box bb = getBoundingBox();
-	return CC3BoxIsNull(bb) ? CC3Vector::kCC3VectorZero : CC3BoxCenter(bb);
+	return bb.isNull() ? CC3Vector::kCC3VectorZero : bb.getCenter();
 }
 
 CC3Vector CC3Node::getGlobalCenterOfGeometry()
@@ -3683,7 +3683,7 @@ void CC3Node::setShouldDrawWireframeBox( bool shouldDraw )
 	if ( !wf && shouldDraw ) 
 	{
 		CC3Box bb = getBoundingBox();
-		if ( !CC3BoxIsNull(bb) ) 
+		if ( !bb.isNull() )
 		{
 			wf = CC3WireframeBoundingBoxNode::nodeWithName( getWireframeBoxName().c_str() );
 			wf->populateAsWireBox( bb );

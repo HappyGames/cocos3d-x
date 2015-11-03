@@ -612,7 +612,7 @@ CC3Vector CC3Camera::calculateLocationToShowAllOf( CC3Node* aNode, const CC3Vect
 	CC3Vector targetLoc = targLoc;
 	// If a target location has not been specified, use the center of the node's global bounding box
 	if ( targetLoc.isNull() ) 
-		targetLoc = CC3BoxCenter(gbb);
+		targetLoc = gbb.getCenter();
 
 	CC3Vector bbMin = gbb.minimum;
 	CC3Vector bbMax = gbb.maximum;
@@ -1196,19 +1196,19 @@ void CC3Frustum::buildPlanes()
 		_camera->getViewMatrix()->populateCC3Matrix4x4( &viewMtx );
 	CC3Matrix4x4Multiply(&m, &projMtx, &viewMtx);
 	
-	_planes[kCC3BotmIdx] = CC3PlaneNegate(CC3PlaneNormalize(CC3PlaneMake((m.c1r4 + m.c1r2), (m.c2r4 + m.c2r2),
+    _planes[kCC3BotmIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r2), (m.c2r4 + m.c2r2),
 																		 (m.c3r4 + m.c3r2), (m.c4r4 + m.c4r2))));
-	_planes[kCC3TopIdx]  = CC3PlaneNegate(CC3PlaneNormalize(CC3PlaneMake((m.c1r4 - m.c1r2), (m.c2r4 - m.c2r2),
+	_planes[kCC3TopIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r2), (m.c2r4 - m.c2r2),
 																		 (m.c3r4 - m.c3r2), (m.c4r4 - m.c4r2))));
 	
-	_planes[kCC3LeftIdx] = CC3PlaneNegate(CC3PlaneNormalize(CC3PlaneMake((m.c1r4 + m.c1r1), (m.c2r4 + m.c2r1),
+	_planes[kCC3LeftIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r1), (m.c2r4 + m.c2r1),
 																		 (m.c3r4 + m.c3r1), (m.c4r4 + m.c4r1))));
-	_planes[kCC3RgtIdx]  = CC3PlaneNegate(CC3PlaneNormalize(CC3PlaneMake((m.c1r4 - m.c1r1), (m.c2r4 - m.c2r1),
+	_planes[kCC3RgtIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r1), (m.c2r4 - m.c2r1),
 																		 (m.c3r4 - m.c3r1), (m.c4r4 - m.c4r1))));
 	
-	_planes[kCC3NearIdx] = CC3PlaneNegate(CC3PlaneNormalize(CC3PlaneMake((m.c1r4 + m.c1r3), (m.c2r4 + m.c2r3),
+	_planes[kCC3NearIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r3), (m.c2r4 + m.c2r3),
 																		 (m.c3r4 + m.c3r3), (m.c4r4 + m.c4r3))));
-	_planes[kCC3FarIdx]  = CC3PlaneNegate(CC3PlaneNormalize(CC3PlaneMake((m.c1r4 - m.c1r3), (m.c2r4 - m.c2r3),
+	_planes[kCC3FarIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r3), (m.c2r4 - m.c2r3),
 																		 (m.c3r4 - m.c3r3), (m.c4r4 - m.c4r3))));
 	buildVertices();
 	
