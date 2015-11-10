@@ -430,6 +430,15 @@
     <ClCompile Include="..\Common\CC3Vector4.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\CC3Box.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CC3Face.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CC3Plane.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Scenes\CC3Layer.h">
@@ -824,6 +833,24 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\CC3Ref.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Box.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Face.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Geometry.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Plane.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Range.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CC3Ray.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
