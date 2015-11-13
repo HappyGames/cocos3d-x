@@ -496,7 +496,7 @@ void CC3HelloWorldScene::addBrickWall()
 {
 	DoorMeshNode* _brickWall = DoorMeshNode::nodeWithName( "BrickWall" );
 	_brickWall->setTouchEnabled( true );
-	_brickWall->populateAsSolidBox( CC3BoxMake(-1.5f, 0.f, -0.3f, 1.5f, 2.5f, 0.3f) );
+	_brickWall->populateAsSolidBox( CC3Box(-1.5f, 0.f, -0.3f, 1.5f, 2.5f, 0.3f) );
 	_brickWall->setUniformScale( 40.0f );
 
 	// Add a texture to the wall and repeat it. This creates a material automatically.
@@ -604,7 +604,7 @@ void CC3HelloWorldScene::addSkyBox()
 //	skyBox->populateAsSphereWithRadius( 800, CC3TessellationMake(24, 24) );
 
 	GLfloat boxSideLen = 1600;
-	skyBox->populateAsSolidBox( CC3BoxMake( -boxSideLen, -boxSideLen, -boxSideLen, boxSideLen, boxSideLen, boxSideLen ) );
+	skyBox->populateAsSolidBox( CC3Box( -boxSideLen, -boxSideLen, -boxSideLen, boxSideLen, boxSideLen, boxSideLen ) );
 	skyBox->setShouldCullBackFaces( false );
 //	skyBox->setDiffuseColor( ccc4f(0.4, 0.5, 0.9, 1.0) );
 	skyBox->setTexture( CC3Texture::textureCubeFromFilePattern( "EnvMap/sp3/sp3%s.jpg" ) ); 
@@ -735,7 +735,7 @@ void CC3HelloWorldScene::addPointHose()
 
 	// Create a parametric textured cube, centered on the local origin.
 	CC3BoxNode* texCube = CC3BoxNode::nodeWithName( "TexturedCube" );
-	texCube->populateAsSolidBox( CC3BoxMake(-1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f) );
+	texCube->populateAsSolidBox( CC3Box(-1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f) );
 	texCube->setUniformScale( 30.0f );
 	texCube->setShouldDrawBoundingVolume( true );
 

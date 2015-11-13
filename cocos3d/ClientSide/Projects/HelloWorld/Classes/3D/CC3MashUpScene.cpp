@@ -747,7 +747,7 @@ void CC3MashUpScene::addTexturedCube()
 	
 	// Create a parametric textured cube, centered on the local origin.
 	CC3BoxNode* texCube = CC3BoxNode::nodeWithName( kTexturedCubeName );
-	texCube->populateAsSolidBox( CC3BoxMake(-1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f) );
+	texCube->populateAsSolidBox( CC3Box(-1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f) );
 	texCube->setUniformScale( 30.0f );
 
 	// Add a texture to the textured cube. This creates a material automatically.
@@ -865,7 +865,7 @@ void CC3MashUpScene::addBrickWall()
 	// Create a parametric textured box as an open door.
 	_brickWall = DoorMeshNode::nodeWithName( kBrickWallName );
 	_brickWall->setTouchEnabled( true );
-	_brickWall->populateAsSolidBox( CC3BoxMake(-1.5f, 0.f, -0.3f, 1.5f, 2.5f, 0.3f) );
+	_brickWall->populateAsSolidBox( CC3Box(-1.5f, 0.f, -0.3f, 1.5f, 2.5f, 0.3f) );
 	_brickWall->setUniformScale( 40.0f );
 	
 	// Add a texture to the wall and repeat it. This creates a material automatically.
@@ -1643,7 +1643,7 @@ void CC3MashUpScene::addMeshParticles()
 {
 #define kMeshParticleCubeExtent 10.0f
 	CC3BoxNode* templateModel = CC3BoxNode::nodeWithName( kTexturedCubeName );
-	templateModel->populateAsSolidBox( CC3BoxMake(-kMeshParticleCubeExtent,
+	templateModel->populateAsSolidBox( CC3Box(-kMeshParticleCubeExtent,
 														  -kMeshParticleCubeExtent, 
 														  -kMeshParticleCubeExtent,
 														   kMeshParticleCubeExtent,
@@ -1830,7 +1830,7 @@ void CC3MashUpScene::addMeshHose()
 
 	// Box template mesh
 	CC3BoxNode* boxModel = CC3BoxNode::node();
-	boxModel->populateAsSolidBox( CC3BoxMake(-kPartMeshDim, -kPartMeshDim, -kPartMeshDim,
+	boxModel->populateAsSolidBox( CC3Box(-kPartMeshDim, -kPartMeshDim, -kPartMeshDim,
 													  kPartMeshDim, kPartMeshDim, kPartMeshDim) );
 	boxModel->setTexture( CC3Texture::textureFromFile( kMeshParticleTextureFile ) );
 	boxModel->setTextureRectangle( CCRectMake(0, 0, 1, 0.75) );	// Bottom part of texture is box texture
@@ -2767,7 +2767,7 @@ void CC3MashUpScene::cycleZoom()
 		// and move away from the scene along the line between the center of the scene
 		// and the camera until everything in the scene is visible.
 		case kCameraZoomNone:
-			_lastCameraOrientation = CC3RayFromLocDir(cam->getGlobalLocation(), cam->getGlobalForwardDirection());
+			_lastCameraOrientation = CC3Ray(cam->getGlobalLocation(), cam->getGlobalForwardDirection());
 			setShouldDrawWireframeBox( true );
 			cam->moveWithDuration( kCameraMoveDuration, this );
 			_cameraZoomType = kCameraZoomStraightBack;	// Mark new state

@@ -32,6 +32,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cocos3d.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\Common\CC3Box.cpp" />
+    <ClCompile Include="..\Common\CC3Face.cpp" />
+    <ClCompile Include="..\Common\CC3Plane.cpp" />
     <ClCompile Include="..\Common\CC3Platform.cpp" />
     <ClCompile Include="..\Common\CC3String.cpp" />
     <ClCompile Include="..\Common\CC3Vector.cpp" />
@@ -241,7 +244,13 @@
     <ClInclude Include="..\Animations\CC3ActionManager.h" />
     <ClInclude Include="..\Animations\CC3Actions.h" />
     <ClInclude Include="..\Animations\CC3NodeAnimation.h" />
+    <ClInclude Include="..\Common\CC3Box.h" />
+    <ClInclude Include="..\Common\CC3Face.h" />
+    <ClInclude Include="..\Common\CC3Geometry.h" />
+    <ClInclude Include="..\Common\CC3Plane.h" />
     <ClInclude Include="..\Common\CC3Platform.h" />
+    <ClInclude Include="..\Common\CC3Range.h" />
+    <ClInclude Include="..\Common\CC3Ray.h" />
     <ClInclude Include="..\Common\CC3Ref.h" />
     <ClInclude Include="..\Common\CC3String.h" />
     <ClInclude Include="..\Common\CC3Vector.h" />
