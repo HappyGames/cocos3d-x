@@ -777,8 +777,10 @@ void CC3Mesh::setAllocatedVertexCapacity( GLuint vtxCount )
 {
 	if (!_vertexLocations) 
 		setVertexLocations( CC3VertexLocations::vertexArray() );
+    
 	_vertexLocations->setAllocatedVertexCapacity( vtxCount );
-	if ( shouldInterleaveVertices() ) 
+	
+    if ( shouldInterleaveVertices() )
 	{
 		if ( _vertexNormals )
 			_vertexNormals->interleaveWith( _vertexLocations );
@@ -3067,7 +3069,7 @@ void CC3FaceArray::deallocateIndices()
 		free(_indices);
 		_indices = NULL;
 		_indicesAreRetained = false;
-		CC3_TRACE("%CC3FaceArray deallocated %d previously allocated indices", getFaceCount());
+		CC3_TRACE("CC3FaceArray deallocated %d previously allocated indices", getFaceCount());
 	}
 }
 

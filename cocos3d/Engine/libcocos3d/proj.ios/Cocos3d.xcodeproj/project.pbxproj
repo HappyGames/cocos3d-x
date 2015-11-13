@@ -124,6 +124,10 @@
 		57C6DA251B5526D300A20893 /* CC3RenderSurfaces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6DA1F1B5526D300A20893 /* CC3RenderSurfaces.cpp */; };
 		57C6DA261B5526D300A20893 /* CC3Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6DA211B5526D300A20893 /* CC3Scene.cpp */; };
 		57C6DA291B55276C00A20893 /* cocos3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6DA271B55276C00A20893 /* cocos3d.cpp */; };
+		57EB68001BF5F1AA002CFDA4 /* CC3ArrayNodeAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EB67F81BF5F1A9002CFDA4 /* CC3ArrayNodeAnimation.cpp */; };
+		57EB68011BF5F1AA002CFDA4 /* CC3FrozenNodeAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EB67FA1BF5F1A9002CFDA4 /* CC3FrozenNodeAnimation.cpp */; };
+		57EB68021BF5F1AA002CFDA4 /* CC3NodeAnimationSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EB67FC1BF5F1A9002CFDA4 /* CC3NodeAnimationSegment.cpp */; };
+		57EB68031BF5F1AA002CFDA4 /* CC3NodeAnimationState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EB67FE1BF5F1A9002CFDA4 /* CC3NodeAnimationState.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -396,6 +400,14 @@
 		57C6DA221B5526D300A20893 /* CC3Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Scene.h; path = ../Scenes/CC3Scene.h; sourceTree = "<group>"; };
 		57C6DA271B55276C00A20893 /* cocos3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cocos3d.cpp; path = ../cocos3d.cpp; sourceTree = "<group>"; };
 		57C6DA281B55276C00A20893 /* cocos3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cocos3d.h; path = ../cocos3d.h; sourceTree = "<group>"; };
+		57EB67F81BF5F1A9002CFDA4 /* CC3ArrayNodeAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3ArrayNodeAnimation.cpp; path = ../Animations/CC3ArrayNodeAnimation.cpp; sourceTree = "<group>"; };
+		57EB67F91BF5F1A9002CFDA4 /* CC3ArrayNodeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3ArrayNodeAnimation.h; path = ../Animations/CC3ArrayNodeAnimation.h; sourceTree = "<group>"; };
+		57EB67FA1BF5F1A9002CFDA4 /* CC3FrozenNodeAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3FrozenNodeAnimation.cpp; path = ../Animations/CC3FrozenNodeAnimation.cpp; sourceTree = "<group>"; };
+		57EB67FB1BF5F1A9002CFDA4 /* CC3FrozenNodeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3FrozenNodeAnimation.h; path = ../Animations/CC3FrozenNodeAnimation.h; sourceTree = "<group>"; };
+		57EB67FC1BF5F1A9002CFDA4 /* CC3NodeAnimationSegment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3NodeAnimationSegment.cpp; path = ../Animations/CC3NodeAnimationSegment.cpp; sourceTree = "<group>"; };
+		57EB67FD1BF5F1A9002CFDA4 /* CC3NodeAnimationSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3NodeAnimationSegment.h; path = ../Animations/CC3NodeAnimationSegment.h; sourceTree = "<group>"; };
+		57EB67FE1BF5F1A9002CFDA4 /* CC3NodeAnimationState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3NodeAnimationState.cpp; path = ../Animations/CC3NodeAnimationState.cpp; sourceTree = "<group>"; };
+		57EB67FF1BF5F1A9002CFDA4 /* CC3NodeAnimationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3NodeAnimationState.h; path = ../Animations/CC3NodeAnimationState.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -488,12 +500,11 @@
 		21A83D1D17CC77AD00276CA0 /* animations */ = {
 			isa = PBXGroup;
 			children = (
+				57EB68041BF5F1B7002CFDA4 /* nodeAnimation */,
 				57C6D8A71B5524F200A20893 /* CC3ActionManager.cpp */,
 				57C6D8A81B5524F200A20893 /* CC3ActionManager.h */,
 				57C6D8A91B5524F200A20893 /* CC3Actions.cpp */,
 				57C6D8AA1B5524F200A20893 /* CC3Actions.h */,
-				57C6D8AB1B5524F200A20893 /* CC3NodeAnimation.cpp */,
-				57C6D8AC1B5524F200A20893 /* CC3NodeAnimation.h */,
 			);
 			name = animations;
 			sourceTree = "<group>";
@@ -873,6 +884,23 @@
 			name = utility;
 			sourceTree = "<group>";
 		};
+		57EB68041BF5F1B7002CFDA4 /* nodeAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				57EB67F81BF5F1A9002CFDA4 /* CC3ArrayNodeAnimation.cpp */,
+				57EB67F91BF5F1A9002CFDA4 /* CC3ArrayNodeAnimation.h */,
+				57EB67FA1BF5F1A9002CFDA4 /* CC3FrozenNodeAnimation.cpp */,
+				57EB67FB1BF5F1A9002CFDA4 /* CC3FrozenNodeAnimation.h */,
+				57EB67FC1BF5F1A9002CFDA4 /* CC3NodeAnimationSegment.cpp */,
+				57EB67FD1BF5F1A9002CFDA4 /* CC3NodeAnimationSegment.h */,
+				57EB67FE1BF5F1A9002CFDA4 /* CC3NodeAnimationState.cpp */,
+				57EB67FF1BF5F1A9002CFDA4 /* CC3NodeAnimationState.h */,
+				57C6D8AB1B5524F200A20893 /* CC3NodeAnimation.cpp */,
+				57C6D8AC1B5524F200A20893 /* CC3NodeAnimation.h */,
+			);
+			name = nodeAnimation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -926,6 +954,7 @@
 			files = (
 				57C6D91B1B55254000A20893 /* PVRTTrans.cpp in Sources */,
 				57C6D9451B55258800A20893 /* CC3Math.cpp in Sources */,
+				57EB68021BF5F1AA002CFDA4 /* CC3NodeAnimationSegment.cpp in Sources */,
 				57C6D90F1B55254000A20893 /* PVRTBoneBatch.cpp in Sources */,
 				57C6D8E11B55252A00A20893 /* CC3PODMesh.cpp in Sources */,
 				57C6D9101B55254000A20893 /* PVRTDecompress.cpp in Sources */,
@@ -974,6 +1003,7 @@
 				57C6D9C51B55261C00A20893 /* CC3OpenGLES2.cpp in Sources */,
 				57C6D9A31B5525E800A20893 /* CC3Camera.cpp in Sources */,
 				57C6D9AA1B5525E800A20893 /* CC3NodeVisitor.cpp in Sources */,
+				57EB68011BF5F1AA002CFDA4 /* CC3FrozenNodeAnimation.cpp in Sources */,
 				57C6D8BC1B55251A00A20893 /* CC3ParticleSamples.cpp in Sources */,
 				57C6D9151B55254000A20893 /* PVRTPFXParser.cpp in Sources */,
 				57C6D9461B55258800A20893 /* CC3Platform.cpp in Sources */,
@@ -996,6 +1026,7 @@
 				57C6D9111B55254000A20893 /* PVRTError.cpp in Sources */,
 				57C6D91A1B55254000A20893 /* PVRTTexture.cpp in Sources */,
 				57C6D9EF1B55266400A20893 /* CC3NodesResource.cpp in Sources */,
+				57EB68031BF5F1AA002CFDA4 /* CC3NodeAnimationState.cpp in Sources */,
 				57C6DA0B1B5526C000A20893 /* CC3ShadowVolumes.cpp in Sources */,
 				57C6D9D91B55262800A20893 /* CC3CVAParticle.cpp in Sources */,
 				57C6D9611B5525C100A20893 /* CC3TextureUnit.cpp in Sources */,
@@ -1026,6 +1057,7 @@
 				57C6D8E41B55252A00A20893 /* CC3PODResource.cpp in Sources */,
 				574AEB651BE330F8006900FF /* CC3Face.cpp in Sources */,
 				57C6D8E81B55252A00A20893 /* CC3PVRShamanShaderSemantics.cpp in Sources */,
+				57EB68001BF5F1AA002CFDA4 /* CC3ArrayNodeAnimation.cpp in Sources */,
 				57C6D9AB1B5525E800A20893 /* CC3UtilityMeshNodes.cpp in Sources */,
 				57C6DA071B5526B600A20893 /* CC3PerformanceStatistics.cpp in Sources */,
 				57C6D94C1B55258800A20893 /* LogManager.cpp in Sources */,

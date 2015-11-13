@@ -33,21 +33,20 @@ NS_COCOS3D_BEGIN
 
 CC3VertexArrayContent::CC3VertexArrayContent()
 {
-	init();
+    _vertices = NULL;
+    _vertexCount = 0;
+    _allocatedVertexCapacity = 0;
+    _vertexStride = 0;
+    _bufferID = 0;
+    _bufferUsage = GL_STATIC_DRAW;
+    _shouldAllowVertexBuffering = true;
+    _shouldReleaseRedundantContent = true;
+    _wasVertexCapacityChanged = false;
 }
 
 void CC3VertexArrayContent::init()
 {
-	{
-		_vertices = NULL;
-		_vertexCount = 0;
-//		_allocatedVertexCapacity = 0;
-		_vertexStride = 0;
-		_bufferID = 0;
-		_bufferUsage = GL_STATIC_DRAW;
-		_shouldAllowVertexBuffering = true;
-		_shouldReleaseRedundantContent = true;
-	}
+		
 }
 
 CC3VertexArray::CC3VertexArray()

@@ -190,12 +190,12 @@ public:
 	/** Returns whether the specified SPODNode structure contains animation data. */
 	static bool					sPODNodeDoesContainAnimation( PODStructPtr pSPODNode );
 
-	bool						isAnimatingLocation();
-	bool						isAnimatingQuaternion();
-	bool						isAnimatingScale();
-	CC3Vector					getLocationAtFrame( GLuint frameIndex );
-	CC3Quaternion				getQuaternionAtFrame( GLuint frameIndex );
-	CC3Vector					getScaleAtFrame( GLuint frameIndex );
+	virtual bool				isAnimatingLocation();
+	virtual bool				isAnimatingQuaternion();
+	virtual bool				isAnimatingScale();
+	virtual CC3Vector			getLocationAtFrame( GLuint frameIndex );
+	virtual CC3Quaternion		getQuaternionAtFrame( GLuint frameIndex );
+	virtual CC3Vector			getScaleAtFrame( GLuint frameIndex );
 
 protected:
 	GLuint*						_animatedLocationIndices;

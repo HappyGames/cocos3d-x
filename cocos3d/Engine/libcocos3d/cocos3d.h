@@ -86,7 +86,11 @@
 
 /// Animation
 #include "Animations/CC3Actions.h"
+#include "Animations/CC3NodeAnimationState.h"
 #include "Animations/CC3NodeAnimation.h"
+#include "Animations/CC3ArrayNodeAnimation.h"
+#include "Animations/CC3FrozenNodeAnimation.h"
+#include "Animations/CC3NodeAnimationSegment.h"
 #include "Animations/CC3ActionManager.h"
 
 /// resources
