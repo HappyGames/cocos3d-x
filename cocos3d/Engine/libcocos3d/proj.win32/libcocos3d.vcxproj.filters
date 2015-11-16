@@ -88,6 +88,18 @@
     <Filter Include="common">
       <UniqueIdentifier>{f7d990c6-21fc-4582-a112-afb784b1b45d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="nodes\visitors">
+      <UniqueIdentifier>{89e8bf99-81bf-4195-9741-38fa53a493c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="meshes\vertexArrays">
+      <UniqueIdentifier>{088b1237-3b7b-4d75-811b-28447b6eb137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="meshes\skinning">
+      <UniqueIdentifier>{32c815b3-5381-402f-a9ab-5aec0025669f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="animation\nodeAnimation">
+      <UniqueIdentifier>{761339ee-6dac-40b8-b361-b586ec839e2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Scenes\CC3Layer.cpp">
@@ -103,12 +115,6 @@
       <Filter>scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Meshes\CC3Mesh.cpp">
-      <Filter>meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Meshes\CC3VertexArrays.cpp">
-      <Filter>meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Meshes\CC3VertexSkinning.cpp">
       <Filter>meshes</Filter>
     </ClCompile>
     <ClCompile Include="..\Shaders\CC3GLSLVariable.cpp">
@@ -186,9 +192,6 @@
     <ClCompile Include="..\Nodes\CC3NodeListeners.cpp">
       <Filter>nodes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Nodes\CC3NodeVisitor.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Nodes\CC3UtilityMeshNodes.cpp">
       <Filter>nodes</Filter>
     </ClCompile>
@@ -244,9 +247,6 @@
       <Filter>utility</Filter>
     </ClCompile>
     <ClCompile Include="..\Animations\CC3Actions.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Animations\CC3NodeAnimation.cpp">
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\cc3PVR\PVRT\PVRTBoneBatch.cpp">
@@ -439,6 +439,93 @@
     <ClCompile Include="..\Common\CC3Plane.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\Nodes\CC3NodeVisitor.cpp">
+      <Filter>nodes\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Nodes\CC3NodeDrawingVisitor.cpp">
+      <Filter>nodes\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Nodes\CC3NodePickingVisitor.cpp">
+      <Filter>nodes\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Nodes\CC3NodePuncturingVisitor.cpp">
+      <Filter>nodes\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Nodes\CC3NodeUpdatingVisitor.cpp">
+      <Filter>nodes\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3DrawableVertexArray.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexBoneIndices.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexBoneWeights.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexColors.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexIndices.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexLocations.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexNormals.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexPointSizes.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexTagents.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexTextureCoordinates.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3VertexArrays.cpp">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3Bone.cpp">
+      <Filter>meshes\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3DeformedFaceArray.cpp">
+      <Filter>meshes\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3SkinMeshNode.cpp">
+      <Filter>meshes\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3SkinnedBone.cpp">
+      <Filter>meshes\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3SkinSection.cpp">
+      <Filter>meshes\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Meshes\CC3SoftBodyNode.cpp">
+      <Filter>meshes\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\CC3PODShader.cpp">
+      <Filter>cc3PVR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cc3PVR\CC3PODVertexArray.cpp">
+      <Filter>cc3PVR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Animations\CC3NodeAnimation.cpp">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Animations\CC3ArrayNodeAnimation.cpp">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Animations\CC3FrozenNodeAnimation.cpp">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Animations\CC3NodeAnimationSegment.cpp">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Animations\CC3NodeAnimationState.cpp">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Scenes\CC3Layer.h">
@@ -454,12 +541,6 @@
       <Filter>scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Meshes\CC3Mesh.h">
-      <Filter>meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Meshes\CC3VertexArrays.h">
-      <Filter>meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Meshes\CC3VertexSkinning.h">
       <Filter>meshes</Filter>
     </ClInclude>
     <ClInclude Include="..\Shaders\CC3GLSLVariable.h">
@@ -540,9 +621,6 @@
     <ClInclude Include="..\Nodes\CC3NodeListeners.h">
       <Filter>nodes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Nodes\CC3NodeVisitor.h">
-      <Filter>nodes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Nodes\CC3UtilityMeshNodes.h">
       <Filter>nodes</Filter>
     </ClInclude>
@@ -607,9 +685,6 @@
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\Animations\CC3Actions.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Animations\CC3NodeAnimation.h">
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\cc3PVR\PVRT\PVRTArray.h">
@@ -852,6 +927,93 @@
     </ClInclude>
     <ClInclude Include="..\Common\CC3Ray.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Nodes\CC3NodeVisitor.h">
+      <Filter>nodes\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Nodes\CC3NodeDrawingVisitor.h">
+      <Filter>nodes\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Nodes\CC3NodePickingVisitor.h">
+      <Filter>nodes\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Nodes\CC3NodePuncturingVisitor.h">
+      <Filter>nodes\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Nodes\CC3NodeUpdatingVisitor.h">
+      <Filter>nodes\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3DrawableVertexArray.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexBoneIndices.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexBoneWeights.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexColors.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexIndices.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexLocations.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexNormals.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexPointSizes.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexTagents.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexTextureCoordinates.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3VertexArrays.h">
+      <Filter>meshes\vertexArrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3Bone.h">
+      <Filter>meshes\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3DeformedFaceArray.h">
+      <Filter>meshes\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3SkinMeshNode.h">
+      <Filter>meshes\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3SkinnedBone.h">
+      <Filter>meshes\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3SkinSection.h">
+      <Filter>meshes\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Meshes\CC3SoftBodyNode.h">
+      <Filter>meshes\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cc3PVR\CC3PODShader.h">
+      <Filter>cc3PVR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cc3PVR\CC3PODVertexArray.h">
+      <Filter>cc3PVR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Animations\CC3NodeAnimation.h">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Animations\CC3ArrayNodeAnimation.h">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Animations\CC3FrozenNodeAnimation.h">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Animations\CC3NodeAnimationSegment.h">
+      <Filter>animation\nodeAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Animations\CC3NodeAnimationState.h">
+      <Filter>animation\nodeAnimation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

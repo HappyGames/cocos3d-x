@@ -28,10 +28,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cocos3d.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\Animations\CC3ArrayNodeAnimation.cpp" />
+    <ClCompile Include="..\Animations\CC3FrozenNodeAnimation.cpp" />
     <ClCompile Include="..\Animations\CC3NodeAnimation.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cocos3d.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\Animations\CC3NodeAnimationSegment.cpp" />
+    <ClCompile Include="..\Animations\CC3NodeAnimationState.cpp" />
+    <ClCompile Include="..\cc3PVR\CC3PODShader.cpp" />
+    <ClCompile Include="..\cc3PVR\CC3PODVertexArray.cpp" />
     <ClCompile Include="..\Common\CC3Box.cpp" />
     <ClCompile Include="..\Common\CC3Face.cpp" />
     <ClCompile Include="..\Common\CC3Plane.cpp" />
@@ -181,9 +187,24 @@
     <ClCompile Include="..\Matrices\CC3Matrix4x3.cpp" />
     <ClCompile Include="..\Matrices\CC3Matrix4x4.cpp" />
     <ClCompile Include="..\Matrices\CC3ProjectionMatrix.cpp" />
+    <ClCompile Include="..\Meshes\CC3Bone.cpp" />
+    <ClCompile Include="..\Meshes\CC3DeformedFaceArray.cpp" />
+    <ClCompile Include="..\Meshes\CC3DrawableVertexArray.cpp" />
     <ClCompile Include="..\Meshes\CC3Mesh.cpp" />
+    <ClCompile Include="..\Meshes\CC3SkinMeshNode.cpp" />
+    <ClCompile Include="..\Meshes\CC3SkinnedBone.cpp" />
+    <ClCompile Include="..\Meshes\CC3SkinSection.cpp" />
+    <ClCompile Include="..\Meshes\CC3SoftBodyNode.cpp" />
     <ClCompile Include="..\Meshes\CC3VertexArrays.cpp" />
-    <ClCompile Include="..\Meshes\CC3VertexSkinning.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexBoneIndices.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexBoneWeights.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexColors.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexIndices.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexLocations.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexNormals.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexPointSizes.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexTagents.cpp" />
+    <ClCompile Include="..\Meshes\CC3VertexTextureCoordinates.cpp" />
     <ClCompile Include="..\Nodes\CC3Billboard.cpp" />
     <ClCompile Include="..\Nodes\CC3BitmapLabelNode.cpp" />
     <ClCompile Include="..\Nodes\CC3BoundingVolumes.cpp" />
@@ -193,7 +214,11 @@
     <ClCompile Include="..\Nodes\CC3LocalContentNode.cpp" />
     <ClCompile Include="..\Nodes\CC3MeshNode.cpp" />
     <ClCompile Include="..\Nodes\CC3Node.cpp" />
+    <ClCompile Include="..\Nodes\CC3NodeDrawingVisitor.cpp" />
     <ClCompile Include="..\Nodes\CC3NodeListeners.cpp" />
+    <ClCompile Include="..\Nodes\CC3NodePickingVisitor.cpp" />
+    <ClCompile Include="..\Nodes\CC3NodePuncturingVisitor.cpp" />
+    <ClCompile Include="..\Nodes\CC3NodeUpdatingVisitor.cpp" />
     <ClCompile Include="..\Nodes\CC3NodeVisitor.cpp" />
     <ClCompile Include="..\Nodes\CC3UtilityMeshNodes.cpp" />
     <ClCompile Include="..\OpenGL\CC3OpenGL.cpp" />
@@ -243,7 +268,13 @@
   <ItemGroup>
     <ClInclude Include="..\Animations\CC3ActionManager.h" />
     <ClInclude Include="..\Animations\CC3Actions.h" />
+    <ClInclude Include="..\Animations\CC3ArrayNodeAnimation.h" />
+    <ClInclude Include="..\Animations\CC3FrozenNodeAnimation.h" />
     <ClInclude Include="..\Animations\CC3NodeAnimation.h" />
+    <ClInclude Include="..\Animations\CC3NodeAnimationSegment.h" />
+    <ClInclude Include="..\Animations\CC3NodeAnimationState.h" />
+    <ClInclude Include="..\cc3PVR\CC3PODShader.h" />
+    <ClInclude Include="..\cc3PVR\CC3PODVertexArray.h" />
     <ClInclude Include="..\Common\CC3Box.h" />
     <ClInclude Include="..\Common\CC3Face.h" />
     <ClInclude Include="..\Common\CC3Geometry.h" />
@@ -321,10 +352,25 @@
     <ClInclude Include="..\Matrices\CC3Matrix4x3.h" />
     <ClInclude Include="..\Matrices\CC3Matrix4x4.h" />
     <ClInclude Include="..\Matrices\CC3ProjectionMatrix.h" />
+    <ClInclude Include="..\Meshes\CC3Bone.h" />
+    <ClInclude Include="..\Meshes\CC3DeformedFaceArray.h" />
+    <ClInclude Include="..\Meshes\CC3DrawableVertexArray.h" />
     <ClInclude Include="..\Meshes\CC3Mesh.h" />
+    <ClInclude Include="..\Meshes\CC3SkinMeshNode.h" />
+    <ClInclude Include="..\Meshes\CC3SkinnedBone.h" />
+    <ClInclude Include="..\Meshes\CC3SkinSection.h" />
+    <ClInclude Include="..\Meshes\CC3SoftBodyNode.h" />
+    <ClInclude Include="..\Meshes\CC3VertexBoneIndices.h" />
+    <ClInclude Include="..\Meshes\CC3VertexBoneWeights.h" />
+    <ClInclude Include="..\Meshes\CC3VertexColors.h" />
+    <ClInclude Include="..\Meshes\CC3VertexIndices.h" />
+    <ClInclude Include="..\Meshes\CC3VertexLocations.h" />
+    <ClInclude Include="..\Meshes\CC3VertexNormals.h" />
+    <ClInclude Include="..\Meshes\CC3VertexPointSizes.h" />
+    <ClInclude Include="..\Meshes\CC3VertexTagents.h" />
+    <ClInclude Include="..\Meshes\CC3VertexTextureCoordinates.h" />
     <ClInclude Include="..\Nodes\CC3MeshCommon.h" />
     <ClInclude Include="..\Meshes\CC3VertexArrays.h" />
-    <ClInclude Include="..\Meshes\CC3VertexSkinning.h" />
     <ClInclude Include="..\Nodes\CC3Billboard.h" />
     <ClInclude Include="..\Nodes\CC3BitmapLabelNode.h" />
     <ClInclude Include="..\Nodes\CC3BoundingVolumes.h" />
@@ -334,7 +380,11 @@
     <ClInclude Include="..\Nodes\CC3LocalContentNode.h" />
     <ClInclude Include="..\Nodes\CC3MeshNode.h" />
     <ClInclude Include="..\Nodes\CC3Node.h" />
+    <ClInclude Include="..\Nodes\CC3NodeDrawingVisitor.h" />
     <ClInclude Include="..\Nodes\CC3NodeListeners.h" />
+    <ClInclude Include="..\Nodes\CC3NodePickingVisitor.h" />
+    <ClInclude Include="..\Nodes\CC3NodePuncturingVisitor.h" />
+    <ClInclude Include="..\Nodes\CC3NodeUpdatingVisitor.h" />
     <ClInclude Include="..\Nodes\CC3NodeVisitor.h" />
     <ClInclude Include="..\Nodes\CC3UtilityMeshNodes.h" />
     <ClInclude Include="..\OpenGL\CC3OpenGL.h" />
