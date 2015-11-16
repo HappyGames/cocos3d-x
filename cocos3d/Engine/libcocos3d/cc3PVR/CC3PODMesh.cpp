@@ -33,26 +33,28 @@ NS_COCOS3D_BEGIN
 
 void CC3PODMesh::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
-	super::initAtIndex( aPODIndex, aPODRez );
+    init();
+    setPodIndex( aPODIndex );
+    
 	SPODMesh* psm = (SPODMesh*)aPODRez->getMeshPODStructAtIndex( aPODIndex );
 	//LogRez(@"Creating %@ at index %i from: %@", [self class], aPODIndex, NSStringFromSPODMesh(psm));
 
-	setVertexLocations( CC3VertexLocations::arrayFromCPODData( &psm->sVertex, psm ) );
-	setVertexNormals( CC3VertexNormals::arrayFromCPODData( &psm->sNormals, psm ) );
-	setVertexTangents( CC3VertexTangents::arrayFromCPODData( &psm->sTangents, psm ) );
-	setVertexBitangents( CC3VertexTangents::arrayFromCPODData( &psm->sBinormals, psm ) );
-	setVertexColors( CC3VertexColors::arrayFromCPODData( &psm->sVtxColours, psm ) );
-	setVertexBoneWeights( CC3VertexBoneWeights::arrayFromCPODData( &psm->sBoneWeight, psm ) );
-	setVertexBoneIndices( CC3VertexBoneIndices::arrayFromCPODData( &psm->sBoneIdx, psm ) );
+	setVertexLocations( CC3PODVertexFactory::createVertexLocations( aPODRez, aPODIndex ) );
+	setVertexNormals( CC3PODVertexFactory::createVertexNormals( aPODRez, aPODIndex ) );
+	setVertexTangents( CC3PODVertexFactory::createVertexTangents( aPODRez, aPODIndex ) );
+	setVertexBitangents( CC3PODVertexFactory::createVertexTangents( aPODRez, aPODIndex, true ) );
+	setVertexColors( CC3PODVertexFactory::createVertexColors( aPODRez, aPODIndex ) );
+	setVertexBoneWeights( CC3PODVertexFactory::createVertexBoneWeights( aPODRez, aPODIndex ) );
+	setVertexBoneIndices( CC3PODVertexFactory::createVertexBoneIndices( aPODRez, aPODIndex ) );
 
 	for (GLuint i = 0; i < psm->nNumUVW; i++) 
 	{
-		CC3VertexTextureCoordinates* texCoords = CC3VertexTextureCoordinates::arrayFromSPODMesh( psm, i );
+		CC3VertexTextureCoordinates* texCoords = CC3PODVertexFactory::createVertexTextureCoordinates( aPODRez, aPODIndex, i );
 		texCoords->setExpectsVerticallyFlippedTextures( aPODRez->expectsVerticallyFlippedTextures() );
 		addTextureCoordinates( texCoords );
 	}
 
-	setVertexIndices( CC3VertexIndices::arrayFromCPODData( &psm->sFaces, psm ) );
+	setVertexIndices( CC3PODVertexFactory::createVertexIndices( aPODRez, aPODIndex ) );
 
 	// Once all vertex arrays are populated, if the data is interleaved, mark it as such and
 	// swap the reference to the original data within the SPODMesh, so that CC3VertexArray

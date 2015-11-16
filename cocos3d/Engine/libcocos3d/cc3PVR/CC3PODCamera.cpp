@@ -81,7 +81,26 @@ void CC3PODCamera::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 	// Remove all scaling animation content, since it affects the effective FOV of the camera.
 	clearScaleContentIn( psn );
 
-	super::initAtIndex( aPODIndex, aPODRez );
+    init();
+    setPodIndex( aPODIndex );
+    
+    //LogRez(@"Creating %@ at index %i from: %@", [self class], aPODIndex, NSStringFromSPODNode(psn));
+    setName( psn->pszName );
+    setPodContentIndex( psn->nIdx );
+    setPodParentIndex( psn->nIdxParent );
+    
+    if ( psn->pfAnimPosition )
+        setLocation( *(CC3Vector*)psn->pfAnimPosition );
+    if ( psn->pfAnimRotation )
+        setQuaternion( *(CC3Quaternion*)psn->pfAnimRotation );
+    if ( psn->pfAnimScale )
+        setScale( *(CC3Vector*)psn->pfAnimScale );
+    
+    if ( CC3PODNodeAnimation::sPODNodeDoesContainAnimation((PODStructPtr)psn) )
+        setAnimation( CC3PODNodeAnimation::animationFromSPODNode( (PODStructPtr)psn, aPODRez->getAnimationFrameCount() ) );
+    else if (aPODRez->shouldFreezeInanimateNodes())
+        setAnimation( CC3FrozenNodeAnimation::animationFromNodeState( this ) );
+    
 	// Get the camera content
 	if (getPodContentIndex() >= 0) 
 	{

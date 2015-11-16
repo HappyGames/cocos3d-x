@@ -464,14 +464,14 @@ public:
 	 * overlapping objects that each contain transparency, and it is not possible to rely
 	 * only on drawing order and depth testing to mediate whether a pixel should be drawn.
 	 */
-	virtual void			setShouldDrawLowAlpha( bool draw );
-	virtual bool			shouldDrawLowAlpha();
+	virtual void                setShouldDrawLowAlpha( bool draw );
+	virtual bool                shouldDrawLowAlpha();
 
 	/**
 	 * Returns the number of textures covering this mesh, regardless of whether the
 	 * textures were attached using the texture property or the addTexture: method.
 	 */
-	GLuint					getTextureCount();
+	GLuint                      getTextureCount();
 
 	/**
 	 * When the material covering this mesh contains a single texture, this property
@@ -2420,9 +2420,6 @@ public:
 	/** The Cocos2D CCNode will supply its own shaders, but still need shader during node picking. */
 	virtual void				applyShaderProgramWithVisitor( CC3NodeDrawingVisitor* visitor );
 
-	virtual void				applyEffectNamedFromRez( const std::string& effectName, const std::string& rezName );
-	virtual void				applyEffectNamedFromFile( const std::string& effectName, const std::string& filePath );
-
 	virtual void				alignTextureUnits();
 	virtual void				alignTextureUnit( GLuint texUnit );
 	/** Align the material properties to those of the mesh. */
@@ -2559,11 +2556,6 @@ public:
 	virtual CC3Vector			getLocalContentCenterOfGeometry();
 	virtual CC3Box				getLocalContentBoundingBox();
 	virtual void				flipNormals();
-
-	virtual void				setPodMaterialIndex( GLint aPodIndex );
-	virtual GLint				getPodMaterialIndex();
-	virtual void				initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
-	virtual PODStructPtr		getNodePODStructAtIndex( GLuint aPODIndex, CC3PODResource* aPODRez );
 
 protected:
 	CC3Mesh*					_mesh;

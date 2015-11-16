@@ -45,9 +45,28 @@ void CC3PODMeshNode::setPodMaterialIndex( GLint aPODIndex )
  
 void CC3PODMeshNode::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
-	super::initAtIndex( aPODIndex, aPODRez );
+    init();
+    setPodIndex( aPODIndex );
+    
+    SPODNode* pmn = (SPODNode*)getNodePODStructAtIndex( aPODIndex, aPODRez );
+    
+    //LogRez(@"Creating %@ at index %i from: %@", [self class], aPODIndex, NSStringFromSPODNode(psn));
+    setName( pmn->pszName );
+    setPodContentIndex( pmn->nIdx );
+    setPodParentIndex( pmn->nIdxParent );
+    
+    if ( pmn->pfAnimPosition )
+        setLocation( *(CC3Vector*)pmn->pfAnimPosition );
+    if ( pmn->pfAnimRotation )
+        setQuaternion( *(CC3Quaternion*)pmn->pfAnimRotation );
+    if ( pmn->pfAnimScale )
+        setScale( *(CC3Vector*)pmn->pfAnimScale );
+    
+    if ( CC3PODNodeAnimation::sPODNodeDoesContainAnimation((PODStructPtr)pmn) )
+        setAnimation( CC3PODNodeAnimation::animationFromSPODNode( (PODStructPtr)pmn, aPODRez->getAnimationFrameCount() ) );
+    else if (aPODRez->shouldFreezeInanimateNodes())
+        setAnimation( CC3FrozenNodeAnimation::animationFromNodeState( this ) );
 
-	SPODNode* pmn = (SPODNode*)getNodePODStructAtIndex( aPODIndex, aPODRez );
 	// If this node has a mesh, build it
 	if (getPodContentIndex() >= 0) {
 		setMesh( aPODRez->getMeshAtIndex( getPodContentIndex() ) );

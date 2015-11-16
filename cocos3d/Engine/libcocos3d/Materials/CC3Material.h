@@ -984,28 +984,6 @@ public:
 	void						populateFrom( CC3Material* another );
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
-	/**
-	 * Applies the PFX effect with the specified name, found in the cached CC3PFXResource with the
-	 * specifed name, to this material.
-	 *
-	 * Sets the textures of this material to those defined by the retrieved PFX effect.
-	 *
-	 * Raises an assertion error if a PFX resource with the specified name cannot be found in the PFX
-	 * resource cache, or if that PFX resource does not contain an effect with the specified effect name.
-	 */
-	virtual void				applyEffectNamedFromRez( const std::string& effectName, const std::string& rezName );
-
-	/**
-	 * Applies the PFX effect with the specified name, found in the CC3PFXResource loaded from the
-	 * specfied file, to this material.
-	 *
-	 * Sets the textures of this material to those defined by the retrieved PFX effect.
-	 *
-	 * Raises an assertion error if the PFX resource file could not be loaded, or if that
-	 * PFX resource does not contain an effect with the specified effect name.
-	 */
-	virtual void				applyEffectNamedFromFile( const std::string& effectName, const std::string& filePath );
-
 	virtual std::string			getNameSuffix();
 
 protected:

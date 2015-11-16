@@ -65,6 +65,30 @@ void CC3PODNode::setPodParentIndex( GLint aPODIndex )
 	_podParentIndex = aPODIndex;
 }
 
+void CC3PODNode::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
+{
+    init();
+    setPodIndex( aPODIndex );
+    
+    SPODNode* psn = (SPODNode*)aPODRez->getNodePODStructAtIndex( aPODIndex );
+    //LogRez(@"Creating %@ at index %i from: %@", [self class], aPODIndex, NSStringFromSPODNode(psn));
+    setName( psn->pszName );
+    setPodContentIndex( psn->nIdx );
+    setPodParentIndex( psn->nIdxParent );
+    
+    if ( psn->pfAnimPosition )
+        setLocation( *(CC3Vector*)psn->pfAnimPosition );
+    if ( psn->pfAnimRotation )
+        setQuaternion( *(CC3Quaternion*)psn->pfAnimRotation );
+    if ( psn->pfAnimScale )
+        setScale( *(CC3Vector*)psn->pfAnimScale );
+    
+    if ( CC3PODNodeAnimation::sPODNodeDoesContainAnimation((PODStructPtr)psn) )
+        setAnimation( CC3PODNodeAnimation::animationFromSPODNode( (PODStructPtr)psn, aPODRez->getAnimationFrameCount() ) );
+    else if (aPODRez->shouldFreezeInanimateNodes())
+        setAnimation( CC3FrozenNodeAnimation::animationFromNodeState( this ) );
+}
+
 CC3PODNode* CC3PODNode::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
 	CC3PODNode* pNode = new CC3PODNode;

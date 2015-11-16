@@ -433,23 +433,6 @@ public:
 	virtual GLuint				nextTag();
 	virtual void				resetTagAllocation();
 
-	/**
-	 * Returns an instance compiled from GLSL source code identified by the specified PFX shader
-	 * specification in the specified PFX resource loader.
-	 *
-	 * Shaders loaded through this method are cached. If the shader was already loaded and is in
-	 * the cache, it is retrieved and returned. If the shader has not in the cache, it is created
-	 * compiled from GLSL code identified by the specified PFX shader specification, and added to
-	 * the shader cache. It is safe to invoke this method any time the shader is needed, without
-	 * having to worry that the shader will be repeatedly loaded and compiled.
-	 *
-	 * If the shader is created and compiled, the GLSL code may be embedded in the PFX file, or
-	 * may be contained in a separate GLSL source code file, as defined by the PFX shader spec.
-	 *
-	 * To clear a shader instance from the cache, use the removeShader: method.
-	 */
-	static CC3Shader*			shaderFromPFXShader( PFXClassPtr pSPVRTPFXParserShader, CC3PFXResource* pfxRez );
-
 protected:
 	void						deleteGLShader();
 	std::string					getLocalizeCompileErrors( const std::string& logTxt, CC3ShaderSourceCode* shSrcCode );
@@ -468,7 +451,7 @@ class CC3VertexShader : public CC3Shader
 public:
 	static CC3VertexShader*		shaderFromSourceCodeFile( const std::string& filePath );
 	virtual GLenum				getShaderType();
-	static CC3VertexShader*		shaderFromPFXShader( PFXClassPtr pSPVRTPFXParserShader, CC3PFXResource* pfxRez );
+
 	// We don't delegate to shaderFromShaderSource: by retrieving the shader source, because the
 	// shader source may have been dropped from its cache, even though the shader is still in its
 	// cache. The result would be to constantly create and cache the shader source unnecessarily.
@@ -481,7 +464,7 @@ class CC3FragmentShader : public CC3Shader
 public:
 	static CC3FragmentShader*	shaderFromSourceCodeFile( const std::string& filePath );
 	virtual GLenum				getShaderType();
-	static CC3FragmentShader*	shaderFromPFXShader( PFXClassPtr pSPVRTPFXParserShader, CC3PFXResource* pfxRez );
+
 	// We don't delegate to shaderFromShaderSource: by retrieving the shader source, because the
 	// shader source may have been dropped from its cache, even though the shader is still in its
 	// cache. The result would be to constantly create and cache the shader source unnecessarily.

@@ -400,11 +400,11 @@ void CC3PFXEffect::initShaderProgramForPFXEffect( SPVRTPFXParserEffect* pfxEffec
 #if CC3_GLSL
 	// Retrieve or create the vertex shader
 	SPVRTPFXParserShader* pfxVtxShader = getPFXVertexShaderForPFXEffect( pfxEffect, pfxParser );
-	CC3VertexShader* vtxShader = CC3VertexShader::shaderFromPFXShader( pfxVtxShader, pfxRez );
+	CC3VertexShader* vtxShader = CC3PODShader::createVertexShader( pfxVtxShader, pfxRez );
 
 	// Retrieve or create the fragment shader
 	SPVRTPFXParserShader* pfxFragShader = getPFXFragmentShaderForPFXEffect( pfxEffect, pfxParser );
-	CC3FragmentShader* fragShader = CC3FragmentShader::shaderFromPFXShader( pfxFragShader, pfxRez );
+	CC3FragmentShader* fragShader = CC3PODShader::createFragmentShader( pfxFragShader, pfxRez );
 	
 	CC3PFXShaderSemantics* semanticDelegate = getSemanticDelegateFrom( pfxEffect, pfxParser, pfxRez );
 
@@ -468,6 +468,27 @@ GLchar* CC3PFXEffect::getShaderCode( SPVRTPFXParserShader* pfxShader )
 std::string CC3PFXEffect::description()
 {
 	return CC3String::stringWithFormat( (char*)"CC3PFXEffect named %s", _name.c_str() ); 
+}
+
+void CC3PFXEffect::applyTo( CC3MeshNode *pMeshNode )
+{
+    this->populateMeshNode( pMeshNode );
+    this->populateMaterial( pMeshNode->getMaterial() );
+    pMeshNode->alignTextureUnits();
+    
+    // Apply to children
+    CCArray* pChildren = pMeshNode->getChildren();
+    CCObject* pObj = NULL;
+    CCARRAY_FOREACH( pChildren, pObj )
+    {
+        CC3Node* child = (CC3Node*)pObj;
+        if ( child->isMeshNode() )
+        {
+            pMeshNode = dynamic_cast<CC3MeshNode*>( child );
+            if ( pMeshNode )
+                applyTo( pMeshNode );
+        }
+    }
 }
 
 std::string CC3PFXGLSLVariableConfiguration::getPFXSemanticName()

@@ -850,7 +850,9 @@ void CC3MashUpScene::addSkyBox()
 	skyBox->populateAsSphereWithRadius( 1600.0f, CC3TessellationMake(24, 24) );
 	skyBox->setShouldCullBackFaces( false );
 	skyBox->setTexture( CC3Texture::textureCubeFromFilePattern( "EnvMap%@.jpg" ) ); 
-	skyBox->applyEffectNamedFromFile( "SkyBox", "EnvMap.pfx" );
+    CC3PFXEffect* pEffect = CC3PFXResource::getEffectNamedFromFile( "SkyBox", "EnvMap.pfx" );
+    if ( pEffect )
+        pEffect->applyTo( skyBox );
 	addChild( skyBox );
 
 	// PVR files can contain an entire cube-map (and all the mipmaps too) in a single file.
@@ -1583,13 +1585,18 @@ void CC3MashUpScene::addPostProcessing()
 	// Load the node with shaders that convert the image into greyscale, making the scene
 	// appear as if it was filmed with black & white film.
 	_grayscaleNode = CC3ClipSpaceNode::nodeWithName( "Grayscale post-processor", _postProcSurface->getColorTexture() );
-	_grayscaleNode->applyEffectNamedFromFile( "Grayscale", kPostProcPFXFile );
+    
+    CC3PFXEffect* pEffect = CC3PFXResource::getEffectNamedFromFile( "Grayscale", kPostProcPFXFile );
+    if ( pEffect )
+        pEffect->applyTo( _grayscaleNode );
 	
 	// Create a clip-space node that will render the off-screen depth texture to the screen.
 	// Load the node with shaders that convert the depth values into greyscale, visualizing
 	// the depth of field as a grayscale gradient.
 	_depthImageNode = CC3ClipSpaceNode::nodeWithName( "Depth-map post-processor", _postProcSurface->getDepthTexture() );
-	_depthImageNode->applyEffectNamedFromFile( "Depth", kPostProcPFXFile );
+    pEffect = CC3PFXResource::getEffectNamedFromFile( "Depth", kPostProcPFXFile );
+    if ( pEffect )
+        pEffect->applyTo( _depthImageNode );
 }
 
 void CC3MashUpScene::addPointParticles() 

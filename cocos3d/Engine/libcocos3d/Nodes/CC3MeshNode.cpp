@@ -967,7 +967,6 @@ void CC3MeshNode::doNotBufferVertexIndices()
 	super::doNotBufferVertexIndices();
 }
 
-
 bool CC3MeshNode::isMeshNode()
 {
 	return true; 
@@ -1217,39 +1216,6 @@ void CC3MeshNode::flipNormals()
 {
 	_mesh->flipNormals();
 	super::flipNormals();
-}
-
-void CC3MeshNode::setPodMaterialIndex( GLint aPodIndex )
-{
-
-}
-
-GLint CC3MeshNode::getPodMaterialIndex()
-{
-	return 0;
-}
-
-PODStructPtr CC3MeshNode::getNodePODStructAtIndex( GLuint aPODIndex, CC3PODResource* aPODRez )
-{
-	if ( aPODRez )
-		return aPODRez->getMeshNodePODStructAtIndex( aPODIndex );
-
-	return NULL;
-}
-
-void CC3MeshNode::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
-{
-	super::initAtIndex( aPODIndex, aPODRez );
-	SPODNode* pmn = (SPODNode*)getNodePODStructAtIndex( aPODIndex, aPODRez );
-	
-	// If this node has a mesh, build it
-	if ( getPodContentIndex() >= 0 ) 
-		setMesh( aPODRez->getMeshAtIndex( getPodContentIndex() ) );
-	
-	// If this node has a material, build it
-	setPodMaterialIndex( pmn->nIdxMaterial );
-	if ( getPodMaterialIndex() >= 0)
-		setMaterial( aPODRez->getMaterialAtIndex( getPodMaterialIndex() ) );
 }
 
 CC3Vector CC3MeshNode::getVertexTangentAt( GLuint index )
@@ -1564,7 +1530,6 @@ void CC3MeshNode::addShadowVolumesForLight( CC3Light* aLight )
 	if ( !shouldCastShadows() || getShadowVolumeForLight( aLight ) )
 		return;
 
-#pragma _NOTE_TODO( "CC3MeshNode::addShadowVolumesForLight( CC3Light* aLight )" )
 	std::string svName = CC3String::stringWithFormat( "%s-SV-%s", getName().c_str(), aLight->getName().c_str() );
 	CC3ShadowVolumeMeshNode* sv = CC3ShadowVolumeMeshNode::nodeWithName( svName );
 	sv->selectShaders();
@@ -1599,32 +1564,6 @@ void CC3MeshNode::prewarmForShadowVolumes()
 	getFaceNeighboursAt( 0 );
 
 	super::prewarmForShadowVolumes();
-}
-
-void CC3MeshNode::applyEffectNamedFromRez( const std::string& effectName, const std::string& rezName )
-{
-	CC3PFXEffect* pfxEffect = CC3PFXResource::getEffectNamedFromRez( effectName, rezName );
-	if ( pfxEffect )
-	{
-		pfxEffect->populateMeshNode( this );
-		pfxEffect->populateMaterial( getMaterial() );
-		alignTextureUnits();
-	}
-	
-	super::applyEffectNamedFromRez( effectName, rezName );
-}
-
-void CC3MeshNode::applyEffectNamedFromFile( const std::string& effectName, const std::string& filePath )
-{
-	CC3PFXEffect* pfxEffect = CC3PFXResource::getEffectNamedFromFile( effectName, filePath );
-	if ( pfxEffect )
-	{
-		pfxEffect->populateMeshNode( this );
-		pfxEffect->populateMaterial( getMaterial() );
-		alignTextureUnits();
-	}
-
-	super::applyEffectNamedFromFile( effectName, filePath );
 }
 
 CC3NormalScaling CC3MeshNode::getEffectiveNormalScalingMethod()

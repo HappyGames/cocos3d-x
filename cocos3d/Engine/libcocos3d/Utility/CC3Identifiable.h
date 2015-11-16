@@ -317,19 +317,6 @@ public:
 	 */
 	virtual std::string			fullDescription();
 
-	/**
-	 * The index of this object in the POD resource data.
-	 * This generally means the podIndex'th type of object of the class.
-	 */
-	virtual GLint				getPodIndex() { return 0; }
-	virtual void				setPodIndex( GLint index ) {  }
-
-	/**
-	 * Initializes this instance from the data of this type at
-	 * the specified index within the specified POD resource.
-	 */
-	virtual void				initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
-
 
 protected:
 	/**

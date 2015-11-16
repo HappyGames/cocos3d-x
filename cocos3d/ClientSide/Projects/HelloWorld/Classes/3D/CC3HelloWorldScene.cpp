@@ -607,14 +607,17 @@ void CC3HelloWorldScene::addSkyBox()
 	skyBox->populateAsSolidBox( CC3Box( -boxSideLen, -boxSideLen, -boxSideLen, boxSideLen, boxSideLen, boxSideLen ) );
 	skyBox->setShouldCullBackFaces( false );
 //	skyBox->setDiffuseColor( ccc4f(0.4, 0.5, 0.9, 1.0) );
-	skyBox->setTexture( CC3Texture::textureCubeFromFilePattern( "EnvMap/sp3/sp3%s.jpg" ) ); 
-	skyBox->applyEffectNamedFromFile( "SkyBox", "EnvMap/EnvMap.pfx" );
+	skyBox->setTexture( CC3Texture::textureCubeFromFilePattern( "EnvMap/sp3/sp3%s.jpg" ) );
 	skyBox->setShouldCullFrontFaces( true );
 	skyBox->setDepthFunction( GL_LEQUAL );
 	skyBox->setShouldDisableDepthTest( false );
 	skyBox->setShouldUseClockwiseFrontFaceWinding( false );
 	skyBox->setShouldDisableDepthMask( true );
-
+    
+    CC3PFXEffect* pEffect = CC3PFXResource::getEffectNamedFromFile( "SkyBox", "EnvMap/EnvMap.pfx" );
+    if ( pEffect )
+        pEffect->applyTo( skyBox );
+    
 	addChild( skyBox );
 //	configNode( skyBox );
 }

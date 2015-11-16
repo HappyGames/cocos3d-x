@@ -80,6 +80,11 @@ void CC3PODSkinMeshNode::setPodMaterialIndex( GLint aPODIndex )
 	_podMaterialIndex = aPODIndex; 
 }
 
+PODStructPtr CC3PODSkinMeshNode::getNodePODStructAtIndex( GLuint aPODIndex, CC3PODResource* aPODRez )
+{
+    return aPODRez->getMeshNodePODStructAtIndex( aPODIndex );
+}
+
 /** 
  * Overridden to verify that the mesh is not constructed from triangle strips,
  * which are not compatible with the way that skin sections render mesh sections.
@@ -95,7 +100,39 @@ void CC3PODSkinMeshNode::setMesh( CC3Mesh* mesh )
 /** Overridden to extract the bone batches from the associated POD mesh structure */
 void CC3PODSkinMeshNode::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
-	super::initAtIndex( aPODIndex, aPODRez );
+    init();
+    
+    setPodIndex( aPODIndex );
+    
+    SPODNode* psn = (SPODNode*)getNodePODStructAtIndex( aPODIndex, aPODRez );
+    //LogRez(@"Creating %@ at index %i from: %@", [self class], aPODIndex, NSStringFromSPODNode(psn));
+    setName( psn->pszName );
+    setPodContentIndex( psn->nIdx );
+    setPodParentIndex( psn->nIdxParent );
+    
+    if ( psn->pfAnimPosition )
+        setLocation( *(CC3Vector*)psn->pfAnimPosition );
+    if ( psn->pfAnimRotation )
+        setQuaternion( *(CC3Quaternion*)psn->pfAnimRotation );
+    if ( psn->pfAnimScale )
+        setScale( *(CC3Vector*)psn->pfAnimScale );
+    
+    if ( CC3PODNodeAnimation::sPODNodeDoesContainAnimation((PODStructPtr)psn) )
+        setAnimation( CC3PODNodeAnimation::animationFromSPODNode( (PODStructPtr)psn, aPODRez->getAnimationFrameCount() ) );
+    else if (aPODRez->shouldFreezeInanimateNodes())
+        setAnimation( CC3FrozenNodeAnimation::animationFromNodeState( this ) );
+    
+    SPODNode* pmn = (SPODNode*)getNodePODStructAtIndex( aPODIndex, aPODRez );
+    
+    // If this node has a mesh, build it
+    if ( getPodContentIndex() >= 0 )
+        setMesh( aPODRez->getMeshAtIndex( getPodContentIndex() ) );
+    
+    // If this node has a material, build it
+    setPodMaterialIndex( pmn->nIdxMaterial );
+    if ( getPodMaterialIndex() >= 0)
+        setMaterial( aPODRez->getMaterialAtIndex( getPodMaterialIndex() ) );
+    
 	if ( getPodContentIndex() >= 0 )
 	{
 		SPODMesh* psm = (SPODMesh*)aPODRez->getMeshPODStructAtIndex( getPodContentIndex() );
@@ -130,8 +167,6 @@ CCObject* CC3PODSkinMeshNode::copyWithZone( CCZone* zone )
 /** Link the nodes in the bone batches. */
 void CC3PODSkinMeshNode::linkToPODNodes( CCArray* nodeArray )
 {
-	super::linkToPODNodes( nodeArray );
-
 	CCObject* pObj = NULL;
 	CCARRAY_FOREACH( _skinSections, pObj )
 	{
@@ -258,10 +293,34 @@ std::string CC3PODBone::description()
 	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
+void CC3PODBone::initAtIndex(GLint aPODIndex, cocos3d::CC3PODResource *aPODRez )
+{
+    init();
+    setPodIndex( aPODIndex );
+    
+    SPODNode* psn = (SPODNode*)aPODRez->getNodePODStructAtIndex( aPODIndex );
+    //LogRez(@"Creating %@ at index %i from: %@", [self class], aPODIndex, NSStringFromSPODNode(psn));
+    setName( psn->pszName );
+    setPodContentIndex( psn->nIdx );
+    setPodParentIndex( psn->nIdxParent );
+    
+    if ( psn->pfAnimPosition )
+        setLocation( *(CC3Vector*)psn->pfAnimPosition );
+    if ( psn->pfAnimRotation )
+        setQuaternion( *(CC3Quaternion*)psn->pfAnimRotation );
+    if ( psn->pfAnimScale )
+        setScale( *(CC3Vector*)psn->pfAnimScale );
+    
+    if ( CC3PODNodeAnimation::sPODNodeDoesContainAnimation((PODStructPtr)psn) )
+        setAnimation( CC3PODNodeAnimation::animationFromSPODNode( (PODStructPtr)psn, aPODRez->getAnimationFrameCount() ) );
+    else if (aPODRez->shouldFreezeInanimateNodes())
+        setAnimation( CC3FrozenNodeAnimation::animationFromNodeState( this ) );
+}
+
 CC3PODBone* CC3PODBone::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
 	CC3PODBone* pBone = new CC3PODBone;
-	pBone->initAtIndex( aPODIndex, aPODRez );
+    pBone->initAtIndex( aPODIndex, aPODRez );
 	pBone->autorelease();
 
 	return pBone;

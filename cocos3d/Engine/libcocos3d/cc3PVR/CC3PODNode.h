@@ -68,6 +68,8 @@ public:
 	 */
 	virtual GLint				getPodParentIndex();
 	virtual void				setPodParentIndex( GLint index );
+    
+    void                        initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
 
 	/**
 	 * Allocates and initializes an autoreleased instance from the data of

@@ -11,6 +11,27 @@
 		574AEB621BE32FDA006900FF /* CC3Box.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 574AEB601BE32FDA006900FF /* CC3Box.cpp */; };
 		574AEB651BE330F8006900FF /* CC3Face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 574AEB631BE330F8006900FF /* CC3Face.cpp */; };
 		574AEB681BE34BE1006900FF /* CC3Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 574AEB661BE34BE1006900FF /* CC3Plane.cpp */; };
+		57905FFB1BF97B06006AC3FF /* CC3NodeDrawingVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57905FF31BF97B06006AC3FF /* CC3NodeDrawingVisitor.cpp */; };
+		57905FFC1BF97B06006AC3FF /* CC3NodePickingVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57905FF51BF97B06006AC3FF /* CC3NodePickingVisitor.cpp */; };
+		57905FFD1BF97B06006AC3FF /* CC3NodePuncturingVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57905FF71BF97B06006AC3FF /* CC3NodePuncturingVisitor.cpp */; };
+		57905FFE1BF97B06006AC3FF /* CC3NodeUpdatingVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57905FF91BF97B06006AC3FF /* CC3NodeUpdatingVisitor.cpp */; };
+		57B216671BF980FD006F7E44 /* CC3Bone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B2165B1BF980FD006F7E44 /* CC3Bone.cpp */; };
+		57B216681BF980FD006F7E44 /* CC3DeformedFaceArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B2165D1BF980FD006F7E44 /* CC3DeformedFaceArray.cpp */; };
+		57B2166A1BF980FD006F7E44 /* CC3SkinMeshNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216611BF980FD006F7E44 /* CC3SkinMeshNode.cpp */; };
+		57B2166B1BF980FD006F7E44 /* CC3SkinnedBone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216631BF980FD006F7E44 /* CC3SkinnedBone.cpp */; };
+		57B2166C1BF980FD006F7E44 /* CC3SkinSection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216651BF980FD006F7E44 /* CC3SkinSection.cpp */; };
+		57B2168C1BF99454006F7E44 /* CC3DrawableVertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216781BF99454006F7E44 /* CC3DrawableVertexArray.cpp */; };
+		57B2168D1BF99454006F7E44 /* CC3VertexBoneIndices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B2167B1BF99454006F7E44 /* CC3VertexBoneIndices.cpp */; };
+		57B2168E1BF99454006F7E44 /* CC3VertexBoneWeights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B2167C1BF99454006F7E44 /* CC3VertexBoneWeights.cpp */; };
+		57B2168F1BF99454006F7E44 /* CC3VertexColors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B2167E1BF99454006F7E44 /* CC3VertexColors.cpp */; };
+		57B216901BF99454006F7E44 /* CC3VertexIndices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216801BF99454006F7E44 /* CC3VertexIndices.cpp */; };
+		57B216911BF99454006F7E44 /* CC3VertexLocations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216821BF99454006F7E44 /* CC3VertexLocations.cpp */; };
+		57B216921BF99454006F7E44 /* CC3VertexNormals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216841BF99454006F7E44 /* CC3VertexNormals.cpp */; };
+		57B216931BF99454006F7E44 /* CC3VertexPointSizes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216861BF99454006F7E44 /* CC3VertexPointSizes.cpp */; };
+		57B216941BF99454006F7E44 /* CC3VertexTagents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216881BF99454006F7E44 /* CC3VertexTagents.cpp */; };
+		57B216951BF99454006F7E44 /* CC3VertexTextureCoordinates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B2168A1BF99454006F7E44 /* CC3VertexTextureCoordinates.cpp */; };
+		57B216981BF9C3FE006F7E44 /* CC3PODVertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B216961BF9C3FE006F7E44 /* CC3PODVertexArray.cpp */; };
+		57B2169B1BF9D5D7006F7E44 /* CC3PODShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57B2169A1BF9D5D7006F7E44 /* CC3PODShader.cpp */; };
 		57C6D8AD1B5524F200A20893 /* CC3ActionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D8A71B5524F200A20893 /* CC3ActionManager.cpp */; };
 		57C6D8AE1B5524F200A20893 /* CC3Actions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D8A91B5524F200A20893 /* CC3Actions.cpp */; };
 		57C6D8AF1B5524F200A20893 /* CC3NodeAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D8AB1B5524F200A20893 /* CC3NodeAnimation.cpp */; };
@@ -75,7 +96,7 @@
 		57C6D9781B5525CF00A20893 /* CC3ProjectionMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D9701B5525CF00A20893 /* CC3ProjectionMatrix.cpp */; };
 		57C6D9821B5525DD00A20893 /* CC3Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D97A1B5525DD00A20893 /* CC3Mesh.cpp */; };
 		57C6D9841B5525DD00A20893 /* CC3VertexArrays.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D97E1B5525DD00A20893 /* CC3VertexArrays.cpp */; };
-		57C6D9851B5525DD00A20893 /* CC3VertexSkinning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D9801B5525DD00A20893 /* CC3VertexSkinning.cpp */; };
+		57C6D9851B5525DD00A20893 /* CC3SoftBodyNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D9801B5525DD00A20893 /* CC3SoftBodyNode.cpp */; };
 		57C6D9A01B5525E800A20893 /* CC3Billboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D9871B5525E800A20893 /* CC3Billboard.cpp */; };
 		57C6D9A11B5525E800A20893 /* CC3BitmapLabelNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D9891B5525E800A20893 /* CC3BitmapLabelNode.cpp */; };
 		57C6D9A21B5525E800A20893 /* CC3BoundingVolumes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57C6D98B1B5525E800A20893 /* CC3BoundingVolumes.cpp */; };
@@ -154,6 +175,48 @@
 		574AEB641BE330F8006900FF /* CC3Face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Face.h; path = ../Common/CC3Face.h; sourceTree = "<group>"; };
 		574AEB661BE34BE1006900FF /* CC3Plane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Plane.cpp; path = ../Common/CC3Plane.cpp; sourceTree = "<group>"; };
 		574AEB671BE34BE1006900FF /* CC3Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Plane.h; path = ../Common/CC3Plane.h; sourceTree = "<group>"; };
+		57905FF31BF97B06006AC3FF /* CC3NodeDrawingVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3NodeDrawingVisitor.cpp; path = ../Nodes/CC3NodeDrawingVisitor.cpp; sourceTree = "<group>"; };
+		57905FF41BF97B06006AC3FF /* CC3NodeDrawingVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3NodeDrawingVisitor.h; path = ../Nodes/CC3NodeDrawingVisitor.h; sourceTree = "<group>"; };
+		57905FF51BF97B06006AC3FF /* CC3NodePickingVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3NodePickingVisitor.cpp; path = ../Nodes/CC3NodePickingVisitor.cpp; sourceTree = "<group>"; };
+		57905FF61BF97B06006AC3FF /* CC3NodePickingVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3NodePickingVisitor.h; path = ../Nodes/CC3NodePickingVisitor.h; sourceTree = "<group>"; };
+		57905FF71BF97B06006AC3FF /* CC3NodePuncturingVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3NodePuncturingVisitor.cpp; path = ../Nodes/CC3NodePuncturingVisitor.cpp; sourceTree = "<group>"; };
+		57905FF81BF97B06006AC3FF /* CC3NodePuncturingVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3NodePuncturingVisitor.h; path = ../Nodes/CC3NodePuncturingVisitor.h; sourceTree = "<group>"; };
+		57905FF91BF97B06006AC3FF /* CC3NodeUpdatingVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3NodeUpdatingVisitor.cpp; path = ../Nodes/CC3NodeUpdatingVisitor.cpp; sourceTree = "<group>"; };
+		57905FFA1BF97B06006AC3FF /* CC3NodeUpdatingVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3NodeUpdatingVisitor.h; path = ../Nodes/CC3NodeUpdatingVisitor.h; sourceTree = "<group>"; };
+		57B2165B1BF980FD006F7E44 /* CC3Bone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Bone.cpp; path = ../Meshes/CC3Bone.cpp; sourceTree = "<group>"; };
+		57B2165C1BF980FD006F7E44 /* CC3Bone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Bone.h; path = ../Meshes/CC3Bone.h; sourceTree = "<group>"; };
+		57B2165D1BF980FD006F7E44 /* CC3DeformedFaceArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3DeformedFaceArray.cpp; path = ../Meshes/CC3DeformedFaceArray.cpp; sourceTree = "<group>"; };
+		57B2165E1BF980FD006F7E44 /* CC3DeformedFaceArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3DeformedFaceArray.h; path = ../Meshes/CC3DeformedFaceArray.h; sourceTree = "<group>"; };
+		57B216611BF980FD006F7E44 /* CC3SkinMeshNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3SkinMeshNode.cpp; path = ../Meshes/CC3SkinMeshNode.cpp; sourceTree = "<group>"; };
+		57B216621BF980FD006F7E44 /* CC3SkinMeshNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3SkinMeshNode.h; path = ../Meshes/CC3SkinMeshNode.h; sourceTree = "<group>"; };
+		57B216631BF980FD006F7E44 /* CC3SkinnedBone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3SkinnedBone.cpp; path = ../Meshes/CC3SkinnedBone.cpp; sourceTree = "<group>"; };
+		57B216641BF980FD006F7E44 /* CC3SkinnedBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3SkinnedBone.h; path = ../Meshes/CC3SkinnedBone.h; sourceTree = "<group>"; };
+		57B216651BF980FD006F7E44 /* CC3SkinSection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3SkinSection.cpp; path = ../Meshes/CC3SkinSection.cpp; sourceTree = "<group>"; };
+		57B216661BF980FD006F7E44 /* CC3SkinSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3SkinSection.h; path = ../Meshes/CC3SkinSection.h; sourceTree = "<group>"; };
+		57B216781BF99454006F7E44 /* CC3DrawableVertexArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3DrawableVertexArray.cpp; path = ../Meshes/CC3DrawableVertexArray.cpp; sourceTree = "<group>"; };
+		57B216791BF99454006F7E44 /* CC3DrawableVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3DrawableVertexArray.h; path = ../Meshes/CC3DrawableVertexArray.h; sourceTree = "<group>"; };
+		57B2167A1BF99454006F7E44 /* CC3VertexBoneIndices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexBoneIndices.h; path = ../Meshes/CC3VertexBoneIndices.h; sourceTree = "<group>"; };
+		57B2167B1BF99454006F7E44 /* CC3VertexBoneIndices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexBoneIndices.cpp; path = ../Meshes/CC3VertexBoneIndices.cpp; sourceTree = "<group>"; };
+		57B2167C1BF99454006F7E44 /* CC3VertexBoneWeights.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexBoneWeights.cpp; path = ../Meshes/CC3VertexBoneWeights.cpp; sourceTree = "<group>"; };
+		57B2167D1BF99454006F7E44 /* CC3VertexBoneWeights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexBoneWeights.h; path = ../Meshes/CC3VertexBoneWeights.h; sourceTree = "<group>"; };
+		57B2167E1BF99454006F7E44 /* CC3VertexColors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexColors.cpp; path = ../Meshes/CC3VertexColors.cpp; sourceTree = "<group>"; };
+		57B2167F1BF99454006F7E44 /* CC3VertexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexColors.h; path = ../Meshes/CC3VertexColors.h; sourceTree = "<group>"; };
+		57B216801BF99454006F7E44 /* CC3VertexIndices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexIndices.cpp; path = ../Meshes/CC3VertexIndices.cpp; sourceTree = "<group>"; };
+		57B216811BF99454006F7E44 /* CC3VertexIndices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexIndices.h; path = ../Meshes/CC3VertexIndices.h; sourceTree = "<group>"; };
+		57B216821BF99454006F7E44 /* CC3VertexLocations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexLocations.cpp; path = ../Meshes/CC3VertexLocations.cpp; sourceTree = "<group>"; };
+		57B216831BF99454006F7E44 /* CC3VertexLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexLocations.h; path = ../Meshes/CC3VertexLocations.h; sourceTree = "<group>"; };
+		57B216841BF99454006F7E44 /* CC3VertexNormals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexNormals.cpp; path = ../Meshes/CC3VertexNormals.cpp; sourceTree = "<group>"; };
+		57B216851BF99454006F7E44 /* CC3VertexNormals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexNormals.h; path = ../Meshes/CC3VertexNormals.h; sourceTree = "<group>"; };
+		57B216861BF99454006F7E44 /* CC3VertexPointSizes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexPointSizes.cpp; path = ../Meshes/CC3VertexPointSizes.cpp; sourceTree = "<group>"; };
+		57B216871BF99454006F7E44 /* CC3VertexPointSizes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexPointSizes.h; path = ../Meshes/CC3VertexPointSizes.h; sourceTree = "<group>"; };
+		57B216881BF99454006F7E44 /* CC3VertexTagents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexTagents.cpp; path = ../Meshes/CC3VertexTagents.cpp; sourceTree = "<group>"; };
+		57B216891BF99454006F7E44 /* CC3VertexTagents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexTagents.h; path = ../Meshes/CC3VertexTagents.h; sourceTree = "<group>"; };
+		57B2168A1BF99454006F7E44 /* CC3VertexTextureCoordinates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexTextureCoordinates.cpp; path = ../Meshes/CC3VertexTextureCoordinates.cpp; sourceTree = "<group>"; };
+		57B2168B1BF99454006F7E44 /* CC3VertexTextureCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexTextureCoordinates.h; path = ../Meshes/CC3VertexTextureCoordinates.h; sourceTree = "<group>"; };
+		57B216961BF9C3FE006F7E44 /* CC3PODVertexArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3PODVertexArray.cpp; path = ../cc3PVR/CC3PODVertexArray.cpp; sourceTree = "<group>"; };
+		57B216971BF9C3FE006F7E44 /* CC3PODVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3PODVertexArray.h; path = ../cc3PVR/CC3PODVertexArray.h; sourceTree = "<group>"; };
+		57B216991BF9D5D7006F7E44 /* CC3PODShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3PODShader.h; path = ../cc3PVR/CC3PODShader.h; sourceTree = "<group>"; };
+		57B2169A1BF9D5D7006F7E44 /* CC3PODShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3PODShader.cpp; path = ../cc3PVR/CC3PODShader.cpp; sourceTree = "<group>"; };
 		57C6D8A71B5524F200A20893 /* CC3ActionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3ActionManager.cpp; path = ../Animations/CC3ActionManager.cpp; sourceTree = "<group>"; };
 		57C6D8A81B5524F200A20893 /* CC3ActionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3ActionManager.h; path = ../Animations/CC3ActionManager.h; sourceTree = "<group>"; };
 		57C6D8A91B5524F200A20893 /* CC3Actions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Actions.cpp; path = ../Animations/CC3Actions.cpp; sourceTree = "<group>"; };
@@ -296,8 +359,8 @@
 		57C6D97B1B5525DD00A20893 /* CC3Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Mesh.h; path = ../Meshes/CC3Mesh.h; sourceTree = "<group>"; };
 		57C6D97E1B5525DD00A20893 /* CC3VertexArrays.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexArrays.cpp; path = ../Meshes/CC3VertexArrays.cpp; sourceTree = "<group>"; };
 		57C6D97F1B5525DD00A20893 /* CC3VertexArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexArrays.h; path = ../Meshes/CC3VertexArrays.h; sourceTree = "<group>"; };
-		57C6D9801B5525DD00A20893 /* CC3VertexSkinning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3VertexSkinning.cpp; path = ../Meshes/CC3VertexSkinning.cpp; sourceTree = "<group>"; };
-		57C6D9811B5525DD00A20893 /* CC3VertexSkinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3VertexSkinning.h; path = ../Meshes/CC3VertexSkinning.h; sourceTree = "<group>"; };
+		57C6D9801B5525DD00A20893 /* CC3SoftBodyNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3SoftBodyNode.cpp; path = ../Meshes/CC3SoftBodyNode.cpp; sourceTree = "<group>"; };
+		57C6D9811B5525DD00A20893 /* CC3SoftBodyNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3SoftBodyNode.h; path = ../Meshes/CC3SoftBodyNode.h; sourceTree = "<group>"; };
 		57C6D9871B5525E800A20893 /* CC3Billboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3Billboard.cpp; path = ../Nodes/CC3Billboard.cpp; sourceTree = "<group>"; };
 		57C6D9881B5525E800A20893 /* CC3Billboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CC3Billboard.h; path = ../Nodes/CC3Billboard.h; sourceTree = "<group>"; };
 		57C6D9891B5525E800A20893 /* CC3BitmapLabelNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CC3BitmapLabelNode.cpp; path = ../Nodes/CC3BitmapLabelNode.cpp; sourceTree = "<group>"; };
@@ -523,6 +586,71 @@
 			name = Math;
 			sourceTree = "<group>";
 		};
+		57905FF21BF97867006AC3FF /* visitiors */ = {
+			isa = PBXGroup;
+			children = (
+				57905FF31BF97B06006AC3FF /* CC3NodeDrawingVisitor.cpp */,
+				57905FF41BF97B06006AC3FF /* CC3NodeDrawingVisitor.h */,
+				57905FF51BF97B06006AC3FF /* CC3NodePickingVisitor.cpp */,
+				57905FF61BF97B06006AC3FF /* CC3NodePickingVisitor.h */,
+				57905FF71BF97B06006AC3FF /* CC3NodePuncturingVisitor.cpp */,
+				57905FF81BF97B06006AC3FF /* CC3NodePuncturingVisitor.h */,
+				57905FF91BF97B06006AC3FF /* CC3NodeUpdatingVisitor.cpp */,
+				57905FFA1BF97B06006AC3FF /* CC3NodeUpdatingVisitor.h */,
+				57C6D99C1B5525E800A20893 /* CC3NodeVisitor.cpp */,
+				57C6D99D1B5525E800A20893 /* CC3NodeVisitor.h */,
+			);
+			name = visitiors;
+			sourceTree = "<group>";
+		};
+		57B2165A1BF97EA2006F7E44 /* skinning */ = {
+			isa = PBXGroup;
+			children = (
+				57B2165B1BF980FD006F7E44 /* CC3Bone.cpp */,
+				57B2165C1BF980FD006F7E44 /* CC3Bone.h */,
+				57B2165D1BF980FD006F7E44 /* CC3DeformedFaceArray.cpp */,
+				57B2165E1BF980FD006F7E44 /* CC3DeformedFaceArray.h */,
+				57B216611BF980FD006F7E44 /* CC3SkinMeshNode.cpp */,
+				57B216621BF980FD006F7E44 /* CC3SkinMeshNode.h */,
+				57B216631BF980FD006F7E44 /* CC3SkinnedBone.cpp */,
+				57B216641BF980FD006F7E44 /* CC3SkinnedBone.h */,
+				57B216651BF980FD006F7E44 /* CC3SkinSection.cpp */,
+				57B216661BF980FD006F7E44 /* CC3SkinSection.h */,
+				57C6D9801B5525DD00A20893 /* CC3SoftBodyNode.cpp */,
+				57C6D9811B5525DD00A20893 /* CC3SoftBodyNode.h */,
+			);
+			name = skinning;
+			sourceTree = "<group>";
+		};
+		57B216771BF98E0E006F7E44 /* vertexArrays */ = {
+			isa = PBXGroup;
+			children = (
+				57B216781BF99454006F7E44 /* CC3DrawableVertexArray.cpp */,
+				57B216791BF99454006F7E44 /* CC3DrawableVertexArray.h */,
+				57B2167B1BF99454006F7E44 /* CC3VertexBoneIndices.cpp */,
+				57B2167A1BF99454006F7E44 /* CC3VertexBoneIndices.h */,
+				57B2167C1BF99454006F7E44 /* CC3VertexBoneWeights.cpp */,
+				57B2167D1BF99454006F7E44 /* CC3VertexBoneWeights.h */,
+				57B2167E1BF99454006F7E44 /* CC3VertexColors.cpp */,
+				57B2167F1BF99454006F7E44 /* CC3VertexColors.h */,
+				57B216801BF99454006F7E44 /* CC3VertexIndices.cpp */,
+				57B216811BF99454006F7E44 /* CC3VertexIndices.h */,
+				57B216821BF99454006F7E44 /* CC3VertexLocations.cpp */,
+				57B216831BF99454006F7E44 /* CC3VertexLocations.h */,
+				57B216841BF99454006F7E44 /* CC3VertexNormals.cpp */,
+				57B216851BF99454006F7E44 /* CC3VertexNormals.h */,
+				57B216861BF99454006F7E44 /* CC3VertexPointSizes.cpp */,
+				57B216871BF99454006F7E44 /* CC3VertexPointSizes.h */,
+				57B216881BF99454006F7E44 /* CC3VertexTagents.cpp */,
+				57B216891BF99454006F7E44 /* CC3VertexTagents.h */,
+				57B2168A1BF99454006F7E44 /* CC3VertexTextureCoordinates.cpp */,
+				57B2168B1BF99454006F7E44 /* CC3VertexTextureCoordinates.h */,
+				57C6D97E1B5525DD00A20893 /* CC3VertexArrays.cpp */,
+				57C6D97F1B5525DD00A20893 /* CC3VertexArrays.h */,
+			);
+			name = vertexArrays;
+			sourceTree = "<group>";
+		};
 		57C6D8B01B55250900A20893 /* cc3Extras */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,8 +689,12 @@
 				57C6D8CE1B55252A00A20893 /* CC3PODResource.h */,
 				57C6D8CF1B55252A00A20893 /* CC3PODResourceNode.cpp */,
 				57C6D8D01B55252A00A20893 /* CC3PODResourceNode.h */,
+				57B2169A1BF9D5D7006F7E44 /* CC3PODShader.cpp */,
+				57B216991BF9D5D7006F7E44 /* CC3PODShader.h */,
 				57C6D8D11B55252A00A20893 /* CC3PODVertexSkinning.cpp */,
 				57C6D8D21B55252A00A20893 /* CC3PODVertexSkinning.h */,
+				57B216961BF9C3FE006F7E44 /* CC3PODVertexArray.cpp */,
+				57B216971BF9C3FE006F7E44 /* CC3PODVertexArray.h */,
 				57C6D8D31B55252A00A20893 /* CC3PVRFoundation.cpp */,
 				57C6D8D41B55252A00A20893 /* CC3PVRFoundation.h */,
 				57C6D8D51B55252A00A20893 /* CC3PVROpenGLFoundation.h */,
@@ -695,12 +827,10 @@
 		57C6D9791B5525D100A20893 /* meshes */ = {
 			isa = PBXGroup;
 			children = (
+				57B216771BF98E0E006F7E44 /* vertexArrays */,
+				57B2165A1BF97EA2006F7E44 /* skinning */,
 				57C6D97A1B5525DD00A20893 /* CC3Mesh.cpp */,
 				57C6D97B1B5525DD00A20893 /* CC3Mesh.h */,
-				57C6D97E1B5525DD00A20893 /* CC3VertexArrays.cpp */,
-				57C6D97F1B5525DD00A20893 /* CC3VertexArrays.h */,
-				57C6D9801B5525DD00A20893 /* CC3VertexSkinning.cpp */,
-				57C6D9811B5525DD00A20893 /* CC3VertexSkinning.h */,
 			);
 			name = meshes;
 			sourceTree = "<group>";
@@ -708,6 +838,7 @@
 		57C6D9861B5525DF00A20893 /* nodes */ = {
 			isa = PBXGroup;
 			children = (
+				57905FF21BF97867006AC3FF /* visitiors */,
 				57C6D9871B5525E800A20893 /* CC3Billboard.cpp */,
 				57C6D9881B5525E800A20893 /* CC3Billboard.h */,
 				57C6D9891B5525E800A20893 /* CC3BitmapLabelNode.cpp */,
@@ -729,8 +860,6 @@
 				57C6D9991B5525E800A20893 /* CC3Node.h */,
 				57C6D99A1B5525E800A20893 /* CC3NodeListeners.cpp */,
 				57C6D99B1B5525E800A20893 /* CC3NodeListeners.h */,
-				57C6D99C1B5525E800A20893 /* CC3NodeVisitor.cpp */,
-				57C6D99D1B5525E800A20893 /* CC3NodeVisitor.h */,
 				57C6D99E1B5525E800A20893 /* CC3UtilityMeshNodes.cpp */,
 				57C6D99F1B5525E800A20893 /* CC3UtilityMeshNodes.h */,
 			);
@@ -965,6 +1094,7 @@
 				57C6D9441B55258800A20893 /* CC3Foundation.cpp in Sources */,
 				57C6DA231B5526D300A20893 /* CC3Layer.cpp in Sources */,
 				57C6D8E51B55252A00A20893 /* CC3PODResourceNode.cpp in Sources */,
+				57905FFD1BF97B06006AC3FF /* CC3NodePuncturingVisitor.cpp in Sources */,
 				57C6D9721B5525CF00A20893 /* CC3AffineMatrix.cpp in Sources */,
 				57C6D95F1B5525C100A20893 /* CC3STBImage.cpp in Sources */,
 				57C6D8BD1B55251A00A20893 /* CC3PointParticleSamples.cpp in Sources */,
@@ -977,6 +1107,8 @@
 				57C6D9A81B5525E800A20893 /* CC3Node.cpp in Sources */,
 				57C6D9191B55254000A20893 /* PVRTStringHash.cpp in Sources */,
 				57C6D9771B5525CF00A20893 /* CC3Matrix4x4.cpp in Sources */,
+				57B216681BF980FD006F7E44 /* CC3DeformedFaceArray.cpp in Sources */,
+				57B216981BF9C3FE006F7E44 /* CC3PODVertexArray.cpp in Sources */,
 				57C6D9181B55254000A20893 /* PVRTString.cpp in Sources */,
 				57C6D9471B55258800A20893 /* CC3String.cpp in Sources */,
 				57C6D9A51B5525E800A20893 /* CC3Light.cpp in Sources */,
@@ -986,6 +1118,7 @@
 				57C6DA261B5526D300A20893 /* CC3Scene.cpp in Sources */,
 				57C6D9491B55258800A20893 /* CC3Vector4.cpp in Sources */,
 				574AEB621BE32FDA006900FF /* CC3Box.cpp in Sources */,
+				57B2169B1BF9D5D7006F7E44 /* CC3PODShader.cpp in Sources */,
 				57C6D9BB1B55260000A20893 /* CC3OpenGLUtility.cpp in Sources */,
 				57C6D9A71B5525E800A20893 /* CC3MeshNode.cpp in Sources */,
 				57C6D9251B55255C00A20893 /* PVRTTextureAPI.cpp in Sources */,
@@ -994,16 +1127,21 @@
 				57C6D9821B5525DD00A20893 /* CC3Mesh.cpp in Sources */,
 				57C6D9241B55255C00A20893 /* PVRTgles2Ext.cpp in Sources */,
 				57C6D8DF1B55252A00A20893 /* CC3PODLight.cpp in Sources */,
+				57B216911BF99454006F7E44 /* CC3VertexLocations.cpp in Sources */,
 				57C6D9DC1B55262800A20893 /* CC3MeshParticleEmitter.cpp in Sources */,
+				57B216931BF99454006F7E44 /* CC3VertexPointSizes.cpp in Sources */,
 				57C6D9E01B55262800A20893 /* CC3PointParticle.cpp in Sources */,
 				57C6D9DB1B55262800A20893 /* CC3MeshParticle.cpp in Sources */,
 				57C6D9781B5525CF00A20893 /* CC3ProjectionMatrix.cpp in Sources */,
+				57905FFC1BF97B06006AC3FF /* CC3NodePickingVisitor.cpp in Sources */,
 				57C6D9531B55259E00A20893 /* Joystick.cpp in Sources */,
 				57C6D9DA1B55262800A20893 /* CC3CVAParticleEmitter.cpp in Sources */,
+				57B216951BF99454006F7E44 /* CC3VertexTextureCoordinates.cpp in Sources */,
 				57C6D9C51B55261C00A20893 /* CC3OpenGLES2.cpp in Sources */,
 				57C6D9A31B5525E800A20893 /* CC3Camera.cpp in Sources */,
 				57C6D9AA1B5525E800A20893 /* CC3NodeVisitor.cpp in Sources */,
 				57EB68011BF5F1AA002CFDA4 /* CC3FrozenNodeAnimation.cpp in Sources */,
+				57B216921BF99454006F7E44 /* CC3VertexNormals.cpp in Sources */,
 				57C6D8BC1B55251A00A20893 /* CC3ParticleSamples.cpp in Sources */,
 				57C6D9151B55254000A20893 /* PVRTPFXParser.cpp in Sources */,
 				57C6D9461B55258800A20893 /* CC3Platform.cpp in Sources */,
@@ -1012,17 +1150,20 @@
 				57C6D9741B5525CF00A20893 /* CC3Matrix.cpp in Sources */,
 				57C6D9DD1B55262800A20893 /* CC3Particle.cpp in Sources */,
 				57C6D9621B5525C100A20893 /* stb_image.c in Sources */,
+				57B216671BF980FD006F7E44 /* CC3Bone.cpp in Sources */,
 				57C6D9141B55254000A20893 /* PVRTModelPOD.cpp in Sources */,
 				57C6D91C1B55254000A20893 /* PVRTVector.cpp in Sources */,
 				57C6DA081B5526B600A20893 /* CC3Rotator.cpp in Sources */,
 				57C6D8AE1B5524F200A20893 /* CC3Actions.cpp in Sources */,
 				57C6D92B1B55256800A20893 /* PVRTTextureAPI.cpp in Sources */,
 				57C6D8BB1B55251A00A20893 /* CC3ModelSampleFactory.cpp in Sources */,
+				57B2166C1BF980FD006F7E44 /* CC3SkinSection.cpp in Sources */,
 				57C6DA161B5526CA00A20893 /* CC3GLSLVariable.cpp in Sources */,
 				57C6D9C01B55260E00A20893 /* CC3OpenGL2.cpp in Sources */,
 				57C6D9E11B55262800A20893 /* CC3PointParticleEmitter.cpp in Sources */,
 				574AEB681BE34BE1006900FF /* CC3Plane.cpp in Sources */,
 				57C6DA041B5526B600A20893 /* CC3Cache.cpp in Sources */,
+				57B2168F1BF99454006F7E44 /* CC3VertexColors.cpp in Sources */,
 				57C6D9111B55254000A20893 /* PVRTError.cpp in Sources */,
 				57C6D91A1B55254000A20893 /* PVRTTexture.cpp in Sources */,
 				57C6D9EF1B55266400A20893 /* CC3NodesResource.cpp in Sources */,
@@ -1032,14 +1173,17 @@
 				57C6D9611B5525C100A20893 /* CC3TextureUnit.cpp in Sources */,
 				57C6D8E61B55252A00A20893 /* CC3PODVertexSkinning.cpp in Sources */,
 				57C6D9DE1B55262800A20893 /* CC3ParticleEmitter.cpp in Sources */,
-				57C6D9851B5525DD00A20893 /* CC3VertexSkinning.cpp in Sources */,
+				57B2168C1BF99454006F7E44 /* CC3DrawableVertexArray.cpp in Sources */,
+				57C6D9851B5525DD00A20893 /* CC3SoftBodyNode.cpp in Sources */,
 				57C6D8DE1B55252A00A20893 /* CC3PODCamera.cpp in Sources */,
 				57C6DA051B5526B600A20893 /* CC3DataArray.cpp in Sources */,
 				57C6D8BA1B55251A00A20893 /* CC3MeshParticleSamples.cpp in Sources */,
+				57B2168D1BF99454006F7E44 /* CC3VertexBoneIndices.cpp in Sources */,
 				57C6DA1A1B5526CA00A20893 /* CC3ShaderSemantics.cpp in Sources */,
 				57C6D9F11B55266400A20893 /* CC3ResourceNode.cpp in Sources */,
 				57C6D8E91B55252A00A20893 /* CC3PVRTexture.cpp in Sources */,
 				57C6D9601B5525C100A20893 /* CC3Texture.cpp in Sources */,
+				57905FFE1BF97B06006AC3FF /* CC3NodeUpdatingVisitor.cpp in Sources */,
 				57C6D8AD1B5524F200A20893 /* CC3ActionManager.cpp in Sources */,
 				57C6D9B91B55260000A20893 /* CC3OpenGLFoundation.cpp in Sources */,
 				57C6D9481B55258800A20893 /* CC3Vector.cpp in Sources */,
@@ -1048,9 +1192,13 @@
 				57C6D9131B55254000A20893 /* PVRTMatrixF.cpp in Sources */,
 				57C6D9EE1B55266400A20893 /* CC3DataStreams.cpp in Sources */,
 				57C6D92A1B55256800A20893 /* PVRTglesExt.cpp in Sources */,
+				57B2166A1BF980FD006F7E44 /* CC3SkinMeshNode.cpp in Sources */,
 				57C6DA291B55276C00A20893 /* cocos3d.cpp in Sources */,
+				57B216941BF99454006F7E44 /* CC3VertexTagents.cpp in Sources */,
+				57B2166B1BF980FD006F7E44 /* CC3SkinnedBone.cpp in Sources */,
 				57C6D8E01B55252A00A20893 /* CC3PODMaterial.cpp in Sources */,
 				57C6D9A61B5525E800A20893 /* CC3LocalContentNode.cpp in Sources */,
+				57905FFB1BF97B06006AC3FF /* CC3NodeDrawingVisitor.cpp in Sources */,
 				57C6D8E31B55252A00A20893 /* CC3PODNode.cpp in Sources */,
 				57C6D8E71B55252A00A20893 /* CC3PVRFoundation.cpp in Sources */,
 				57C6D8E21B55252A00A20893 /* CC3PODMeshNode.cpp in Sources */,
@@ -1064,6 +1212,8 @@
 				57C6D9A41B5525E800A20893 /* CC3EnvironmentNodes.cpp in Sources */,
 				57C6D9171B55254000A20893 /* PVRTResourceFile.cpp in Sources */,
 				57C6DA171B5526CA00A20893 /* CC3ShaderContext.cpp in Sources */,
+				57B2168E1BF99454006F7E44 /* CC3VertexBoneWeights.cpp in Sources */,
+				57B216901BF99454006F7E44 /* CC3VertexIndices.cpp in Sources */,
 				57C6D9F01B55266400A20893 /* CC3Resource.cpp in Sources */,
 				57C6D9B71B55260000A20893 /* CC3OpenGL.cpp in Sources */,
 				57C6D9731B5525CF00A20893 /* CC3LinearMatrix.cpp in Sources */,

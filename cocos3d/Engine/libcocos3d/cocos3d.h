@@ -76,13 +76,33 @@
 #include "Nodes/CC3MeshNode.h"
 #include "Nodes/CC3BitmapLabelNode.h"
 #include "Nodes/CC3NodeVisitor.h"
+#include "Nodes/CC3NodeDrawingVisitor.h"
+#include "Nodes/CC3NodePickingVisitor.h"
+#include "Nodes/CC3NodePuncturingVisitor.h"
+#include "Nodes/CC3NodeUpdatingVisitor.h"
 #include "Nodes/CC3UtilityMeshNodes.h"
 #include "Nodes/CC3Billboard.h"
 
 /// meshes
 #include "Meshes/CC3VertexArrays.h"
+#include "Meshes/CC3DrawableVertexArray.h"
+#include "Meshes/CC3VertexLocations.h"
+#include "Meshes/CC3VertexNormals.h"
+#include "Meshes/CC3VertexTagents.h"
+#include "Meshes/CC3VertexTextureCoordinates.h"
+#include "Meshes/CC3VertexColors.h"
+#include "Meshes/CC3VertexBoneIndices.h"
+#include "Meshes/CC3VertexBoneWeights.h"
+#include "Meshes/CC3VertexPointSizes.h"
+#include "Meshes/CC3VertexIndices.h"
+
 #include "Meshes/CC3Mesh.h"
-#include "Meshes/CC3VertexSkinning.h"
+#include "Meshes/CC3SoftBodyNode.h"
+#include "Meshes/CC3Bone.h"
+#include "Meshes/CC3SkinMeshNode.h"
+#include "Meshes/CC3DeformedFaceArray.h"
+#include "Meshes/CC3SkinSection.h"
+#include "Meshes/CC3SkinnedBone.h"
 
 /// Animation
 #include "Animations/CC3Actions.h"
@@ -113,10 +133,12 @@
 #include "Materials/CC3TextureUnit.h"
 
 /// cc3PVR
+#include "cc3PVR/CC3PVRFoundation.h"
 #include "cc3PVR/CC3PVROpenGLFoundation.h"
 #include "cc3PVR/CC3PVRTPFXParser.h"
 #include "cc3PVR/CC3PFXResource.h"
 #include "cc3PVR/CC3PODResource.h"
+#include "cc3PVR/CC3PODVertexArray.h"
 #include "cc3PVR/CC3PODCamera.h"
 #include "cc3PVR/CC3PODResourceNode.h"
 #include "cc3PVR/CC3PODLight.h"
@@ -124,13 +146,13 @@
 #include "cc3PVR/CC3PODNode.h"
 #include "cc3PVR/CC3PODResourceNode.h"
 #include "cc3PVR/CC3PODVertexSkinning.h"
-#include "cc3PVR/CC3PVRFoundation.h"
 #include "cc3PVR/CC3PVRShamanShaderSemantics.h"
 #include "cc3PVR/CC3PVRTexture.h"
 #include "cc3PVR/CC3PVRTModelPOD.h"
 #include "cc3PVR/CC3PVRTTexture.h"
 #include "cc3PVR/CC3PODMaterial.h"
 #include "cc3PVR/CC3PODMeshNode.h"
+#include "cc3PVR/CC3PODShader.h"
 
 /// controls
 #include "Controls/CCNodeAdornments.h"
@@ -171,6 +193,5 @@
 
 /// shadows
 #include "Shadows/CC3ShadowVolumes.h"
-
 
 #endif

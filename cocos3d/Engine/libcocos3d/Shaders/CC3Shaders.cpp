@@ -389,21 +389,6 @@ std::string CC3Shader::loadedShadersDescription()
 	return "";
 }
 
-CC3Shader* CC3Shader::shaderFromPFXShader( PFXClassPtr pSPVRTPFXParserShader, CC3PFXResource* pfxRez )
-{
-	SPVRTPFXParserShader* pfxShader = (SPVRTPFXParserShader*)pSPVRTPFXParserShader;
-	if (pfxShader->bUseFileName) {
-		// Load the shader from the file
-		std::string shaderFilePath = pfxShader->pszGLSLfile;
-		return shaderFromSourceCodeFile( shaderFilePath );
-	} else {
-		// Derive the shader name as a combination of the PFX resource name and the local shader name.
-		std::string shaderName = CC3String::stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
-		std::string shSrcStr = pfxShader->pszGLSLcode;
-		return shaderWithName( shaderName, shSrcStr );
-	}
-}
-
 CC3VertexShader* CC3VertexShader::shaderFromSourceCodeFile( const std::string& filePath )
 {
 	CC3VertexShader* shader = (CC3VertexShader*)getShaderNamed( CC3ShaderSourceCode::shaderSourceCodeNameFromFilePath( filePath ) );
@@ -426,24 +411,6 @@ CC3VertexShader* CC3VertexShader::shaderFromSourceCodeFile( const std::string& f
 GLenum CC3VertexShader::getShaderType()
 {
 	return GL_VERTEX_SHADER; 
-}
-
-CC3VertexShader* CC3VertexShader::shaderFromPFXShader( PFXClassPtr pSPVRTPFXParserShader, CC3PFXResource* pfxRez )
-{
-	SPVRTPFXParserShader* pfxShader = (SPVRTPFXParserShader*)pSPVRTPFXParserShader;
-	if ( pfxShader->bUseFileName ) 
-	{
-		// Load the shader from the file
-		std::string shaderFilePath = pfxShader->pszGLSLfile;
-		return shaderFromSourceCodeFile( shaderFilePath );
-	}
-	else 
-	{
-		// Derive the shader name as a combination of the PFX resource name and the local shader name.
-		std::string shaderName = CC3String::stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
-		std::string shSrcStr = pfxShader->pszGLSLcode;
-		return CC3VertexShader::shaderWithName( shaderName, shSrcStr );
-	}
 }
 
 // We don't delegate to shaderFromShaderSource: by retrieving the shader source, because the
@@ -500,21 +467,6 @@ CC3FragmentShader* CC3FragmentShader::shaderWithName( const std::string& name, c
 	shader->autorelease();
 	addShader( shader );
 	return shader;
-}
-
-CC3FragmentShader* CC3FragmentShader::shaderFromPFXShader( PFXClassPtr pSPVRTPFXParserShader, CC3PFXResource* pfxRez )
-{
-	SPVRTPFXParserShader* pfxShader = (SPVRTPFXParserShader*)pSPVRTPFXParserShader;
-	if (pfxShader->bUseFileName) {
-		// Load the shader from the file
-		std::string shaderFilePath = pfxShader->pszGLSLfile;
-		return shaderFromSourceCodeFile( shaderFilePath );
-	} else {
-		// Derive the shader name as a combination of the PFX resource name and the local shader name.
-		std::string shaderName = CC3String::stringWithFormat( (char*)"%s-%s", pfxRez->getName().c_str(), pfxShader->Name.c_str() );
-		std::string shSrcStr = pfxShader->pszGLSLcode;
-		return shaderWithName( shaderName, shSrcStr );
-	}
 }
 
 CC3ShaderProgram::CC3ShaderProgram()

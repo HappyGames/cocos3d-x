@@ -31,6 +31,16 @@
 
 NS_COCOS3D_BEGIN
 
+enum PodResourceNodeType
+{
+    kTypeMeshNode       = 1,
+    kTypeSkinMeshNode   = 2,
+    kTypeLight          = 3,
+    kTypeCamera         = 4,
+    kTypeBone           = 5,
+    kTypeNode           = 6,
+};
+
 CC3PODResource::CC3PODResource()
 {
 	_allNodes = NULL;
@@ -309,14 +319,97 @@ void CC3PODResource::buildNodes()
 	// Link the nodes with each other. This includes assembling the nodes into a structural
 	// parent-child hierarchy, and connecting targetting nodes with their targets.
 	// Base nodes, which have no parent, form the entries of the nodes array.
-	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _allNodes, pObj )
-	{
-		CC3Node* aNode = (CC3Node*)pObj;
-		aNode->linkToPODNodes( _allNodes );
-		if ( aNode->isBasePODNode() )
-			addNode( aNode );
-	}
+//	CCObject* pObj = NULL;
+//	CCARRAY_FOREACH( _allNodes, pObj )
+//	{
+//		CC3Node* aNode = (CC3Node*)pObj;
+//		aNode->linkToPODNodes( _allNodes );
+//		if ( aNode->isBasePODNode() )
+//			addNode( aNode );
+//	}
+    
+    for (GLuint i = 0; i < nCount; i++)
+    {
+        int nodeType = getNodeType( i );
+        switch (nodeType)
+        {
+            case kTypeMeshNode:
+            {
+                CC3PODMeshNode* pNode = dynamic_cast<CC3PODMeshNode*>( _allNodes->objectAtIndex(i) );
+                if ( pNode )
+                {
+                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
+                    if ( pNode->getPodParentIndex() < 0 )
+                        addNode( pNode );
+                }
+                
+                break;
+            }
+            case kTypeSkinMeshNode:
+            {
+                CC3PODSkinMeshNode* pNode = dynamic_cast<CC3PODSkinMeshNode*>( _allNodes->objectAtIndex(i) );
+                if ( pNode )
+                {
+                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
+                    pNode->linkToPODNodes( _allNodes );
+                    if ( pNode->getPodParentIndex() < 0 )
+                        addNode( pNode );
+                }
+
+                break;
+            }
+            case kTypeCamera:
+            {
+                CC3PODCamera* pNode = dynamic_cast<CC3PODCamera*>( _allNodes->objectAtIndex(i) );
+                if ( pNode )
+                {
+                    linkToPODNodes( pNode, pNode->getPodParentIndex(), pNode->getPodTargetIndex(), _allNodes );
+                    if ( pNode->getPodParentIndex() < 0 )
+                        addNode( pNode );
+                }
+
+                break;
+            }
+            case kTypeLight:
+            {
+                CC3PODLight* pNode = dynamic_cast<CC3PODLight*>( _allNodes->objectAtIndex(i) );
+                if ( pNode )
+                {
+                    linkToPODNodes( pNode, pNode->getPodParentIndex(), pNode->getPodTargetIndex(), _allNodes );
+                    if ( pNode->getPodParentIndex() < 0 )
+                        addNode( pNode );
+                }
+
+                break;
+            }
+            case kTypeBone:
+            {
+                CC3PODBone* pNode = dynamic_cast<CC3PODBone*>( _allNodes->objectAtIndex(i) );
+                if ( pNode )
+                {
+                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
+                    if ( pNode->getPodParentIndex() < 0 )
+                        addNode( pNode );
+                }
+                
+                break;
+            }
+            case kTypeNode:
+            {
+                CC3PODNode* pNode = dynamic_cast<CC3PODNode*>( _allNodes->objectAtIndex(i) );
+                if ( pNode )
+                {
+                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
+                    if ( pNode->getPodParentIndex() < 0 )
+                        addNode( pNode );
+                }
+                
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 CC3Node* CC3PODResource::buildNodeAtIndex( GLuint nodeIndex )
@@ -647,31 +740,48 @@ PODStructPtr CC3PODResource::getTexturePODStructAtIndex( GLuint textureIndex )
 	return &getPvrtModelImpl()->pTexture[textureIndex];
 }
 
-#if 0
-#pragma mark Content classes
+int CC3PODResource::getNodeType( GLuint podIndex )
+{
+    // Mesh nodes are arranged first
+    if ( podIndex < getMeshNodeCount() )
+    {
+        SPODNode* psn = (SPODNode*)getMeshNodePODStructAtIndex( podIndex );
+        SPODMesh* psm = (SPODMesh*)getMeshPODStructAtIndex( psn->nIdx );
+        if ( psm->sBoneBatches.nBatchCnt )
+            return kTypeSkinMeshNode;
+        
+        return kTypeMeshNode;
+    }
+    
+    // Then light nodes
+    if ( podIndex < getMeshNodeCount() + getLightCount() )
+        return kTypeLight;
+    
+    // Then camera nodes
+    if ( podIndex < getMeshNodeCount() + getLightCount() + getCameraCount() )
+        return kTypeCamera;
+    
+    // Finally general nodes, including structural nodes or targets for lights or cameras
+    if ( isBoneNode( podIndex ) )
+        return kTypeBone;
+    
+    return kTypeNode;
+}
 
--(Class) structuralNodeClass { return [CC3PODNode class]; }
-
--(Class) meshNodeClass { return [CC3PODMeshNode class]; }
-
--(Class) meshClass { return [CC3PODMesh class]; }
-
--(Class) materialClass { return [CC3PODMaterial class]; }
-
--(Class) skinMeshNodeClass { return [CC3PODSkinMeshNode class]; }
-
--(Class) boneNodeClass { return [CC3PODBone class]; }
-
--(Class) softBodyNodeClass { return [CC3SoftBodyNode class]; }
-
--(Class) lightClass { return [CC3PODLight class]; }
-
--(Class) cameraClass { return [CC3PODCamera class]; }
-
--(Class) pfxResourceClass { return [CC3PFXResource class]; }
-
-@end
-#endif
+void CC3PODResource::linkToPODNodes( CC3Node *pNode, int parentIndex, int targetIndex, CCArray* nodeArray )
+{
+    if ( parentIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with parent index %i", self, self.podParentIndex);
+        CC3Node* parentNode = (CC3Node*)nodeArray->objectAtIndex( parentIndex );
+        parentNode->addChild( pNode );
+    }
+    if ( targetIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with target index %i", self, self.podTargetIndex);
+        pNode->setTarget( (CC3Node*)nodeArray->objectAtIndex( targetIndex ) );
+    }
+}
 
 CC3PODResource* CC3PODResource::resourceFromFile( const std::string& filePath )
 {

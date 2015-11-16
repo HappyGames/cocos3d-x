@@ -199,6 +199,9 @@ public:
 	GLchar*						getShaderCode( SPVRTPFXParserShader* pfxShader );
 	/** Returns a string description of this effect. */
 	std::string					description();
+    
+	/** Applies the effect to a CC3MesnNode */
+    void                        applyTo( CC3MeshNode* pMeshNode );
 
 protected:
 	std::string					_name;

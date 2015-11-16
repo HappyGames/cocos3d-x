@@ -29,7 +29,6 @@
  */
 #ifndef _CCL_CC3NODE_H_
 #define _CCL_CC3NODE_H_
-#include "../cc3PVR/CC3PVRFoundation.h"
 
 NS_COCOS3D_BEGIN
 
@@ -5199,100 +5198,6 @@ public:
 	virtual ccColor4F			getInitialWireframeBoxColor();
 
 	virtual std::string			description();
-
-	//////////////////////////////////////////////////////////////////////////
-	/** Extensions to CC3Node to support PVR POD data. */
-	
-	/**
-	 * The index of the POD data that forms the type-specific content of this node.
-	 *
-	 * This is distinct from the podIndex property, which is the index of the data
-	 * for the node, which may be of any node type. Once the type is established,
-	 * the type-specific content is indexed by the podContentIndex property.
-	 *
-	 * This abstract implementation does not map this property to an instance
-	 * variable, and always returns kCC3PODNilIndex. Concrete subclasses must
-	 * override to map to an actual instance variable.
-	 */
-	virtual GLint				getPodContentIndex();
-	virtual void				setPodContentIndex( GLint index );
-
-	/**
-	 * The index of the parent node of this node.
-	 * This will be -1 if this node has no parent.
-	 *
-	 * This abstract implementation does not map this property to an instance
-	 * variable, and always returns kCC3PODNilIndex. Concrete subclasses must
-	 * override to map to an actual instance variable.
-	 */
-	virtual GLint				getPodParentIndex();
-	virtual void				setPodParentIndex( GLint index );
-
-	/**
-	 * The index of the node that is the target of this node.
-	 * This node will be linked to its target in the linkToPODNodes: method.
-	 *
-	 * This abstract implementation does not map this property to an instance
-	 * variable, and always returns kCC3PODNilIndex. Concrete subclasses must
-	 * override to map to an actual instance variable.
-	 */
-	virtual GLint				getPodTargetIndex();
-	virtual void				setPodTargetIndex( GLint index );
-
-	virtual GLuint				getPodUserDataSize();
-	virtual void				setPodUserDataSize( GLuint size );
-
-	/** Indicates whether this POD is a base node, meaning that it has no parent. */
-	virtual bool				isBasePODNode();
-
-	virtual void				initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
-
-	/**
-	 * Allocates and initializes an autoreleased instance from the data of
-	 * this type at the specified index within the specified POD resource.
-	 */
-	static CC3Node*				nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
-
-	/**
-	 * Returns the underlying SPODNode data structure from the specified resource,
-	 * for the SPODNode at the specified index.
-	 *
-	 * The returned pointer must be cast to SPODNode before accessing any internals
-	 * of the data structure.
-	 */
-	virtual PODStructPtr		getNodePODStructAtIndex( GLuint aPODIndex, CC3PODResource* aPODRez );
-
-	/**
-	 * Create links to the nodes in the specified array.
-	 *
-	 * This implementation attaches this node to its parent as identified by the
-	 * podParentIndex property. Subclasses may override to perform other linking.
-	 */
-	virtual void				linkToPODNodes( CCArray* nodeArray );
-
-	/**
-	 * Applies the PFX effect with the specified name, found in the cached CC3PFXResource with the
-	 * specifed name, to all descendant mesh nodes.
-	 *
-	 * Sets the shader program to that defined by the retrieved PFX effect, and sets the textures
-	 * of the material in each mesh node to those defined by the retrieved PFX effect
-	 *
-	 * Raises an assertion error if a PFX resource with the specified name cannot be found in the PFX
-	 * resource cache, or if that PFX resource does not contain an effect with the specified effect name.
-	 */
-	virtual void				applyEffectNamedFromRez( const std::string& effectName, const std::string& rezName );
-
-	/**
-	 * Applies the PFX effect with the specified name, found in the CC3PFXResource loaded from the
-	 * specfied file, to all descendant mesh nodes. 
-	 *
-	 * Sets the shader program to that defined by the retrieved PFX effect, and sets the textures
-	 * of the material in each mesh node to those defined by the retrieved PFX effect
-	 *
-	 * Raises an assertion error if the PFX resource file could not be loaded, or if that
-	 * PFX resource does not contain an effect with the specified effect name.
-	 */
-	virtual void				applyEffectNamedFromFile( const std::string& effectName, const std::string& filePath );
 
 
 protected:

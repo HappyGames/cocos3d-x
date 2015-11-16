@@ -180,12 +180,6 @@ GLint CC3Identifiable::getInstanceCount()
 	return instanceCount; 
 }
 
-void CC3Identifiable::initAtIndex( int aPODIndex, CC3PODResource* aPODRez )
-{
-	init();
-	setPodIndex( aPODIndex );
-}
-
 std::string CC3Identifiable::getName()
 {
 	return m_sName;

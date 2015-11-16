@@ -47,6 +47,7 @@ public:
 	virtual void				setPodIndex( GLint aPODIndex );
 	virtual GLint				getPodMaterialIndex();
 	virtual void				setPodMaterialIndex( GLint aPODIndex );
+    PODStructPtr				getNodePODStructAtIndex( GLuint aPODIndex, CC3PODResource* aPODRez );
 
 	/** 
 	 * Overridden to verify that the mesh is not constructed from triangle strips,
@@ -119,6 +120,7 @@ class CC3PODBone : public CC3Bone
 public:
 	static CC3PODBone*			nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
 
+    void                        initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
 	GLint						getPodIndex();
 	void						setPodIndex( GLint aPODIndex );
 	GLint						getPodContentIndex();

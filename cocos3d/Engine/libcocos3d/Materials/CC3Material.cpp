@@ -963,25 +963,6 @@ void CC3Material::unbindWithVisitor( CC3NodeDrawingVisitor* visitor )
 	gl->enableAlphaTesting( false );
 }
 
-
-void CC3Material::applyEffectNamedFromRez( const std::string& effectName, const std::string& rezName )
-{
-	CC3PFXEffect* pfxEffect = CC3PFXResource::getEffectNamedFromRez( effectName, rezName );
-	CCAssert(pfxEffect, "CC3Material could not apply effect named %s from PFX resource named %s."
-		"See previously logged error."/*, effectName.c_str(), rezName.c_str()*/);
-
-	pfxEffect->populateMaterial( this );
-}
-
-void CC3Material::applyEffectNamedFromFile( const std::string& effectName, const std::string& filePath )
-{
-	CC3PFXEffect* pfxEffect = CC3PFXResource::getEffectNamedFromFile( effectName, filePath );
-	CCAssert(pfxEffect, "CC3Material could not apply effect named %s from PFX resource file %s."
-		"See previously logged error."/*, effectName.c_str(), filePath.c_str()*/);
-
-	pfxEffect->populateMaterial( this );
-}
-
 std::string CC3Material::getNameSuffix()
 {
 	return "Material";
