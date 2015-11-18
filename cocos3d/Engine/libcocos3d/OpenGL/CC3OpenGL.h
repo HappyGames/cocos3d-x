@@ -222,6 +222,7 @@ public:
 	virtual void				bindVertexContent( GLvoid* pData, GLint elemSize, GLenum elemType, GLsizei vtxStride, bool shldNorm, GLint vaIdx );
 
 	virtual void				bindVertexContentToAttributeAt( GLint vaIdx );
+
 	/** Clears the tracking of unbound vertex attribute arrays. */
 	virtual void				clearUnboundVertexAttributes();
 
