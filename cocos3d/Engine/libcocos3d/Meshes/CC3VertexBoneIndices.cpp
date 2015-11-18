@@ -89,7 +89,7 @@ std::string CC3VertexBoneIndices::getNameSuffix()
 	return "BoneIndices"; 
 }
 
-void CC3VertexBoneIndices::initWithTag( GLuint aTag, const char* aName )
+void CC3VertexBoneIndices::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{

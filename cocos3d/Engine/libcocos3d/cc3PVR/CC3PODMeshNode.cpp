@@ -148,6 +148,17 @@ std::string CC3PODMeshNode::description()
 	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
+void CC3PODMeshNode::linkToPODNodes( CCArray *nodeArray )
+{
+    int parentIndex = getPodParentIndex();
+    if ( parentIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with parent index %i", self, self.podParentIndex);
+        CC3Node* parentNode = (CC3Node*)nodeArray->objectAtIndex( parentIndex );
+        parentNode->addChild( this );
+    }
+}
+
 CC3PODMeshNode* CC3PODMeshNode::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
 	CC3PODMeshNode* pNode = new CC3PODMeshNode;

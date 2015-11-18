@@ -232,14 +232,13 @@ void CC3VertexTextureCoordinates::alignWithInvertedTextureCoverage( const CCSize
 
 void CC3VertexTextureCoordinates::alignWithTexture( CC3Texture* texture )
 {
-	if (!texture) 
+	if ( !texture )
 		return;
-	if ( XOR(_expectsVerticallyFlippedTextures, texture->isUpsideDown()) ) 
-	{
+    
+	if ( XOR(_expectsVerticallyFlippedTextures, texture->isUpsideDown()) )
 		alignWithInvertedTextureCoverage( texture->getCoverage() );
-	} else {
+	else
 		alignWithTextureCoverage( texture->getCoverage() );
-	}
 }
 
 void CC3VertexTextureCoordinates::alignWithInvertedTexture( CC3Texture* texture )

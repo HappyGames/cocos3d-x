@@ -82,6 +82,8 @@ public:
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 	std::string					description();
+    
+    void                        linkToPODNodes( CCArray* nodeArray );
 
 	static CC3PODCamera*		nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
 

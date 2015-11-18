@@ -214,6 +214,24 @@ std::string CC3PODCamera::description()
 	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
+void CC3PODCamera::linkToPODNodes( CCArray *nodeArray )
+{
+    int parentIndex = getPodParentIndex();
+    if ( parentIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with parent index %i", self, self.podParentIndex);
+        CC3Node* parentNode = (CC3Node*)nodeArray->objectAtIndex( parentIndex );
+        parentNode->addChild( this );
+    }
+    
+    int targetIndex = getPodTargetIndex();
+    if ( targetIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with target index %i", self, self.podTargetIndex);
+        this->setTarget( (CC3Node*)nodeArray->objectAtIndex( targetIndex ) );
+    }
+}
+
 CC3PODCamera* CC3PODCamera::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
 	CC3PODCamera* pCamera = new CC3PODCamera;

@@ -58,6 +58,8 @@ public:
 	// The direction of a light in a POD file is taken from the transform of the up direction!
 	CC3Vector4					getGlobalHomogeneousPosition();
 	std::string					description();
+    
+    void                        linkToPODNodes( CCArray* nodeArray );
 
 	static CC3PODLight*			nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
 

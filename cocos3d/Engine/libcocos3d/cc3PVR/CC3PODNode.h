@@ -149,6 +149,8 @@ public:
 	 * the time the subsequent getNodeNamed: method is run on the background thread.
 	 */
 	virtual void				addContentFromPODFile( const std::string& aFilepath, const std::string& aName );
+    
+    void                        linkToPODNodes( CCArray* nodeArray );
 
 protected:
 	GLint						_podIndex;

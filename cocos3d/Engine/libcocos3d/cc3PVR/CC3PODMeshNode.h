@@ -59,6 +59,8 @@ public:
 
 	void						setMaterial( CC3PODMaterial* aMaterial );
 	std::string					description();
+    
+    void                        linkToPODNodes( CCArray* nodes );
 
 	static CC3PODMeshNode*		nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez );
 

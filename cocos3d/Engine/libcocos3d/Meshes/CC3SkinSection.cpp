@@ -138,6 +138,7 @@ CC3Vector CC3SkinSection::getDeformedVertexLocationAt( GLuint vtxIdx )
 				 NSStringFromCC3Vector(wtdBoneDefLoc),
 				 NSStringFromCC3Vector(defLoc));*/
 	}
+    
 	return defLoc;
 }
 

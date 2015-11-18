@@ -318,16 +318,7 @@ void CC3PODResource::buildNodes()
 
 	// Link the nodes with each other. This includes assembling the nodes into a structural
 	// parent-child hierarchy, and connecting targetting nodes with their targets.
-	// Base nodes, which have no parent, form the entries of the nodes array.
-//	CCObject* pObj = NULL;
-//	CCARRAY_FOREACH( _allNodes, pObj )
-//	{
-//		CC3Node* aNode = (CC3Node*)pObj;
-//		aNode->linkToPODNodes( _allNodes );
-//		if ( aNode->isBasePODNode() )
-//			addNode( aNode );
-//	}
-    
+	// Base nodes, which have no parent, form the entries of the nodes array.    
     for (GLuint i = 0; i < nCount; i++)
     {
         int nodeType = getNodeType( i );
@@ -338,7 +329,7 @@ void CC3PODResource::buildNodes()
                 CC3PODMeshNode* pNode = dynamic_cast<CC3PODMeshNode*>( _allNodes->objectAtIndex(i) );
                 if ( pNode )
                 {
-                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
+                    pNode->linkToPODNodes( _allNodes );
                     if ( pNode->getPodParentIndex() < 0 )
                         addNode( pNode );
                 }
@@ -350,7 +341,6 @@ void CC3PODResource::buildNodes()
                 CC3PODSkinMeshNode* pNode = dynamic_cast<CC3PODSkinMeshNode*>( _allNodes->objectAtIndex(i) );
                 if ( pNode )
                 {
-                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
                     pNode->linkToPODNodes( _allNodes );
                     if ( pNode->getPodParentIndex() < 0 )
                         addNode( pNode );
@@ -363,7 +353,7 @@ void CC3PODResource::buildNodes()
                 CC3PODCamera* pNode = dynamic_cast<CC3PODCamera*>( _allNodes->objectAtIndex(i) );
                 if ( pNode )
                 {
-                    linkToPODNodes( pNode, pNode->getPodParentIndex(), pNode->getPodTargetIndex(), _allNodes );
+                    pNode->linkToPODNodes( _allNodes );
                     if ( pNode->getPodParentIndex() < 0 )
                         addNode( pNode );
                 }
@@ -375,7 +365,7 @@ void CC3PODResource::buildNodes()
                 CC3PODLight* pNode = dynamic_cast<CC3PODLight*>( _allNodes->objectAtIndex(i) );
                 if ( pNode )
                 {
-                    linkToPODNodes( pNode, pNode->getPodParentIndex(), pNode->getPodTargetIndex(), _allNodes );
+                    pNode->linkToPODNodes( _allNodes );
                     if ( pNode->getPodParentIndex() < 0 )
                         addNode( pNode );
                 }
@@ -387,7 +377,7 @@ void CC3PODResource::buildNodes()
                 CC3PODBone* pNode = dynamic_cast<CC3PODBone*>( _allNodes->objectAtIndex(i) );
                 if ( pNode )
                 {
-                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
+                    pNode->linkToPODNodes( _allNodes );
                     if ( pNode->getPodParentIndex() < 0 )
                         addNode( pNode );
                 }
@@ -399,7 +389,7 @@ void CC3PODResource::buildNodes()
                 CC3PODNode* pNode = dynamic_cast<CC3PODNode*>( _allNodes->objectAtIndex(i) );
                 if ( pNode )
                 {
-                    linkToPODNodes( pNode, pNode->getPodParentIndex(), -1, _allNodes );
+                    pNode->linkToPODNodes( _allNodes );
                     if ( pNode->getPodParentIndex() < 0 )
                         addNode( pNode );
                 }

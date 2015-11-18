@@ -90,6 +90,8 @@ public:
 	void					bindRestPose();
 	/** Inverts the transform matrix and caches it as the inverted rest pose matrix. */
 	void					cacheRestPoseMatrix();
+    
+    static CC3Bone*         create();
 
 protected:
 	CC3Matrix*				_skeletalTransformMatrix;

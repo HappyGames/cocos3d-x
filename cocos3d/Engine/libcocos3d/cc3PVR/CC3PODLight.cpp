@@ -165,6 +165,24 @@ std::string CC3PODLight::description()
 	return CC3String::stringWithFormat( (char*)"%s (POD index: %d)", super::description().c_str(), _podIndex );
 }
 
+void CC3PODLight::linkToPODNodes( CCArray *nodeArray )
+{
+    int parentIndex = getPodParentIndex();
+    if ( parentIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with parent index %i", self, self.podParentIndex);
+        CC3Node* parentNode = (CC3Node*)nodeArray->objectAtIndex( parentIndex );
+        parentNode->addChild( this );
+    }
+    
+    int targetIndex = getPodTargetIndex();
+    if ( targetIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with target index %i", self, self.podTargetIndex);
+        this->setTarget( (CC3Node*)nodeArray->objectAtIndex( targetIndex ) );
+    }
+}
+
 CC3PODLight* CC3PODLight::nodeAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
 	CC3PODLight* pLight = new CC3PODLight;

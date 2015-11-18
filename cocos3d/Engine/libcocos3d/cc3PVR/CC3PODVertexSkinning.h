@@ -132,6 +132,8 @@ public:
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 	std::string					description();
+    
+    void                        linkToPODNodes( CCArray* nodeArray );
 
 protected:
 	GLint						_podIndex;

@@ -120,4 +120,13 @@ void CC3Bone::cacheRestPoseMatrix()
 	_restPoseSkeletalTransformMatrixInverted->invert();
 }
 
+CC3Bone* CC3Bone::create()
+{
+    CC3Bone* pBone = new CC3Bone;
+    pBone->init();
+    pBone->autorelease();
+    
+    return pBone;
+}
+
 NS_COCOS3D_END

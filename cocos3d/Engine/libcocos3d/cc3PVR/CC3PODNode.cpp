@@ -65,6 +65,18 @@ void CC3PODNode::setPodParentIndex( GLint aPODIndex )
 	_podParentIndex = aPODIndex;
 }
 
+void CC3PODNode::linkToPODNodes( CCArray *nodeArray )
+{
+    int parentIndex = getPodParentIndex();
+    if ( parentIndex >= 0 )
+    {
+        //LogTrace(@"Linking %@ with parent index %i", self, self.podParentIndex);
+        CC3Node* parentNode = (CC3Node*)nodeArray->objectAtIndex( parentIndex );
+        parentNode->addChild( this );
+    }
+}
+
+
 void CC3PODNode::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 {
     init();

@@ -158,12 +158,6 @@ std::string CC3Resource::resourceNameFromFilePath( const std::string& filePath )
 {
 	return CC3String::getFileName( filePath );
 }
-//
-//-(NSString*) description { return [NSString stringWithFormat: @"%@ from file %@", self.class, self.name]; }
-//
-//-(NSString*) constructorDescription {
-//	return [NSString stringWithFormat: @"[%@ resourceFromFile: @\"%@\"];", [self class], self.name];
-//}
 
 void CC3Resource::remove()
 {
@@ -235,7 +229,7 @@ std::string CC3Resource::cachedResourcesDescription()
 
 // Class variable tracking the most recent tag value assigned for CC3Identifiables.
 // This class variable is automatically incremented whenever the method nextTag is called.
-static GLuint lastAssignedResourceTag;
+static GLuint lastAssignedResourceTag = 0;
 
 GLuint CC3Resource::nextTag()
 {

@@ -134,7 +134,7 @@ public:
 	void						setBoneIndices( GLvoid* boneIndices, GLuint vtxIndex );
 
 	std::string					getNameSuffix();
-	void						initWithTag( GLuint aTag, const char* aName );
+	virtual void				initWithTag( GLuint aTag, const std::string& aName );
 	GLenum						defaultSemantic();
 };
 

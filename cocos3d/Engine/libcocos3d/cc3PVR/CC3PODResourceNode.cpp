@@ -142,29 +142,16 @@ CC3PODResourceNode* CC3PODResourceNode::nodeWithName( const std::string& aName, 
 
 CC3NodesResource* CC3PODResourceNode::createResourceFromFile( const std::string& aFilePath )
 {
-	CC3PODResource* pResource = new CC3PODResource;
-	if ( pResource->initFromFile( aFilePath ) )
-	{
-		pResource->autorelease();
-		return pResource;
-	}
-
-	CC_SAFE_DELETE( pResource );
+    CC3PODResource* pResource = CC3PODResource::resourceFromFile( aFilePath );
 	return pResource;
 }
 
 CC3NodesResource* CC3PODResourceNode::createResourceFromFile( const std::string& aFilePath, bool flipped )
 {
-	CC3PODResource* pResource = new CC3PODResource;
-	if ( pResource->initFromFile( aFilePath ) )
-	{
+	CC3PODResource* pResource = CC3PODResource::resourceFromFile( aFilePath );
+	if ( pResource )
 		pResource->setExpectsVerticallyFlippedTextures( flipped );
-		pResource->autorelease();
-
-		return pResource;
-	}
 	
-	CC_SAFE_DELETE( pResource ); 
 	return pResource;
 }
 
