@@ -155,10 +155,8 @@ void CC3ShaderMatcherBase::initSemanticDelegate()
 	CC3ShaderSemanticsByVarName* sd = new CC3ShaderSemanticsByVarName();
 	sd->init();
 	sd->populateWithDefaultVariableNameMappings();
-	sd->autorelease();
-	sd->retain();
 
-	_semanticDelegate = sd;			// retained from new
+	_semanticDelegate = sd;
 }
 
 CC3ShaderSemanticsDelegate* CC3ShaderMatcherBase::getSemanticDelegate()

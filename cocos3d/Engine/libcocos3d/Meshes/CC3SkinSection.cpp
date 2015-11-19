@@ -78,9 +78,19 @@ int CC3SkinSection::getVertexStart()
 	return _vertexStart;
 }
 
+void CC3SkinSection::setVertexStart( GLint vertexStart )
+{
+    _vertexStart = vertexStart;
+}
+
 int CC3SkinSection::getVertexCount()
 {
 	return _vertexCount;
+}
+
+void CC3SkinSection::setVertexCount( GLint vertexCount )
+{
+    _vertexCount = vertexCount;
 }
 
 void CC3SkinSection::addBone( CC3Bone* aBone )

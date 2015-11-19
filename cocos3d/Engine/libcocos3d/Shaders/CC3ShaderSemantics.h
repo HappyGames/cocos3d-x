@@ -428,6 +428,9 @@ public:
 	 * handle those additional semantics if they should not default to kCC3GLSLVariableScopeNode.
 	 */
 	CC3GLSLVariableScope		getVariableScopeForSemantic( GLenum semantic );
+    
+protected:
+    bool                        populateColorUniforms( CC3GLSLUniform* uniform, CC3NodeDrawingVisitor* visitor );
 };
 
 /**

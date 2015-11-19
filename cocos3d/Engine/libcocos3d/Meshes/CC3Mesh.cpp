@@ -2063,7 +2063,7 @@ void CC3Mesh::drawVerticesWithVisitor( CC3NodeDrawingVisitor* visitor )
  */
 void CC3Mesh::drawVerticesFrom( GLuint vertexIndex, GLuint vertexCount, CC3NodeDrawingVisitor* visitor )
 {
-	//LogTrace(@"Drawing %@ from %u for %u vertices", self, vertexIndex, vertexCount);
+	// LogTrace(@"Drawing %@ from %u for %u vertices", self, vertexIndex, vertexCount);
 
 	CC3ShaderProgram* pShaderProgram = visitor->getCurrentShaderProgram();
 	if ( pShaderProgram )

@@ -122,9 +122,7 @@ void CC3Cache::addObject( CC3Cacheable* obj )
 			(unsigned long long)cached, objName.c_str() );
 	}
 
-	CC3Cacheable* wrap = obj;
-	
-	_objectsByName->setObject( wrap, objName );
+	_objectsByName->setObject( obj, objName );
 		
 	CC3_TRACE("[rez]Added obj[%s] to the %s cache.", objName.c_str(), _typeName.c_str());
 }
@@ -152,6 +150,13 @@ void CC3Cache::initAsWeakCache( bool _weak, const std::string& typeName )
 	setIsWeak( _weak );
 	_typeName = typeName;
 	_objectsByName = CCDictionary::create();
+    
+    // Initialize dict type as string
+    CCObject* pObject = new CCObject;
+    _objectsByName->setObject( pObject,  "dummy_cc3_object" );
+    _objectsByName->removeAllObjects();
+    CC_SAFE_DELETE( pObject );
+    
 	_objectsByName->retain();
 }
 

@@ -1188,119 +1188,7 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 				uniform->setColor4F( tu ? tu->getConstantColor() :  kCCC4FBlackTransparent, i );
 			}
 			return true;
-		case kCC3SemanticTexUnitCombineRGBFunction:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitCombineRGBFunction functor is not implemented" );
-				/*bool isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.combineRGBFunction :  GL_MODULATE) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitSource0RGB:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitSource0RGB functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.rgbSource0 :  GL_TEXTURE) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitSource1RGB:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitSource1RGB functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.rgbSource1 :  GL_PREVIOUS) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitSource2RGB:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitSource2RGB functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.rgbSource2 :  GL_CONSTANT) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitOperand0RGB:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitOperand0RGB functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.rgbOperand0 :  GL_SRC_COLOR) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitOperand1RGB:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitOperand1RGB functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.rgbOperand1 :  GL_SRC_COLOR) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitOperand2RGB:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitOperand2RGB functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.rgbOperand2 :  GL_SRC_ALPHA) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitCombineAlphaFunction:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitCombineAlphaFunction functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.combineAlphaFunction :  GL_MODULATE) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitSource0Alpha:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitSource0Alpha functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.alphaSource0 :  GL_TEXTURE) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitSource1Alpha:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitSource1Alpha functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.alphaSource1 :  GL_PREVIOUS) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitSource2Alpha:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitSource2Alpha functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.alphaSource2 :  GL_CONSTANT) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitOperand0Alpha:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitOperand0Alpha functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.alphaOperand0 :  GL_SRC_ALPHA) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitOperand1Alpha:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitOperand1Alpha functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.alphaOperand1 :  GL_SRC_ALPHA) at: i );*/
-			}
-			return true;
-		case kCC3SemanticTexUnitOperand2Alpha:
-			for (GLint i = 0; i < uniformSize; i++) {
-				CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
-				CCAssert( false, "kCC3SemanticTexUnitOperand2Alpha functor is not implemented" );
-				/*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
-				uniform->setInteger: (isCTU ? ctu.alphaOperand2 :  GL_SRC_ALPHA) at: i );*/
-			}
-			return true;
-			
+            
 		// MODEL ----------------
 		case kCC3SemanticCenterOfGeometry:
 			uniform->setVector( visitor->getCurrentMeshNode()->getMesh()->getCenterOfGeometry() );
@@ -1394,8 +1282,139 @@ bool CC3ShaderSemanticsBase::populateUniform( CC3GLSLUniform* uniform, CC3NodeDr
 			uniform->setFloat( CC3RandomFloat() );
 			return true;
 			
-		default: return false;
+		default:
+            if ( populateColorUniforms(uniform, visitor) )
+                return true;
+            
+            return false;
 	}
+}
+
+bool CC3ShaderSemanticsBase::populateColorUniforms( CC3GLSLUniform *uniform, CC3NodeDrawingVisitor *visitor )
+{
+    GLint uniformSize = uniform->getSize();
+    //GLuint semanticIndex = uniform->getSemanticIndex();
+    
+    switch ( uniform->getSemantic() )
+    {
+        case kCC3SemanticTexUnitCombineRGBFunction:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitCombineRGBFunction functor is not implemented" );
+                /*bool isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.combineRGBFunction :  GL_MODULATE) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitSource0RGB:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitSource0RGB functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.rgbSource0 :  GL_TEXTURE) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitSource1RGB:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitSource1RGB functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.rgbSource1 :  GL_PREVIOUS) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitSource2RGB:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitSource2RGB functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.rgbSource2 :  GL_CONSTANT) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitOperand0RGB:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitOperand0RGB functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.rgbOperand0 :  GL_SRC_COLOR) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitOperand1RGB:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitOperand1RGB functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.rgbOperand1 :  GL_SRC_COLOR) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitOperand2RGB:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitOperand2RGB functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.rgbOperand2 :  GL_SRC_ALPHA) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitCombineAlphaFunction:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitCombineAlphaFunction functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.combineAlphaFunction :  GL_MODULATE) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitSource0Alpha:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitSource0Alpha functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.alphaSource0 :  GL_TEXTURE) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitSource1Alpha:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitSource1Alpha functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.alphaSource1 :  GL_PREVIOUS) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitSource2Alpha:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitSource2Alpha functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.alphaSource2 :  GL_CONSTANT) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitOperand0Alpha:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitOperand0Alpha functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.alphaOperand0 :  GL_SRC_ALPHA) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitOperand1Alpha:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitOperand1Alpha functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.alphaOperand1 :  GL_SRC_ALPHA) at: i );*/
+            }
+            return true;
+        case kCC3SemanticTexUnitOperand2Alpha:
+            for (GLint i = 0; i < uniformSize; i++) {
+                //CC3ConfigurableTextureUnit* ctu = (CC3ConfigurableTextureUnit*)visitor->getCurrentTextureUnitAt( semanticIndex + i );
+                CCAssert( false, "kCC3SemanticTexUnitOperand2Alpha functor is not implemented" );
+                /*BOOL isCTU = [ctu isKindOfClass: [CC3ConfigurableTextureUnit class] );
+                 uniform->setInteger: (isCTU ? ctu.alphaOperand2 :  GL_SRC_ALPHA) at: i );*/
+            }
+            return true;
+        default:
+            return false;
+            
+    }
+    
+    return false;
 }
 
 CC3ShaderSemanticsByVarName::CC3ShaderSemanticsByVarName()
