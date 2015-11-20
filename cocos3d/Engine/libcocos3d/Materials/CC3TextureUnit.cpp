@@ -40,26 +40,26 @@ CC3Vector CC3TextureUnit::getLightDirection()
 {
 	// Extract half-scaled normal vector from constantColor, according to RGB <-> normal mapping
 	CC3Vector hv;
-	switch (_rgbNormalMap) 
+	switch (m_rgbNormalMap) 
 	{
 		case kCC3DOT3RGB_XZY:
-			hv = cc3v(_constantColor.r, _constantColor.b, _constantColor.g);
+			hv = cc3v(m_constantColor.r, m_constantColor.b, m_constantColor.g);
 			break;
 		case kCC3DOT3RGB_YXZ:
-			hv = cc3v(_constantColor.g, _constantColor.r, _constantColor.b);
+			hv = cc3v(m_constantColor.g, m_constantColor.r, m_constantColor.b);
 			break;
 		case kCC3DOT3RGB_YZX:
-			hv = cc3v(_constantColor.b, _constantColor.r, _constantColor.g);
+			hv = cc3v(m_constantColor.b, m_constantColor.r, m_constantColor.g);
 			break;
 		case kCC3DOT3RGB_ZXY:
-			hv = cc3v(_constantColor.g, _constantColor.b, _constantColor.r);
+			hv = cc3v(m_constantColor.g, m_constantColor.b, m_constantColor.r);
 			break;
 		case kCC3DOT3RGB_ZYX:
-			hv = cc3v(_constantColor.b, _constantColor.g, _constantColor.r);
+			hv = cc3v(m_constantColor.b, m_constantColor.g, m_constantColor.r);
 			break;
 		case kCC3DOT3RGB_XYZ:
 		default:
-			hv = cc3v(_constantColor.r, _constantColor.g, _constantColor.b);
+			hv = cc3v(m_constantColor.r, m_constantColor.g, m_constantColor.b);
 			break;
 	}
 	// Convert half-scaled vector between 0.0 and 1.0 to range +/- 1.0.
@@ -74,25 +74,25 @@ void CC3TextureUnit::setLightDirection( const CC3Vector& aDirection )
 	CC3Vector hv = direction.average(CC3Vector::kCC3VectorUnitCube);
 	
 	// Set constantColor from normal direction, according to RGB <-> normal mapping
-	switch (_rgbNormalMap) 
+	switch (m_rgbNormalMap) 
 	{
 		case kCC3DOT3RGB_XYZ:
-			_constantColor = ccc4f(hv.x, hv.y, hv.z, 1.0f);
+			m_constantColor = ccc4f(hv.x, hv.y, hv.z, 1.0f);
 			break;
 		case kCC3DOT3RGB_XZY:
-			_constantColor = ccc4f(hv.x, hv.z, hv.y, 1.0f);
+			m_constantColor = ccc4f(hv.x, hv.z, hv.y, 1.0f);
 			break;
 		case kCC3DOT3RGB_YXZ:
-			_constantColor = ccc4f(hv.y, hv.x, hv.z, 1.0f);
+			m_constantColor = ccc4f(hv.y, hv.x, hv.z, 1.0f);
 			break;
 		case kCC3DOT3RGB_YZX:
-			_constantColor = ccc4f(hv.y, hv.z, hv.x, 1.0f);
+			m_constantColor = ccc4f(hv.y, hv.z, hv.x, 1.0f);
 			break;
 		case kCC3DOT3RGB_ZXY:
-			_constantColor = ccc4f(hv.z, hv.x, hv.y, 1.0f);
+			m_constantColor = ccc4f(hv.z, hv.x, hv.y, 1.0f);
 			break;
 		case kCC3DOT3RGB_ZYX:
-			_constantColor = ccc4f(hv.z, hv.y, hv.x, 1.0f);
+			m_constantColor = ccc4f(hv.z, hv.y, hv.x, 1.0f);
 			break;
 	}
 }
@@ -104,25 +104,25 @@ bool CC3TextureUnit::isBumpMap()
 
 CCColorRef CC3TextureUnit::getColor()
 {
-	return CCColorRefFromCCC4F(_constantColor);
+	return CCColorRefFromCCC4F(m_constantColor);
 }
 
 void CC3TextureUnit::setColor( const CCColorRef& aColor )
 {
 	ccColor4F c4f = CCC4FFromCCColorRef(aColor);
-	_constantColor.r = c4f.r;
-	_constantColor.g = c4f.g;
-	_constantColor.b = c4f.b;
+	m_constantColor.r = c4f.r;
+	m_constantColor.g = c4f.g;
+	m_constantColor.b = c4f.b;
 }
 
 CCOpacity CC3TextureUnit::getOpacity()
 {
-	return CCOpacityFromGLfloat(_constantColor.a); 
+	return CCOpacityFromGLfloat(m_constantColor.a); 
 }
 
 void CC3TextureUnit::setOpacity( CCOpacity opacity )
 {
-	_constantColor.a = GLfloatFromCCOpacity(opacity);
+	m_constantColor.a = GLfloatFromCCOpacity(opacity);
 }
 
 CCColorRef CC3TextureUnit::getDisplayedColor()
@@ -167,9 +167,9 @@ void CC3TextureUnit::updateDisplayedOpacity( CCOpacity opacity )
 
 bool CC3TextureUnit::init()
 {
-	_textureEnvironmentMode = GL_MODULATE;
-	_constantColor = kCCC4FBlackTransparent;
-	_rgbNormalMap = kCC3DOT3RGB_XYZ;
+	m_textureEnvironmentMode = GL_MODULATE;
+	m_constantColor = kCCC4FBlackTransparent;
+	m_rgbNormalMap = kCC3DOT3RGB_XYZ;
 
 	return true;
 }
@@ -187,9 +187,9 @@ CC3TextureUnit* CC3TextureUnit::textureUnit()
 // This method is invoked automatically during object copying via the copyWithZone: method.
 void CC3TextureUnit::populateFrom( CC3TextureUnit* another )
 {
-	_textureEnvironmentMode = another->getTextureEnvironmentMode();
-	_constantColor = another->getConstantColor();
-	_rgbNormalMap = another->getRgbNormalMap();
+	m_textureEnvironmentMode = another->getTextureEnvironmentMode();
+	m_constantColor = another->getConstantColor();
+	m_rgbNormalMap = another->getRgbNormalMap();
 }
 
 CCObject* CC3TextureUnit::copyWithZone( CCZone* zone )
@@ -204,8 +204,8 @@ void CC3TextureUnit::bindWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
 	GLuint tuIdx = visitor->getCurrent2DTextureUnit();
-	gl->setTextureEnvMode(_textureEnvironmentMode, tuIdx );
-	gl->setTextureEnvColor( _constantColor, tuIdx );
+	gl->setTextureEnvMode(m_textureEnvironmentMode, tuIdx );
+	gl->setTextureEnvColor( m_constantColor, tuIdx );
 }
 
 void CC3TextureUnit::bindDefaultWithVisitor( CC3NodeDrawingVisitor* visitor )
@@ -218,32 +218,32 @@ void CC3TextureUnit::bindDefaultWithVisitor( CC3NodeDrawingVisitor* visitor )
 
 GLenum CC3TextureUnit::getTextureEnvironmentMode()
 {
-	return _textureEnvironmentMode;
+	return m_textureEnvironmentMode;
 }
 
 void CC3TextureUnit::setTextureEnvironmentMode( GLenum mode )
 {
-	_textureEnvironmentMode = mode;
+	m_textureEnvironmentMode = mode;
 }
 
 void CC3TextureUnit::setConstantColor( const ccColor4F& color )
 {
-	_constantColor = color;
+	m_constantColor = color;
 }
 
 ccColor4F CC3TextureUnit::getConstantColor()
 {
-	return _constantColor;
+	return m_constantColor;
 }
 
 CC3DOT3RGB CC3TextureUnit::getRgbNormalMap()
 {
-	return _rgbNormalMap;
+	return m_rgbNormalMap;
 }
 
 void CC3TextureUnit::setRgbNormalMap( CC3DOT3RGB normalMap )
 {
-	_rgbNormalMap = normalMap;
+	m_rgbNormalMap = normalMap;
 }
 
 CC3ConfigurableTextureUnit::CC3ConfigurableTextureUnit()
@@ -254,27 +254,27 @@ CC3ConfigurableTextureUnit::CC3ConfigurableTextureUnit()
 bool CC3ConfigurableTextureUnit::isBumpMap()
 {
 	return getTextureEnvironmentMode() == GL_COMBINE &&
-			(_combineRGBFunction == GL_DOT3_RGB || _combineRGBFunction == GL_DOT3_RGBA);
+			(m_combineRGBFunction == GL_DOT3_RGB || m_combineRGBFunction == GL_DOT3_RGBA);
 }
 
 bool CC3ConfigurableTextureUnit::init()
 {
 	super::init();
 	setTextureEnvironmentMode( GL_COMBINE );
-	_combineRGBFunction = GL_MODULATE;
-	_rgbSource0 = GL_TEXTURE;
-	_rgbSource1 = GL_PREVIOUS;
-	_rgbSource2 = GL_CONSTANT;
-	_rgbOperand0 = GL_SRC_COLOR;
-	_rgbOperand1 = GL_SRC_COLOR;
-	_rgbOperand2 = GL_SRC_ALPHA;
-	_combineAlphaFunction = GL_MODULATE;
-	_alphaSource0 = GL_TEXTURE;
-	_alphaSource1 = GL_PREVIOUS;
-	_alphaSource2 = GL_CONSTANT;
-	_alphaOperand0 = GL_SRC_ALPHA;
-	_alphaOperand1 = GL_SRC_ALPHA;
-	_alphaOperand2 = GL_SRC_ALPHA;
+	m_combineRGBFunction = GL_MODULATE;
+	m_rgbSource0 = GL_TEXTURE;
+	m_rgbSource1 = GL_PREVIOUS;
+	m_rgbSource2 = GL_CONSTANT;
+	m_rgbOperand0 = GL_SRC_COLOR;
+	m_rgbOperand1 = GL_SRC_COLOR;
+	m_rgbOperand2 = GL_SRC_ALPHA;
+	m_combineAlphaFunction = GL_MODULATE;
+	m_alphaSource0 = GL_TEXTURE;
+	m_alphaSource1 = GL_PREVIOUS;
+	m_alphaSource2 = GL_CONSTANT;
+	m_alphaOperand0 = GL_SRC_ALPHA;
+	m_alphaOperand1 = GL_SRC_ALPHA;
+	m_alphaOperand2 = GL_SRC_ALPHA;
 
 	return true;
 }
@@ -285,20 +285,20 @@ void CC3ConfigurableTextureUnit::populateFrom( CC3ConfigurableTextureUnit* anoth
 {
 	super::populateFrom( another );
 	
-	_combineRGBFunction = another->getCombineRGBFunction();
-	_rgbSource0 = another->getRgbSource0();
-	_rgbSource1 = another->getRgbSource1();
-	_rgbSource2 = another->getRgbSource2();
-	_rgbOperand0 = another->getRgbOperand0();
-	_rgbOperand1 = another->getRgbOperand1();
-	_rgbOperand2 = another->getRgbOperand2();
-	_combineAlphaFunction = another->getCombineAlphaFunction();
-	_alphaSource0 = another->getAlphaSource0();
-	_alphaSource1 = another->getAlphaSource1();
-	_alphaSource2 = another->getAlphaSource2();
-	_alphaOperand0 = another->getAlphaOperand0();
-	_alphaOperand1 = another->getAlphaOperand1();
-	_alphaOperand2 = another->getAlphaOperand2();
+	m_combineRGBFunction = another->getCombineRGBFunction();
+	m_rgbSource0 = another->getRgbSource0();
+	m_rgbSource1 = another->getRgbSource1();
+	m_rgbSource2 = another->getRgbSource2();
+	m_rgbOperand0 = another->getRgbOperand0();
+	m_rgbOperand1 = another->getRgbOperand1();
+	m_rgbOperand2 = another->getRgbOperand2();
+	m_combineAlphaFunction = another->getCombineAlphaFunction();
+	m_alphaSource0 = another->getAlphaSource0();
+	m_alphaSource1 = another->getAlphaSource1();
+	m_alphaSource2 = another->getAlphaSource2();
+	m_alphaOperand0 = another->getAlphaOperand0();
+	m_alphaOperand1 = another->getAlphaOperand1();
+	m_alphaOperand2 = another->getAlphaOperand2();
 }
 
 CCObject* CC3ConfigurableTextureUnit::copyWithZone( CCZone* zone )
@@ -312,82 +312,82 @@ CCObject* CC3ConfigurableTextureUnit::copyWithZone( CCZone* zone )
 
 GLuint CC3ConfigurableTextureUnit::getAlphaOperand0()
 {
-	return _alphaOperand0;
+	return m_alphaOperand0;
 }
 
 GLuint CC3ConfigurableTextureUnit::getAlphaOperand1()
 {
-	return _alphaOperand1;
+	return m_alphaOperand1;
 }
 
 GLuint CC3ConfigurableTextureUnit::getAlphaOperand2()
 {
-	return _alphaOperand2;
+	return m_alphaOperand2;
 }
 
 GLuint CC3ConfigurableTextureUnit::getAlphaSource0()
 {
-	return _alphaSource2;
+	return m_alphaSource2;
 }
 
 GLuint CC3ConfigurableTextureUnit::getAlphaSource1()
 {
-	return _alphaSource1;
+	return m_alphaSource1;
 }
 
 GLuint CC3ConfigurableTextureUnit::getAlphaSource2()
 {
-	return _alphaSource2;
+	return m_alphaSource2;
 }
 
 GLuint CC3ConfigurableTextureUnit::getCombineAlphaFunction()
 {
-	return _combineAlphaFunction;
+	return m_combineAlphaFunction;
 }
 
 GLuint CC3ConfigurableTextureUnit::getRgbOperand0()
 {
-	return _rgbOperand0;
+	return m_rgbOperand0;
 }
 
 GLuint CC3ConfigurableTextureUnit::getRgbOperand1()
 {
-	return _rgbOperand1;
+	return m_rgbOperand1;
 }
 
 GLuint CC3ConfigurableTextureUnit::getRgbOperand2()
 {
-	return _rgbOperand2;
+	return m_rgbOperand2;
 }
 
 GLuint CC3ConfigurableTextureUnit::getCombineRGBFunction()
 {
-	return _combineRGBFunction;
+	return m_combineRGBFunction;
 }
 
 GLuint CC3ConfigurableTextureUnit::getRgbSource0()
 {
-	return _rgbSource0;
+	return m_rgbSource0;
 }
 
 GLuint CC3ConfigurableTextureUnit::getRgbSource1()
 {
-	return _rgbSource1;
+	return m_rgbSource1;
 }
 
 GLuint CC3ConfigurableTextureUnit::getRgbSource2()
 {
-	return _rgbSource2;
+	return m_rgbSource2;
 }
 
 void CC3ConfigurableTextureUnit::setTextureEnvironmentMode( GLenum mode )
 {
-	_textureEnvironmentMode = mode;
+	m_textureEnvironmentMode = mode;
 }
 
 GLenum CC3ConfigurableTextureUnit::getTextureEnvironmentMode()
 {
-	return _textureEnvironmentMode;
+	return m_textureEnvironmentMode;
 }
 
 CC3BumpMapTextureUnit::CC3BumpMapTextureUnit()
@@ -404,7 +404,7 @@ bool CC3BumpMapTextureUnit::init()
 {
 	if ( super::init() )
 	{
-		_textureEnvironmentMode = GL_COMBINE;
+		m_textureEnvironmentMode = GL_COMBINE;
 		return true;
 	}
 

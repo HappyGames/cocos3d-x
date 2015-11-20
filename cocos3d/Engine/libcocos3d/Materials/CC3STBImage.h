@@ -162,9 +162,9 @@ protected:
 	void					deleteImageData();
 
 protected:
-	GLubyte*				_imageData;
-	CC3IntSize				_size;
-	GLuint					_componentCount;
+	GLubyte*				m_imageData;
+	CC3IntSize				m_size;
+	GLuint					m_componentCount;
 };
 
 NS_COCOS3D_END

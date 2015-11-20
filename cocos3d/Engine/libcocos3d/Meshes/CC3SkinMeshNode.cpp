@@ -33,29 +33,29 @@ NS_COCOS3D_BEGIN
 
 CC3SkinMeshNode::CC3SkinMeshNode()
 {
-	_skinSections = NULL;
-	_skeletalTransformMatrix = NULL;
-	_skeletalTransformMatrixInverted = NULL;
-	_deformedFaces = NULL;
+	m_skinSections = NULL;
+	m_pSkeletalTransformMatrix = NULL;
+	m_pSkeletalTransformMatrixInverted = NULL;
+	m_deformedFaces = NULL;
 }
 
 CC3SkinMeshNode::~CC3SkinMeshNode()
 {
-	CC_SAFE_RELEASE( _skinSections );
-	CC_SAFE_RELEASE( _skeletalTransformMatrix );
-	CC_SAFE_RELEASE( _skeletalTransformMatrixInverted );
-	CC_SAFE_RELEASE( _deformedFaces );
+	CC_SAFE_RELEASE( m_skinSections );
+	CC_SAFE_RELEASE( m_pSkeletalTransformMatrix );
+	CC_SAFE_RELEASE( m_pSkeletalTransformMatrixInverted );
+	CC_SAFE_RELEASE( m_deformedFaces );
 }
 
 CCArray* CC3SkinMeshNode::getSkinSections()
 {
-	return _skinSections;
+	return m_skinSections;
 }
 
 CC3SkinSection* CC3SkinMeshNode::getSkinSectionForVertexIndexAt( GLint index )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _skinSections, pObj )
+	CCARRAY_FOREACH( m_skinSections, pObj )
 	{
 		CC3SkinSection* ss = (CC3SkinSection*)pObj;
 		if ( ss->containsVertexIndex( index ) )
@@ -73,7 +73,7 @@ CC3SkinSection* CC3SkinMeshNode::getSkinSectionForFaceIndex( GLint faceIndex )
 bool CC3SkinMeshNode::hasSkeleton()
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _skinSections, pObj )
+	CCARRAY_FOREACH( m_skinSections, pObj )
 	{
 		CC3SkinSection* ss = (CC3SkinSection*)pObj;
 		if ( ss->hasSkeleton() )
@@ -85,12 +85,12 @@ bool CC3SkinMeshNode::hasSkeleton()
 
 bool CC3SkinMeshNode::hasRigidSkeleton()
 {
-	return _hasRigidSkeleton; 
+	return m_hasRigidSkeleton; 
 }
 
 void CC3SkinMeshNode::ensureRigidSkeleton()
 {
-	_hasRigidSkeleton = hasSkeleton();
+	m_hasRigidSkeleton = hasSkeleton();
 	super::ensureRigidSkeleton();
 }
 
@@ -102,24 +102,24 @@ void CC3SkinMeshNode::setShouldCacheFaces( bool shouldCache )
 
 CC3DeformedFaceArray* CC3SkinMeshNode::getDeformedFaces()
 {
-	if ( !_deformedFaces ) 
+	if ( !m_deformedFaces ) 
 	{
 		std::string facesName = CC3String::stringWithFormat( (char*)"%s-DeformedFaces", getName().c_str() );
 		setDeformedFaces( CC3DeformedFaceArray::faceArrayWithName( facesName ) );
 	}
-	return _deformedFaces;
+	return m_deformedFaces;
 }
 
 void CC3SkinMeshNode::setDeformedFaces( CC3DeformedFaceArray* aFaceArray )
 {
-	if (aFaceArray == _deformedFaces) 
+	if (aFaceArray == m_deformedFaces) 
 		return;
 	
-	_deformedFaces->release();
-	_deformedFaces = aFaceArray;
-	_deformedFaces->retain();
+	m_deformedFaces->release();
+	m_deformedFaces = aFaceArray;
+	m_deformedFaces->retain();
 
-	_deformedFaces->setNode( this );
+	m_deformedFaces->setNode( this );
 }
 
 CC3Face CC3SkinMeshNode::getDeformedFaceAt( GLuint faceIndex )
@@ -151,13 +151,13 @@ void CC3SkinMeshNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_skinSections = CCArray::create();							// retained
-		_skinSections->retain();
-		_skeletalTransformMatrix = CC3AffineMatrix::matrix();		// retained
-		_skeletalTransformMatrix->retain();
-		_skeletalTransformMatrixInverted = CC3AffineMatrix::matrix();// retained
-		_skeletalTransformMatrixInverted->retain();
-		_deformedFaces = NULL;
+		m_skinSections = CCArray::create();							// retained
+		m_skinSections->retain();
+		m_pSkeletalTransformMatrix = CC3AffineMatrix::matrix();		// retained
+		m_pSkeletalTransformMatrix->retain();
+		m_pSkeletalTransformMatrixInverted = CC3AffineMatrix::matrix();// retained
+		m_pSkeletalTransformMatrixInverted->retain();
+		m_deformedFaces = NULL;
 	}
 }
 
@@ -169,13 +169,13 @@ void CC3SkinMeshNode::populateFrom( CC3SkinMeshNode* another )
 	// are different for each mesh node and is created lazily if needed.
 	// The skeletal transform matrices are not copied
 
-	_skinSections->removeAllObjects();
+	m_skinSections->removeAllObjects();
 	CCArray* otherSkinSections = another->getSkinSections();
 	CCObject* pObj = NULL;
 	CCARRAY_FOREACH( otherSkinSections, pObj )
 	{
 		CC3SkinSection* ss = (CC3SkinSection*)pObj;
-		_skinSections->addObject( ss->copyForNode(this)->autorelease() );
+		m_skinSections->addObject( ss->copyForNode(this)->autorelease() );
 	}
 }
 
@@ -192,7 +192,7 @@ CCObject* CC3SkinMeshNode::copyWithZone( CCZone* zone )
 void CC3SkinMeshNode::reattachBonesFrom( CC3Node* aNode )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _skinSections, pObj )
+	CCARRAY_FOREACH( m_skinSections, pObj )
 	{
 		CC3SkinSection* ss = (CC3SkinSection*)pObj;
 		ss->reattachBonesFrom( aNode );
@@ -209,39 +209,39 @@ bool CC3SkinMeshNode::hasSoftBodyContent()
 void CC3SkinMeshNode::markTransformDirty()
 {
 	super::markTransformDirty();
-	_skeletalTransformMatrix->setIsDirty( true );
-	_skeletalTransformMatrixInverted->setIsDirty( true );
+	m_pSkeletalTransformMatrix->setIsDirty( true );
+	m_pSkeletalTransformMatrixInverted->setIsDirty( true );
 
-	if ( _deformedFaces )
-		_deformedFaces->clearDeformableCaches();
+	if ( m_deformedFaces )
+		m_deformedFaces->clearDeformableCaches();
 }
 
 CC3Matrix* CC3SkinMeshNode::getSkeletalTransformMatrix()
 {
-	if (_skeletalTransformMatrix->isDirty()) 
+	if (m_pSkeletalTransformMatrix->isDirty()) 
 	{
-		_skeletalTransformMatrix->populateFrom( getGlobalTransformMatrix() );
-		_skeletalTransformMatrix->leftMultiplyBy( getSoftBodyNode()->getGlobalTransformMatrixInverted() );
-		_skeletalTransformMatrix->setIsDirty( false );
+		m_pSkeletalTransformMatrix->populateFrom( getGlobalTransformMatrix() );
+		m_pSkeletalTransformMatrix->leftMultiplyBy( getSoftBodyNode()->getGlobalTransformMatrixInverted() );
+		m_pSkeletalTransformMatrix->setIsDirty( false );
 	}
-	return _skeletalTransformMatrix;
+	return m_pSkeletalTransformMatrix;
 }
 
 CC3Matrix* CC3SkinMeshNode::getSkeletalTransformMatrixInverted()
 {
-	if (_skeletalTransformMatrixInverted->isDirty()) 
+	if (m_pSkeletalTransformMatrixInverted->isDirty()) 
 	{
-		_skeletalTransformMatrixInverted->populateFrom( getSkeletalTransformMatrix() );
-		_skeletalTransformMatrixInverted->invert();
-		_skeletalTransformMatrixInverted->setIsDirty( false );
+		m_pSkeletalTransformMatrixInverted->populateFrom( getSkeletalTransformMatrix() );
+		m_pSkeletalTransformMatrixInverted->invert();
+		m_pSkeletalTransformMatrixInverted->setIsDirty( false );
 	}
-	return _skeletalTransformMatrixInverted;
+	return m_pSkeletalTransformMatrixInverted;
 }
 
 void CC3SkinMeshNode::boneWasTransformed( CC3Bone* aBone )
 {
-	if ( _deformedFaces )
-		_deformedFaces->clearDeformableCaches(); 
+	if ( m_deformedFaces )
+		m_deformedFaces->clearDeformableCaches(); 
 }
 
 /**
@@ -296,13 +296,13 @@ void CC3SkinMeshNode::drawMeshWithVisitor( CC3NodeDrawingVisitor* visitor )
 	
 	gl->enableMatrixPalette( true );		// Enable the matrix palette
 	
-	_mesh->bindWithVisitor( visitor );	// Bind the arrays
+	m_pMesh->bindWithVisitor( visitor );	// Bind the arrays
 	
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _skinSections, pObj )
+	CCARRAY_FOREACH( m_skinSections, pObj )
 	{
 		CC3SkinSection* ss = (CC3SkinSection*)pObj;
-		ss->drawVerticesOfMesh( _mesh, visitor );
+		ss->drawVerticesOfMesh( m_pMesh, visitor );
 	}
 
 	gl->enableMatrixPalette( false );		// We are finished with the matrix pallete so disable it.

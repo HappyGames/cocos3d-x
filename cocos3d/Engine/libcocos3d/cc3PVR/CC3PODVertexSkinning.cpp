@@ -139,7 +139,7 @@ void CC3PODSkinMeshNode::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 		GLint batchCount = psm->sBoneBatches.nBatchCnt;
 		for (GLint batchIndex = 0; batchIndex < batchCount; batchIndex++) 
 		{
-			_skinSections->addObject( CC3PODSkinSection::skinSectionFromBatchAtIndex( batchIndex, psm, this ) );
+			m_skinSections->addObject( CC3PODSkinSection::skinSectionFromBatchAtIndex( batchIndex, psm, this ) );
 		}
 	}
 }
@@ -176,7 +176,7 @@ void CC3PODSkinMeshNode::linkToPODNodes( CCArray* nodeArray )
     }
     
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _skinSections, pObj )
+	CCARRAY_FOREACH( m_skinSections, pObj )
 	{
 		CC3PODSkinSection* skinSctn = (CC3PODSkinSection*)pObj;
 		skinSctn->linkToPODNodes( nodeArray );
@@ -209,8 +209,8 @@ void CC3PODSkinSection::initFromBatchAtIndex( GLint aBatchIndex, PODStructPtr aS
 
 	if ( aNode->getMesh() )
 	{
-		_vertexStart = aNode->getMesh()->getVertexIndexCountFromFaceCount( currFaceOffset );
-		_vertexCount =  aNode->getMesh()->getVertexIndexCountFromFaceCount( nextFaceOffset - currFaceOffset );
+		m_vertexStart = aNode->getMesh()->getVertexIndexCountFromFaceCount( currFaceOffset );
+		m_vertexCount =  aNode->getMesh()->getVertexIndexCountFromFaceCount( nextFaceOffset - currFaceOffset );
 	}
 
 	_podBoneCount = pBatches->pnBatchBoneCnt[aBatchIndex];

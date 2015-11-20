@@ -33,25 +33,25 @@ NS_COCOS3D_BEGIN
 
 void CC3MortalPointParticle::setLifeSpan( GLfloat anInterval )
 {
-	_lifeSpan = anInterval;
-	_timeToLive = _lifeSpan;
+	m_lifeSpan = anInterval;
+	m_timeToLive = m_lifeSpan;
 }
 
 GLfloat CC3MortalPointParticle::getLifeSpan()
 {
-	return _lifeSpan;
+	return m_lifeSpan;
 }
 
 GLfloat CC3MortalPointParticle::getTimeToLive()
 {
-	return _timeToLive;
+	return m_timeToLive;
 }
 
 void CC3MortalPointParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visitor )
 {
 	GLfloat dt = visitor->getDeltaTime();
-	_timeToLive -= dt;
-	if (_timeToLive <= 0.0f)
+	m_timeToLive -= dt;
+	if (m_timeToLive <= 0.0f)
 		setIsAlive( false );
 	//else
 	//	[((id<CC3MortalPointParticleDeprecated>)self) updateLife: dt];
@@ -61,8 +61,8 @@ void CC3MortalPointParticle::populateFrom( CC3MortalPointParticle* another )
 {
 	super::populateFrom( another );
 	
-	_lifeSpan = another->getLifeSpan();
-	_timeToLive = another->getTimeToLive();
+	m_lifeSpan = another->getLifeSpan();
+	m_timeToLive = another->getTimeToLive();
 }
 
 CCObject* CC3MortalPointParticle::copyWithZone( CCZone* zone )
@@ -77,7 +77,7 @@ CCObject* CC3MortalPointParticle::copyWithZone( CCZone* zone )
 std::string CC3MortalPointParticle::fullDescription()
 {
 	return CC3String::stringWithFormat( (char*)"%s\n\tlifeSpan: %.3f, timeToLive: %.3f",
-			super::fullDescription().c_str(), _lifeSpan, _timeToLive );
+			super::fullDescription().c_str(), m_lifeSpan, m_timeToLive );
 }
 
 void CC3SprayPointParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visitor )
@@ -94,7 +94,7 @@ bool CC3SprayPointParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_velocity = CC3Vector::kCC3VectorZero;
+		m_velocity = CC3Vector::kCC3VectorZero;
 		return true;
 	}
 
@@ -104,7 +104,7 @@ bool CC3SprayPointParticle::init()
 void CC3SprayPointParticle::populateFrom( CC3SprayPointParticle* another )
 {
 	super::populateFrom( another );
-	_velocity = another->getVelocity();
+	m_velocity = another->getVelocity();
 }
 
 CCObject* CC3SprayPointParticle::copyWithZone( CCZone* zone )
@@ -119,17 +119,17 @@ CCObject* CC3SprayPointParticle::copyWithZone( CCZone* zone )
 std::string CC3SprayPointParticle::fullDescription()
 {
 	return CC3String::stringWithFormat( (char*)"%s\n\tvelocity: %s",
-			super::fullDescription().c_str(), _velocity.stringfy().c_str() );
+			super::fullDescription().c_str(), m_velocity.stringfy().c_str() );
 }
 
 CC3Vector CC3SprayPointParticle::getVelocity()
 {
-	return _velocity;
+	return m_velocity;
 }
 
 void CC3SprayPointParticle::setVelocity( const CC3Vector& vel )
 {
-	_velocity = vel;
+	m_velocity = vel;
 }
 
 void CC3UniformlyEvolvingPointParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visitor )
@@ -142,17 +142,17 @@ void CC3UniformlyEvolvingPointParticle::updateBeforeTransform( CC3NodeUpdatingVi
 	GLfloat dt = visitor->getDeltaTime();
 	
 	if ( hasSize() )
-		setSize( getSize() + (_sizeVelocity * dt) );
+		setSize( getSize() + (m_sizeVelocity * dt) );
 	
 	if ( hasColor() )
 	{
 		// We have to do the math on each component instead of using the color math functions
 		// because the functions clamp prematurely, and we need negative values for the velocity.
 		ccColor4F currColor = getColor4F();
-		setColor4F( ccc4f(CLAMP(currColor.r + (_colorVelocity.r * dt), 0.0f, 1.0f),
-					CLAMP(currColor.g + (_colorVelocity.g * dt), 0.0f, 1.0f),
-					CLAMP(currColor.b + (_colorVelocity.b * dt), 0.0f, 1.0f),
-					CLAMP(currColor.a + (_colorVelocity.a * dt), 0.0f, 1.0f)) 
+		setColor4F( ccc4f(CLAMP(currColor.r + (m_colorVelocity.r * dt), 0.0f, 1.0f),
+					CLAMP(currColor.g + (m_colorVelocity.g * dt), 0.0f, 1.0f),
+					CLAMP(currColor.b + (m_colorVelocity.b * dt), 0.0f, 1.0f),
+					CLAMP(currColor.a + (m_colorVelocity.a * dt), 0.0f, 1.0f)) 
 		);
 	}
 }
@@ -161,8 +161,8 @@ void CC3UniformlyEvolvingPointParticle::populateFrom( CC3UniformlyEvolvingPointP
 {
 	super::populateFrom( another );
 	
-	_sizeVelocity = another->getSizeVelocity();
-	_colorVelocity = another->getColorVelocity();
+	m_sizeVelocity = another->getSizeVelocity();
+	m_colorVelocity = another->getColorVelocity();
 }
 
 CCObject* CC3UniformlyEvolvingPointParticle::copyWithZone( CCZone* zone )
@@ -176,22 +176,22 @@ CCObject* CC3UniformlyEvolvingPointParticle::copyWithZone( CCZone* zone )
 
 void CC3UniformlyEvolvingPointParticle::setSizeVelocity( GLfloat velocity )
 {
-	_sizeVelocity = velocity;
+	m_sizeVelocity = velocity;
 }
 
 GLfloat CC3UniformlyEvolvingPointParticle::getSizeVelocity()
 {
-	return _sizeVelocity;
+	return m_sizeVelocity;
 }
 
 void CC3UniformlyEvolvingPointParticle::setColorVelocity( const ccColor4F& colorVel )
 {
-	_colorVelocity = colorVel;
+	m_colorVelocity = colorVel;
 }
 
 ccColor4F CC3UniformlyEvolvingPointParticle::getColorVelocity()
 {
-	return _colorVelocity;
+	return m_colorVelocity;
 }	
 
 void CC3VariegatedPointParticle::initializeParticle()
@@ -199,14 +199,14 @@ void CC3VariegatedPointParticle::initializeParticle()
 	super::initializeParticle();
 
 	ccColor4F colVel = getColorVelocity();
-	setColorVelocity( ccc4f(colVel.r / _lifeSpan,
-							colVel.g / _lifeSpan,
-							colVel.b / _lifeSpan,
-							colVel.a / _lifeSpan)
+	setColorVelocity( ccc4f(colVel.r / m_lifeSpan,
+							colVel.g / m_lifeSpan,
+							colVel.b / m_lifeSpan,
+							colVel.a / m_lifeSpan)
 	);
 	
 	GLfloat sizeVel = getSizeVelocity();
-	sizeVel /= _lifeSpan;
+	sizeVel /= m_lifeSpan;
 	setSizeVelocity( sizeVel );
 }
 
@@ -231,82 +231,82 @@ CC3VariegatedPointParticleHoseEmitter::~CC3VariegatedPointParticleHoseEmitter()
 
 GLfloat CC3VariegatedPointParticleHoseEmitter::getMinParticleStartingSize()
 {
-	return _minParticleStartingSize;
+	return m_minParticleStartingSize;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMinParticleStartingSize( GLfloat minSize )
 {
-	_minParticleStartingSize = minSize;
+	m_minParticleStartingSize = minSize;
 }
 
 GLfloat CC3VariegatedPointParticleHoseEmitter::getMinParticleEndingSize()
 {
-	return _minParticleEndingSize;
+	return m_minParticleEndingSize;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMinParticleEndingSize( GLfloat minSize )
 {
-	_minParticleEndingSize = minSize;
+	m_minParticleEndingSize = minSize;
 }
 
 GLfloat CC3VariegatedPointParticleHoseEmitter::getMaxParticleStartingSize()
 {
-	return _maxParticleStartingSize;
+	return m_maxParticleStartingSize;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMaxParticleStartingSize( GLfloat maxSize )
 {
-	_maxParticleStartingSize = maxSize;
+	m_maxParticleStartingSize = maxSize;
 }
 
 GLfloat CC3VariegatedPointParticleHoseEmitter::getMaxParticleEndingSize()
 {
-	return _maxParticleEndingSize;
+	return m_maxParticleEndingSize;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMaxParticleEndingSize( GLfloat maxSize )
 {
-	_maxParticleEndingSize = maxSize;
+	m_maxParticleEndingSize = maxSize;
 }
 
 ccColor4F CC3VariegatedPointParticleHoseEmitter::getMinParticleStartingColor()
 {
-	return _minParticleStartingColor;
+	return m_minParticleStartingColor;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMinParticleStartingColor( const ccColor4F& color )
 {
-	_minParticleStartingColor = color;
+	m_minParticleStartingColor = color;
 }
 
 ccColor4F CC3VariegatedPointParticleHoseEmitter::getMinParticleEndingColor()
 {
-	return _minParticleEndingColor;
+	return m_minParticleEndingColor;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMinParticleEndingColor( const ccColor4F& color )
 {
-	_minParticleEndingColor = color;
+	m_minParticleEndingColor = color;
 }
 
 ccColor4F CC3VariegatedPointParticleHoseEmitter::getMaxParticleEndingColor()
 {
-	return _maxParticleEndingColor;
+	return m_maxParticleEndingColor;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMaxParticleEndingColor( const ccColor4F& color )
 {
-	_maxParticleEndingColor = color;
+	m_maxParticleEndingColor = color;
 }
 
 ccColor4F CC3VariegatedPointParticleHoseEmitter::getMaxParticleStartingColor()
 {
-	return _maxParticleStartingColor;
+	return m_maxParticleStartingColor;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::setMaxParticleStartingColor( const ccColor4F& color )
 {
-	_maxParticleStartingColor = color;
+	m_maxParticleStartingColor = color;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::initWithTag( GLuint aTag, const std::string& aName )
@@ -315,28 +315,28 @@ void CC3VariegatedPointParticleHoseEmitter::initWithTag( GLuint aTag, const std:
 
 	setParticleNavigator( CC3HoseParticleNavigator::navigator() );
 
-	_minParticleStartingSize = kCC3DefaultParticleSize;
-	_maxParticleStartingSize = kCC3DefaultParticleSize;
-	_minParticleEndingSize = kCC3DefaultParticleSize;
-	_maxParticleEndingSize = kCC3DefaultParticleSize;
-	_minParticleStartingColor = kCCC4FWhite;
-	_maxParticleStartingColor = kCCC4FWhite;
-	_minParticleEndingColor = kCCC4FWhite;
-	_maxParticleEndingColor = kCCC4FWhite;
+	m_minParticleStartingSize = kCC3DefaultParticleSize;
+	m_maxParticleStartingSize = kCC3DefaultParticleSize;
+	m_minParticleEndingSize = kCC3DefaultParticleSize;
+	m_maxParticleEndingSize = kCC3DefaultParticleSize;
+	m_minParticleStartingColor = kCCC4FWhite;
+	m_maxParticleStartingColor = kCCC4FWhite;
+	m_minParticleEndingColor = kCCC4FWhite;
+	m_maxParticleEndingColor = kCCC4FWhite;
 }
 
 void CC3VariegatedPointParticleHoseEmitter::populateFrom( CC3VariegatedPointParticleHoseEmitter* another )
 {
 	super::populateFrom( another );
 	
-	_minParticleStartingSize = another->getMinParticleStartingSize();
-	_maxParticleStartingSize = another->getMaxParticleStartingSize();
-	_minParticleEndingSize = another->getMinParticleEndingSize();
-	_maxParticleEndingSize = another->getMaxParticleEndingSize();
-	_minParticleStartingColor = another->getMinParticleStartingColor();
-	_maxParticleStartingColor = another->getMaxParticleStartingColor();
-	_minParticleEndingColor = another->getMinParticleEndingColor();
-	_maxParticleEndingColor = another->getMaxParticleEndingColor();
+	m_minParticleStartingSize = another->getMinParticleStartingSize();
+	m_maxParticleStartingSize = another->getMaxParticleStartingSize();
+	m_minParticleEndingSize = another->getMinParticleEndingSize();
+	m_maxParticleEndingSize = another->getMaxParticleEndingSize();
+	m_minParticleStartingColor = another->getMinParticleStartingColor();
+	m_maxParticleStartingColor = another->getMaxParticleStartingColor();
+	m_minParticleEndingColor = another->getMinParticleEndingColor();
+	m_maxParticleEndingColor = another->getMaxParticleEndingColor();
 }
 
 CCObject* CC3VariegatedPointParticleHoseEmitter::copyWithZone( CCZone* zone )
@@ -361,7 +361,7 @@ void CC3VariegatedPointParticleHoseEmitter::initializeParticle( CC3Particle* aPa
 	// The particle itself will figure out how the overall change should be adjusted for its lifespan.
 	if ( getMesh()->hasVertexColors() )
 	{
-		ccColor4F startColor = RandomCCC4FBetween(_minParticleStartingColor, _maxParticleStartingColor);
+		ccColor4F startColor = RandomCCC4FBetween(m_minParticleStartingColor, m_maxParticleStartingColor);
 		aParticle->setColor4F( startColor );
 		
 		// End color is treated differently. If any component of either min or max is negative,
@@ -371,10 +371,10 @@ void CC3VariegatedPointParticleHoseEmitter::initializeParticle( CC3Particle* aPa
 		// For exmaple, setting all color components to -1 and alpha to zero, indicates that
 		// the particle should stay the same color, but fade away.
 		ccColor4F endColor;
-		endColor.r = CC3RandomOrAlt(_minParticleEndingColor.r, _maxParticleEndingColor.r, startColor.r);
-		endColor.g = CC3RandomOrAlt(_minParticleEndingColor.g, _maxParticleEndingColor.g, startColor.g);
-		endColor.b = CC3RandomOrAlt(_minParticleEndingColor.b, _maxParticleEndingColor.b, startColor.b);
-		endColor.a = CC3RandomOrAlt(_minParticleEndingColor.a, _maxParticleEndingColor.a, startColor.a);
+		endColor.r = CC3RandomOrAlt(m_minParticleEndingColor.r, m_maxParticleEndingColor.r, startColor.r);
+		endColor.g = CC3RandomOrAlt(m_minParticleEndingColor.g, m_maxParticleEndingColor.g, startColor.g);
+		endColor.b = CC3RandomOrAlt(m_minParticleEndingColor.b, m_maxParticleEndingColor.b, startColor.b);
+		endColor.a = CC3RandomOrAlt(m_minParticleEndingColor.a, m_maxParticleEndingColor.a, startColor.a);
 		
 		// We have to do the math on each component instead of using the color math functions
 		// because the functions clamp prematurely, and we need negative values for the velocity.
@@ -389,13 +389,13 @@ void CC3VariegatedPointParticleHoseEmitter::initializeParticle( CC3Particle* aPa
 	// The particle itself will figure out how the overall change should be adjusted for its lifespan.
 	if ( getMesh()->hasVertexPointSizes() )
 	{
-		GLfloat startSize = CC3RandomFloatBetween(_minParticleStartingSize, _maxParticleStartingSize);
+		GLfloat startSize = CC3RandomFloatBetween(m_minParticleStartingSize, m_maxParticleStartingSize);
 		aParticle->setSize( startSize );
 		
 		// End size is treated differently. If either min or max is negative, it indicates that
 		// the start size should be used, otherwise a random value between min and max is chosen.
 		// This allows a random size to be chosen, but to have it stay constant.
-		GLfloat endSize = CC3RandomOrAlt(_minParticleEndingSize, _maxParticleEndingSize, startSize);
+		GLfloat endSize = CC3RandomOrAlt(m_minParticleEndingSize, m_maxParticleEndingSize, startSize);
 		aParticle->setSizeVelocity( endSize - startSize );
 	}
 }

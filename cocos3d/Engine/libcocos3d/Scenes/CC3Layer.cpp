@@ -33,38 +33,38 @@ NS_COCOS3D_BEGIN
 
 CC3Layer::CC3Layer()
 {
-	_surfaceManager = NULL;
-	_cc3Scene = NULL;
-	_cc3GestureRecognizers = NULL;
+	m_pSurfaceManager = NULL;
+	m_pScene = NULL;
+	m_cc3GestureRecognizers = NULL;
 }
 
 CC3Layer::~CC3Layer()
 {
 	setCC3Scene( NULL );
-	CC_SAFE_RELEASE( _surfaceManager );
+	CC_SAFE_RELEASE( m_pSurfaceManager );
 	cc3RemoveAllGestureRecognizers();
-	CC_SAFE_RELEASE( _cc3GestureRecognizers );
+	CC_SAFE_RELEASE( m_cc3GestureRecognizers );
 }
 
 CC3Scene* CC3Layer::getCC3Scene()
 {
-	return _cc3Scene;
+	return m_pScene;
 }
 
 void CC3Layer::setCC3Scene( CC3Scene* aScene )
 {
-	 if ( aScene == _cc3Scene ) 
+	 if ( aScene == m_pScene ) 
 		 return;
 
-	 if ( _cc3Scene )
+	 if ( m_pScene )
 	 {
 		 closeCC3Scene();						// Close the old scene.
-		 _cc3Scene->wasRemoved();					// Stop actions in old scene (if shouldStopActionsWhenRemoved set).
+		 m_pScene->wasRemoved();					// Stop actions in old scene (if shouldStopActionsWhenRemoved set).
 		 // _cc3Scene.deprecatedCC3Layer = nil;		// Detach this layer from old scene.
-		 _cc3Scene->release();
+		 m_pScene->release();
 	 }
 
-	 _cc3Scene = aScene;
+	 m_pScene = aScene;
 	 CC_SAFE_RETAIN( aScene );
 
 	// _cc3Scene.deprecatedCC3Layer = self;					// Point the scene back here
@@ -85,9 +85,9 @@ void CC3Layer::setParent( CCNode* parent )
 
 bool CC3Layer::init()
 {
-	_shouldTrackViewSize = true;		// Could be overridden during init if contentSize set to something other than view size
+	m_shouldTrackViewSize = true;		// Could be overridden during init if contentSize set to something other than view size
 	super::init();
-	_shouldAlwaysUpdateViewport = false;
+	m_shouldAlwaysUpdateViewport = false;
 	initializeControls();
 
 	return true;
@@ -150,13 +150,13 @@ void CC3Layer::setOpacity( CCOpacity opacity )
 
 CC3SceneDrawingSurfaceManager* CC3Layer::getSurfaceManager()
 {
-	if (!_surfaceManager) 
+	if (!m_pSurfaceManager) 
 	{
-		_surfaceManager = CC3SceneDrawingSurfaceManager::surfaceManager();
-		_surfaceManager->retain();
+		m_pSurfaceManager = CC3SceneDrawingSurfaceManager::surfaceManager();
+		m_pSurfaceManager->retain();
 
 	}
-	return _surfaceManager;
+	return m_pSurfaceManager;
 }
 
 void CC3Layer::setSurfaceManager( CC3SceneDrawingSurfaceManager* surfaceManager )
@@ -164,12 +164,12 @@ void CC3Layer::setSurfaceManager( CC3SceneDrawingSurfaceManager* surfaceManager 
 	/*CC3Assert([surfaceManager isKindOfClass: self.surfaceManagerClass],
 			  @"The surface manager must be a type of %@", self.surfaceManagerClass);*/
 
-	if (surfaceManager == _surfaceManager) 
+	if (surfaceManager == m_pSurfaceManager) 
 		return;
 
-	CC_SAFE_RELEASE( _surfaceManager );
+	CC_SAFE_RELEASE( m_pSurfaceManager );
 	CC_SAFE_RETAIN( surfaceManager );
-	_surfaceManager = surfaceManager;
+	m_pSurfaceManager = surfaceManager;
 
 	updateViewport();
 }
@@ -212,17 +212,17 @@ void CC3Layer::onCloseCC3Layer()
 void CC3Layer::closeCC3Scene()
 {
 	// Must not use property accessor!
-	_cc3Scene->close();
+	m_pScene->close();
 }	
 
 bool CC3Layer::shouldTrackViewSize()
 {
-	return _shouldTrackViewSize;
+	return m_shouldTrackViewSize;
 }
 
 void CC3Layer::setShouldTrackViewSize( bool shouldTrack )
 {
-	_shouldTrackViewSize = shouldTrack;
+	m_shouldTrackViewSize = shouldTrack;
 }
 
 void CC3Layer::update( float dt )
@@ -233,13 +233,13 @@ void CC3Layer::update( float dt )
 // Lazily initialized
 CCArray* CC3Layer::getCC3GestureRecognizers()
 {
-	if ( !_cc3GestureRecognizers ) 
+	if ( !m_cc3GestureRecognizers ) 
 	{
-		_cc3GestureRecognizers = CCArray::create();	// retained
-		_cc3GestureRecognizers->retain();
+		m_cc3GestureRecognizers = CCArray::create();	// retained
+		m_cc3GestureRecognizers->retain();
 	}
 
-	return _cc3GestureRecognizers;
+	return m_cc3GestureRecognizers;
 }
 
 //void CC3Layer::addGestureRecognizer( CCGestureRecognizer* gesture )
@@ -266,7 +266,7 @@ void CC3Layer::drawSceneWithVisitor( CC3NodeDrawingVisitor* visitor )
 	// Ensure the visitor uses the surface manager of this layer
 	visitor->setSurfaceManager( getSurfaceManager() );
 	
-	if (_shouldAlwaysUpdateViewport) 
+	if (m_shouldAlwaysUpdateViewport) 
 		updateViewport();
 	
 	getCC3Scene()->drawSceneWithVisitor( visitor );
@@ -299,10 +299,10 @@ void CC3Layer::updateViewport()
 	CC3Viewport vp = CC3ViewportFromCGRect(gbb);
 	
 	// Set the viewport into the view surface and the camera
-	if ( _surfaceManager )
+	if ( m_pSurfaceManager )
 	{
-		_surfaceManager->setViewSurfaceOrigin( vp.origin );
-		_surfaceManager->setSize( vp.size );
+		m_pSurfaceManager->setViewSurfaceOrigin( vp.origin );
+		m_pSurfaceManager->setSize( vp.size );
 	}
 
 	CC3Scene* scene = getCC3Scene();
@@ -389,7 +389,7 @@ bool CC3Layer::handleTouchType( GLuint touchType, const CCPoint& touchPoint )
 /** Lazily allocate and populate a char string built from the description property. */
 std::string CC3Layer::getRenderStreamGroupMarker()
 {
-	return _renderStreamGroupMarker;
+	return m_renderStreamGroupMarker;
 }
 
 bool CC3Layer::ccTouchBegan( CCTouch *pTouch, CCEvent *pEvent )

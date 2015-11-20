@@ -35,7 +35,7 @@ NS_COCOS3D_BEGIN
 
 CC3OpenGLProgPipeline::CC3OpenGLProgPipeline()
 {
-	_shaderProgramPrewarmer = NULL;
+	m_pShaderProgramPrewarmer = NULL;
 }
 
 CC3OpenGLProgPipeline::~CC3OpenGLProgPipeline()
@@ -188,15 +188,15 @@ void CC3OpenGLProgPipeline::popProjectionMatrixStack()
 
 CC3ShaderPrewarmer* CC3OpenGLProgPipeline::getShaderProgramPrewarmer()
 { 
-	return _shaderProgramPrewarmer; 
+	return m_pShaderProgramPrewarmer; 
 }
 
 void CC3OpenGLProgPipeline::setShaderProgramPrewarmer( CC3ShaderPrewarmer* shaderProgramPrewarmer )
 {
-	if (shaderProgramPrewarmer == _shaderProgramPrewarmer) 
+	if (shaderProgramPrewarmer == m_pShaderProgramPrewarmer) 
 		return;
-	CC_SAFE_RELEASE( _shaderProgramPrewarmer );
-	_shaderProgramPrewarmer = shaderProgramPrewarmer;
+	CC_SAFE_RELEASE( m_pShaderProgramPrewarmer );
+	m_pShaderProgramPrewarmer = shaderProgramPrewarmer;
 	CC_SAFE_RETAIN( shaderProgramPrewarmer );
 }
 

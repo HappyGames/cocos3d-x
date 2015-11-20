@@ -331,9 +331,9 @@ protected:
 	static void					ensureCache();
 	
 protected:
-	std::string					_directory;
-	bool						_wasLoaded : 1;
-	bool						_isBigEndian : 1;
+	std::string					m_directory;
+	bool						m_wasLoaded : 1;
+	bool						m_isBigEndian : 1;
 };
 
 NS_COCOS3D_END

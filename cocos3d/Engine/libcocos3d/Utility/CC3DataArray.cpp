@@ -43,7 +43,7 @@ CC3DataArray::~CC3DataArray()
 	
 unsigned int CC3DataArray::getElementSize()
 { 
-	return MAX(_elementSize, 1); 
+	return MAX(m_elementSize, 1); 
 }
 
 void CC3DataArray::setElementSize( unsigned int elementSize )
@@ -51,13 +51,13 @@ void CC3DataArray::setElementSize( unsigned int elementSize )
 	if (elementSize == getElementSize())
 		return;
 	unsigned int elemCap = getElementCapacity();		// Retrieve before changing size.
-	_elementSize = MAX(elementSize, 1);
+	m_elementSize = MAX(elementSize, 1);
 	setElementCapacity( elemCap );
 }
 
 unsigned int CC3DataArray::getElementCapacity()
 { 
-	return _data.size() / getElementSize(); 
+	return m_data.size() / getElementSize(); 
 }
 
 void CC3DataArray::setElementCapacity( unsigned int elementCapacity )
@@ -65,7 +65,7 @@ void CC3DataArray::setElementCapacity( unsigned int elementCapacity )
 	if ( elementCapacity == getElementCapacity() ) 
 		return;
 
-	_data.reserve( getElementSize() * elementCapacity );
+	m_data.reserve( getElementSize() * elementCapacity );
 }
 
 void CC3DataArray::ensureElementCapacity( unsigned int  elementCapacity )
@@ -76,17 +76,17 @@ void CC3DataArray::ensureElementCapacity( unsigned int  elementCapacity )
 
 void* CC3DataArray::getElementAt( unsigned int index )
 {
-	return (char*)_data.data() + getElementSize() * index;
+	return (char*)m_data.data() + getElementSize() * index;
 }
 
 bool CC3DataArray::isReady()
 {
-	return _isReady;
+	return m_isReady;
 }
 
 void CC3DataArray::setIsReady( bool bReady )
 {
-	_isReady = bReady;
+	m_isReady = bReady;
 }
 
 void CC3DataArray::init()
@@ -96,8 +96,8 @@ void CC3DataArray::init()
 
 void CC3DataArray::initWithElementSize( unsigned int elementSize )
 {
-	_elementSize = elementSize;
-	_isReady = false;	
+	m_elementSize = elementSize;
+	m_isReady = false;	
 }
 
 CC3DataArray* CC3DataArray::dataArrayWithElementSize( unsigned int elementSize )

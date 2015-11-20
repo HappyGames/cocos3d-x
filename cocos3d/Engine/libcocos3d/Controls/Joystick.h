@@ -149,11 +149,11 @@ protected:
 	void						resetVelocity();
 	
 protected:
-	CCNode*						_thumbNode;
-	bool						_isTracking;
-	CCPoint						_velocity;
-	AngularPoint				_angularVelocity;
-	CCPoint						_travelLimit;
+	CCNode*						m_pThumbNode;
+	bool						m_isTracking;
+	CCPoint						m_velocity;
+	AngularPoint				m_angularVelocity;
+	CCPoint						m_travelLimit;
 };
 
 NS_COCOS3D_END

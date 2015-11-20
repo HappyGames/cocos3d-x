@@ -318,14 +318,14 @@ std::string CC3GLSLVariable::getName()
 
 CC3GLSLUniform::CC3GLSLUniform()
 {
-	_varValue = NULL;
-	_glVarValue = NULL;
+	m_varValue = NULL;
+	m_glVarValue = NULL;
 }
 
 CC3GLSLUniform::~CC3GLSLUniform()
 {
-	CC_SAFE_FREE( _varValue );
-	CC_SAFE_FREE( _glVarValue );
+	CC_SAFE_FREE( m_varValue );
+	CC_SAFE_FREE( m_glVarValue );
 }
 
 GLenum CC3GLSLUniform::getType()
@@ -375,17 +375,17 @@ void CC3GLSLUniform::setVector4( const CC3Vector4& value, GLuint index )
 	switch (_type) 
 	{		
 		case GL_FLOAT:
-			((GLfloat*)_varValue)[index] = *(GLfloat*)&value;
+			((GLfloat*)m_varValue)[index] = *(GLfloat*)&value;
 			return;
 		case GL_FLOAT_VEC2:
-			((CCPoint*)_varValue)[index] = *(CCPoint*)&value;
+			((CCPoint*)m_varValue)[index] = *(CCPoint*)&value;
 			return;
 		case GL_FLOAT_VEC3:
-			((CC3Vector*)_varValue)[index] = *(CC3Vector*)&value;
+			((CC3Vector*)m_varValue)[index] = *(CC3Vector*)&value;
 			return;
 		case GL_FLOAT_VEC4:
 		case GL_FLOAT_MAT2:
-			((CC3Vector4*)_varValue)[index] = value;
+			((CC3Vector4*)m_varValue)[index] = value;
 			return;
 			
 		case GL_FLOAT_MAT3:
@@ -432,7 +432,7 @@ void CC3GLSLUniform::setMatrix3x3( const CC3Matrix3x3* value )
 
 void CC3GLSLUniform::setMatrix3x3( const CC3Matrix3x3* value, GLuint index )
 {
-	CC3Matrix3x3* varMtx = (CC3Matrix3x3*)_varValue;
+	CC3Matrix3x3* varMtx = (CC3Matrix3x3*)m_varValue;
 	switch (_type) 
 	{
 		case GL_FLOAT_MAT3:
@@ -452,7 +452,7 @@ void CC3GLSLUniform::setMatrix4x3( const CC3Matrix4x3* value )
 
 void CC3GLSLUniform::setMatrix4x3( const CC3Matrix4x3* value, GLuint index )
 {
-	CC3Matrix4x4* varMtx = (CC3Matrix4x4*)_varValue;
+	CC3Matrix4x4* varMtx = (CC3Matrix4x4*)m_varValue;
 	switch (_type) 
 	{
 		case GL_FLOAT_MAT4:
@@ -472,7 +472,7 @@ void CC3GLSLUniform::setMatrix4x4( const CC3Matrix4x4* value )
 
 void CC3GLSLUniform::setMatrix4x4( const CC3Matrix4x4* value, GLuint index )
 {
-	CC3Matrix4x4* varMtx = (CC3Matrix4x4*)_varValue;
+	CC3Matrix4x4* varMtx = (CC3Matrix4x4*)m_varValue;
 	switch (_type) 
 	{
 		case GL_FLOAT_MAT4:
@@ -544,19 +544,19 @@ void CC3GLSLUniform::setIntVector4( const CC3IntVector4& value, GLuint index )
 		case GL_BOOL:
 		case GL_SAMPLER_2D:
 		case GL_SAMPLER_CUBE:
-			((GLint*)_varValue)[index] = *(GLint*)&value;
+			((GLint*)m_varValue)[index] = *(GLint*)&value;
 			return;
 		case GL_INT_VEC2:
 		case GL_BOOL_VEC2:
-			((CC3IntPoint*)_varValue)[index] = *(CC3IntPoint*)&value;
+			((CC3IntPoint*)m_varValue)[index] = *(CC3IntPoint*)&value;
 			return;
 		case GL_INT_VEC3:
 		case GL_BOOL_VEC3:
-			((CC3IntVector*)_varValue)[index] = *(CC3IntVector*)&value;
+			((CC3IntVector*)m_varValue)[index] = *(CC3IntVector*)&value;
 			return;
 		case GL_INT_VEC4:
 		case GL_BOOL_VEC4:
-			((CC3IntVector4*)_varValue)[index] = value;
+			((CC3IntVector4*)m_varValue)[index] = value;
 			return;
 			
 		default:
@@ -698,7 +698,7 @@ void CC3GLSLUniform::setValueFromUniform( CC3GLSLUniform* uniform )
 {
 	CCAssert(_type == uniform->getType(), "uniforms are not of the same type");
 	CCAssert(_size == uniform->getSize(), "uniforms are not of the same size");
-	memcpy(_varValue, uniform->_varValue, _varLen);
+	memcpy(m_varValue, uniform->m_varValue, m_varLen);
 }
 
 std::string CC3GLSLUniform::valueDescription()
@@ -714,42 +714,42 @@ std::string CC3GLSLUniform::valueDescription()
 		switch (_type) 
 		{
 			case GL_FLOAT:
-				desc += CC3String::stringWithFormat( (char*)"%.3f", ((GLfloat*)_varValue)[vIdx] );
+				desc += CC3String::stringWithFormat( (char*)"%.3f", ((GLfloat*)m_varValue)[vIdx] );
 				break;
 			case GL_FLOAT_VEC2:
-				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCCPoint(((CCPoint*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCCPoint(((CCPoint*)m_varValue)[vIdx]).c_str() );
 				break;
 			case GL_FLOAT_VEC3:
-				desc += CC3String::stringWithFormat( (char*)"%s", ((CC3Vector*)_varValue)[vIdx].stringfy().c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", ((CC3Vector*)m_varValue)[vIdx].stringfy().c_str() );
 				break;
 			case GL_FLOAT_VEC4:
 			case GL_FLOAT_MAT2:
-				desc += CC3String::stringWithFormat( (char*)"%s", (((CC3Vector4*)_varValue)[vIdx]).stringfy().c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", (((CC3Vector4*)m_varValue)[vIdx]).stringfy().c_str() );
 				break;
 				
 			case GL_FLOAT_MAT3:
-				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Matrix3x3(&(((CC3Matrix3x3*)_varValue)[vIdx])).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Matrix3x3(&(((CC3Matrix3x3*)m_varValue)[vIdx])).c_str() );
 				break;
 			case GL_FLOAT_MAT4:
-				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Matrix4x4(&(((CC3Matrix4x4*)_varValue)[vIdx])).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3Matrix4x4(&(((CC3Matrix4x4*)m_varValue)[vIdx])).c_str() );
 				break;
 			case GL_SAMPLER_2D:
 			case GL_SAMPLER_CUBE:
 			case GL_INT:
 			case GL_BOOL:
-				desc += CC3String::stringWithFormat( (char*)"%d", ((GLint*)_varValue)[vIdx] );
+				desc += CC3String::stringWithFormat( (char*)"%d", ((GLint*)m_varValue)[vIdx] );
 				break;
 			case GL_INT_VEC2:
 			case GL_BOOL_VEC2:
-				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntPoint(((CC3IntPoint*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntPoint(((CC3IntPoint*)m_varValue)[vIdx]).c_str() );
 				break;
 			case GL_INT_VEC3:
 			case GL_BOOL_VEC3:
-				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntVector(((CC3IntVector*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntVector(((CC3IntVector*)m_varValue)[vIdx]).c_str() );
 				break;
 			case GL_INT_VEC4:
 			case GL_BOOL_VEC4:
-				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntVector4(((CC3IntVector4*)_varValue)[vIdx]).c_str() );
+				desc += CC3String::stringWithFormat( (char*)"%s", stringFromCC3IntVector4(((CC3IntVector4*)m_varValue)[vIdx]).c_str() );
 				break;
 				
 			default:
@@ -767,11 +767,11 @@ void CC3GLSLUniform::populateFromProgram()
 {
 	super::populateFromProgram();
 	
-	_varLen = CC3GLElementTypeSize(_type) * _size;
-	CC_SAFE_FREE(_varValue);
-	_varValue = calloc(_varLen, 1);
-	CC_SAFE_FREE(_glVarValue);
-	_glVarValue = calloc(_varLen, 1);
+	m_varLen = CC3GLElementTypeSize(_type) * _size;
+	CC_SAFE_FREE(m_varValue);
+	m_varValue = calloc(m_varLen, 1);
+	CC_SAFE_FREE(m_glVarValue);
+	m_glVarValue = calloc(m_varLen, 1);
 	
 	populateInitialValue();
 }
@@ -829,10 +829,10 @@ void CC3GLSLUniform::populateInitialValue()
 
 bool CC3GLSLUniform::updateGLValueWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( _isGLStateKnown && memcmp(_glVarValue, _varValue, _varLen) == 0 ) 
+	if ( _isGLStateKnown && memcmp(m_glVarValue, m_varValue, m_varLen) == 0 ) 
 		return false;
 
-	memcpy(_glVarValue, _varValue, _varLen);
+	memcpy(m_glVarValue, m_varValue, m_varLen);
 	visitor->getGL()->setShaderProgramUniformValue( this );
 	_isGLStateKnown = true;
 	return true;
@@ -842,8 +842,8 @@ void CC3GLSLUniform::init()
 {
 	super::init();
 	{
-		_varLen = 0;
-		_varValue = NULL;
+		m_varLen = 0;
+		m_varValue = NULL;
 	}
 }
 
@@ -851,11 +851,11 @@ void CC3GLSLUniform::populateFrom( CC3GLSLUniform* another )
 {
 	super::populateFrom( another );
 	
-	_varLen = CC3GLElementTypeSize(_type) * _size;
-	CC_SAFE_FREE(_varValue);
-	_varValue = calloc(_varLen, 1);
-	CC_SAFE_FREE(_glVarValue);
-	_glVarValue = calloc(_varLen, 1);
+	m_varLen = CC3GLElementTypeSize(_type) * _size;
+	CC_SAFE_FREE(m_varValue);
+	m_varValue = calloc(m_varLen, 1);
+	CC_SAFE_FREE(m_glVarValue);
+	m_glVarValue = calloc(m_varLen, 1);
 	
 	setValueFromUniform( another );
 }
@@ -883,32 +883,32 @@ void CC3GLSLUniform::setGLValue()
 	switch (_type) 
 	{
 	case GL_FLOAT:
-		glUniform1fv(_location, _size, (const GLfloat*)_glVarValue);
+		glUniform1fv(_location, _size, (const GLfloat*)m_glVarValue);
 		//LogGLErrorTrace(@"glUniform1fv(%i, %i, %.3f) setting %@", _location, _size, *(GLfloat*)_glVarValue, self.name);
 		break;
 	case GL_FLOAT_VEC2:
-		glUniform2fv(_location, _size, (const GLfloat*)_glVarValue);
+		glUniform2fv(_location, _size, (const GLfloat*)m_glVarValue);
 		//LogGLErrorTrace(@"glUniform2fv(%i, %i, %@) setting %@", _location, _size, NSStringFromCGPoint(*(CGPoint*)_glVarValue), self.name);
 		break;
 	case GL_FLOAT_VEC3:
-		glUniform3fv(_location, _size, (const GLfloat*)_glVarValue);
+		glUniform3fv(_location, _size, (const GLfloat*)m_glVarValue);
 		//LogGLErrorTrace(@"glUniform3fv(%i, %i, %@) setting %@", _location, _size, NSStringFromCC3Vector(*(CC3Vector*)_glVarValue), self.name);
 		break;
 	case GL_FLOAT_VEC4:
-		glUniform4fv(_location, _size, (const GLfloat*)_glVarValue);
+		glUniform4fv(_location, _size, (const GLfloat*)m_glVarValue);
 		//LogGLErrorTrace(@"glUniform4fv(%i, %i, %@) setting %@", _location, _size, NSStringFromCC3Vector4(*(CC3Vector4*)_glVarValue), self.name);
 		break;
 
 	case GL_FLOAT_MAT2:
-		glUniformMatrix2fv(_location, _size, GL_FALSE, (const GLfloat*)_glVarValue);
+		glUniformMatrix2fv(_location, _size, GL_FALSE, (const GLfloat*)m_glVarValue);
 	//	LogGLErrorTrace(@"glUniformMatrix2fv(%i, %i, GL_FALSE, %@) setting %@", _location, _size, NSStringFromCC3Vector4(*(CC3Vector4*)_glVarValue), self.name);
 		break;
 	case GL_FLOAT_MAT3:
-		glUniformMatrix3fv(_location, _size, GL_FALSE, (const GLfloat*)_glVarValue);
+		glUniformMatrix3fv(_location, _size, GL_FALSE, (const GLfloat*)m_glVarValue);
 	//	LogGLErrorTrace(@"glUniformMatrix3fv(%i, %i, GL_FALSE, %@) setting %@", _location, _size, NSStringFromCC3Matrix3x3((CC3Matrix3x3*)_glVarValue), self.name);
 		break;
 	case GL_FLOAT_MAT4:
-		glUniformMatrix4fv(_location, _size, GL_FALSE, (const GLfloat*)_glVarValue);
+		glUniformMatrix4fv(_location, _size, GL_FALSE, (const GLfloat*)m_glVarValue);
 	//	LogGLErrorTrace(@"glUniformMatrix4fv(%i, %i, GL_FALSE, %@) setting %@", _location, _size, NSStringFromCC3Matrix4x4((CC3Matrix4x4*)_glVarValue), self.name);
 		break;
 
@@ -916,22 +916,22 @@ void CC3GLSLUniform::setGLValue()
 	case GL_SAMPLER_2D:
 	case GL_SAMPLER_CUBE:
 	case GL_BOOL:
-		glUniform1iv(_location, _size, (const GLint*)_glVarValue);
+		glUniform1iv(_location, _size, (const GLint*)m_glVarValue);
 	//	LogGLErrorTrace(@"glUniform1iv(%i, %i, %i) setting %@", _location, _size, *(GLint*)_glVarValue, self.name);
 		break;
 	case GL_INT_VEC2:
 	case GL_BOOL_VEC2:
-		glUniform2iv(_location, _size, (const GLint*)_glVarValue);
+		glUniform2iv(_location, _size, (const GLint*)m_glVarValue);
 //		LogGLErrorTrace(@"glUniform2iv(%i, %i, %@) setting %@", _location, _size, NSStringFromCC3IntPoint(*(CC3IntPoint*)_glVarValue), self.name);
 		break;
 	case GL_INT_VEC3:
 	case GL_BOOL_VEC3:
-		glUniform3iv(_location, _size, (const GLint*)_glVarValue);
+		glUniform3iv(_location, _size, (const GLint*)m_glVarValue);
 //		LogGLErrorTrace(@"glUniform3iv(%i, %i, %@) setting %@", _location, _size, NSStringFromCC3IntVector(*(CC3IntVector*)_glVarValue), self.name);
 		break;
 	case GL_INT_VEC4:
 	case GL_BOOL_VEC4:
-		glUniform4iv(_location, _size, (const GLint*)_glVarValue);
+		glUniform4iv(_location, _size, (const GLint*)m_glVarValue);
 //		LogGLErrorTrace(@"glUniform4iv(%i, %i, %@) setting %@", _location, _size, NSStringFromCC3IntVector4(*(CC3IntVector4*)_glVarValue), self.name);
 		break;
 
@@ -962,19 +962,19 @@ void CC3GLSLUniform::populateFromGL()
 
 CC3GLSLUniformOverride::CC3GLSLUniformOverride()
 {
-	_programUniform = NULL;
-	_pureColorProgramUniform = NULL;
+	m_pProgramUniform = NULL;
+	m_pPureColorProgramUniform = NULL;
 }
 
 CC3GLSLUniformOverride::~CC3GLSLUniformOverride()
 {
-	CC_SAFE_RELEASE( _programUniform );
-	CC_SAFE_RELEASE( _pureColorProgramUniform );
+	CC_SAFE_RELEASE( m_pProgramUniform );
+	CC_SAFE_RELEASE( m_pPureColorProgramUniform );
 }
 
 bool CC3GLSLUniformOverride::updateIfOverriding( CC3GLSLUniform* uniform )
 {
-	if (uniform == _programUniform || uniform == _pureColorProgramUniform) 
+	if (uniform == m_pProgramUniform || uniform == m_pPureColorProgramUniform) 
 	{
 		uniform->setValueFromUniform( this );
 		return true;
@@ -993,11 +993,11 @@ void CC3GLSLUniformOverride::initForProgramUniform( CC3GLSLUniform* uniform, CC3
 	super::init();
 	populateFrom( uniform );
 
-	CC_SAFE_RELEASE( _programUniform ); 
-	_programUniform = uniform;						// retained
+	CC_SAFE_RELEASE( m_pProgramUniform ); 
+	m_pProgramUniform = uniform;						// retained
 	CC_SAFE_RETAIN( uniform );
-	CC_SAFE_RELEASE( _pureColorProgramUniform );
-	_pureColorProgramUniform = pureColorUniform;	// retained
+	CC_SAFE_RELEASE( m_pPureColorProgramUniform );
+	m_pPureColorProgramUniform = pureColorUniform;	// retained
 	CC_SAFE_RETAIN( pureColorUniform );
 }
 

@@ -33,30 +33,30 @@ NS_COCOS3D_BEGIN
 
 void CC3RandomMortalParticleNavigator::setMaxParticleLifeSpan( GLfloat lifeSpan )
 {
-	_maxParticleLifeSpan = lifeSpan;
+	m_maxParticleLifeSpan = lifeSpan;
 }
 
 GLfloat CC3RandomMortalParticleNavigator::getMaxParticleLifeSpan()
 {
-	return _maxParticleLifeSpan;
+	return m_maxParticleLifeSpan;
 }
 
 void CC3RandomMortalParticleNavigator::setMinParticleLifeSpan( GLfloat lifeSpan )
 {
-	_minParticleLifeSpan = lifeSpan;
+	m_minParticleLifeSpan = lifeSpan;
 }
 
 GLfloat CC3RandomMortalParticleNavigator::getMinParticleLifeSpan()
 {
-	return _minParticleLifeSpan;
+	return m_minParticleLifeSpan;
 }
 
 bool CC3RandomMortalParticleNavigator::init()
 {
 	if ( super::init() )
 	{
-		_minParticleLifeSpan = 0.0f;
-		_maxParticleLifeSpan = 0.0f;
+		m_minParticleLifeSpan = 0.0f;
+		m_maxParticleLifeSpan = 0.0f;
 
 		return true;
 	}
@@ -68,8 +68,8 @@ void CC3RandomMortalParticleNavigator::populateFrom( CC3RandomMortalParticleNavi
 {
 	super::populateFrom( another );
 	
-	_minParticleLifeSpan = another->getMinParticleLifeSpan();
-	_maxParticleLifeSpan = another->getMaxParticleLifeSpan();
+	m_minParticleLifeSpan = another->getMinParticleLifeSpan();
+	m_maxParticleLifeSpan = another->getMaxParticleLifeSpan();
 }
 
 CCObject* CC3RandomMortalParticleNavigator::copyWithZone( CCZone* pZone )
@@ -83,7 +83,7 @@ CCObject* CC3RandomMortalParticleNavigator::copyWithZone( CCZone* pZone )
 
 void CC3RandomMortalParticleNavigator::initializeParticle( CC3Particle* aParticle )
 {
-	aParticle->setLifeSpan( CC3RandomFloatBetween(_minParticleLifeSpan, _maxParticleLifeSpan) );
+	aParticle->setLifeSpan( CC3RandomFloatBetween(m_minParticleLifeSpan, m_maxParticleLifeSpan) );
 }
 
 /** Converts the angular components of the specified dispersion into tangents. */
@@ -102,14 +102,14 @@ static inline CCSize CC3DispersionAngleFromShape( const CCSize& anAspect )
 
 CC3HoseParticleNavigator::CC3HoseParticleNavigator()
 {
-	_nozzle = NULL;
-	_nozzleMatrix = NULL;
+	m_pNozzle = NULL;
+	m_nozzleMatrix = NULL;
 }
 
 CC3HoseParticleNavigator::~CC3HoseParticleNavigator()
 {
 	setNozzle( NULL );			// Setter clears listener and releases nozzle
-	CC_SAFE_RELEASE( _nozzleMatrix );
+	CC_SAFE_RELEASE( m_nozzleMatrix );
 }
 
 CC3HoseParticleNavigator* CC3HoseParticleNavigator::navigator()
@@ -129,27 +129,27 @@ void CC3HoseParticleNavigator::setEmitter( CC3ParticleEmitter* anEmitter )
 
 CC3Node* CC3HoseParticleNavigator::getNozzle()
 {
-	return _nozzle; 
+	return m_pNozzle; 
 }
 
 void CC3HoseParticleNavigator::setNozzle( CC3Node* aNode )
 {
-	if (aNode == _nozzle) 
+	if (aNode == m_pNozzle) 
 		return;
 	
-	if ( _nozzle )
+	if ( m_pNozzle )
 	{
-		_nozzle->removeTransformListener( this );
-		if (_nozzle->getParent() == _emitter) 
-			_nozzle->remove();
+		m_pNozzle->removeTransformListener( this );
+		if (m_pNozzle->getParent() == m_pEmitter) 
+			m_pNozzle->remove();
 	}
 	
-	CC_SAFE_RELEASE( _nozzle );
-	_nozzle = aNode;
+	CC_SAFE_RELEASE( m_pNozzle );
+	m_pNozzle = aNode;
 	CC_SAFE_RETAIN( aNode );
 	
-	if ( _nozzle )
-		_nozzle->addTransformListener( this );
+	if ( m_pNozzle )
+		m_pNozzle->addTransformListener( this );
 
 	checkNozzleParent();
 }
@@ -157,13 +157,13 @@ void CC3HoseParticleNavigator::setNozzle( CC3Node* aNode )
 /** If the nozzle does not have a parent, add it to the emitter. */
 void CC3HoseParticleNavigator::checkNozzleParent()
 {
-	if ( _nozzle && !_nozzle->getParent() ) 
+	if ( m_pNozzle && !m_pNozzle->getParent() ) 
 	{
-		if ( _emitter )
+		if ( m_pEmitter )
 		{
-			if (!_emitter->getName().empty()) 
-				_nozzle->setName( CC3String::stringWithFormat( (char*)"%s-Nozzle", _emitter->getName().c_str() ) );
-			_emitter->addChild( _nozzle );
+			if (!m_pEmitter->getName().empty()) 
+				m_pNozzle->setName( CC3String::stringWithFormat( (char*)"%s-Nozzle", m_pEmitter->getName().c_str() ) );
+			m_pEmitter->addChild( m_pNozzle );
 		}
 	}
 }
@@ -171,59 +171,59 @@ void CC3HoseParticleNavigator::checkNozzleParent()
 // Protected property for copying
 CCSize CC3HoseParticleNavigator::getNozzleShape()
 {
-	return _nozzleShape; 
+	return m_nozzleShape; 
 }
 
 CCSize CC3HoseParticleNavigator::getDispersionAngle()
 {
-	return _shouldPrecalculateNozzleTangents
-				? CC3DispersionAngleFromShape(_nozzleShape)
-				: _nozzleShape;
+	return m_shouldPrecalculateNozzleTangents
+				? CC3DispersionAngleFromShape(m_nozzleShape)
+				: m_nozzleShape;
 }
 
 #define kCC3TangentPrecalcThreshold 90.0f
 
 void CC3HoseParticleNavigator::setDispersionAngle( const CCSize& dispAngle )
 {
-	_shouldPrecalculateNozzleTangents = (dispAngle.width < kCC3TangentPrecalcThreshold &&
+	m_shouldPrecalculateNozzleTangents = (dispAngle.width < kCC3TangentPrecalcThreshold &&
 										dispAngle.height < kCC3TangentPrecalcThreshold);
-	_nozzleShape = _shouldPrecalculateNozzleTangents ? CC3ShapeFromDispersionAngle(dispAngle) : dispAngle;
+	m_nozzleShape = m_shouldPrecalculateNozzleTangents ? CC3ShapeFromDispersionAngle(dispAngle) : dispAngle;
 }
 
 bool CC3HoseParticleNavigator::shouldPrecalculateNozzleTangents()
 {
-	return _shouldPrecalculateNozzleTangents;
+	return m_shouldPrecalculateNozzleTangents;
 }
 
 /** If we're flipping from one to the other, convert the nozzleShape. */
 void CC3HoseParticleNavigator::setShouldPrecalculateNozzleTangents( bool shouldPrecalc )
 {
-	if ( _shouldPrecalculateNozzleTangents && !shouldPrecalc ) 
-		_nozzleShape = CC3DispersionAngleFromShape(_nozzleShape);
-	else if ( !_shouldPrecalculateNozzleTangents && shouldPrecalc ) 
-		_nozzleShape = CC3ShapeFromDispersionAngle(_nozzleShape);
+	if ( m_shouldPrecalculateNozzleTangents && !shouldPrecalc ) 
+		m_nozzleShape = CC3DispersionAngleFromShape(m_nozzleShape);
+	else if ( !m_shouldPrecalculateNozzleTangents && shouldPrecalc ) 
+		m_nozzleShape = CC3ShapeFromDispersionAngle(m_nozzleShape);
 
-	_shouldPrecalculateNozzleTangents = shouldPrecalc;
+	m_shouldPrecalculateNozzleTangents = shouldPrecalc;
 }
 
 void CC3HoseParticleNavigator::setMaxParticleSpeed( GLfloat speed )
 {
-	_maxParticleSpeed = speed;
+	m_maxParticleSpeed = speed;
 }
 
 GLfloat CC3HoseParticleNavigator::getMaxParticleSpeed()
 {
-	return _maxParticleSpeed;
+	return m_maxParticleSpeed;
 }
 
 void CC3HoseParticleNavigator::setMinParticleSpeed( GLfloat speed )
 {
-	_minParticleSpeed = speed;
+	m_minParticleSpeed = speed;
 }
 
 GLfloat CC3HoseParticleNavigator::getMinParticleSpeed()
 {
-	return _minParticleSpeed;
+	return m_minParticleSpeed;
 }
 
 bool CC3HoseParticleNavigator::init()
@@ -231,12 +231,12 @@ bool CC3HoseParticleNavigator::init()
 	if ( super::init() ) 
 	{
 		setNozzle( CC3Node::node() );
-		_nozzleMatrix = CC3AffineMatrix::matrix();				// retained
-		_nozzleMatrix->retain();
-		_shouldPrecalculateNozzleTangents = true;
+		m_nozzleMatrix = CC3AffineMatrix::matrix();				// retained
+		m_nozzleMatrix->retain();
+		m_shouldPrecalculateNozzleTangents = true;
 		setDispersionAngle( CCSizeMake(15.0, 15.0) );		// Set after so it will precalc
-		_minParticleSpeed = 0.0f;
-		_maxParticleSpeed = 0.0f;
+		m_minParticleSpeed = 0.0f;
+		m_maxParticleSpeed = 0.0f;
 
 		return true;
 	}
@@ -249,11 +249,11 @@ void CC3HoseParticleNavigator::populateFrom( CC3HoseParticleNavigator* another )
 	super::populateFrom( another );
 	
 	setNozzle( another->getNozzle() );
-	_nozzleMatrix->populateFrom( another->getNozzleMatrix() );
-	_nozzleShape = another->getNozzleShape();
-	_minParticleSpeed = another->getMinParticleSpeed();
-	_maxParticleSpeed = another->getMaxParticleSpeed();
-	_shouldPrecalculateNozzleTangents = another->shouldPrecalculateNozzleTangents();
+	m_nozzleMatrix->populateFrom( another->getNozzleMatrix() );
+	m_nozzleShape = another->getNozzleShape();
+	m_minParticleSpeed = another->getMinParticleSpeed();
+	m_maxParticleSpeed = another->getMaxParticleSpeed();
+	m_shouldPrecalculateNozzleTangents = another->shouldPrecalculateNozzleTangents();
 }
 
 CCObject* CC3HoseParticleNavigator::copyWithZone( CCZone* pZone )
@@ -267,10 +267,10 @@ CCObject* CC3HoseParticleNavigator::copyWithZone( CCZone* pZone )
 
 void CC3HoseParticleNavigator::nodeWasTransformed( CC3Node* aNode )
 {
-	if (aNode == _nozzle) 
+	if (aNode == m_pNozzle) 
 	{
-		if ( _nozzleMatrix )
-			_nozzleMatrix->setIsDirty( true );
+		if ( m_nozzleMatrix )
+			m_nozzleMatrix->setIsDirty( true );
 	}
 }
 
@@ -281,22 +281,22 @@ void CC3HoseParticleNavigator::nodeWasDestroyed( CC3Node* aNode )
 
 CC3Matrix* CC3HoseParticleNavigator::getNozzleMatrix()
 {
-	if (_nozzleMatrix->isDirty()) 
+	if (m_nozzleMatrix->isDirty()) 
 	{
-		if ( _nozzle && _nozzle->getParent() != _emitter )
+		if ( m_pNozzle && m_pNozzle->getParent() != m_pEmitter )
 		{
-			_nozzleMatrix->populateFrom( _nozzle->getGlobalTransformMatrix() );
-			_nozzleMatrix->leftMultiplyBy( _emitter->getGlobalTransformMatrixInverted() );
+			m_nozzleMatrix->populateFrom( m_pNozzle->getGlobalTransformMatrix() );
+			m_nozzleMatrix->leftMultiplyBy( m_pEmitter->getGlobalTransformMatrixInverted() );
 		}
 		else
 		{
-			_nozzleMatrix->populateIdentity();
+			m_nozzleMatrix->populateIdentity();
 		}
 
-		_nozzleMatrix->setIsDirty( false );
+		m_nozzleMatrix->setIsDirty( false );
 	}
 
-	return _nozzleMatrix;
+	return m_nozzleMatrix;
 }
 
 /**
@@ -312,15 +312,15 @@ void CC3HoseParticleNavigator::initializeParticle( CC3Particle* aParticle )
 	aParticle->setLocation( getNozzleMatrix()->transformLocation( CC3Vector::kCC3VectorZero ) );
 	
 	// Speed of particle is randomized.
-	GLfloat emissionSpeed = CC3RandomFloatBetween(_minParticleSpeed, _maxParticleSpeed);
+	GLfloat emissionSpeed = CC3RandomFloatBetween(m_minParticleSpeed, m_maxParticleSpeed);
 
 	// Emission direction in the nozzle's local coordinate system is towards the negative
 	// Z-axis, with randomization in the X & Y directions based on the shape of the nozzle.
 	// Randomization is performed either on the dispersion angle, or on the tangents of the
 	// dispersion angle, depending on the value of the shouldPrecalculateNozzleTangents.
-	CCSize nozzleAspect = CCSizeMake(CC3RandomFloatBetween(-_nozzleShape.width, _nozzleShape.width),
-									 CC3RandomFloatBetween(-_nozzleShape.height, _nozzleShape.height));
-	if ( !_shouldPrecalculateNozzleTangents ) 
+	CCSize nozzleAspect = CCSizeMake(CC3RandomFloatBetween(-m_nozzleShape.width, m_nozzleShape.width),
+									 CC3RandomFloatBetween(-m_nozzleShape.height, m_nozzleShape.height));
+	if ( !m_shouldPrecalculateNozzleTangents ) 
 		nozzleAspect = CC3ShapeFromDispersionAngle(nozzleAspect);
 
 	CC3Vector emissionDir = cc3v(nozzleAspect.width, nozzleAspect.height, 1.0f).normalize();

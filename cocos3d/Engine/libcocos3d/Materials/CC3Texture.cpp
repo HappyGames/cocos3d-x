@@ -44,27 +44,27 @@ static void ensureCache()
 
 CC3Texture::CC3Texture()
 {
-	_textureID = 0;
-	_ccTexture = NULL;
+	m_textureID = 0;
+	m_ccTexture = NULL;
 }
 
 CC3Texture::~CC3Texture()
 {
 	remove();
 	deleteGLTexture();
-	CC_SAFE_RELEASE( _ccTexture ); 
+	CC_SAFE_RELEASE( m_ccTexture ); 
 }
 
 GLuint CC3Texture::getTextureID()
 {
 	ensureGLTexture();
-	return _textureID;
+	return m_textureID;
 }
 
 void CC3Texture::ensureGLTexture()
 { 
-	if (!_textureID) 
-		_textureID = CC3OpenGL::sharedGL()->generateTexture();
+	if (!m_textureID) 
+		m_textureID = CC3OpenGL::sharedGL()->generateTexture();
 }
 
 /**
@@ -74,12 +74,12 @@ void CC3Texture::ensureGLTexture()
 */
 void CC3Texture::deleteGLTexture()
 {
-	if (_ccTexture)
-		CC3OpenGL::sharedGL()->clearTextureBinding( _textureID );
+	if (m_ccTexture)
+		CC3OpenGL::sharedGL()->clearTextureBinding( m_textureID );
 	else		  
-		CC3OpenGL::sharedGL()->deleteTexture( _textureID );
+		CC3OpenGL::sharedGL()->deleteTexture( m_textureID );
 
-	_textureID = 0;
+	m_textureID = 0;
 }
 
 /** If the texture has been created, set its debug label as well. */
@@ -111,18 +111,18 @@ void CC3Texture::setIsPreloading( bool bPreloading )
 /** Sets the GL debug label, if required. */
 void CC3Texture::checkGLDebugLabel()
 {
-	if (_textureID) 
-		CC3OpenGL::sharedGL()->setTextureDebugLabel( getName().c_str(), _textureID );
+	if (m_textureID) 
+		CC3OpenGL::sharedGL()->setTextureDebugLabel( getName().c_str(), m_textureID );
 }
 
 bool CC3Texture::isPOTWidth()
 { 
-	return (_size.width == CCNextPOT(_size.width)); 
+	return (m_size.width == CCNextPOT(m_size.width)); 
 }
 
 bool CC3Texture::isPOTHeight()
 { 
-	return (_size.height == CCNextPOT(_size.height)); 
+	return (m_size.height == CCNextPOT(m_size.height)); 
 }
 
 bool CC3Texture::isPOT()
@@ -147,37 +147,37 @@ bool CC3Texture::isTextureCube()
 
 bool CC3Texture::isUpsideDown()
 {
-	return _isUpsideDown;
+	return m_isUpsideDown;
 }
 
 void CC3Texture::setIsUpsideDown( bool bUpsideDown )
 {
-	_isUpsideDown = bUpsideDown;
+	m_isUpsideDown = bUpsideDown;
 }
 
 CCSize CC3Texture::getCoverage()
 {
-	return _coverage;
+	return m_coverage;
 }
 
 bool CC3Texture::hasAlpha()
 {
-	return _hasAlpha;
+	return m_hasAlpha;
 }
 
 void CC3Texture::setHasAlpha( bool hasAlpha )
 {
-	_hasAlpha = hasAlpha;
+	m_hasAlpha = hasAlpha;
 }
 
 bool CC3Texture::hasPremultipliedAlpha()
 {
-	return _hasPremultipliedAlpha;
+	return m_hasPremultipliedAlpha;
 }
 
 void CC3Texture::setHasPremultipliedAlpha( bool bHasAlpha )
 {
-	_hasPremultipliedAlpha = bHasAlpha;
+	m_hasPremultipliedAlpha = bHasAlpha;
 }
 
 GLenum CC3Texture::getTextureTarget()
@@ -241,35 +241,35 @@ void CC3Texture::setDefaultShouldFlipHorizontallyOnLoad( bool shouldFlip )
 
 void CC3Texture::setShouldFlipVerticallyOnLoad( bool flip )
 {
-	_shouldFlipVerticallyOnLoad = flip;
+	m_shouldFlipVerticallyOnLoad = flip;
 }
 
 bool CC3Texture::shouldFlipVerticallyOnLoad()
 {
-	return _shouldFlipVerticallyOnLoad;
+	return m_shouldFlipVerticallyOnLoad;
 }
 
 void CC3Texture::setShouldFlipHorizontallyOnLoad( bool flip )
 {
-	_shouldFlipHorizontallyOnLoad = flip;
+	m_shouldFlipHorizontallyOnLoad = flip;
 }
 
 bool CC3Texture::shouldFlipHorizontallyOnLoad()
 {
-	return _shouldFlipHorizontallyOnLoad;
+	return m_shouldFlipHorizontallyOnLoad;
 }
 
 void CC3Texture::bindTextureContent( CC3CCTexture* texContent, GLenum target )
 {
 	checkTextureOrientation( texContent );
 
-	_size = CC3IntSizeMake((GLint)texContent->getPixelsWide(), (GLint)texContent->getPixelsHigh());
-	_coverage = CCSizeMake(texContent->getMaxS(), texContent->getMaxT());
-	_pixelFormat = texContent->getPixelGLFormat();
-	_pixelType = texContent->getPixelGLType();
-	_hasAlpha = texContent->hasAlpha();
-	_hasPremultipliedAlpha = texContent->hasPremultipliedAlpha();
-	_isUpsideDown = texContent->isUpsideDown();
+	m_size = CC3IntSizeMake((GLint)texContent->getPixelsWide(), (GLint)texContent->getPixelsHigh());
+	m_coverage = CCSizeMake(texContent->getMaxS(), texContent->getMaxT());
+	m_pixelFormat = texContent->getPixelGLFormat();
+	m_pixelType = texContent->getPixelGLType();
+	m_hasAlpha = texContent->hasAlpha();
+	m_hasPremultipliedAlpha = texContent->hasPremultipliedAlpha();
+	m_isUpsideDown = texContent->isUpsideDown();
 
 	CC3OpenGL* gl = CC3OpenGL::sharedGL();
 	GLuint tuIdx = 0;		// Choose the texture unit in which to work
@@ -294,7 +294,7 @@ void CC3Texture::bindTextureContent( CC3CCTexture* texContent, GLenum target )
 		byteAlignment = 1;
 
 	gl->bindTexture( getTextureID(), getTextureTarget(), tuIdx );
-	gl->loadTexureImage( texContent->getImageData(), target, 0, _size, _pixelFormat, _pixelType, byteAlignment/*getByteAlignment()*/, tuIdx );
+	gl->loadTexureImage( texContent->getImageData(), target, 0, m_size, m_pixelFormat, m_pixelType, byteAlignment/*getByteAlignment()*/, tuIdx );
 
 	bindTextureParametersAt( tuIdx, gl );
 
@@ -304,12 +304,12 @@ void CC3Texture::bindTextureContent( CC3CCTexture* texContent, GLenum target )
 GLuint CC3Texture::getByteAlignment()
 {
 	// First see if we can figure it out based on pixel type
-	switch (_pixelType) {
+	switch (m_pixelType) {
 	case GL_UNSIGNED_SHORT:
 	case GL_UNSIGNED_SHORT_4_4_4_4:
 	case GL_UNSIGNED_SHORT_5_5_5_1:
 	case GL_UNSIGNED_SHORT_5_6_5:
-		return CC3IntIsEven(_size.width) ? 4 : 2;
+		return CC3IntIsEven(m_size.width) ? 4 : 2;
 
 	case GL_UNSIGNED_INT:
 		//case GL_UNSIGNED_INT_24_8_OES:
@@ -319,16 +319,16 @@ GLuint CC3Texture::getByteAlignment()
 
 	// Pixel type at this point is GL_UNSIGNED_BYTE.
 	// See if we can figure it out based on pixel format.
-	switch (_pixelFormat) 
+	switch (m_pixelFormat) 
 	{
 	case GL_RGBA: return 4;
 	case GL_LUMINANCE_ALPHA: 
-		return CC3IntIsEven(_size.width) ? 4 : 2;
+		return CC3IntIsEven(m_size.width) ? 4 : 2;
 	}
 
 	// Boundary is at byte level, so check it based on whether
 	// texture width is divisible by either 4 or 2.
-	return CC3IntIsEven(_size.width) ? (CC3IntIsEven(_size.width / 2) ? 4 : 2) : 1;
+	return CC3IntIsEven(m_size.width) ? (CC3IntIsEven(m_size.width / 2) ? 4 : 2) : 1;
 }
 
 void CC3Texture::bindTextureOfColor( const ccColor4B& color, const CC3IntSize& size, GLenum target )
@@ -341,10 +341,10 @@ void CC3Texture::bindTextureOfColor( const ccColor4B& color, const CC3IntSize& s
 
 CC3CCTexture* CC3Texture::getSizedContent()
 {
-	if (_ccTexture) 
+	if (m_ccTexture) 
 	{
-		_ccTexture->resizeTo( getSize() );
-		return _ccTexture;
+		m_ccTexture->resizeTo( getSize() );
+		return m_ccTexture;
 	} 
 	else 
 	{
@@ -366,7 +366,7 @@ void CC3Texture::generateMipmap()
 	GLenum target = getTextureTarget();
 	gl->bindTexture( getTextureID() , target, tuIdx );
 	gl->generateMipmapForTarget( target, tuIdx );
-	_hasMipmap = true;
+	m_hasMipmap = true;
 
 	markTextureParametersDirty();
 }
@@ -387,9 +387,9 @@ void CC3Texture::setShouldGenerateMipmaps( bool shouldMipmap )
 GLenum CC3Texture::getMinifyingFunction()
 {
 	if ( hasMipmap() ) 
-		return _minifyingFunction;
+		return m_minifyingFunction;
 
-	switch (_minifyingFunction) 
+	switch (m_minifyingFunction) 
 	{
 	case GL_LINEAR:
 	case GL_LINEAR_MIPMAP_NEAREST:
@@ -406,40 +406,40 @@ GLenum CC3Texture::getMinifyingFunction()
 
 void CC3Texture::setMinifyingFunction( GLenum minifyingFunction )
 {
-	_minifyingFunction = minifyingFunction;
+	m_minifyingFunction = minifyingFunction;
 	markTextureParametersDirty();
 }
 
 GLenum CC3Texture::getMagnifyingFunction()
 { 
-	return _magnifyingFunction; 
+	return m_magnifyingFunction; 
 }
 
 void CC3Texture::setMagnifyingFunction( GLenum magnifyingFunction )
 {
-	_magnifyingFunction = magnifyingFunction;
+	m_magnifyingFunction = magnifyingFunction;
 	markTextureParametersDirty();
 }
 
 GLenum CC3Texture::getHorizontalWrappingFunction()
 {
-	return isPOT() ? _horizontalWrappingFunction : GL_CLAMP_TO_EDGE;
+	return isPOT() ? m_horizontalWrappingFunction : GL_CLAMP_TO_EDGE;
 }
 
 void CC3Texture::setHorizontalWrappingFunction( GLenum horizontalWrappingFunction )
 {
-	_horizontalWrappingFunction = horizontalWrappingFunction;
+	m_horizontalWrappingFunction = horizontalWrappingFunction;
 	markTextureParametersDirty();
 }
 
 GLenum CC3Texture::getVerticalWrappingFunction()
 {
-	return isPOT() ? _verticalWrappingFunction : GL_CLAMP_TO_EDGE;
+	return isPOT() ? m_verticalWrappingFunction : GL_CLAMP_TO_EDGE;
 }
 
 void CC3Texture::setVerticalWrappingFunction( GLenum verticalWrappingFunction )
 {
-	_verticalWrappingFunction = verticalWrappingFunction;
+	m_verticalWrappingFunction = verticalWrappingFunction;
 	markTextureParametersDirty();
 }
 
@@ -455,16 +455,16 @@ ccTexParams CC3Texture::getTextureParameters()
 
 void CC3Texture::setTextureParameters( const ccTexParams& texParams )
 {
-	_minifyingFunction = texParams.minFilter;
-	_magnifyingFunction = texParams.magFilter;
-	_horizontalWrappingFunction = texParams.wrapS;
-	_verticalWrappingFunction = texParams.wrapT;
+	m_minifyingFunction = texParams.minFilter;
+	m_magnifyingFunction = texParams.magFilter;
+	m_horizontalWrappingFunction = texParams.wrapS;
+	m_verticalWrappingFunction = texParams.wrapT;
 	markTextureParametersDirty();
 }
 
 void CC3Texture::markTextureParametersDirty()
 { 
-	_texParametersAreDirty = true; 
+	m_texParametersAreDirty = true; 
 }
 
 /** Default texture parameters. */
@@ -501,7 +501,7 @@ void CC3Texture::drawWithVisitor( CC3NodeDrawingVisitor* visitor )
 /** If the texture parameters are dirty, binds them to the GL texture unit state. */
 void CC3Texture::bindTextureParametersAt( GLuint tuIdx, CC3OpenGL* gl )
 {
-	if ( !_texParametersAreDirty ) 
+	if ( !m_texParametersAreDirty ) 
 		return;
 
 	// Use property accessors to allow adjustments from the raw values
@@ -511,7 +511,7 @@ void CC3Texture::bindTextureParametersAt( GLuint tuIdx, CC3OpenGL* gl )
 	gl->setTextureHorizWrapFunc( getHorizontalWrappingFunction(), target, tuIdx );
 	gl->setTextureVertWrapFunc( getVerticalWrappingFunction(), target, tuIdx );
 
-	_texParametersAreDirty = false;
+	m_texParametersAreDirty = false;
 }
 
 /** Binds the default texture unit environment to the GL engine. */
@@ -597,7 +597,7 @@ void CC3Texture::replacePixels( const CC3Viewport& rect, GLenum target, ccColor4
 	CC3OpenGL* gl = CC3OpenGL::sharedGL();
 	GLuint tuIdx = 0;		// Choose the texture unit in which to work
 	gl->bindTexture( getTextureID(), getTextureTarget(), tuIdx );
-	gl->loadTexureSubImage( (const GLvoid*) colorArray, target, 0, rect, _pixelFormat, _pixelType, 1, tuIdx );
+	gl->loadTexureSubImage( (const GLvoid*) colorArray, target, 0, rect, m_pixelFormat, m_pixelType, 1, tuIdx );
 }
 
 /**
@@ -609,9 +609,9 @@ void CC3Texture::replacePixels( const CC3Viewport& rect, GLenum target, ccColor4
 */
 void CC3Texture::convertContent( ccColor4B* colorArray, GLuint pixCount )
 {
-	switch (_pixelType) {
+	switch (m_pixelType) {
 	case GL_UNSIGNED_BYTE:
-		switch (_pixelFormat) {
+		switch (m_pixelFormat) {
 		case GL_RGB: {
 			ccColor3B* rgbArray = (ccColor3B*)colorArray;
 			for (GLuint pixIdx = 0; pixIdx < pixCount; pixIdx++)
@@ -691,25 +691,25 @@ void CC3Texture::convertContent( ccColor4B* colorArray, GLuint pixCount )
 
 void CC3Texture::resizeTo( const CC3IntSize& size )
 {
-	_size = size;
-	_hasMipmap = false;
+	m_size = size;
+	m_hasMipmap = false;
 }
 
 CC3CCTexture* CC3Texture::getCCTexture()
 {
-	if (!_ccTexture) 
+	if (!m_ccTexture) 
 		setCCTexture( CC3Texture2DContent::textureFromCC3Texture( this ) );
-	return _ccTexture;
+	return m_ccTexture;
 }
 
 /** Sets the CCTexture content. */
 void CC3Texture::setCCTexture( CC3CCTexture* texContent )
 {
-	if (texContent == _ccTexture) 
+	if (texContent == m_ccTexture) 
 		return;
 
-	CC_SAFE_RELEASE(_ccTexture);
-	_ccTexture = texContent;
+	CC_SAFE_RELEASE(m_ccTexture);
+	m_ccTexture = texContent;
 	CC_SAFE_RETAIN(texContent);
 
 	cacheCCTexture2D();
@@ -724,7 +724,7 @@ void CC3Texture::setCCTexture( CC3CCTexture* texContent )
 void CC3Texture::cacheCCTexture2D()
 {
 	if ( shouldCacheAssociatedCCTextures() )
-		_ccTexture->addToCacheWithName( getName().c_str() );
+		m_ccTexture->addToCacheWithName( getName().c_str() );
 }
 
 static bool _shouldCacheAssociatedCCTextures = false;
@@ -743,18 +743,18 @@ void CC3Texture::setShouldCacheAssociatedCCTextures( bool shouldCache )
 void CC3Texture::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_ccTexture = NULL;
-	_textureID = 0;
-	_size = CC3IntSizeMake(0, 0);
-	_coverage = CCSizeZero;
-	_pixelFormat = GL_RGBA;
-	_pixelType = GL_UNSIGNED_BYTE;
-	_hasMipmap = false;
-	_hasAlpha = false;
-	_hasPremultipliedAlpha = false;
-	_isUpsideDown = false;
-	_shouldFlipVerticallyOnLoad = defaultShouldFlipVerticallyOnLoad();
-	_shouldFlipHorizontallyOnLoad = defaultShouldFlipHorizontallyOnLoad();
+	m_ccTexture = NULL;
+	m_textureID = 0;
+	m_size = CC3IntSizeMake(0, 0);
+	m_coverage = CCSizeZero;
+	m_pixelFormat = GL_RGBA;
+	m_pixelType = GL_UNSIGNED_BYTE;
+	m_hasMipmap = false;
+	m_hasAlpha = false;
+	m_hasPremultipliedAlpha = false;
+	m_isUpsideDown = false;
+	m_shouldFlipVerticallyOnLoad = defaultShouldFlipVerticallyOnLoad();
+	m_shouldFlipHorizontallyOnLoad = defaultShouldFlipHorizontallyOnLoad();
 	setTextureParameters( defaultTextureParameters() );	// Marks params dirty
 }
 
@@ -890,15 +890,15 @@ bool CC3Texture::initWithPixelFormat( GLenum format, GLenum pixelType )
 	if ( !init() )
 		return false;
 
-	_pixelFormat = format;
-	_pixelType = pixelType;
+	m_pixelFormat = format;
+	m_pixelType = pixelType;
 
 	return true;
 }
 
 bool CC3Texture::initWithPixelFormat( GLenum pixelType )
 {
-	return initWithPixelFormat( _pixelFormat, pixelType );
+	return initWithPixelFormat( m_pixelFormat, pixelType );
 }
 
 CC3Texture* CC3Texture::textureWithPixelFormat( GLenum format, GLenum pixelType )
@@ -916,12 +916,12 @@ CC3Texture* CC3Texture::textureWithPixelFormat( GLenum format, GLenum pixelType 
 
 GLenum CC3Texture::getPixelFormat()
 {
-	return _pixelFormat;
+	return m_pixelFormat;
 }
 
 GLenum CC3Texture::getPixelType()
 {
-	return _pixelType;
+	return m_pixelType;
 }
 
 bool CC3Texture::initWithSize( const CC3IntSize& size, const ccColor4B& color )
@@ -1030,12 +1030,12 @@ std::string CC3Texture::cachedTexturesDescription()
 
 CC3Texture2DContent::CC3Texture2DContent()
 {
-	_imageData = NULL;
+	m_imageData = NULL;
 }
 
 CC3Texture2DContent::~CC3Texture2DContent()
 {
-	CC_SAFE_FREE( _imageData );
+	CC_SAFE_FREE( m_imageData );
 }
 
 CC3Texture2DContent* CC3Texture2DContent::textureFromCC3Texture( CC3Texture* texture )
@@ -1049,7 +1049,7 @@ CC3Texture2DContent* CC3Texture2DContent::textureFromCC3Texture( CC3Texture* tex
 
 void CC3Texture2DContent::initFromCC3Texture( CC3Texture* texture )
 {
-	_imageData = NULL;
+	m_imageData = NULL;
 	m_uName = texture->getTextureID();
 	m_uPixelsWide = texture->getSize().width;
 	m_uPixelsHigh = texture->getSize().height;
@@ -1061,30 +1061,30 @@ void CC3Texture2DContent::initFromCC3Texture( CC3Texture* texture )
 	//		CC2_TEX_CONTENT_SCALE = 1.0;
 	m_bHasMipmaps = texture->hasMipmap();
 	//#endif
-	_isUpsideDown = texture->isUpsideDown();
-	_pixelGLFormat = texture->getPixelFormat();
-	_pixelGLType = texture->getPixelType();
+	m_isUpsideDown = texture->isUpsideDown();
+	m_pixelGLFormat = texture->getPixelFormat();
+	m_pixelGLType = texture->getPixelType();
 	updatePixelFormat();
 }
 
 void CC3Texture2DContent::updatePixelFormat()
 {
-	m_ePixelFormat = CCTexturePixelFormatFromGLFormatAndType(_pixelGLFormat, _pixelGLType);
+	m_ePixelFormat = CCTexturePixelFormatFromGLFormatAndType(m_pixelGLFormat, m_pixelGLType);
 }
 
 GLenum CC3Texture2DContent::getPixelGLFormat()
 {
-	return _pixelGLFormat;
+	return m_pixelGLFormat;
 }
 
 GLenum CC3Texture2DContent::getPixelGLType()
 {
-	return _pixelGLType;
+	return m_pixelGLType;
 }
 
 bool CC3Texture2DContent::isUpsideDown()
 {
-	return _isUpsideDown;
+	return m_isUpsideDown;
 }
 
 bool CC3Texture2DContent::initFromFile( const std::string& filePath)
@@ -1103,7 +1103,7 @@ bool CC3Texture2DContent::initFromSTBIFile( const std::string& filePath )
 		if (!stbImage) 
 			return false;
 
-		_imageData = stbImage->extractImageData();
+		m_imageData = stbImage->extractImageData();
 
 		m_tContentSize = CGSizeFromCC3IntSize(stbImage->getSize());
 		m_uPixelsWide = stbImage->getSize().width;
@@ -1114,9 +1114,9 @@ bool CC3Texture2DContent::initFromSTBIFile( const std::string& filePath )
 		//CC2_TEX_ANTIALIASED = YES;
 		//CC2_TEX_CONTENT_SCALE = 1.0;
 
-		_isUpsideDown = true;			// Loaded upside-down
-		_pixelGLFormat = stbImage->getPixelFormat();
-		_pixelGLType = stbImage->getPixelType();
+		m_isUpsideDown = true;			// Loaded upside-down
+		m_pixelGLFormat = stbImage->getPixelFormat();
+		m_pixelGLType = stbImage->getPixelType();
 		updatePixelFormat();
 
 		return true;
@@ -1159,7 +1159,7 @@ bool CC3Texture2DContent::initFromOSFile( const std::string& filePath )
 	} 
 
 	/// Calculate image data size first
-	_imageDataSize = getImageDataSize( pImage, pImage->getWidth(), pImage->getHeight() );
+	m_imageDataSize = getImageDataSize( pImage, pImage->getWidth(), pImage->getHeight() );
 
 	bool bRet = initWithImage( pImage );
 	if ( !bRet )
@@ -1206,7 +1206,7 @@ bool CC3Texture2DContent::initFromOSFile( const std::string& filePath )
 
 const GLvoid* CC3Texture2DContent::getImageData()
 {
-	return _imageData;
+	return m_imageData;
 }
 
 bool CC3Texture2DContent::initWithData(const void* data, CCTexture2DPixelFormat pixelFormat, unsigned int pixelsWide, unsigned int pixelsHigh, const CCSize& contentSize)
@@ -1223,19 +1223,19 @@ bool CC3Texture2DContent::initWithData(const void* data, CCTexture2DPixelFormat 
 		m_fMaxT = pixelsHigh ? (contentSize.height / (float)pixelsHigh) : 1.0f;
 		m_bHasPremultipliedAlpha = false;
 
-		if ( _imageDataSize )
+		if ( m_imageDataSize )
 		{
-			_imageData = new unsigned char[_imageDataSize];
-			memcpy( _imageData, data, _imageDataSize );
+			m_imageData = new unsigned char[m_imageDataSize];
+			memcpy( m_imageData, data, m_imageDataSize );
 		}
 		else
 		{
-			CC_SAFE_FREE( _imageData );
+			CC_SAFE_FREE( m_imageData );
 		}
 
-		_pixelGLFormat = CC3PixelGLFormatFromCCTexturePixelFormat( pixelFormat );
-		_pixelGLType = CC3PixelGLTypeFromCCTexturePixelFormat( pixelFormat );
-		_isUpsideDown = true;
+		m_pixelGLFormat = CC3PixelGLFormatFromCCTexturePixelFormat( pixelFormat );
+		m_pixelGLType = CC3PixelGLTypeFromCCTexturePixelFormat( pixelFormat );
+		m_isUpsideDown = true;
 	}
 	return true;
 }
@@ -1289,14 +1289,14 @@ GLuint CC3Texture2DContent::getImageDataSize( CCImage *image, unsigned int width
 
 void CC3Texture2DContent::flipHorizontally()
 {
-	if ( !_imageData ) return;		// If no data, nothing to flip!
+	if ( !m_imageData ) return;		// If no data, nothing to flip!
 
 	GLuint rowCnt = (GLuint)getPixelHeight();
 	GLuint colCnt = (GLuint)getPixelWidth();
 	GLuint lastColIdx = colCnt - 1;
 	GLuint halfColCnt = colCnt / 2;
 
-	GLubyte* rowStart = (GLubyte*)_imageData;
+	GLubyte* rowStart = (GLubyte*)m_imageData;
 	GLuint bytesPerPixel = getBytesPerPixel();
 	GLuint bytesPerRow = bytesPerPixel * colCnt;
 	GLubyte* tmpPixel = new GLubyte[bytesPerPixel];
@@ -1317,18 +1317,18 @@ void CC3Texture2DContent::flipHorizontally()
 
 void CC3Texture2DContent::flipVertically()
 {
-	if ( !_imageData ) return;		// If no data, nothing to flip!
+	if ( !m_imageData ) return;		// If no data, nothing to flip!
 
-	CC3FlipVertically((GLubyte*)_imageData,
+	CC3FlipVertically((GLubyte*)m_imageData,
 		(GLuint)getPixelHeight(),
 		(GLuint)getPixelWidth() * getBytesPerPixel());
 
-	_isUpsideDown = !_isUpsideDown;		// Orientation has changed
+	m_isUpsideDown = !m_isUpsideDown;		// Orientation has changed
 }
 
 void CC3Texture2DContent::rotateHalfCircle()
 {
-	if ( !_imageData )
+	if ( !m_imageData )
 		return;		// If no data, nothing to rotate!
 
 	GLuint rowCnt = (GLuint)getPixelHeight();
@@ -1337,7 +1337,7 @@ void CC3Texture2DContent::rotateHalfCircle()
 	GLuint colCnt = (GLuint)getPixelWidth();
 	GLuint lastColIdx = colCnt - 1;
 
-	GLubyte* pixData = (GLubyte*)_imageData;
+	GLubyte* pixData = (GLubyte*)m_imageData;
 	GLuint bytesPerPixel = getBytesPerPixel();
 	GLuint bytesPerRow = bytesPerPixel * colCnt;
 	GLubyte* tmpPixel = new GLubyte[bytesPerPixel];
@@ -1355,7 +1355,7 @@ void CC3Texture2DContent::rotateHalfCircle()
 	}
 
 	CC_SAFE_DELETE_ARRAY( tmpPixel );
-	_isUpsideDown = !_isUpsideDown;		// Orientation has changed
+	m_isUpsideDown = !m_isUpsideDown;		// Orientation has changed
 }
 
 void CC3Texture2DContent::resizeTo( const CC3IntSize& size )
@@ -1365,7 +1365,7 @@ void CC3Texture2DContent::resizeTo( const CC3IntSize& size )
 
 void CC3Texture2DContent::deleteImageData()
 {
-	CC_SAFE_FREE( _imageData );
+	CC_SAFE_FREE( m_imageData );
 }
 
 bool CC3Texture2DContent::initWithSize( const CC3IntSize& size, const ccColor4B& color )
@@ -1377,7 +1377,7 @@ bool CC3Texture2DContent::initWithSize( const CC3IntSize& size, const ccColor4B&
 		for (GLuint pxIdx = 0; pxIdx < pxCnt; pxIdx++) 
 			pixels[pxIdx] = color;
 
-		_imageData = pixels;
+		m_imageData = pixels;
 
 		return true;
 	}
@@ -1395,10 +1395,10 @@ bool CC3Texture2DContent::initWithSize( const CC3IntSize& size, GLenum format, G
 		//CC2_TEX_ANTIALIASED = YES;
 		//CC2_TEX_CONTENT_SCALE = 1.0;
 
-		_imageData = NULL;
-		_isUpsideDown = false;		// Empty texture is not upside down!
-		_pixelGLFormat = format;
-		_pixelGLType = type;
+		m_imageData = NULL;
+		m_isUpsideDown = false;		// Empty texture is not upside down!
+		m_pixelGLFormat = format;
+		m_pixelGLType = type;
 		updatePixelFormat();
 
 		return true;
@@ -1409,7 +1409,7 @@ bool CC3Texture2DContent::initWithSize( const CC3IntSize& size, GLenum format, G
 
 CC3Texture2D::CC3Texture2D()
 {
-	_ccTexture = NULL;
+	m_ccTexture = NULL;
 }
 
 GLenum CC3Texture2D::getSamplerSemantic()
@@ -1439,11 +1439,11 @@ void CC3Texture2D::bindTextureContent( CC3CCTexture* texContent, GLenum target )
 {
 	super::bindTextureContent( texContent, target );
 
-	if (texContent == _ccTexture) 
+	if (texContent == m_ccTexture) 
 		return;
 
-	if ( _ccTexture ) 
-		_ccTexture->setName( 0 );			// Clear ID of existing so it won't delete GL texture when deallocated
+	if ( m_ccTexture ) 
+		m_ccTexture->setName( 0 );			// Clear ID of existing so it won't delete GL texture when deallocated
 
 	// Align texture ID's and delete the texture data from main memory
 
@@ -1458,7 +1458,7 @@ void CC3Texture2D::bindTextureContent( CC3CCTexture* texContent, GLenum target )
 
 void CC3Texture2D::resizeTo( const CC3IntSize& size )
 {
-	if ( CC3IntSizesAreEqual(size, _size) ) 
+	if ( CC3IntSizesAreEqual(size, m_size) ) 
 		return;
 
 	super::resizeTo( size );
@@ -1510,8 +1510,8 @@ bool CC3Texture2D::initWithPixelFormat( GLenum format, GLenum type )
 	if ( init() ) 
 	{
 		setShouldFlipVerticallyOnLoad( false );	// Nothing to flip
-		_pixelFormat = format;
-		_pixelType = type;
+		m_pixelFormat = format;
+		m_pixelType = type;
 
 		return true;
 	}
@@ -1545,19 +1545,19 @@ bool CC3Texture2D::initWithCCTexture( CC3CCTexture* ccTexture )
 {
 	if ( init() ) 
 	{
-		_ccTexture = ccTexture;
+		m_ccTexture = ccTexture;
 		CC_SAFE_RETAIN( ccTexture );
-		_textureID = ccTexture->getName();
-		_size = CC3IntSizeMake( (GLint)ccTexture->getPixelWidth(), (GLint)ccTexture->getPixelHeight());
-		_coverage = CCSizeMake(ccTexture->getMaxS(), ccTexture->getMaxT());
-		_pixelFormat = ccTexture->getPixelGLFormat();
-		_pixelType = ccTexture->getPixelGLType();
-		_hasMipmap = ccTexture->hasMipmap();
-		_hasAlpha = ccTexture->hasAlpha();
-		_hasPremultipliedAlpha = ccTexture->hasPremultipliedAlpha();
-		_isUpsideDown = ccTexture->isUpsideDown();
-		_shouldFlipVerticallyOnLoad = false;
-		_shouldFlipHorizontallyOnLoad = false;
+		m_textureID = ccTexture->getName();
+		m_size = CC3IntSizeMake( (GLint)ccTexture->getPixelWidth(), (GLint)ccTexture->getPixelHeight());
+		m_coverage = CCSizeMake(ccTexture->getMaxS(), ccTexture->getMaxT());
+		m_pixelFormat = ccTexture->getPixelGLFormat();
+		m_pixelType = ccTexture->getPixelGLType();
+		m_hasMipmap = ccTexture->hasMipmap();
+		m_hasAlpha = ccTexture->hasAlpha();
+		m_hasPremultipliedAlpha = ccTexture->hasPremultipliedAlpha();
+		m_isUpsideDown = ccTexture->isUpsideDown();
+		m_shouldFlipVerticallyOnLoad = false;
+		m_shouldFlipHorizontallyOnLoad = false;
 		setTextureParameters( defaultTextureParameters() );	// Marks params dirty
 
 		return true;
@@ -1568,24 +1568,24 @@ bool CC3Texture2D::initWithCCTexture( CC3CCTexture* ccTexture )
 
 CC3IntSize CC3Texture::getSize()
 {
-	return _size;
+	return m_size;
 }
 
 bool CC3Texture::hasMipmap()
 {
-	return _hasMipmap;
+	return m_hasMipmap;
 }
 
 CC3TextureUnitTexture::CC3TextureUnitTexture()
 {
-	_texture = NULL;
-	_textureUnit = NULL;
+	m_pTexture = NULL;
+	m_pTextureUnit = NULL;
 }
 
 CC3TextureUnitTexture::~CC3TextureUnitTexture()
 {
-	CC_SAFE_RELEASE( _texture );
-	CC_SAFE_RELEASE( _textureUnit );
+	CC_SAFE_RELEASE( m_pTexture );
+	CC_SAFE_RELEASE( m_pTextureUnit );
 }
 
 
@@ -1600,21 +1600,21 @@ CC3TextureUnitTexture* CC3TextureUnitTexture::textureWithTexture( CC3Texture* te
 
 CC3TextureUnit* CC3TextureUnitTexture::getTextureUnit()
 {
-	return _textureUnit;
+	return m_pTextureUnit;
 }
 
 CC3Texture* CC3TextureUnitTexture::getTexture()
 {
-	return _texture;
+	return m_pTexture;
 }
 
 void CC3TextureUnitTexture::setTexture( CC3Texture* texture )
 {
-	if (texture == _texture) 
+	if (texture == m_pTexture) 
 		return;
 
-	CC_SAFE_RELEASE( _texture );
-	_texture = texture;
+	CC_SAFE_RELEASE( m_pTexture );
+	m_pTexture = texture;
 	CC_SAFE_RETAIN( texture );
 
 	if (m_sName.empty() && texture ) 
@@ -1623,262 +1623,262 @@ void CC3TextureUnitTexture::setTexture( CC3Texture* texture )
 
 void CC3TextureUnitTexture::setTextureUnit( CC3TextureUnit* textureUnit )
 {
-	if (textureUnit == _textureUnit) 
+	if (textureUnit == m_pTextureUnit) 
 		return;
 
-	CC_SAFE_RELEASE( _textureUnit );
-	_textureUnit = textureUnit;
+	CC_SAFE_RELEASE( m_pTextureUnit );
+	m_pTextureUnit = textureUnit;
 	CC_SAFE_RETAIN( textureUnit );
 }
 
 GLuint CC3TextureUnitTexture::getTextureID()
 {
-	if ( _texture )
-		return _texture->getTextureID(); 
+	if ( m_pTexture )
+		return m_pTexture->getTextureID(); 
 
 	return -1;
 }
 
 CC3IntSize CC3TextureUnitTexture::getSize()
 {
-	if ( _texture )
-		return _texture->getSize(); 
+	if ( m_pTexture )
+		return m_pTexture->getSize(); 
 
 	return kCC3IntSizeZero;
 }
 
 bool CC3TextureUnitTexture::isPOTWidth()
 {
-	if ( _texture )
-		return _texture->isPOTWidth(); 
+	if ( m_pTexture )
+		return m_pTexture->isPOTWidth(); 
 
 	return false;
 }
 
 bool CC3TextureUnitTexture::isPOTHeight()
 {
-	if ( _texture )
-		return _texture->isPOTHeight(); 
+	if ( m_pTexture )
+		return m_pTexture->isPOTHeight(); 
 
 	return false;
 }
 
 bool CC3TextureUnitTexture::isPOT()
 {
-	if ( _texture )
-		return _texture->isPOT(); 
+	if ( m_pTexture )
+		return m_pTexture->isPOT(); 
 
 	return false;
 }
 
 GLenum CC3TextureUnitTexture::getSamplerSemantic()
 {
-	if ( _texture )
-		return _texture->getSamplerSemantic();
+	if ( m_pTexture )
+		return m_pTexture->getSamplerSemantic();
 
 	return 0;
 }
 
 bool CC3TextureUnitTexture::isTexture2D()
 {
-	if ( _texture )
-		return _texture->isTexture2D(); 
+	if ( m_pTexture )
+		return m_pTexture->isTexture2D(); 
 
 	return false;
 }
 
 bool CC3TextureUnitTexture::isTextureCube()
 {
-	if ( _texture )
-		return _texture->isTextureCube(); 
+	if ( m_pTexture )
+		return m_pTexture->isTextureCube(); 
 
 	return false;
 }
 
 CCSize CC3TextureUnitTexture::getCoverage()
 {
-	if ( _texture )
-		return _texture->getCoverage();
+	if ( m_pTexture )
+		return m_pTexture->getCoverage();
 
 	return CCSizeZero;
 }
 
 GLenum CC3TextureUnitTexture::getPsixelFormat()
 {
-	if ( _texture )
-		return _texture->getPixelFormat();
+	if ( m_pTexture )
+		return m_pTexture->getPixelFormat();
 
 	return 0;
 }
 
 GLenum CC3TextureUnitTexture::getPixelType()
 {
-	if ( _texture )
-		return _texture->getPixelType(); 
+	if ( m_pTexture )
+		return m_pTexture->getPixelType(); 
 
 	return 0;
 }
 
 bool CC3TextureUnitTexture::hasAlpha()
 {
-	if ( _texture )
-		return _texture->hasAlpha();
+	if ( m_pTexture )
+		return m_pTexture->hasAlpha();
 
 	return false;
 }
 
 void CC3TextureUnitTexture::setHasAlpha( bool hasAlpha )
 {
-	if ( _texture )
-		_texture->setHasAlpha( hasAlpha ); 
+	if ( m_pTexture )
+		m_pTexture->setHasAlpha( hasAlpha ); 
 }
 
 bool CC3TextureUnitTexture::hasPremultipliedAlpha()
 {
-	if ( _texture )
-		return _texture->hasPremultipliedAlpha();
+	if ( m_pTexture )
+		return m_pTexture->hasPremultipliedAlpha();
 
 	return false;
 }
 
 void CC3TextureUnitTexture::setHasPremultipliedAlpha( bool hasPremultipliedAlpha )
 {
-	if ( _texture )
-		_texture->setHasPremultipliedAlpha( hasPremultipliedAlpha );
+	if ( m_pTexture )
+		m_pTexture->setHasPremultipliedAlpha( hasPremultipliedAlpha );
 }
 
 bool CC3TextureUnitTexture::isUpsideDown()
 {
-	if ( _texture )
-		return _texture->isUpsideDown(); 
+	if ( m_pTexture )
+		return m_pTexture->isUpsideDown(); 
 
 	return false;
 }
 
 void CC3TextureUnitTexture::setIsUpsideDown( bool isUpsideDown )
 {
-	if ( _texture )
-		_texture->setIsUpsideDown( isUpsideDown ); 
+	if ( m_pTexture )
+		m_pTexture->setIsUpsideDown( isUpsideDown ); 
 }
 
 GLenum CC3TextureUnitTexture::getTextureTarget()
 {
-	if ( _texture )
-		return _texture->getTextureTarget(); 
+	if ( m_pTexture )
+		return m_pTexture->getTextureTarget(); 
 
 	return 0;
 }
 
 GLenum CC3TextureUnitTexture::getInitialAttachmentFace()
 {
-	if ( _texture )
-		return _texture->getInitialAttachmentFace();
+	if ( m_pTexture )
+		return m_pTexture->getInitialAttachmentFace();
 
 	return 0;
 }
 
 bool CC3TextureUnitTexture::shouldFlipVerticallyOnLoad()
 {
-	if ( _texture )
-		return _texture->shouldFlipVerticallyOnLoad();
+	if ( m_pTexture )
+		return m_pTexture->shouldFlipVerticallyOnLoad();
 
 	return false;
 }
 
 void CC3TextureUnitTexture::setShouldFlipVerticallyOnLoad( bool shouldFlipVerticallyOnLoad )
 {
-	if ( _texture )
-		_texture->setShouldFlipVerticallyOnLoad( shouldFlipVerticallyOnLoad );
+	if ( m_pTexture )
+		m_pTexture->setShouldFlipVerticallyOnLoad( shouldFlipVerticallyOnLoad );
 }
 
 bool CC3TextureUnitTexture::shouldFlipHorizontallyOnLoad()
 {
-	if ( _texture )
-		return _texture->shouldFlipHorizontallyOnLoad();
+	if ( m_pTexture )
+		return m_pTexture->shouldFlipHorizontallyOnLoad();
 
 	return false;
 }
 
 void CC3TextureUnitTexture::setShouldFlipHorizontallyOnLoad( bool shouldFlipHorizontallyOnLoad )
 {
-	if ( _texture )
-		_texture->setShouldFlipHorizontallyOnLoad( shouldFlipHorizontallyOnLoad );
+	if ( m_pTexture )
+		m_pTexture->setShouldFlipHorizontallyOnLoad( shouldFlipHorizontallyOnLoad );
 }
 
 bool CC3TextureUnitTexture::hasMipmap()
 {
-	if ( _texture )
-		return _texture->hasMipmap();
+	if ( m_pTexture )
+		return m_pTexture->hasMipmap();
 
 	return false;
 }
 
 void CC3TextureUnitTexture::generateMipmap()
 {
-	if ( _texture )
-		_texture->generateMipmap(); 
+	if ( m_pTexture )
+		m_pTexture->generateMipmap(); 
 }
 
 GLenum CC3TextureUnitTexture::getMinifyingFunction()
 {
-	if ( _texture )
-		return _texture->getMinifyingFunction(); 
+	if ( m_pTexture )
+		return m_pTexture->getMinifyingFunction(); 
 
 	return 0;
 }
 
 void CC3TextureUnitTexture::setMinifyingFunction( GLenum minifyingFunction )
 {
-	if ( _texture )
-		_texture->setMinifyingFunction( minifyingFunction );
+	if ( m_pTexture )
+		m_pTexture->setMinifyingFunction( minifyingFunction );
 }
 
 GLenum CC3TextureUnitTexture::getMagnifyingFunction()
 {
-	if ( _texture )
-		return _texture->getMagnifyingFunction();
+	if ( m_pTexture )
+		return m_pTexture->getMagnifyingFunction();
 
 	return 0;
 }
 
 void CC3TextureUnitTexture::setMagnifyingFunction( GLenum magnifyingFunction )
 {
-	if ( _texture )
-		_texture->setMagnifyingFunction( magnifyingFunction );
+	if ( m_pTexture )
+		m_pTexture->setMagnifyingFunction( magnifyingFunction );
 }
 
 GLenum CC3TextureUnitTexture::getHorizontalWrappingFunction()
 {
-	if ( _texture )
-		return _texture->getHorizontalWrappingFunction();
+	if ( m_pTexture )
+		return m_pTexture->getHorizontalWrappingFunction();
 
 	return 0;
 }
 
 void CC3TextureUnitTexture::setHorizontalWrappingFunction( GLenum horizontalWrappingFunction )
 {
-	if ( _texture )
-		_texture->setHorizontalWrappingFunction( horizontalWrappingFunction );
+	if ( m_pTexture )
+		m_pTexture->setHorizontalWrappingFunction( horizontalWrappingFunction );
 }
 
 GLenum CC3TextureUnitTexture::getVerticalWrappingFunction()
 {
-	if ( _texture )
-		return _texture->getVerticalWrappingFunction();
+	if ( m_pTexture )
+		return m_pTexture->getVerticalWrappingFunction();
 
 	return 0;
 }
 
 void CC3TextureUnitTexture::setVerticalWrappingFunction( GLenum verticalWrappingFunction )
 {
-	if ( _texture )
-		_texture->setVerticalWrappingFunction( verticalWrappingFunction );
+	if ( m_pTexture )
+		m_pTexture->setVerticalWrappingFunction( verticalWrappingFunction );
 }
 
 ccTexParams CC3TextureUnitTexture::getTextureParameters()
 {
-	if ( _texture )
-		return _texture->getTextureParameters();
+	if ( m_pTexture )
+		return m_pTexture->getTextureParameters();
 
 	ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
 	return params;
@@ -1886,73 +1886,73 @@ ccTexParams CC3TextureUnitTexture::getTextureParameters()
 
 void CC3TextureUnitTexture::setTextureParameters( const ccTexParams& textureParameters )
 {
-	if ( _texture )
-		_texture->setTextureParameters( textureParameters );
+	if ( m_pTexture )
+		m_pTexture->setTextureParameters( textureParameters );
 }
 
 
 void CC3TextureUnitTexture::replacePixels( const CC3Viewport& rect, GLenum target, ccColor4B* colorArray )
 {
-	if ( _texture )
-		_texture->replacePixels( rect, target, colorArray );
+	if ( m_pTexture )
+		m_pTexture->replacePixels( rect, target, colorArray );
 }
 
 void CC3TextureUnitTexture::resizeTo( const CC3IntSize& size )
 {
-	if ( _texture )
-		_texture->resizeTo( size ); 
+	if ( m_pTexture )
+		m_pTexture->resizeTo( size ); 
 }
 
 CC3Vector CC3TextureUnitTexture::getLightDirection()
 {
-	return _textureUnit ? _textureUnit->getLightDirection() : CC3Vector::kCC3VectorZero; 
+	return m_pTextureUnit ? m_pTextureUnit->getLightDirection() : CC3Vector::kCC3VectorZero; 
 }
 
 void CC3TextureUnitTexture::setLightDirection( const CC3Vector& aDirection )
 {
-	if ( _textureUnit ) 
-		_textureUnit->setLightDirection( aDirection );
+	if ( m_pTextureUnit ) 
+		m_pTextureUnit->setLightDirection( aDirection );
 }
 
 bool CC3TextureUnitTexture::isBumpMap()
 {
-	return (_textureUnit && _textureUnit->isBumpMap()); 
+	return (m_pTextureUnit && m_pTextureUnit->isBumpMap()); 
 }
 
 void CC3TextureUnitTexture::bindTextureParametersAt( GLuint tuIdx, CC3OpenGL* gl )
 {
-	if ( _texture )
-		_texture->bindTextureParametersAt( tuIdx, gl );
+	if ( m_pTexture )
+		m_pTexture->bindTextureParametersAt( tuIdx, gl );
 }
 
 /** Binds texture unit environment to the GL engine. */
 void CC3TextureUnitTexture::bindTextureEnvironmentWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if (_textureUnit)
-		_textureUnit->bindWithVisitor( visitor );
+	if (m_pTextureUnit)
+		m_pTextureUnit->bindWithVisitor( visitor );
 	else
 		super::bindTextureEnvironmentWithVisitor( visitor );
 }
 
 GLuint CC3TextureUnitTexture::getTextureUnitFromVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( _texture )
-		return _texture->getTextureUnitFromVisitor( visitor );
+	if ( m_pTexture )
+		return m_pTexture->getTextureUnitFromVisitor( visitor );
 
 	return 0;
 }
 
 void CC3TextureUnitTexture::incrementTextureUnitInVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( _texture )
-		_texture->incrementTextureUnitInVisitor( visitor );
+	if ( m_pTexture )
+		m_pTexture->incrementTextureUnitInVisitor( visitor );
 }
 
 void CC3TextureUnitTexture::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_texture = NULL;
-	_textureUnit = NULL;
+	m_pTexture = NULL;
+	m_pTextureUnit = NULL;
 }
 
 void CC3TextureUnitTexture::initWithTexture( CC3Texture* texture )
@@ -2488,7 +2488,7 @@ void CC3TextureCube::setDefaultTextureParameters( const ccTexParams& texParams )
 
 void CC3TextureCube::resizeTo( const CC3IntSize& size )
 {
-	if ( CC3IntSizesAreEqual(size, _size) ) 
+	if ( CC3IntSizesAreEqual(size, m_size) ) 
 		return;
 
 	super::resizeTo( size );
@@ -2614,8 +2614,8 @@ bool CC3TextureCube::initCubeWithPixelFormat( GLenum format, GLenum type )
 	if ( init() ) 
 	{
 		setShouldFlipVerticallyOnLoad( false );	// Nothing to flip
-		_pixelFormat = format;
-		_pixelType = type;
+		m_pixelFormat = format;
+		m_pixelType = type;
 
 		return true;
 	}

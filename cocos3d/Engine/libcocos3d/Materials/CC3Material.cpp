@@ -33,16 +33,16 @@ NS_COCOS3D_BEGIN
 
 CC3Material::CC3Material()
 {
-	_texture = NULL;
-	_textureOverlays = NULL;
+	m_pTexture = NULL;
+	m_textureOverlays = NULL;
 }
 
 CC3Material::~CC3Material()
 {
 	removeAllTextures();
 
-	CC_SAFE_RELEASE( _texture );
-	CC_SAFE_RELEASE( _textureOverlays );
+	CC_SAFE_RELEASE( m_pTexture );
+	CC_SAFE_RELEASE( m_textureOverlays );
 }
 
 static std::string getNameSuffix()
@@ -52,89 +52,89 @@ static std::string getNameSuffix()
 
 bool CC3Material::shouldUseLighting()
 {
-	return _shouldUseLighting;
+	return m_shouldUseLighting;
 }
 
 void CC3Material::setShouldUseLighting( bool shouldUse )
 {
-	_shouldUseLighting = shouldUse;
+	m_shouldUseLighting = shouldUse;
 }
 
 void CC3Material::setSpecularColor( const ccColor4F& color )
 {
-	_specularColor = color;
+	m_specularColor = color;
 }
 
 ccColor4F CC3Material::getSpecularColor()
 {
-	return _specularColor;
+	return m_specularColor;
 }
 
 ccColor4F CC3Material::getEmissionColor()
 {
-	return _emissionColor;
+	return m_emissionColor;
 }
 
 void CC3Material::setEmissionColor( const ccColor4F& color )
 {
-	_emissionColor = color;
+	m_emissionColor = color;
 }
 
 ccColor4F CC3Material::getAmbientColor()
 {
-	return _ambientColor;
+	return m_ambientColor;
 }
 
 void CC3Material::setAmbientColor( const ccColor4F& color )
 {
-	_ambientColor = color;
+	m_ambientColor = color;
 }
 
 ccColor4F CC3Material::getDiffuseColor()
 {
-	return _diffuseColor;
+	return m_diffuseColor;
 }
 
 void CC3Material::setDiffuseColor( const ccColor4F& color )
 {
-	_diffuseColor = color;
+	m_diffuseColor = color;
 }
 
 void CC3Material::setBlendFuncRGB( const ccBlendFunc& blendFunc )
 {
-	_blendFuncRGB = blendFunc;
+	m_blendFuncRGB = blendFunc;
 }
 
 ccBlendFunc CC3Material::getBlendFuncRGB()
 {
-	return _blendFuncRGB;
+	return m_blendFuncRGB;
 }
 
 void CC3Material::setBlendFuncAlpha( const ccBlendFunc& blendFunc )
 {
-	_blendFuncAlpha = blendFunc;
+	m_blendFuncAlpha = blendFunc;
 }
 
 // Clamp to allowed range
 void CC3Material::setShininess( GLfloat shininess )
 { 
-	_shininess = CLAMP(shininess, 0.0f, kCC3MaximumMaterialShininess); 
+	m_fShininess = CLAMP(shininess, 0.0f, kCC3MaximumMaterialShininess); 
 }
 
 GLfloat CC3Material::getShininess()
 {
-	return _shininess;
+	return m_fShininess;
 }
 
 // Clamp to allowed range
 void CC3Material::setReflectivity( GLfloat reflectivity )
 { 
-	_reflectivity = CLAMP(reflectivity, 0.0f, 1.0f); 
+	m_fReflectivity = CLAMP(reflectivity, 0.0f, 1.0f); 
 }
 
 GLfloat CC3Material::getReflectivity()
 {
-	return _reflectivity;
+	return m_fReflectivity;
 }
 
 GLenum CC3Material::getSourceBlend() 
@@ -161,52 +161,52 @@ void CC3Material::setDestinationBlend( GLenum aBlend )
 
 GLenum CC3Material::getSourceBlendRGB()
 { 
-	return _blendFuncRGB.src; 
+	return m_blendFuncRGB.src; 
 }
 
 void CC3Material::setSourceBlendRGB( GLenum aBlend )
 { 
-	_blendFuncRGB.src = aBlend; 
+	m_blendFuncRGB.src = aBlend; 
 }
 
 GLenum CC3Material::getDestinationBlendRGB()
 { 
-	return _blendFuncRGB.dst; 
+	return m_blendFuncRGB.dst; 
 }
 
 void CC3Material::setDestinationBlendRGB( GLenum aBlend )
 { 
-	_blendFuncRGB.dst = aBlend; 
+	m_blendFuncRGB.dst = aBlend; 
 }
 
 GLenum CC3Material::getSourceBlendAlpha()
 { 
-	return _blendFuncAlpha.src; 
+	return m_blendFuncAlpha.src; 
 }
 
 void CC3Material::setSourceBlendAlpha( GLenum aBlend )
 {
-	_blendFuncAlpha.src = aBlend; 
+	m_blendFuncAlpha.src = aBlend; 
 }
 
 GLenum CC3Material::getDestinationBlendAlpha() 
 { 
-	return _blendFuncAlpha.dst; 
+	return m_blendFuncAlpha.dst; 
 }
 
 void CC3Material::setDestinationBlendAlpha( GLenum aBlend )
 { 
-	_blendFuncAlpha.dst = aBlend; 
+	m_blendFuncAlpha.dst = aBlend; 
 }
 
 bool CC3Material::shouldBlendAtFullOpacity()
 { 
-	return _shouldBlendAtFullOpacity; 
+	return m_shouldBlendAtFullOpacity; 
 }
 
 void CC3Material::setShouldBlendAtFullOpacity( bool shouldBlendAtFullOpacity )
 {
-	_shouldBlendAtFullOpacity = shouldBlendAtFullOpacity;
+	m_shouldBlendAtFullOpacity = shouldBlendAtFullOpacity;
 	setIsOpaque( isOpaque() );
 }
 
@@ -250,7 +250,7 @@ void CC3Material::setIsOpaque( bool shouldBeOpaque )
 
 bool CC3Material::shouldDrawLowAlpha()
 {
-	switch (_alphaTestFunction) {
+	switch (m_alphaTestFunction) {
 		case GL_ALWAYS:
 		case GL_LESS:
 		case GL_LEQUAL:
@@ -262,7 +262,7 @@ bool CC3Material::shouldDrawLowAlpha()
 
 void CC3Material::setShouldDrawLowAlpha( bool shouldDraw )
 {
-	_alphaTestFunction = shouldDraw ? GL_ALWAYS : GL_GREATER;
+	m_alphaTestFunction = shouldDraw ? GL_ALWAYS : GL_GREATER;
 }
 
 bool CC3Material::shouldApplyOpacityToColor()
@@ -290,30 +290,30 @@ ccColor4F CC3Material::getEffectiveEmissionColor()
 	return shouldApplyOpacityToColor() ? CCC4FBlendAlpha(getEmissionColor()) : getEmissionColor();
 }
 
-CCColorRef CC3Material::getColor() { return CCColorRefFromCCC4F(_shouldUseLighting ? _diffuseColor : _emissionColor); }
+CCColorRef CC3Material::getColor() { return CCColorRefFromCCC4F(m_shouldUseLighting ? m_diffuseColor : m_emissionColor); }
 
 void CC3Material::setColor( const CCColorRef& color )
 {
 	ccColor4F c4f = CCC4FFromCCColorRef(color);
 
-	if (_shouldUseLighting) {
-		_ambientColor.r = c4f.r;
-		_ambientColor.g = c4f.g;
-		_ambientColor.b = c4f.b;
+	if (m_shouldUseLighting) {
+		m_ambientColor.r = c4f.r;
+		m_ambientColor.g = c4f.g;
+		m_ambientColor.b = c4f.b;
 		
-		_diffuseColor.r = c4f.r;
-		_diffuseColor.g = c4f.g;
-		_diffuseColor.b = c4f.b;
+		m_diffuseColor.r = c4f.r;
+		m_diffuseColor.g = c4f.g;
+		m_diffuseColor.b = c4f.b;
 	} else {
-		_emissionColor.r = c4f.r;
-		_emissionColor.g = c4f.g;
-		_emissionColor.b = c4f.b;
+		m_emissionColor.r = c4f.r;
+		m_emissionColor.g = c4f.g;
+		m_emissionColor.b = c4f.b;
 	}
 }
 
 CCOpacity CC3Material::getOpacity()
 {
-	return CCOpacityFromGLfloat(_shouldUseLighting ? _diffuseColor.a : _emissionColor.a); 
+	return CCOpacityFromGLfloat(m_shouldUseLighting ? m_diffuseColor.a : m_emissionColor.a); 
 }
 
 /**
@@ -324,10 +324,10 @@ CCOpacity CC3Material::getOpacity()
 void CC3Material::setOpacity( CCOpacity opacity )
 {
 	GLfloat alpha = GLfloatFromCCOpacity(opacity);
-	_ambientColor.a = alpha;
-	_diffuseColor.a = alpha;
-	_specularColor.a = alpha;
-	_emissionColor.a = alpha;
+	m_ambientColor.a = alpha;
+	m_diffuseColor.a = alpha;
+	m_specularColor.a = alpha;
+	m_emissionColor.a = alpha;
 
 	// As a convenience, set the blending to be compatible with the opacity level.
 	// If the opacity has been reduced below full, set isOpaque to NO to ensure alpha
@@ -402,41 +402,41 @@ void CC3Material::setDefaultBlendFunc( const ccBlendFunc& aBlendFunc )
 
 ccBlendFunc CC3Material::getBlendFuncAlpha()
 {
-	return _blendFuncAlpha;
+	return m_blendFuncAlpha;
 }
 
 GLuint CC3Material::getAlphaTestFunction()
 {
-	return _alphaTestFunction;
+	return m_alphaTestFunction;
 }
 
 GLfloat CC3Material::getAlphaTestReference()
 {
-	return _alphaTestReference;
+	return m_fAlphaTestReference;
 }
 
 void CC3Material::setAlphaTestReference( float alphaTestRef )
 {
-	_alphaTestReference = alphaTestRef; 
+	m_fAlphaTestReference = alphaTestRef; 
 }
 
 GLuint CC3Material::getTextureCount()
 { 
-	return (_textureOverlays ? (GLuint)_textureOverlays->count() : 0) + (_texture ? 1 : 0); 
+	return (m_textureOverlays ? (GLuint)m_textureOverlays->count() : 0) + (m_pTexture ? 1 : 0); 
 }
 
 CC3Texture* CC3Material::getTexture()
 { 
-	return _texture; 
+	return m_pTexture; 
 }
 
 void CC3Material::setTexture( CC3Texture* aTexture )
 {
-	if (aTexture == _texture) 
+	if (aTexture == m_pTexture) 
 		return;
 	
-	CC_SAFE_RELEASE(_texture);
-	_texture = aTexture;
+	CC_SAFE_RELEASE(m_pTexture);
+	m_pTexture = aTexture;
 	CC_SAFE_RETAIN(aTexture);
 	
 	texturesHaveChanged();
@@ -446,23 +446,23 @@ void CC3Material::setTexture( CC3Texture* aTexture )
 void CC3Material::addTexture( CC3Texture* aTexture )
 {
 	CC3_TRACE( "Adding texture to CC3Material" );
-	if ( !_texture ) 
+	if ( !m_pTexture ) 
 	{
 		setTexture( aTexture );
 	} 
 	else 
 	{
 		CCAssert(aTexture, "CC3Materail cannot add a nil overlay texture");
-		if ( !_textureOverlays ) 
+		if ( !m_textureOverlays ) 
 		{
-			_textureOverlays = CCArray::createWithCapacity(4);		// retained
-			_textureOverlays->retain();
+			m_textureOverlays = CCArray::createWithCapacity(4);		// retained
+			m_textureOverlays->retain();
 		}
 
 		GLuint maxTexUnits = CC3OpenGL::sharedGL()->getMaxNumberOfTextureUnits();
 		if ( getTextureCount() < maxTexUnits ) 
 		{
-			_textureOverlays->addObject( aTexture );
+			m_textureOverlays->addObject( aTexture );
 		} 
 		else 
 		{
@@ -477,20 +477,20 @@ void CC3Material::addTexture( CC3Texture* aTexture )
 void CC3Material::removeTexture( CC3Texture* aTexture )
 {
 	CC3_TRACE("Removing texture from CC3Material");
-	if (aTexture == _texture)
+	if (aTexture == m_pTexture)
 	{
 		setTexture( NULL );
 	} 
 	else 
 	{
-		if (_textureOverlays && aTexture) 
+		if (m_textureOverlays && aTexture) 
 		{
-			_textureOverlays->removeObject( aTexture );
+			m_textureOverlays->removeObject( aTexture );
 			texturesHaveChanged();
-			if (_textureOverlays->count() == 0) 
+			if (m_textureOverlays->count() == 0) 
 			{
-				_textureOverlays->release();
-				_textureOverlays = NULL;
+				m_textureOverlays->release();
+				m_textureOverlays = NULL;
 			}
 		}
 	}
@@ -499,7 +499,7 @@ void CC3Material::removeTexture( CC3Texture* aTexture )
 void CC3Material::removeAllTextures()
 {
 	// Remove the first texture
-	removeTexture( _texture );
+	removeTexture( m_pTexture );
 
 	// Remove the overlay textures
 #if 0
@@ -518,9 +518,9 @@ void CC3Material::removeAllTextures()
 		myOTs->release();
 	}
 #else
-	while( _textureOverlays && _textureOverlays->count() > 0 )
+	while( m_textureOverlays && m_textureOverlays->count() > 0 )
 	{
-		removeTexture( (CC3Texture*)_textureOverlays->objectAtIndex(0) );
+		removeTexture( (CC3Texture*)m_textureOverlays->objectAtIndex(0) );
 	}
 #endif
 }
@@ -528,15 +528,15 @@ void CC3Material::removeAllTextures()
 CC3Texture* CC3Material::getTextureForTextureUnit( GLuint texUnit )
 {
 	if (texUnit == 0) 
-		return _texture;
+		return m_pTexture;
 	
 	texUnit--;	// Remaining texture units are indexed into the overlays array
 
-	if ( _textureOverlays == NULL ) 
+	if ( m_textureOverlays == NULL ) 
 		return NULL;
 
-	if (texUnit < _textureOverlays->count()) 
-		return (CC3Texture*)_textureOverlays->objectAtIndex( texUnit );
+	if (texUnit < m_textureOverlays->count()) 
+		return (CC3Texture*)m_textureOverlays->objectAtIndex( texUnit );
 
 	return NULL;
 }
@@ -548,8 +548,8 @@ void CC3Material::setTexture( CC3Texture* aTexture, GLuint texUnit )
 	} else if (texUnit < getTextureCount()) {
 		CCAssert(aTexture, "CC3Material cannot set an overlay texture to nil");
 		GLuint overlayIdx = texUnit - 1;
-		if ( aTexture != _textureOverlays->objectAtIndex( overlayIdx )) {
-			_textureOverlays->replaceObjectAtIndex( overlayIdx, aTexture );
+		if ( aTexture != m_textureOverlays->objectAtIndex( overlayIdx )) {
+			m_textureOverlays->replaceObjectAtIndex( overlayIdx, aTexture );
 			texturesHaveChanged();
 		}
 	} else {
@@ -563,22 +563,22 @@ CC3Texture* CC3Material::getTextureNamed( const char* aName )
 	std::string tcName;
 	
 	// First check if the first texture is the one
-	if (_texture) {
-		tcName = _texture->getName();
+	if (m_pTexture) {
+		tcName = m_pTexture->getName();
 		if (tcName == aName || (tcName.empty() && !aName)) 
-			return _texture;
+			return m_pTexture;
 	}
 	// Then look for it in the overlays array
-	if (_textureOverlays) {
+	if (m_textureOverlays) {
 		CCObject* pObj = NULL;
-		CCARRAY_FOREACH( _textureOverlays, pObj )
+		CCARRAY_FOREACH( m_textureOverlays, pObj )
 		{
 			CC3Texture* pTex = (CC3Texture*)pObj;
 			if ( pTex )
 			{
 				tcName = pTex->getName();
 				if (tcName == aName || (tcName.empty() && !aName)) 
-					return _texture;
+					return m_pTexture;
 			}
 		}
 	}
@@ -600,12 +600,12 @@ void CC3Material::texturesHaveChanged()
 bool CC3Material::hasTextureAlpha()
 {
 	// Check the first texture.
-	if (_texture && _texture->hasAlpha()) 
+	if (m_pTexture && m_pTexture->hasAlpha()) 
 		return true;
 	
 	// Then check in the overlays array
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _textureOverlays, pObj )
+	CCARRAY_FOREACH( m_textureOverlays, pObj )
 	{
 		CC3Texture* pTex = (CC3Texture*)pObj;
 		if ( pTex && pTex->hasAlpha() )
@@ -620,12 +620,12 @@ bool CC3Material::hasTextureAlpha()
 bool CC3Material::hasTexturePremultipliedAlpha()
 {
 	// Check the first texture.
-	if (_texture && _texture->hasPremultipliedAlpha())
+	if (m_pTexture && m_pTexture->hasPremultipliedAlpha())
 		return true;
 	
 	// Then check in the overlays array
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _textureOverlays, pObj )
+	CCARRAY_FOREACH( m_textureOverlays, pObj )
 	{
 		CC3Texture* pTex = (CC3Texture*)pObj;
 		if ( pTex && pTex->hasPremultipliedAlpha() )
@@ -640,11 +640,11 @@ bool CC3Material::hasTexturePremultipliedAlpha()
 // Check the first texture, hen check in the overlays array
 CC3Texture* CC3Material::getTextureCube()
 {
-	if (_texture && _texture->isTextureCube()) 
-		return _texture;
+	if (m_pTexture && m_pTexture->isTextureCube()) 
+		return m_pTexture;
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _textureOverlays, pObj )
+	CCARRAY_FOREACH( m_textureOverlays, pObj )
 	{
 		CC3Texture* pTex = (CC3Texture*)pObj;
 		if ( pTex && pTex->isTextureCube() )
@@ -664,12 +664,12 @@ bool CC3Material::hasTextureCube()
 // Check the first texture, hen check in the overlays array
 bool CC3Material::hasBumpMap()
 {
-	if (_texture && _texture->isBumpMap()) 
+	if (m_pTexture && m_pTexture->isBumpMap()) 
 		return true;
 
 	// Then check in the overlays array
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _textureOverlays, pObj )
+	CCARRAY_FOREACH( m_textureOverlays, pObj )
 	{
 		CC3Texture* pTex = (CC3Texture*)pObj;
 		if ( pTex && pTex->isBumpMap() )
@@ -684,12 +684,12 @@ bool CC3Material::hasBumpMap()
 CC3Vector CC3Material::getLightDirection()
 {
 	// Check the first texture.
-	if (_texture && _texture->isBumpMap()) 
-		return _texture->getLightDirection();
+	if (m_pTexture && m_pTexture->isBumpMap()) 
+		return m_pTexture->getLightDirection();
 	
 	// Then check in the overlays array
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _textureOverlays, pObj )
+	CCARRAY_FOREACH( m_textureOverlays, pObj )
 	{
 		CC3Texture* pTex = (CC3Texture*)pObj;
 		if ( pTex && pTex->isBumpMap() )
@@ -704,12 +704,12 @@ CC3Vector CC3Material::getLightDirection()
 void CC3Material::setLightDirection( const CC3Vector& aDirection )
 {
 	// Set the first texture.
-	if ( _texture )
-		_texture->setLightDirection( aDirection );
+	if ( m_pTexture )
+		m_pTexture->setLightDirection( aDirection );
 	
 	// Then set in the overlays array
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _textureOverlays, pObj )
+	CCARRAY_FOREACH( m_textureOverlays, pObj )
 	{
 		CC3Texture* pTex = (CC3Texture*)pObj;
 		if ( pTex )
@@ -723,19 +723,19 @@ void CC3Material::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_texture = NULL;
-		_textureOverlays = NULL;
-		_ambientColor = kCC3DefaultMaterialColorAmbient;
-		_diffuseColor = kCC3DefaultMaterialColorDiffuse;
-		_specularColor = kCC3DefaultMaterialColorSpecular;
-		_emissionColor = kCC3DefaultMaterialColorEmission;
-		_shininess = kCC3DefaultMaterialShininess;
-		_reflectivity = kCC3DefaultMaterialReflectivity;
+		m_pTexture = NULL;
+		m_textureOverlays = NULL;
+		m_ambientColor = kCC3DefaultMaterialColorAmbient;
+		m_diffuseColor = kCC3DefaultMaterialColorDiffuse;
+		m_specularColor = kCC3DefaultMaterialColorSpecular;
+		m_emissionColor = kCC3DefaultMaterialColorEmission;
+		m_fShininess = kCC3DefaultMaterialShininess;
+		m_fReflectivity = kCC3DefaultMaterialReflectivity;
 		setBlendFunc( getDefaultBlendFunc() );
-		_shouldBlendAtFullOpacity = false;
-		_alphaTestFunction = GL_ALWAYS;
-		_alphaTestReference = 0.0f;
-		_shouldUseLighting = true;
+		m_shouldBlendAtFullOpacity = false;
+		m_alphaTestFunction = GL_ALWAYS;
+		m_fAlphaTestReference = 0.0f;
+		m_shouldUseLighting = true;
 	}
 }
 
@@ -795,27 +795,27 @@ void CC3Material::populateFrom( CC3Material* another )
 {
 	super::populateFrom( another );
 
-	_ambientColor = another->getAmbientColor();
-	_diffuseColor = another->getDiffuseColor();
-	_specularColor = another->getSpecularColor();
-	_emissionColor = another->getEmissionColor();
-	_shininess = another->getShininess();
-	_reflectivity = another->getReflectivity();
-	_blendFuncRGB = another->getBlendFuncRGB();
-	_blendFuncAlpha = another->getBlendFuncAlpha();
-	_alphaTestFunction = another->getAlphaTestFunction();
-	_alphaTestReference = another->getAlphaTestReference();
-	_shouldUseLighting = another->shouldUseLighting();
+	m_ambientColor = another->getAmbientColor();
+	m_diffuseColor = another->getDiffuseColor();
+	m_specularColor = another->getSpecularColor();
+	m_emissionColor = another->getEmissionColor();
+	m_fShininess = another->getShininess();
+	m_fReflectivity = another->getReflectivity();
+	m_blendFuncRGB = another->getBlendFuncRGB();
+	m_blendFuncAlpha = another->getBlendFuncAlpha();
+	m_alphaTestFunction = another->getAlphaTestFunction();
+	m_fAlphaTestReference = another->getAlphaTestReference();
+	m_shouldUseLighting = another->shouldUseLighting();
 	
-	CC_SAFE_RELEASE( _texture );
-	_texture = another->_texture;	
-	CC_SAFE_RETAIN( _texture );	// retained - don't want to trigger texturesHaveChanged
+	CC_SAFE_RELEASE( m_pTexture );
+	m_pTexture = another->m_pTexture;	
+	CC_SAFE_RETAIN( m_pTexture );	// retained - don't want to trigger texturesHaveChanged
 	
 	// Remove any existing overlays and add the overlays from the other material.
-	if ( _textureOverlays )
-		_textureOverlays->removeAllObjects();
+	if ( m_textureOverlays )
+		m_textureOverlays->removeAllObjects();
 
-	CCArray* otherOTs = another->_textureOverlays;
+	CCArray* otherOTs = another->m_textureOverlays;
 	CCObject* pObj = NULL;
 	CCARRAY_FOREACH( otherOTs, pObj )
 	{
@@ -881,10 +881,10 @@ void CC3Material::drawWithVisitor( CC3NodeDrawingVisitor* visitor )
 void CC3Material::applyAlphaTestWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
-	bool shouldAlphaTest = (_alphaTestFunction != GL_ALWAYS);
+	bool shouldAlphaTest = (m_alphaTestFunction != GL_ALWAYS);
 	gl->enableAlphaTesting( shouldAlphaTest );
 	if (shouldAlphaTest) 
-		gl->setAlphaFunc( _alphaTestFunction, _alphaTestReference );
+		gl->setAlphaFunc( m_alphaTestFunction, m_fAlphaTestReference );
 }
 
 /**
@@ -897,7 +897,7 @@ void CC3Material::applyBlendWithVisitor( CC3NodeDrawingVisitor* visitor )
 	bool shouldBlend = !isOpaque();
 	gl->enableBlend( shouldBlend );
 	if (shouldBlend) 
-		gl->setBlendFunc( _blendFuncRGB.src, _blendFuncRGB.dst, _blendFuncAlpha.src, _blendFuncAlpha.dst );
+		gl->setBlendFunc( m_blendFuncRGB.src, m_blendFuncRGB.dst, m_blendFuncAlpha.src, m_blendFuncAlpha.dst );
 }
 
 /**
@@ -907,7 +907,7 @@ void CC3Material::applyBlendWithVisitor( CC3NodeDrawingVisitor* visitor )
 void CC3Material::applyColorsWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
-	if (_shouldUseLighting) 
+	if (m_shouldUseLighting) 
 	{
 		gl->enableLighting( true );
 		gl->setMaterialAmbientColor( getEffectiveAmbientColor() );
@@ -939,11 +939,11 @@ void CC3Material::applyColorsWithVisitor( CC3NodeDrawingVisitor* visitor )
  */
 void CC3Material::drawTexturesWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( _texture )
-		_texture->drawWithVisitor( visitor );
+	if ( m_pTexture )
+		m_pTexture->drawWithVisitor( visitor );
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _textureOverlays, pObj )
+	CCARRAY_FOREACH( m_textureOverlays, pObj )
 	{
 		CC3Texture* pTex = (CC3Texture*)pObj;
 		if ( pTex )

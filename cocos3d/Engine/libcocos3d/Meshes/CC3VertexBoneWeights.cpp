@@ -72,8 +72,8 @@ void CC3VertexBoneWeights::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_elementType = GL_FLOAT;
-		_elementSize = 0;
+		m_elementType = GL_FLOAT;
+		m_elementSize = 0;
 	}
 }
 

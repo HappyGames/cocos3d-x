@@ -705,21 +705,21 @@ public:
 	virtual void				setShouldDrawLocalContentWireframeBox( bool shouldDraw );
 
 protected:
-	CCArray*					_particles;
-	CC3ParticleNavigator*		_particleNavigator;
-	GLuint						_currentParticleCapacity;
-	GLuint						_maximumParticleCapacity;
-	GLuint						_particleCapacityExpansionIncrement;
-	GLuint						_particleCount;
-	GLfloat						_emissionDuration;
-	GLfloat						_elapsedTime;
-	GLfloat						_emissionInterval;
-	GLfloat						_timeSinceEmission;
-	bool						_shouldRemoveOnFinish : 1;
-	bool						_isEmitting : 1;
-	bool						_wasStarted : 1;
-	bool						_shouldUpdateParticlesBeforeTransform : 1;
-	bool						_shouldUpdateParticlesAfterTransform : 1;
+	CCArray*					m_particles;
+	CC3ParticleNavigator*		m_particleNavigator;
+	GLuint						m_currentParticleCapacity;
+	GLuint						m_maximumParticleCapacity;
+	GLuint						m_particleCapacityExpansionIncrement;
+	GLuint						m_particleCount;
+	GLfloat						m_emissionDuration;
+	GLfloat						m_elapsedTime;
+	GLfloat						m_emissionInterval;
+	GLfloat						m_timeSinceEmission;
+	bool						m_shouldRemoveOnFinish : 1;
+	bool						m_isEmitting : 1;
+	bool						m_wasStarted : 1;
+	bool						m_shouldUpdateParticlesBeforeTransform : 1;
+	bool						m_shouldUpdateParticlesAfterTransform : 1;
 };
 
 NS_COCOS3D_END

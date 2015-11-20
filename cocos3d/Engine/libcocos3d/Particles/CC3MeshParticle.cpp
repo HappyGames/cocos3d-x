@@ -33,14 +33,14 @@ NS_COCOS3D_BEGIN
 
 CC3MeshParticle::CC3MeshParticle()
 {
-	_rotator = NULL;
-	_templateMesh = NULL;
+	m_pRotator = NULL;
+	m_pTemplateMesh = NULL;
 }
 
 CC3MeshParticle::~CC3MeshParticle()
 {
-	CC_SAFE_RELEASE( _rotator );
-	CC_SAFE_RELEASE( _templateMesh );
+	CC_SAFE_RELEASE( m_pRotator );
+	CC_SAFE_RELEASE( m_pTemplateMesh );
 }
 
 void CC3MeshParticle::setEmitter( CC3ParticleEmitter* anEmitter )
@@ -55,27 +55,27 @@ CC3Mesh* CC3MeshParticle::getMesh()
 
 bool CC3MeshParticle::isAlive()
 {
-	return _isAlive; 
+	return m_isAlive; 
 }
 
 void CC3MeshParticle::setIsAlive( bool alive )
 {
-	_isAlive = alive; 
+	m_isAlive = alive; 
 }
 
 GLuint CC3MeshParticle::getFirstVertexOffset()
 {
-	return _firstVertexOffset; 
+	return m_firstVertexOffset; 
 }
 
 void CC3MeshParticle::setFirstVertexOffset( GLuint vtxOffset )
 {
-	_firstVertexOffset = vtxOffset; 
+	m_firstVertexOffset = vtxOffset; 
 }
 
 GLuint CC3MeshParticle::getVertexCount()
 {
-	return _templateMesh ? _templateMesh->getVertexCount() : 0; 
+	return m_pTemplateMesh ? m_pTemplateMesh->getVertexCount() : 0; 
 }
 
 CCRange CC3MeshParticle::getVertexRange()
@@ -85,17 +85,17 @@ CCRange CC3MeshParticle::getVertexRange()
 
 GLuint CC3MeshParticle::getFirstVertexIndexOffset()
 {
-	return _firstVertexIndexOffset; 
+	return m_firstVertexIndexOffset; 
 }
 
 void CC3MeshParticle::setFirstVertexIndexOffset( GLuint vtxIdxOffset )
 {
-	_firstVertexIndexOffset = vtxIdxOffset; 
+	m_firstVertexIndexOffset = vtxIdxOffset; 
 }
 
 GLuint CC3MeshParticle::getVertexIndexCount()
 {
-	return hasVertexIndices() ? _templateMesh->getVertexIndexCount() : getVertexCount();
+	return hasVertexIndices() ? m_pTemplateMesh->getVertexIndexCount() : getVertexCount();
 }
 
 CCRange CC3MeshParticle::getVertexIndexRange()
@@ -105,45 +105,45 @@ CCRange CC3MeshParticle::getVertexIndexRange()
 
 bool CC3MeshParticle::hasVertexIndices()
 {
-	return (_templateMesh && _templateMesh->hasVertexIndices()); 
+	return (m_pTemplateMesh && m_pTemplateMesh->hasVertexIndices()); 
 }
 
 void CC3MeshParticle::markTransformDirty()
 {
-	_isTransformDirty = true;
-	((CC3MeshParticleEmitter*)_emitter)->markParticleTransformDirty();
+	m_isTransformDirty = true;
+	((CC3MeshParticleEmitter*)m_pEmitter)->markParticleTransformDirty();
 }
 
 CC3Rotator* CC3MeshParticle::getRotator()
 {
-	return _rotator;
+	return m_pRotator;
 }
 
 void CC3MeshParticle::setRotator( CC3Rotator* rotator )
 {
-	CC_SAFE_RELEASE( _rotator );
-	_rotator = rotator;
+	CC_SAFE_RELEASE( m_pRotator );
+	m_pRotator = rotator;
 	CC_SAFE_RETAIN( rotator );
 }
 
 bool CC3MeshParticle::isColorDirty()
 {
-	return _isColorDirty;
+	return m_isColorDirty;
 }
 
 bool CC3MeshParticle::isTransformDirty()
 {
-	return _isTransformDirty;
+	return m_isTransformDirty;
 }
 
 CC3Vector CC3MeshParticle::getLocation()
 {
-	return _location; 
+	return m_location; 
 }
 
 void CC3MeshParticle::setLocation( const CC3Vector& aLocation )
 {
-	_location = aLocation;
+	m_location = aLocation;
 	markTransformDirty();
 }
 
@@ -154,13 +154,13 @@ void CC3MeshParticle::translateBy( const CC3Vector& aVector )
 
 CC3Vector CC3MeshParticle::getRotation()
 {
-	return _rotator->getRotation(); 
+	return m_pRotator->getRotation(); 
 }
 
 void CC3MeshParticle::setRotation( const CC3Vector& aRotation )
 {
 	// This test for change avoids unnecessarily creating and transforming a mutable rotator
-	if ( !shouldTrackTarget() && !aRotation.equals( _rotator->getRotation() ) ) 
+	if ( !shouldTrackTarget() && !aRotation.equals( m_pRotator->getRotation() ) ) 
 	{
 		getMutableRotator()->setRotation( aRotation );
 		markTransformDirty();
@@ -178,13 +178,13 @@ void CC3MeshParticle::rotateBy( const CC3Vector& aRotation )
 
 CC3Quaternion CC3MeshParticle::getQuaternion()
 {
-	return _rotator->getQuaternion(); 
+	return m_pRotator->getQuaternion(); 
 }
 
 void CC3MeshParticle::setQuaternion( const CC3Quaternion& aQuaternion )
 {
 	// This test for change avoids unnecessarily creating and transforming a mutable rotator
-	if ( !shouldTrackTarget() && !aQuaternion.equals(_rotator->getQuaternion()) ) 
+	if ( !shouldTrackTarget() && !aQuaternion.equals(m_pRotator->getQuaternion()) ) 
 	{
 		getMutableRotator()->setQuaternion( aQuaternion );
 		markTransformDirty();
@@ -202,13 +202,13 @@ void CC3MeshParticle::rotateByQuaternion( const CC3Quaternion& aQuaternion )
 
 CC3Vector CC3MeshParticle::getRotationAxis()
 {
-	return _rotator->getRotationAxis(); 
+	return m_pRotator->getRotationAxis(); 
 }
 
 void CC3MeshParticle::setRotationAxis( const CC3Vector& aDirection )
 {
 	// This test for change avoids unnecessarily creating and transforming a mutable rotator
-	if ( !shouldTrackTarget() && !aDirection.equals( _rotator->getRotationAxis() ) ) 
+	if ( !shouldTrackTarget() && !aDirection.equals( m_pRotator->getRotationAxis() ) ) 
 	{
 		getMutableRotator()->setRotationAxis( aDirection );
 		markTransformDirty();
@@ -217,12 +217,12 @@ void CC3MeshParticle::setRotationAxis( const CC3Vector& aDirection )
 
 GLfloat CC3MeshParticle::getRotationAngle()
 {
-	return _rotator->getRotationAngle(); 
+	return m_pRotator->getRotationAngle(); 
 }
 
 void CC3MeshParticle::setRotationAngle( GLfloat anAngle )
 {
-	if ( !shouldTrackTarget() && (anAngle != _rotator->getRotationAngle()) ) 
+	if ( !shouldTrackTarget() && (anAngle != m_pRotator->getRotationAngle()) ) 
 	{
 		getMutableRotator()->setRotationAngle( anAngle );
 		markTransformDirty();
@@ -275,7 +275,7 @@ CC3Vector CC3MeshParticle::getRightDirection()
 
 bool CC3MeshParticle::shouldTrackTarget()
 {
-	return _rotator->shouldTrackTarget(); 
+	return m_pRotator->shouldTrackTarget(); 
 }
 
 /**
@@ -293,14 +293,14 @@ bool CC3MeshParticle::shouldTrackTarget()
  */
 CC3MutableRotator* CC3MeshParticle::getMutableRotator()
 {
-	if ( !_rotator->isMutable() )
+	if ( !m_pRotator->isMutable() )
 	{
 		CC3MutableRotator* mRotator = (CC3MutableRotator*)CC3MutableRotator::rotator();
 //		mRotator->populateFrom( _rotator );
 		CC3_TRACE("[ptc]CC3MeshParticle swapping for mutable rotator");
 		setRotator( mRotator );
 	}
-	return (CC3MutableRotator*)_rotator;
+	return (CC3MutableRotator*)m_pRotator;
 }
 
 /**
@@ -321,15 +321,15 @@ CC3MutableRotator* CC3MeshParticle::getMutableRotator()
  */
 CC3DirectionalRotator* CC3MeshParticle::getDirectionalRotator()
 {
-	if ( !_rotator->isDirectional() ) 
+	if ( !m_pRotator->isDirectional() ) 
 	{
 		CC3DirectionalRotator* dRotator = (CC3DirectionalRotator*)CC3DirectionalRotator::rotator();
 //		dRotator->populateFrom( _rotator );
-		dRotator->setShouldReverseForwardDirection( _emitter->shouldReverseForwardDirection() );
+		dRotator->setShouldReverseForwardDirection( m_pEmitter->shouldReverseForwardDirection() );
 		CC3_TRACE("[ptc]CC3MeshParticle swapping for directional rotator");
 		setRotator( dRotator );
 	}
-	return (CC3DirectionalRotator*)_rotator;
+	return (CC3DirectionalRotator*)m_pRotator;
 }
 
 /**
@@ -350,16 +350,16 @@ CC3DirectionalRotator* CC3MeshParticle::getDirectionalRotator()
  */
 CC3TargettingRotator* CC3MeshParticle::getTargettingRotator()
 {
-	if ( !_rotator->isTargettable() ) 
+	if ( !m_pRotator->isTargettable() ) 
 	{
 		CC3TargettingRotator* tRotator = (CC3TargettingRotator*)CC3TargettingRotator::rotator();
 //		tRotator->populateFrom( _rotator );
-		tRotator->setShouldReverseForwardDirection( _emitter->shouldReverseForwardDirection() );
-		CC3_TRACE("[ptc]CC3MeshParticle swapping for targetting rotator", tRotator, _rotator);
+		tRotator->setShouldReverseForwardDirection( m_pEmitter->shouldReverseForwardDirection() );
+		CC3_TRACE("[ptc]CC3MeshParticle swapping for targetting rotator", tRotator, m_pRotator);
 		setRotator( tRotator );
 	}
 
-	return (CC3TargettingRotator*)_rotator;
+	return (CC3TargettingRotator*)m_pRotator;
 }
 
 ccColor4F CC3MeshParticle::getColor4F()
@@ -393,7 +393,7 @@ void CC3MeshParticle::setColor4B( const ccColor4B& aColor )
 void CC3MeshParticle::setTextureRectangle( const CCRect& aRect, GLuint texUnit )
 {
 	// The texture coordinates of the template mesh, and its effective texture rectangle.
-	CC3VertexTextureCoordinates* tmplVtxTexCoords = _templateMesh->getTextureCoordinatesForTextureUnit( texUnit );
+	CC3VertexTextureCoordinates* tmplVtxTexCoords = m_pTemplateMesh->getTextureCoordinatesForTextureUnit( texUnit );
 	CCRect tmplTexRect = tmplVtxTexCoords->getEffectiveTextureRectangle();
 
 	// Determine the origin of the texture rectangle of this particle, in UV coordinates.
@@ -434,21 +434,21 @@ void CC3MeshParticle::setTextureRectangle( const CCRect& aRect )
 /** Returns whether the mesh vertices can be transformed using only translation. */
 bool CC3MeshParticle::doesUseTranslationOnly()
 {
-	return !_rotator->isMutable(); 
+	return !m_pRotator->isMutable(); 
 }
 
 // If no rotation or scale has been applied, perform an optimized translation operation
 // on the vertices, instead of a full tranformation.
 void CC3MeshParticle::transformVertices()
 {
-	if (_isTransformDirty)
+	if (m_isTransformDirty)
 	{
 		if (doesUseTranslationOnly()) 
 			translateVertices();
 		else
 			fullyTransformVertices();
 		
-		_isTransformDirty = false;
+		m_isTransformDirty = false;
 	}
 
 	transformVertexColors();
@@ -460,8 +460,8 @@ void CC3MeshParticle::translateVertices()
 	GLuint vtxCount = getVertexCount();
 	for (GLuint vtxIdx = 0; vtxIdx < vtxCount; vtxIdx++) 
 	{
-		CC3Vector vtxLoc = _templateMesh->getVertexLocationAt( vtxIdx );
-		setVertexLocation( vtxLoc.add( _location ), vtxIdx );
+		CC3Vector vtxLoc = m_pTemplateMesh->getVertexLocationAt( vtxIdx );
+		setVertexLocation( vtxLoc.add( m_location ), vtxIdx );
 	}
 }
 
@@ -481,14 +481,14 @@ void CC3MeshParticle::fullyTransformVertices()
 	for (GLuint vtxIdx = 0; vtxIdx < vtxCount; vtxIdx++) 
 	{
 		// Transform the vertex location using the full transform matrix
-		CC3Vector4 vtxLoc = _templateMesh->getVertexHomogeneousLocationAt( vtxIdx );
+		CC3Vector4 vtxLoc = m_pTemplateMesh->getVertexHomogeneousLocationAt( vtxIdx );
 		vtxLoc = CC3Matrix4x3TransformCC3Vector4(&tfmMtx, vtxLoc);
 		setVertexHomogeneousLocation( vtxLoc, vtxIdx );
 		
 		// Transform the vertex normal using only the rotational transform to avoid scaling the normal.
 		if (hasNorms) 
 		{
-			CC3Vector vtxNorm = _templateMesh->getVertexNormalAt( vtxIdx );
+			CC3Vector vtxNorm = m_pTemplateMesh->getVertexNormalAt( vtxIdx );
 			vtxNorm = getRotator()->transformDirection( vtxNorm );
 			setVertexNormal( vtxNorm, vtxIdx );
 		}
@@ -521,23 +521,23 @@ void CC3MeshParticle::applyTranslationTo( CC3Matrix4x3* mtx )
 /** Template method that applies the rotation in the rotator to the specified transform matrix. */
 void CC3MeshParticle::applyRotationTo( CC3Matrix4x3* mtx )
 {
-	_rotator->getRotationMatrix()->multiplyIntoCC3Matrix4x3( mtx );
+	m_pRotator->getRotationMatrix()->multiplyIntoCC3Matrix4x3( mtx );
 }
 
 void CC3MeshParticle::markColorDirty()
 {
-	_isColorDirty = true; 
+	m_isColorDirty = true; 
 }
 
 void CC3MeshParticle::transformVertexColors()
 {
-	if ( !_isColorDirty ) 
+	if ( !m_isColorDirty ) 
 		return;
 	
 	ccColor4F vtxColF;
 	ccColor4B vtxColB;
 	GLuint vCnt = getVertexCount();
-	switch (_emitter->getVertexColorType()) 
+	switch (m_pEmitter->getVertexColorType()) 
 	{
 		case GL_FLOAT:
 			vtxColF = getColor4F();
@@ -554,67 +554,67 @@ void CC3MeshParticle::transformVertexColors()
 			break;
 	}
 	
-	_isColorDirty = false;
+	m_isColorDirty = false;
 }
 
 CC3Vector CC3MeshParticle::getVertexLocationAt( GLuint vtxIndex )
 {
-	return getEmitter()->getVertexLocationAt( _firstVertexOffset + vtxIndex );
+	return getEmitter()->getVertexLocationAt( m_firstVertexOffset + vtxIndex );
 }
 
 void CC3MeshParticle::setVertexLocation( const CC3Vector& aLocation, GLuint vtxIndex )
 {
-	getEmitter()->setVertexLocation( aLocation, _firstVertexOffset + vtxIndex );
+	getEmitter()->setVertexLocation( aLocation, m_firstVertexOffset + vtxIndex );
 }
 
 CC3Vector4 CC3MeshParticle::getVertexHomogeneousLocationAt( GLuint vtxIndex )
 {
-	return getEmitter()->getVertexHomogeneousLocationAt( _firstVertexOffset + vtxIndex );
+	return getEmitter()->getVertexHomogeneousLocationAt( m_firstVertexOffset + vtxIndex );
 }
 
 void CC3MeshParticle::setVertexHomogeneousLocation( const CC3Vector4& aLocation, GLuint vtxIndex )
 {
-	getEmitter()->setVertexHomogeneousLocation( aLocation, _firstVertexOffset + vtxIndex );
+	getEmitter()->setVertexHomogeneousLocation( aLocation, m_firstVertexOffset + vtxIndex );
 }
 
 CC3Vector CC3MeshParticle::getVertexNormalAt( GLuint vtxIndex )
 {
-	return getEmitter()->getVertexNormalAt( _firstVertexOffset + vtxIndex );
+	return getEmitter()->getVertexNormalAt( m_firstVertexOffset + vtxIndex );
 }
 
 void CC3MeshParticle::setVertexNormal( const CC3Vector& aNormal, GLuint vtxIndex )
 {
-	getEmitter()->setVertexNormal( aNormal, _firstVertexOffset + vtxIndex );
+	getEmitter()->setVertexNormal( aNormal, m_firstVertexOffset + vtxIndex );
 }
 
 ccColor4F CC3MeshParticle::getVertexColor4FAt( GLuint vtxIndex )
 {
-	return getEmitter()->getVertexColor4FAt( _firstVertexOffset + vtxIndex );
+	return getEmitter()->getVertexColor4FAt( m_firstVertexOffset + vtxIndex );
 }
 
 void CC3MeshParticle::setVertexColor4F( const ccColor4F& aColor, GLuint vtxIndex )
 {
-	getEmitter()->setVertexColor4F( aColor, _firstVertexOffset + vtxIndex );
+	getEmitter()->setVertexColor4F( aColor, m_firstVertexOffset + vtxIndex );
 }
 
 ccColor4B CC3MeshParticle::getVertexColor4BAt( GLuint vtxIndex )
 {
-	return getEmitter()->getVertexColor4BAt( _firstVertexOffset + vtxIndex );
+	return getEmitter()->getVertexColor4BAt( m_firstVertexOffset + vtxIndex );
 }
 
 void CC3MeshParticle::setVertexColor4B( const ccColor4B& aColor, GLuint vtxIndex )
 {
-	getEmitter()->setVertexColor4B( aColor, _firstVertexOffset + vtxIndex );
+	getEmitter()->setVertexColor4B( aColor, m_firstVertexOffset + vtxIndex );
 }
 
 ccTex2F CC3MeshParticle::getVertexTexCoord2FForTextureUnit( GLuint texUnit, GLuint vtxIndex )
 {
-	return getEmitter()->getVertexTexCoord2FForTextureUnit( texUnit,_firstVertexOffset + vtxIndex );
+	return getEmitter()->getVertexTexCoord2FForTextureUnit( texUnit,m_firstVertexOffset + vtxIndex );
 }
 
 void CC3MeshParticle::setVertexTexCoord2F( const ccTex2F& aTex2F, GLuint texUnit, GLuint vtxIndex )
 {
-	getEmitter()->setVertexTexCoord2F( aTex2F, texUnit, _firstVertexOffset + vtxIndex );
+	getEmitter()->setVertexTexCoord2F( aTex2F, texUnit, m_firstVertexOffset + vtxIndex );
 }
 
 ccTex2F CC3MeshParticle::getVertexTexCoord2FAt( GLuint vtxIndex )
@@ -629,12 +629,12 @@ void CC3MeshParticle::setVertexTexCoord2F( const ccTex2F& aTex2F, GLuint vtxInde
 
 GLuint CC3MeshParticle::getVertexIndexAt( GLuint vtxIndex )
 {
-	return getEmitter()->getVertexIndexAt( _firstVertexIndexOffset + vtxIndex ) - _firstVertexOffset;
+	return getEmitter()->getVertexIndexAt( m_firstVertexIndexOffset + vtxIndex ) - m_firstVertexOffset;
 }
 
 void CC3MeshParticle::setVertexIndex( GLuint vertexIndex, GLuint vtxIndex )
 {
-	getEmitter()->setVertexIndex( vertexIndex + _firstVertexOffset, _firstVertexIndexOffset + vtxIndex );
+	getEmitter()->setVertexIndex( vertexIndex + m_firstVertexOffset, m_firstVertexIndexOffset + vtxIndex );
 }
 
 bool CC3MeshParticle::hasVertexLocations()
@@ -662,12 +662,12 @@ bool CC3MeshParticle::init()
 	if ( super::init() ) 
 	{
 		setRotator( CC3Rotator::rotator() );
-		_templateMesh = NULL;
-		_location = CC3Vector::kCC3VectorZero;
-		_firstVertexOffset = 0;
-		_firstVertexIndexOffset = 0;
-		_isTransformDirty = true;		// Force transform on first update
-		_isColorDirty = true;			// Force color update
+		m_pTemplateMesh = NULL;
+		m_location = CC3Vector::kCC3VectorZero;
+		m_firstVertexOffset = 0;
+		m_firstVertexIndexOffset = 0;
+		m_isTransformDirty = true;		// Force transform on first update
+		m_isColorDirty = true;			// Force color update
 
 		return true;
 	}
@@ -676,14 +676,14 @@ bool CC3MeshParticle::init()
 
 void CC3MeshParticle::setTemplateMesh( CC3Mesh* templateMesh )
 {
-	CC_SAFE_RELEASE( _templateMesh );
-	_templateMesh = templateMesh;
+	CC_SAFE_RELEASE( m_pTemplateMesh );
+	m_pTemplateMesh = templateMesh;
 	CC_SAFE_RETAIN( templateMesh );
 }
 
 CC3Mesh* CC3MeshParticle::getTemplateMesh()
 {
-	return _templateMesh;
+	return m_pTemplateMesh;
 }
 
 CC3MeshParticle* CC3MeshParticle::particle()
@@ -701,11 +701,11 @@ void CC3MeshParticle::populateFrom( CC3MeshParticle* another )
 	
 	setRotator( (CC3Rotator*)another->getRotator()->copy()->autorelease() );
 	setTemplateMesh( another->getTemplateMesh() );
-	_location = another->getLocation();
-	_firstVertexOffset = another->getFirstVertexOffset();
-	_firstVertexIndexOffset = another->getFirstVertexIndexOffset();
-	_isTransformDirty = another->isTransformDirty();
-	_isColorDirty = another->isColorDirty();
+	m_location = another->getLocation();
+	m_firstVertexOffset = another->getFirstVertexOffset();
+	m_firstVertexIndexOffset = another->getFirstVertexIndexOffset();
+	m_isTransformDirty = another->isTransformDirty();
+	m_isColorDirty = another->isColorDirty();
 }
 
 CCObject* CC3MeshParticle::copyWithZone( CCZone* zone )
@@ -719,20 +719,20 @@ CCObject* CC3MeshParticle::copyWithZone( CCZone* zone )
 
 CC3Vector CC3ScalableMeshParticle::getScale()
 {
-	return _scale; 
+	return m_scale; 
 }
 
 void CC3ScalableMeshParticle::setScale( const CC3Vector& aScale )
 {
-	_scale = aScale;
+	m_scale = aScale;
 	markTransformDirty();
 }
 
 GLfloat CC3ScalableMeshParticle::getUniformScale()
 {
 	return (isUniformlyScaledLocally())
-					? _scale.x
-					: _scale.length() / CC3Vector::kCC3VectorUnitCubeLength;
+					? m_scale.x
+					: m_scale.length() / CC3Vector::kCC3VectorUnitCubeLength;
 }
 
 void CC3ScalableMeshParticle::setUniformScale( GLfloat aValue )
@@ -742,7 +742,7 @@ void CC3ScalableMeshParticle::setUniformScale( GLfloat aValue )
 
 bool CC3ScalableMeshParticle::isUniformlyScaledLocally()
 {
-	return (_scale.x == _scale.y) && (_scale.x == _scale.z); 
+	return (m_scale.x == m_scale.y) && (m_scale.x == m_scale.z); 
 }
 
 /** Returns whether the mesh vertices can be transformed using only translation. */
@@ -753,7 +753,7 @@ bool CC3ScalableMeshParticle::doesUseTranslationOnly()
 
 bool CC3ScalableMeshParticle::isTransformRigid() 
 {
-	return _scale.equals( CC3Vector::kCC3VectorUnitCube ); 
+	return m_scale.equals( CC3Vector::kCC3VectorUnitCube ); 
 }
 
 /** Invoke super, then apply the scaling transforms to the specified matrix data. */
@@ -774,7 +774,7 @@ bool CC3ScalableMeshParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_scale = CC3Vector::kCC3VectorUnitCube;
+		m_scale = CC3Vector::kCC3VectorUnitCube;
 		return true;
 	}
 
@@ -784,7 +784,7 @@ bool CC3ScalableMeshParticle::init()
 void CC3ScalableMeshParticle::populateFrom( CC3ScalableMeshParticle* another )
 {
 	super::populateFrom( another );
-	_scale = another->getScale();
+	m_scale = another->getScale();
 }
 
 CCObject* CC3ScalableMeshParticle::copyWithZone( CCZone* zone )

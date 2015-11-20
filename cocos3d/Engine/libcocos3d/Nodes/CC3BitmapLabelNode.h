@@ -138,15 +138,15 @@ protected:
 	void							parseCommonArguments( const std::string& line );
 
 protected:
-	CC3BitmapCharDefHashElement*	_charDefDictionary;
-	CC3KerningHashElement*			_kerningDictionary;
-	CC3CharacterSet					_characterSet;
-	std::string						_atlasName;
-	unsigned int					_commonHeight;
-	CC3BitmapFontPadding			_padding;
-	CCSize							_textureSize;
-	GLfloat							_fontSize;
-	unsigned int					_baseline;
+	CC3BitmapCharDefHashElement*	m_charDefDictionary;
+	CC3KerningHashElement*			m_kerningDictionary;
+	CC3CharacterSet					m_characterSet;
+	std::string						m_atlasName;
+	unsigned int					m_commonHeight;
+	CC3BitmapFontPadding			m_padding;
+	CCSize							m_textureSize;
+	GLfloat							m_fontSize;
+	unsigned int					m_baseline;
 };
 
 
@@ -375,13 +375,13 @@ public:
 	std::string					description();
 
 protected:
-	std::string					_labelString;
-	std::string					_fontFileName;
-	CC3BitmapFontConfiguration*	_fontConfig;
-	CCTextAlignment				_textAlignment;
-	CCPoint						_relativeOrigin;
-	CC3Tessellation				_tessellation;
-	GLfloat						_lineHeight;
+	std::string					m_labelString;
+	std::string					m_fontFileName;
+	CC3BitmapFontConfiguration*	m_fontConfig;
+	CCTextAlignment				m_textAlignment;
+	CCPoint						m_relativeOrigin;
+	CC3Tessellation				m_tessellation;
+	GLfloat						m_lineHeight;
 };
 
 /**

@@ -278,12 +278,12 @@ protected:
 	void						verticesWereChanged();
 
 protected:
-	GLuint						_firstVertex;
-	CC3Box						_boundingBox;
-	CC3Vector					_centerOfGeometry;
-	GLfloat						_radius;
-	bool						_boundaryIsDirty : 1;
-	bool						_radiusIsDirty : 1;
+	GLuint						m_firstVertex;
+	CC3Box						m_boundingBox;
+	CC3Vector					m_centerOfGeometry;
+	GLfloat						m_radius;
+	bool						m_boundaryIsDirty : 1;
+	bool						m_radiusIsDirty : 1;
 };
 
 NS_COCOS3D_END

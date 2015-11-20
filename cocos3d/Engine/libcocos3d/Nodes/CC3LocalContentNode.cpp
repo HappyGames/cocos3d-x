@@ -48,12 +48,12 @@ bool CC3LocalContentNode::hasLocalContent()
 
 GLint CC3LocalContentNode::getZOrder()
 {
-	return _zOrder; 
+	return m_zOrder; 
 }
 
 void CC3LocalContentNode::setZOrder( GLint zo )
 {
-	_zOrder = zo;
+	m_zOrder = zo;
 	super::setZOrder( zo );
 }
 
@@ -82,9 +82,9 @@ CC3Box CC3LocalContentNode::getLocalContentBoundingBox()
 CC3Box CC3LocalContentNode::getGlobalLocalContentBoundingBox()
 {
 	// If the global bounding box is null, rebuild it, otherwise return it.
-	if ( _globalLocalContentBoundingBox.isNull() )
-		_globalLocalContentBoundingBox = getLocalContentBoundingBoxRelativeTo( NULL );
-	return _globalLocalContentBoundingBox;
+	if ( m_globalLocalContentBoundingBox.isNull() )
+		m_globalLocalContentBoundingBox = getLocalContentBoundingBoxRelativeTo( NULL );
+	return m_globalLocalContentBoundingBox;
 }
 
 CC3Box CC3LocalContentNode::getLocalContentBoundingBoxRelativeTo( CC3Node* ancestor )
@@ -144,8 +144,8 @@ void CC3LocalContentNode::checkDrawingOrder()
 void CC3LocalContentNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_globalLocalContentBoundingBox = CC3Box::kCC3BoxNull;
-	_zOrder = 0;
+	m_globalLocalContentBoundingBox = CC3Box::kCC3BoxNull;
+	m_zOrder = 0;
 }
 
 void CC3LocalContentNode::populateFrom( CC3LocalContentNode* another )
@@ -158,7 +158,7 @@ void CC3LocalContentNode::populateFrom( CC3LocalContentNode* another )
 	// Could create a child node
 	setShouldDrawLocalContentWireframeBox( another->shouldDrawLocalContentWireframeBox() );
 	
-	_zOrder = another->getZOrder();
+	m_zOrder = another->getZOrder();
 }
 
 CCObject* CC3LocalContentNode::copyWithZone( CCZone* zone )
@@ -175,7 +175,7 @@ CCObject* CC3LocalContentNode::copyWithZone( CCZone* zone )
 void CC3LocalContentNode::markTransformDirty()
 {
 	super::markTransformDirty();
-	_globalLocalContentBoundingBox = CC3Box::kCC3BoxNull;
+	m_globalLocalContentBoundingBox = CC3Box::kCC3BoxNull;
 }
 
 /** Overridden to return local content box color */

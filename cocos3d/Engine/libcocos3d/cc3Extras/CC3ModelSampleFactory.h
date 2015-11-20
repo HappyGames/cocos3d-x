@@ -84,14 +84,14 @@ protected:
 	void						initTeapotMeshes();
 
 protected:
-	CC3VertexLocations*			_teapotVertexLocations;
-	CC3VertexNormals*			_teapotVertexNormals;
-	CC3VertexIndices*			_teapotVertexIndices;
-	CC3VertexTextureCoordinates* _teapotVertexTextureCoordinates;
-	CC3VertexColors*			_teapotVertexColors;
-	CC3Mesh*					_texturedTeapotMesh;
-	CC3Mesh*					_multicoloredTeapotMesh;
-	CC3Mesh*					_unicoloredTeapotMesh;
+	CC3VertexLocations*			m_teapotVertexLocations;
+	CC3VertexNormals*			m_teapotVertexNormals;
+	CC3VertexIndices*			m_teapotVertexIndices;
+	CC3VertexTextureCoordinates* m_teapotVertexTextureCoordinates;
+	CC3VertexColors*			m_teapotVertexColors;
+	CC3Mesh*					m_pTexturedTeapotMesh;
+	CC3Mesh*					m_pMulticoloredTeapotMesh;
+	CC3Mesh*					m_pUnicoloredTeapotMesh;
 };
 
 

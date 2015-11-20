@@ -33,32 +33,32 @@ NS_COCOS3D_BEGIN
 
 CC3ShaderContext::CC3ShaderContext()
 {
-	_program = NULL;
-	_pureColorProgram = NULL;
-	_uniformOverrides = NULL;
-	_uniformOverridesByName = NULL;
+	m_pProgram = NULL;
+	m_pPureColorProgram = NULL;
+	m_uniformOverrides = NULL;
+	m_uniformOverridesByName = NULL;
 }
 
 CC3ShaderContext::~CC3ShaderContext()
 {
-	CC_SAFE_RELEASE(_program);
-	CC_SAFE_RELEASE(_pureColorProgram);
+	CC_SAFE_RELEASE(m_pProgram);
+	CC_SAFE_RELEASE(m_pPureColorProgram);
 
 	removeAllUniformOverrides();
 }
 
 CC3ShaderProgram* CC3ShaderContext::getProgram()
 {
-	return _program; 
+	return m_pProgram; 
 }
 
 void CC3ShaderContext::setProgram( CC3ShaderProgram* program )
 {
-	if (program == _program) 
+	if (program == m_pProgram) 
 		return;
 
-	CC_SAFE_RELEASE(_program);
-	_program = program;
+	CC_SAFE_RELEASE(m_pProgram);
+	m_pProgram = program;
 	CC_SAFE_RETAIN( program );
 	
 	setPureColorProgram( NULL );
@@ -68,52 +68,52 @@ void CC3ShaderContext::setProgram( CC3ShaderProgram* program )
 
 CC3ShaderProgram* CC3ShaderContext::getPureColorProgram()
 {
-	if ( !_pureColorProgram )
+	if ( !m_pPureColorProgram )
 		setPureColorProgram( CC3ShaderProgram::getShaderMatcher()->getPureColorProgramMatching( getProgram() ) );
 
-	return _pureColorProgram;
+	return m_pPureColorProgram;
 }
 
 void CC3ShaderContext::setPureColorProgram( CC3ShaderProgram* program )
 {
-	if (program == _pureColorProgram) 
+	if (program == m_pPureColorProgram) 
 		return;
 
-	CC_SAFE_RELEASE( _pureColorProgram );
-	_pureColorProgram = program;
+	CC_SAFE_RELEASE( m_pPureColorProgram );
+	m_pPureColorProgram = program;
 	CC_SAFE_RETAIN( program );
 }
 
 bool CC3ShaderContext::shouldEnforceCustomOverrides()
 {
-	return _shouldEnforceCustomOverrides;
+	return m_shouldEnforceCustomOverrides;
 }
 
 void CC3ShaderContext::setShouldEnforceCustomOverrides( bool shouldEnforce )
 {
-	_shouldEnforceCustomOverrides = shouldEnforce;
+	m_shouldEnforceCustomOverrides = shouldEnforce;
 }
 
 bool CC3ShaderContext::shouldEnforceVertexAttributes()
 {
-	return _shouldEnforceVertexAttributes;
+	return m_shouldEnforceVertexAttributes;
 }
 
 void CC3ShaderContext::setShouldEnforceVertexAttributes( bool shouldEnforce )
 {
-	_shouldEnforceVertexAttributes = shouldEnforce;
+	m_shouldEnforceVertexAttributes = shouldEnforce;
 }
 
 CC3GLSLUniform* CC3ShaderContext::getUniformOverrideNamed( const char* name )
 {
-	CC3GLSLUniform* rtnVar = _uniformOverridesByName ? (CC3GLSLUniform*)_uniformOverridesByName->objectForKey(name) : NULL;
+	CC3GLSLUniform* rtnVar = m_uniformOverridesByName ? (CC3GLSLUniform*)m_uniformOverridesByName->objectForKey(name) : NULL;
 	return rtnVar ? rtnVar : addUniformOverrideFor( getProgram()->getUniformNamed( name ) );
 }
 
 CC3GLSLUniform* CC3ShaderContext::getUniformOverrideForSemantic( GLenum semantic, GLuint semanticIndex )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformOverrides, pObj )
+	CCARRAY_FOREACH( m_uniformOverrides, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if (var->getSemantic() == semantic && var->getSemanticIndex() == semanticIndex) 
@@ -131,7 +131,7 @@ CC3GLSLUniform* CC3ShaderContext::getUniformOverrideForSemantic( GLenum semantic
 CC3GLSLUniform* CC3ShaderContext::getUniformOverrideAtLocation( GLint uniformLocation )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformOverrides, pObj )
+	CCARRAY_FOREACH( m_uniformOverrides, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if (var->getLocation() == uniformLocation) 
@@ -157,40 +157,40 @@ void CC3ShaderContext::addUniformOverride( CC3GLSLUniformOverride* uniformOverri
 	if( !uniformOverride ) 
 		return;
 	
-	if ( !_uniformOverrides ) 
+	if ( !m_uniformOverrides ) 
 	{
-		_uniformOverrides = CCArray::create();						// retained
-		_uniformOverrides->retain();
+		m_uniformOverrides = CCArray::create();						// retained
+		m_uniformOverrides->retain();
 	}
-	if ( !_uniformOverridesByName ) 
+	if ( !m_uniformOverridesByName ) 
 	{
-		_uniformOverridesByName = CCDictionary::create();	// retained
-		_uniformOverridesByName->retain();
+		m_uniformOverridesByName = CCDictionary::create();	// retained
+		m_uniformOverridesByName->retain();
 	}
 		
-	_uniformOverridesByName->setObject( uniformOverride, uniformOverride->getName() );
-	_uniformOverrides->addObject( uniformOverride );
+	m_uniformOverridesByName->setObject( uniformOverride, uniformOverride->getName() );
+	m_uniformOverrides->addObject( uniformOverride );
 }
 
 void CC3ShaderContext::removeUniformOverride( CC3GLSLUniform* uniform )
 {
-	_uniformOverrides->removeObject( uniform );
-	_uniformOverridesByName->removeObjectForKey( uniform->getName() );
-	CCAssert(_uniformOverrides->count() == _uniformOverridesByName->count(), "uniform was not completely removed from CC3ShaderContext");
-	if (_uniformOverrides->count() == 0) 
+	m_uniformOverrides->removeObject( uniform );
+	m_uniformOverridesByName->removeObjectForKey( uniform->getName() );
+	CCAssert(m_uniformOverrides->count() == m_uniformOverridesByName->count(), "uniform was not completely removed from CC3ShaderContext");
+	if (m_uniformOverrides->count() == 0) 
 		removeAllUniformOverrides();	// Remove empty collections
 }
 
 void CC3ShaderContext::removeAllUniformOverrides()
 {
-	if ( _uniformOverrides )
-		_uniformOverrides->removeAllObjects();
+	if ( m_uniformOverrides )
+		m_uniformOverrides->removeAllObjects();
 
-	if ( _uniformOverridesByName )
-		_uniformOverridesByName->removeAllObjects();
+	if ( m_uniformOverridesByName )
+		m_uniformOverridesByName->removeAllObjects();
 
-	CC_SAFE_RELEASE( _uniformOverridesByName );
-	CC_SAFE_RELEASE( _uniformOverrides );
+	CC_SAFE_RELEASE( m_uniformOverridesByName );
+	CC_SAFE_RELEASE( m_uniformOverrides );
 }
 
 bool CC3ShaderContext::populateUniform( CC3GLSLUniform* uniform, CC3NodeDrawingVisitor* visitor )
@@ -198,7 +198,7 @@ bool CC3ShaderContext::populateUniform( CC3GLSLUniform* uniform, CC3NodeDrawingV
 	// If any of the uniform overrides are overriding the uniform, update the value of the
 	// uniform from the override, and return that we've done so.
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformOverrides, pObj )
+	CCARRAY_FOREACH( m_uniformOverrides, pObj )
 	{
 		CC3GLSLUniformOverride* var = (CC3GLSLUniformOverride*)pObj;
 		if ( var->updateIfOverriding( uniform ) )
@@ -207,19 +207,19 @@ bool CC3ShaderContext::populateUniform( CC3GLSLUniform* uniform, CC3NodeDrawingV
 
 	// If the semantic is unknown, and no override was found, return whether a default is okay
 	if (uniform->getSemantic() == kCC3SemanticNone) 
-		return !_shouldEnforceCustomOverrides;
+		return !m_shouldEnforceCustomOverrides;
 	
 	return false;
 }
 
 void CC3ShaderContext::init()
 {
-	_program = NULL;
-	_pureColorProgram = NULL;
-	_uniformOverrides = NULL;
-	_uniformOverridesByName = NULL;
-	_shouldEnforceCustomOverrides = true;
-	_shouldEnforceVertexAttributes = true;
+	m_pProgram = NULL;
+	m_pPureColorProgram = NULL;
+	m_uniformOverrides = NULL;
+	m_uniformOverridesByName = NULL;
+	m_shouldEnforceCustomOverrides = true;
+	m_shouldEnforceVertexAttributes = true;
 }
 
 CC3ShaderContext* CC3ShaderContext::context()
@@ -241,19 +241,19 @@ CCObject* CC3ShaderContext::copyWithZone( CCZone* zone )
 
 void CC3ShaderContext::populateFrom( CC3ShaderContext* another )
 {
-	CC_SAFE_RELEASE(_program);
-	_program = another->getProgram();
-	CC_SAFE_RETAIN( _program );
+	CC_SAFE_RELEASE(m_pProgram);
+	m_pProgram = another->getProgram();
+	CC_SAFE_RETAIN( m_pProgram );
 	
-	CC_SAFE_RELEASE(_pureColorProgram);
-	_pureColorProgram = another->_pureColorProgram;
-	CC_SAFE_RETAIN( _pureColorProgram );
+	CC_SAFE_RELEASE(m_pPureColorProgram);
+	m_pPureColorProgram = another->m_pPureColorProgram;
+	CC_SAFE_RETAIN( m_pPureColorProgram );
 
-	_shouldEnforceCustomOverrides = another->shouldEnforceCustomOverrides();
-	_shouldEnforceVertexAttributes = another->shouldEnforceVertexAttributes();
+	m_shouldEnforceCustomOverrides = another->shouldEnforceCustomOverrides();
+	m_shouldEnforceVertexAttributes = another->shouldEnforceVertexAttributes();
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( another->_uniformOverrides, pObj )
+	CCARRAY_FOREACH( another->m_uniformOverrides, pObj )
 	{
 		CC3GLSLUniformOverride* var = (CC3GLSLUniformOverride*)pObj;
 		addUniformOverride( (CC3GLSLUniformOverride*)var->copy()->autorelease() );

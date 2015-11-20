@@ -305,11 +305,11 @@ public:
 	void						init();
 
 protected:
-	CC3Node*					_startingNode;
-	CC3Node*					_currentNode;
-	CC3Camera*					_camera;
-	CCArray*					_pendingRemovals;
-	bool						_shouldVisitChildren : 1;
+	CC3Node*					m_pStartingNode;
+	CC3Node*					m_pCurrentNode;
+	CC3Camera*					m_pCamera;
+	CCArray*					m_pendingRemovals;
+	bool						m_shouldVisitChildren : 1;
 };
 
 NS_COCOS3D_END

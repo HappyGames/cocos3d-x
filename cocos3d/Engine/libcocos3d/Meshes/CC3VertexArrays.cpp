@@ -33,15 +33,15 @@ NS_COCOS3D_BEGIN
 
 CC3VertexArrayContent::CC3VertexArrayContent()
 {
-    _vertices = NULL;
-    _vertexCount = 0;
-    _allocatedVertexCapacity = 0;
-    _vertexStride = 0;
-    _bufferID = 0;
-    _bufferUsage = GL_STATIC_DRAW;
-    _shouldAllowVertexBuffering = true;
-    _shouldReleaseRedundantContent = true;
-    _wasVertexCapacityChanged = false;
+    m_vertices = NULL;
+    m_vertexCount = 0;
+    m_allocatedVertexCapacity = 0;
+    m_vertexStride = 0;
+    m_bufferID = 0;
+    m_bufferUsage = GL_STATIC_DRAW;
+    m_shouldAllowVertexBuffering = true;
+    m_shouldReleaseRedundantContent = true;
+    m_wasVertexCapacityChanged = false;
 }
 
 void CC3VertexArrayContent::init()
@@ -62,7 +62,7 @@ CC3VertexArray::~CC3VertexArray()
 
 GLvoid* CC3VertexArray::getVertices()
 {
-	return _vertices; 
+	return m_vertices; 
 }
 
 /**
@@ -72,13 +72,13 @@ GLvoid* CC3VertexArray::getVertices()
  */
 void CC3VertexArray::setVertices( GLvoid* vtxs )
 {
-	if (vtxs != _vertices) 
+	if (vtxs != m_vertices) 
 	{
-		GLuint currVtxCount = _vertexCount;
+		GLuint currVtxCount = m_vertexCount;
 		setAllocatedVertexCapacity( 0 );		// Safely disposes existing vertices
-		_vertices = vtxs;
-		if (_vertices) 
-			_vertexCount = currVtxCount;
+		m_vertices = vtxs;
+		if (m_vertices) 
+			m_vertexCount = currVtxCount;
 		
 		verticesWereChanged();
 	}
@@ -92,7 +92,7 @@ void CC3VertexArray::verticesWereChanged()
 
 GLint CC3VertexArray::getElementSize()
 {
-	return _elementSize; 
+	return m_elementSize; 
 }
 
 /**
@@ -101,15 +101,15 @@ GLint CC3VertexArray::getElementSize()
  */
 void CC3VertexArray::setElementSize( GLint elemSize )
 {
-	GLint currSize = _elementSize;
-	_elementSize = elemSize;
-	if ( !allocateVertexCapacity(_allocatedVertexCapacity) ) 
-		_elementSize = currSize;
+	GLint currSize = m_elementSize;
+	m_elementSize = elemSize;
+	if ( !allocateVertexCapacity(m_allocatedVertexCapacity) ) 
+		m_elementSize = currSize;
 }
 
 GLenum CC3VertexArray::getElementType()
 {
-	return _elementType; 
+	return m_elementType; 
 }
 
 /**
@@ -118,20 +118,20 @@ GLenum CC3VertexArray::getElementType()
  */
 void CC3VertexArray::setElementType( GLenum elemType )
 {
-	GLenum currType = _elementType;
-	_elementType = elemType;
-	if ( !allocateVertexCapacity(_allocatedVertexCapacity) )
-		_elementType = currType;
+	GLenum currType = m_elementType;
+	m_elementType = elemType;
+	if ( !allocateVertexCapacity(m_allocatedVertexCapacity) )
+		m_elementType = currType;
 }
 
 GLuint CC3VertexArray::getElementLength()
 {
-	return (GLuint)CC3GLElementTypeSize(_elementType) * _elementSize; 
+	return (GLuint)CC3GLElementTypeSize(m_elementType) * m_elementSize; 
 }
 
 GLuint CC3VertexArray::getVertexStride()
 {
-	return _vertexStride ? _vertexStride : getElementLength(); 
+	return m_vertexStride ? m_vertexStride : getElementLength(); 
 }
 
 /**
@@ -140,70 +140,70 @@ GLuint CC3VertexArray::getVertexStride()
  */
 void CC3VertexArray::setVertexStride( GLuint stride )
 {
-	GLuint currStride = _vertexStride;
-	_vertexStride = stride;
-	if ( !allocateVertexCapacity(_allocatedVertexCapacity) ) 
-		_vertexStride = currStride;
+	GLuint currStride = m_vertexStride;
+	m_vertexStride = stride;
+	if ( !allocateVertexCapacity(m_allocatedVertexCapacity) ) 
+		m_vertexStride = currStride;
 }
 
 void CC3VertexArray::setShouldNormalizeContent( bool shouldNormalize )
 {
-	_shouldNormalizeContent = shouldNormalize;
+	m_shouldNormalizeContent = shouldNormalize;
 }
 
 bool CC3VertexArray::shouldNormalizeContent()
 {
-	return _shouldNormalizeContent;
+	return m_shouldNormalizeContent;
 }
 
 bool CC3VertexArray::shouldReleaseRedundantContent()
 {
-	return _shouldReleaseRedundantContent;
+	return m_shouldReleaseRedundantContent;
 }
 
 void CC3VertexArray::setShouldReleaseRedundantContent( bool release )
 {
-	_shouldReleaseRedundantContent = release;
+	m_shouldReleaseRedundantContent = release;
 }
 
 bool CC3VertexArray::shouldAllowVertexBuffering()
 {
-	return _shouldAllowVertexBuffering;
+	return m_shouldAllowVertexBuffering;
 }
 
 void CC3VertexArray::setShouldAllowVertexBuffering( bool allowVertexBuffering )
 {
-	_shouldAllowVertexBuffering = allowVertexBuffering;
+	m_shouldAllowVertexBuffering = allowVertexBuffering;
 }
 
 GLuint CC3VertexArray::getBufferUsage()
 {
-	return _bufferUsage;
+	return m_bufferUsage;
 }
 
 void CC3VertexArray::setBufferUsage( GLenum usage )
 {
-	_bufferUsage = usage;
+	m_bufferUsage = usage;
 }
 
 GLuint CC3VertexArray::getSemantic()
 {
-	return _semantic;
+	return m_semantic;
 }
 
 GLuint CC3VertexArray::getElementOffset()
 {
-	return _elementOffset;
+	return m_elementOffset;
 }
 
 void CC3VertexArray::setElementOffset( GLuint elementOffset )
 {
-	_elementOffset = elementOffset;
+	m_elementOffset = elementOffset;
 }
 
 GLuint CC3VertexArray::getAvailableVertexCount()
 {
-	return (_allocatedVertexCapacity > 0) ? _allocatedVertexCapacity : _vertexCount;
+	return (m_allocatedVertexCapacity > 0) ? m_allocatedVertexCapacity : m_vertexCount;
 }
 
 GLenum CC3VertexArray::getBufferTarget()
@@ -219,46 +219,46 @@ GLenum CC3VertexArray::defaultSemantic()
 
 void CC3VertexArray::setBufferID( GLuint bufferID )
 {
-	_bufferID = bufferID;
+	m_bufferID = bufferID;
 }
 
 GLuint CC3VertexArray::getBufferID()
 {
-	return _bufferID;
+	return m_bufferID;
 }
 
 void CC3VertexArray::setVertexCount( GLuint count )
 {
-	_vertexCount = count;
+	m_vertexCount = count;
 }
 
 GLuint CC3VertexArray::getVertexCount()
 {
-	return _vertexCount;
+	return m_vertexCount;
 }
 
 void CC3VertexArray::setSemantic( GLenum semantic )
 {
-	_semantic = semantic;
+	m_semantic = semantic;
 }
 
 void CC3VertexArray::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName ); 
 	{
-		_vertices = NULL;
-		_vertexCount = 0;
-		_allocatedVertexCapacity = 0;
-		_elementType = GL_FLOAT;
-		_elementSize = 3;
-		_vertexStride = 0;
-		_bufferID = 0;
-		_bufferUsage = GL_STATIC_DRAW;
-		_elementOffset = 0;
-		_shouldNormalizeContent = false;
-		_shouldAllowVertexBuffering = true;
-		_shouldReleaseRedundantContent = true;
-		_semantic = defaultSemantic();
+		m_vertices = NULL;
+		m_vertexCount = 0;
+		m_allocatedVertexCapacity = 0;
+		m_elementType = GL_FLOAT;
+		m_elementSize = 3;
+		m_vertexStride = 0;
+		m_bufferID = 0;
+		m_bufferUsage = GL_STATIC_DRAW;
+		m_elementOffset = 0;
+		m_shouldNormalizeContent = false;
+		m_shouldAllowVertexBuffering = true;
+		m_shouldReleaseRedundantContent = true;
+		m_semantic = defaultSemantic();
 	}
 }
 
@@ -320,15 +320,15 @@ void CC3VertexArray::populateFrom( CC3VertexArray* another )
 {
 	super::populateFrom( another ); 
 
-	_semantic = another->getSemantic();
-	_elementType = another->getElementType();
-	_elementSize = another->getElementSize();
-	_vertexStride = another->getVertexStride();
-	_bufferUsage = another->getBufferUsage();
-	_elementOffset = another->getElementOffset();
-	_shouldNormalizeContent = another->shouldNormalizeContent();
-	_shouldAllowVertexBuffering = another->shouldAllowVertexBuffering();
-	_shouldReleaseRedundantContent = another->shouldReleaseRedundantContent();
+	m_semantic = another->getSemantic();
+	m_elementType = another->getElementType();
+	m_elementSize = another->getElementSize();
+	m_vertexStride = another->getVertexStride();
+	m_bufferUsage = another->getBufferUsage();
+	m_elementOffset = another->getElementOffset();
+	m_shouldNormalizeContent = another->shouldNormalizeContent();
+	m_shouldAllowVertexBuffering = another->shouldAllowVertexBuffering();
+	m_shouldReleaseRedundantContent = another->shouldReleaseRedundantContent();
 
 	deleteGLBuffer();		// Data has yet to be buffered. Get rid of old buffer if necessary.
 
@@ -338,11 +338,11 @@ void CC3VertexArray::populateFrom( CC3VertexArray* another )
 	if (another->getAllocatedVertexCapacity()) 
 	{
 		setAllocatedVertexCapacity( another->getAllocatedVertexCapacity() );
-		memcpy(_vertices, another->getVertices(), (_allocatedVertexCapacity * getVertexStride()));
+		memcpy(m_vertices, another->getVertices(), (m_allocatedVertexCapacity * getVertexStride()));
 	} else {
-		_vertices = another->getVertices();
+		m_vertices = another->getVertices();
 	}
-	_vertexCount = another->getVertexCount();
+	m_vertexCount = another->getVertexCount();
 }
 
 CCObject* CC3VertexArray::copyWithZone( CCZone* zone )
@@ -356,7 +356,7 @@ CCObject* CC3VertexArray::copyWithZone( CCZone* zone )
 
 GLuint CC3VertexArray::getAllocatedVertexCapacity()
 {
-	return _allocatedVertexCapacity; 
+	return m_allocatedVertexCapacity; 
 }
 
 void CC3VertexArray::setAllocatedVertexCapacity( GLuint vtxCount )
@@ -369,19 +369,19 @@ void CC3VertexArray::setAllocatedVertexCapacity( GLuint vtxCount )
 
 void CC3VertexArray::setVertexCapacityWithoutAllocation( GLuint capacity )
 {
-    _allocatedVertexCapacity = capacity;
+    m_allocatedVertexCapacity = capacity;
 }
 
 bool CC3VertexArray::allocateVertexCapacity( GLuint vtxCount )
 {
 	// If current capacity is zero, we may still have an externally set pointer. clear it now so that
 	// we don't reallocate it, or in case of reverting back to zero, we don't leave the pointer hanging.
-	if (_allocatedVertexCapacity == 0) 
-		_vertices = NULL;
+	if (m_allocatedVertexCapacity == 0) 
+		m_vertices = NULL;
 
 	// If nothing is changing, we don't need to do anything else.
 	// Do this after testing for current zero capacity and clearing pointer.
-	if (_allocatedVertexCapacity == vtxCount) 
+	if (m_allocatedVertexCapacity == vtxCount) 
 		return true;
 
 	GLvoid* newVertices = NULL;
@@ -392,23 +392,23 @@ bool CC3VertexArray::allocateVertexCapacity( GLuint vtxCount )
 	{
 		// Returned pointer will be non-NULL on successful allocation and NULL on failed allocation.
 		// If we fail, log an error and return without changing anything.
-		newVertices = realloc(_vertices, (vtxCount * getVertexStride()));
+		newVertices = realloc(m_vertices, (vtxCount * getVertexStride()));
 		if ( !newVertices ) 
 		{
 			CCLOGERROR("[vtx]CC3VertexArray could not allocate space for %d vertices");
 			return false;
 		}
 	} else {
-		free(_vertices);
+		free(m_vertices);
 	}
 	
-	CC3_TRACE("[vtx]CC3VertexArray changed vertex allocation from %d vertices to %d vertices", _allocatedVertexCapacity, vtxCount);
+	CC3_TRACE("[vtx]CC3VertexArray changed vertex allocation from %d vertices to %d vertices", m_allocatedVertexCapacity, vtxCount);
 	
 	// Don't use vertices setter, because it will attempt to deallocate again.
 	// But do notify subclasses that the vertices have changed.
-	_vertices = newVertices;
-	_allocatedVertexCapacity = vtxCount;
-	_vertexCount = vtxCount;
+	m_vertices = newVertices;
+	m_allocatedVertexCapacity = vtxCount;
+	m_vertexCount = vtxCount;
 	verticesWereChanged();
 	
 	return true;
@@ -429,35 +429,35 @@ void CC3VertexArray::resetTagAllocation()
 
 void CC3VertexArray::createGLBuffer()
 {
-	if ( _shouldAllowVertexBuffering && !_bufferID ) 
+	if ( m_shouldAllowVertexBuffering && !m_bufferID ) 
 	{
 		CC3OpenGL* gl = CC3OpenGL::sharedGL();
 		GLenum targBuf = getBufferTarget();
 		GLsizeiptr buffSize = getVertexStride() * getAvailableVertexCount();
 		
-		_bufferID = gl->generateBuffer();
-		gl->bindBuffer( _bufferID, targBuf );
-		gl->loadBufferTarget( targBuf, _vertices, buffSize, _bufferUsage );
-		gl->setBufferDebugLabel( getName().c_str(), _bufferID );
+		m_bufferID = gl->generateBuffer();
+		gl->bindBuffer( m_bufferID, targBuf );
+		gl->loadBufferTarget( targBuf, m_vertices, buffSize, m_bufferUsage );
+		gl->setBufferDebugLabel( getName().c_str(), m_bufferID );
 		gl->unbindBufferTarget( targBuf );
 	} 
 	else 
 	{
 		CC3_TRACE("[vtx]CC3VertexArray NOT creating GL server buffer because shouldAllowVertexBuffering is %s or buffer ID already set to %d",
-			_shouldAllowVertexBuffering ? "true" : "false", _bufferID);
+			m_shouldAllowVertexBuffering ? "true" : "false", m_bufferID);
 	}
 }
 
 void CC3VertexArray::updateGLBufferStartingAt( GLuint offsetIndex, GLuint vtxCount )
 {
-	if (_bufferID) 
+	if (m_bufferID) 
 	{
 		CC3OpenGL* gl = CC3OpenGL::sharedGL();
 		GLenum targBuf = getBufferTarget();
 		GLuint vtxStride = getVertexStride();
 
-		gl->bindBuffer( _bufferID, targBuf );
-		gl->updateBufferTarget( targBuf, _vertices, (offsetIndex * vtxStride), (vtxCount * vtxStride) );
+		gl->bindBuffer( m_bufferID, targBuf );
+		gl->updateBufferTarget( targBuf, m_vertices, (offsetIndex * vtxStride), (vtxCount * vtxStride) );
 		gl->unbindBufferTarget( targBuf );
 
 //		CCLOG_TRACE("[vtx]CC3VertexArray updated GL server buffer with %d bytes starting at %d", (vtxCount * vtxStride), (offsetIndex * vtxStride));
@@ -466,49 +466,49 @@ void CC3VertexArray::updateGLBufferStartingAt( GLuint offsetIndex, GLuint vtxCou
 
 void CC3VertexArray::updateGLBuffer()
 {
-	updateGLBufferStartingAt( 0, _vertexCount ); 
+	updateGLBufferStartingAt( 0, m_vertexCount ); 
 }
 
 void CC3VertexArray::deleteGLBuffer()
 {
-	if (_bufferID) 
+	if (m_bufferID) 
 	{
-		CC3_TRACE("[vtx]CC3VertexArray deleting GL server buffer ID %d", _bufferID);
-		CC3OpenGL::sharedGL()->deleteBuffer(_bufferID);
-		_bufferID = 0;
+		CC3_TRACE("[vtx]CC3VertexArray deleting GL server buffer ID %d", m_bufferID);
+		CC3OpenGL::sharedGL()->deleteBuffer(m_bufferID);
+		m_bufferID = 0;
 	}
 }
 
 bool CC3VertexArray::isUsingGLBuffer()
 {
-	return _bufferID != 0; 
+	return m_bufferID != 0; 
 }
 
 void CC3VertexArray::releaseRedundantContent()
 {
-	if ( !(_bufferID && _shouldReleaseRedundantContent) ) 
+	if ( !(m_bufferID && m_shouldReleaseRedundantContent) ) 
 		return;
 
-	GLuint currVtxCount = _vertexCount;
+	GLuint currVtxCount = m_vertexCount;
 	setAllocatedVertexCapacity( 0 );
-	_vertexCount = currVtxCount;		// Maintain vertexCount for drawing
+	m_vertexCount = currVtxCount;		// Maintain vertexCount for drawing
 }
 
 void CC3VertexArray::bindContentToAttributeAt( GLint vaIdx, CC3NodeDrawingVisitor* visitor )
 {
-	if (_bufferID) 
+	if (m_bufferID) 
 	{											// use GL buffer if it exists
 		// MARK_TRACE_HERE
 		//CCLOG("CC3VertexArray binding GL buffer containing %d vertices", _vertexCount);
-		visitor->getGL()->bindBuffer( _bufferID, getBufferTarget() );
-		bindContent( ((GLbyte*)0 + _elementOffset), vaIdx, visitor );	// Cast handles OSX 64-bit pointers
+		visitor->getGL()->bindBuffer( m_bufferID, getBufferTarget() );
+		bindContent( ((GLbyte*)0 + m_elementOffset), vaIdx, visitor );	// Cast handles OSX 64-bit pointers
 	} 
-	else if (_vertexCount && _vertices) 
+	else if (m_vertexCount && m_vertices) 
 	{					// use local client array if it exists
 		// MARK_TRACE_HERE
 		//CCLOG("CC3VertexArray using local array containing %d vertices", _vertexCount);
 		visitor->getGL()->unbindBufferTarget( getBufferTarget() );
-		bindContent( ((GLbyte*)_vertices + _elementOffset), vaIdx, visitor );
+		bindContent( ((GLbyte*)m_vertices + m_elementOffset), vaIdx, visitor );
 	} 
 	else 
 	{
@@ -523,17 +523,17 @@ void CC3VertexArray::bindContentToAttributeAt( GLint vaIdx, CC3NodeDrawingVisito
  */
 void CC3VertexArray::bindContent( GLvoid* pointer, GLint vaIdx, CC3NodeDrawingVisitor* visitor )
 {
-	visitor->getGL()->bindVertexContent( pointer, _elementSize, _elementType, _vertexStride, _shouldNormalizeContent, vaIdx );
+	visitor->getGL()->bindVertexContent( pointer, m_elementSize, m_elementType, m_vertexStride, m_shouldNormalizeContent, vaIdx );
 }
 
 GLvoid* CC3VertexArray::getAddressOfElement( GLuint index )
 {
 	// Check vertices still in memory, and if allocated,
 	// that index is less than number of vertices allocated
-	CCAssert(_vertices || !_bufferID, "Vertex content is no longer in application memory. To retain mesh data in main memory, invoke the retainVertexContent method on this mesh before invoking the releaseRedundantContent method.");
-	CCAssert(_vertices, "Vertex content is missing.");
-	CCAssert(_allocatedVertexCapacity == 0 || index < _allocatedVertexCapacity, "Requested index %d is greater than number of vertices allocated: %d."/*, index, _allocatedVertexCapacity*/);
-	return (GLbyte*)_vertices + (getVertexStride() * index) + _elementOffset;
+	CCAssert(m_vertices || !m_bufferID, "Vertex content is no longer in application memory. To retain mesh data in main memory, invoke the retainVertexContent method on this mesh before invoking the releaseRedundantContent method.");
+	CCAssert(m_vertices, "Vertex content is missing.");
+	CCAssert(m_allocatedVertexCapacity == 0 || index < m_allocatedVertexCapacity, "Requested index %d is greater than number of vertices allocated: %d."/*, index, _allocatedVertexCapacity*/);
+	return (GLbyte*)m_vertices + (getVertexStride() * index) + m_elementOffset;
 }
 
 void CC3VertexArray::copyVertices( GLuint vtxCount, GLuint srcIdx, GLuint dstIdx )
@@ -570,7 +570,7 @@ void CC3VertexArray::copyVertices( GLuint vtxCount, GLvoid* srcPtr, GLvoid* dstP
 
 std::string CC3VertexArray::describeVertices()
 {
-	return describeVertices(_vertexCount); 
+	return describeVertices(m_vertexCount); 
 }
 
 std::string CC3VertexArray::describeVertices( GLuint vtxCount )
@@ -580,18 +580,18 @@ std::string CC3VertexArray::describeVertices( GLuint vtxCount )
 
 std::string CC3VertexArray::describeVertices( GLuint vtxCount, GLuint startElem )
 {
-	GLuint endElem = MIN(startElem + vtxCount, _vertexCount);
+	GLuint endElem = MIN(startElem + vtxCount, m_vertexCount);
 	std::string desc = "";
 	desc += CC3String::stringWithFormat( (char*)"Content of CC3VertexArray" );
-	if (_vertices) 
+	if (m_vertices) 
 	{
 		for (GLuint elemIdx = startElem; elemIdx < endElem; elemIdx++) 
 		{
 			desc += CC3String::stringWithFormat( (char*)"\n\t%d:", elemIdx );
 			GLvoid* elemArray = getAddressOfElement(elemIdx);
-			for (int eaIdx = 0; eaIdx < _elementSize; eaIdx++) 
+			for (int eaIdx = 0; eaIdx < m_elementSize; eaIdx++) 
 			{
-				switch (_elementType) {
+				switch (m_elementType) {
 					case GL_FLOAT:
 						desc += CC3String::stringWithFormat( (char*)" %.3f,", ((GLfloat*)elemArray)[eaIdx] );
 						break;
@@ -611,7 +611,7 @@ std::string CC3VertexArray::describeVertices( GLuint vtxCount, GLuint startElem 
 						//desc += CC3String::stringWithFormat( " %d,", ((GLfixed*)elemArray)[eaIdx] );
 						break;
 					default:
-						desc += CC3String::stringWithFormat( (char*)" unknown type (%u),", _elementType );
+						desc += CC3String::stringWithFormat( (char*)" unknown type (%u),", m_elementType );
 						break;
 				}
 			}

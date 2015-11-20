@@ -776,14 +776,14 @@ public:
 	virtual CC3Mesh*			getTemplateMesh();
 
 protected:
-	CC3Rotator*					_rotator;
-	CC3Mesh*					_templateMesh;
-	CC3Vector					_location;
-	GLuint						_firstVertexOffset;
-	GLuint						_firstVertexIndexOffset;
-	bool						_isAlive : 1;
-	bool						_isTransformDirty : 1;
-	bool						_isColorDirty : 1;
+	CC3Rotator*					m_pRotator;
+	CC3Mesh*					m_pTemplateMesh;
+	CC3Vector					m_location;
+	GLuint						m_firstVertexOffset;
+	GLuint						m_firstVertexIndexOffset;
+	bool						m_isAlive : 1;
+	bool						m_isTransformDirty : 1;
+	bool						m_isColorDirty : 1;
 };
 
 /** 
@@ -843,7 +843,7 @@ public:
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 protected:
-	CC3Vector					_scale;
+	CC3Vector					m_scale;
 };
 
 NS_COCOS3D_END

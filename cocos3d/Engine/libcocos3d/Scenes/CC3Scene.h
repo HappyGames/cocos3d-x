@@ -1120,28 +1120,28 @@ protected:
 	virtual void				processInitializeScene();
 
 protected:
-	CCArray*					_lights;
-	CCArray*					_lightProbes;
-	CCArray*					_billboards;
-	CC3Layer*					_cc3Layer;
-	CC3Camera*					_activeCamera;
-	CC3NodeSequencer*			_drawingSequencer;
-	CC3TouchedNodePicker*		_touchedNodePicker;
-	CC3PerformanceStatistics*	_performanceStatistics;
-	CC3NodeUpdatingVisitor*		_updateVisitor;
-	CC3NodeDrawingVisitor*		_viewDrawingVisitor;
-	CC3NodeDrawingVisitor*		_envMapDrawingVisitor;
-	CC3NodeDrawingVisitor*		_shadowVisitor;
-	CC3NodeSequencerVisitor*	_drawingSequenceVisitor;
-	CC3MeshNode*				_backdrop;
-	CC3Fog*						_fog;
-	ccColor4F					_ambientLight;
-	unsigned long				_timeAtOpen;
-	unsigned long				_elapsedTimeSinceOpened;
-	float						_minUpdateInterval;
-	float						_maxUpdateInterval;
-	float						_deltaFrameTime;
-	bool						_shouldDisplayPickingRender : 1;
+	CCArray*					m_lights;
+	CCArray*					m_lightProbes;
+	CCArray*					m_billboards;
+	CC3Layer*					m_pLayer;
+	CC3Camera*					m_pActiveCamera;
+	CC3NodeSequencer*			m_pDrawingSequencer;
+	CC3TouchedNodePicker*		m_pTouchedNodePicker;
+	CC3PerformanceStatistics*	m_pPerformanceStatistics;
+	CC3NodeUpdatingVisitor*		m_pUpdateVisitor;
+	CC3NodeDrawingVisitor*		m_pViewDrawingVisitor;
+	CC3NodeDrawingVisitor*		m_pEnvMapDrawingVisitor;
+	CC3NodeDrawingVisitor*		m_pShadowVisitor;
+	CC3NodeSequencerVisitor*	m_pDrawingSequenceVisitor;
+	CC3MeshNode*				m_pBackdrop;
+	CC3Fog*						m_pFog;
+	ccColor4F					m_ambientLight;
+	unsigned long				m_timeAtOpen;
+	unsigned long				m_elapsedTimeSinceOpened;
+	float						m_minUpdateInterval;
+	float						m_maxUpdateInterval;
+	float						m_deltaFrameTime;
+	bool						m_shouldDisplayPickingRender : 1;
 };
 
 /** The max length of the queue that tracks touch events. */
@@ -1265,14 +1265,14 @@ public:
 	void						init();
 
 protected:
-	CC3NodePickingVisitor*		_pickVisitor;
-	CC3Scene*					_scene;
-	CC3Node*					_pickedNode;
-	GLuint						_touchQueue[kCC3TouchQueueLength];
-	GLuint						_queuedTouchCount;
-	CCPoint						_touchPoint;
-	bool						_wasTouched;
-	bool						_wasPicked;
+	CC3NodePickingVisitor*		m_pPickVisitor;
+	CC3Scene*					m_pScene;
+	CC3Node*					m_pPickedNode;
+	GLuint						m_touchQueue[kCC3TouchQueueLength];
+	GLuint						m_queuedTouchCount;
+	CCPoint						m_touchPoint;
+	bool						m_wasTouched;
+	bool						m_wasPicked;
 };
 
 NS_COCOS3D_END

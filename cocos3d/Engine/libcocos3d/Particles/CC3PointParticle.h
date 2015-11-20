@@ -134,8 +134,8 @@ public:
 	static CC3PointParticle*	particle();
 	
 protected:
-	GLuint						_particleIndex;
-	bool						_isAlive : 1;
+	GLuint						m_particleIndex;
+	bool						m_isAlive : 1;
 };
 
 NS_COCOS3D_END

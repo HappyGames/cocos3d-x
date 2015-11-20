@@ -68,12 +68,12 @@ void CC3ShaderMatcher::setSemanticDelegate( CC3ShaderSemanticsDelegate* pDelegat
 
 CC3ShaderMatcherBase::CC3ShaderMatcherBase()
 {
-	_semanticDelegate = NULL;
+	m_pSemanticDelegate = NULL;
 }
 
 CC3ShaderMatcherBase::~CC3ShaderMatcherBase()
 {
-	CC_SAFE_RELEASE( _semanticDelegate );
+	CC_SAFE_RELEASE( m_pSemanticDelegate );
 }
 
 CC3ShaderProgram* CC3ShaderMatcherBase::getProgramForMeshNode( CC3MeshNode* aMeshNode )
@@ -156,18 +156,18 @@ void CC3ShaderMatcherBase::initSemanticDelegate()
 	sd->init();
 	sd->populateWithDefaultVariableNameMappings();
 
-	_semanticDelegate = sd;
+	m_pSemanticDelegate = sd;
 }
 
 CC3ShaderSemanticsDelegate* CC3ShaderMatcherBase::getSemanticDelegate()
 {
-	return _semanticDelegate;
+	return m_pSemanticDelegate;
 }
 
 void CC3ShaderMatcherBase::setSemanticDelegate( CC3ShaderSemanticsDelegate* pDelegate )
 {
-	CC_SAFE_RELEASE( _semanticDelegate );
-	_semanticDelegate = pDelegate;
+	CC_SAFE_RELEASE( m_pSemanticDelegate );
+	m_pSemanticDelegate = pDelegate;
 	CC_SAFE_RETAIN( pDelegate );
 }
 

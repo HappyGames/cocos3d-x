@@ -174,7 +174,7 @@ void CC3PFXResource::buildTexturesFromPFXParser( CPVRTPFXParser* pfxParser )
 		std::string texFile = pfxTex->FileName.c_str();
 		CC3Texture* tex = CC3Texture::textureFromFile( texFile.c_str() );
 		if ( tex == NULL )
-			tex = CC3Texture::textureFromFile( (_directory + texFile).c_str() );
+			tex = CC3Texture::textureFromFile( (m_directory + texFile).c_str() );
 
 		tex->setHorizontalWrappingFunction( GLTextureWrapFromETextureWrap(pfxTex->nWrapS) );
 		tex->setVerticalWrappingFunction( GLTextureWrapFromETextureWrap(pfxTex->nWrapT) );

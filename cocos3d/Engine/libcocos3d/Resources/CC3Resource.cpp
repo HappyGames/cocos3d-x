@@ -33,7 +33,7 @@ NS_COCOS3D_BEGIN
 
 CC3Resource::CC3Resource()
 {
-	_directory = "";
+	m_directory = "";
 }
 
 CC3Resource::~CC3Resource()
@@ -43,20 +43,20 @@ CC3Resource::~CC3Resource()
 
 std::string CC3Resource::getDirectory()
 {
-	return _directory;
+	return m_directory;
 }
 
 void CC3Resource::setDirectory( const std::string& directory )
 {
-	_directory = directory;
+	m_directory = directory;
 }
 
 bool CC3Resource::loadFromFile( const std::string& filePath )
 {
-	if (_wasLoaded) 
+	if (m_wasLoaded) 
 	{
 		CC3_TRACE("[rez]CC3Resource[%s] has already been loaded.", filePath.c_str());
-		return _wasLoaded;
+		return m_wasLoaded;
 	}
 	
 	// Resolve an absolute path in either the application bundle resource
@@ -75,22 +75,22 @@ bool CC3Resource::loadFromFile( const std::string& filePath )
 	if ( m_sName.c_str() ) 
 		setName( resourceNameFromFilePath( absFilePath ) );
 
-	if ( _directory.empty() ) 
+	if ( m_directory.empty() ) 
 	{
 		std::string sDir = CC3String::getDirectory( absFilePath );
 		setDirectory( sDir );
 	}
 
-	_wasLoaded = processFile( absFilePath );	// Main subclass loading method
+	m_wasLoaded = processFile( absFilePath );	// Main subclass loading method
 	
-	if (!_wasLoaded)
+	if (!m_wasLoaded)
 	{
 		CC3_TRACE("[rez]Could not load resource file '%s'", absFilePath.c_str());
 	}
 
 	CC3_TRACE("");		// Empty line to separate from next logs
 	
-	return _wasLoaded;
+	return m_wasLoaded;
 }
 
 bool CC3Resource::processFile( const std::string& anAbsoluteFilePath )
@@ -108,9 +108,9 @@ bool CC3Resource::init()
 {
 	if ( super::init() )
 	{
-		_directory = "";
-		_isBigEndian = false;
-		_wasLoaded = false;
+		m_directory = "";
+		m_isBigEndian = false;
+		m_wasLoaded = false;
 
 		return true;
 	}
@@ -204,7 +204,7 @@ void CC3Resource::removeAllResources()
 	if ( _resourceCache )
 		_resourceCache->removeAllObjectsOfType( 0 );
 
-	CC_SAFE_RELEASE( _resourceCache );
+	CC_SAFE_RELEASE_NULL( _resourceCache );
 }
 
 bool CC3Resource::isPreloading()

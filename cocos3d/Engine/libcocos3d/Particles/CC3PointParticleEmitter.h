@@ -368,14 +368,14 @@ public:
 	static CC3PointParticleEmitter*	nodeWithName( const std::string& aName );
 
 protected:
-	CC3Vector					_globalCameraLocation;
-	CC3AttenuationCoefficients	_particleSizeAttenuation;
-	GLfloat						_particleSize;
-	GLfloat						_particleSizeMinimum;
-	GLfloat						_particleSizeMaximum;
-	bool						_shouldSmoothPoints : 1;
-	bool						_shouldNormalizeParticleSizesToDevice : 1;
-	bool						_areParticleNormalsDirty : 1;
+	CC3Vector					m_globalCameraLocation;
+	CC3AttenuationCoefficients	m_particleSizeAttenuation;
+	GLfloat						m_particleSize;
+	GLfloat						m_particleSizeMinimum;
+	GLfloat						m_particleSizeMaximum;
+	bool						m_shouldSmoothPoints : 1;
+	bool						m_shouldNormalizeParticleSizesToDevice : 1;
+	bool						m_areParticleNormalsDirty : 1;
 };
 
 NS_COCOS3D_END

@@ -437,12 +437,12 @@ public:
 	virtual void				setContentSize( const CCSize& contentSize );
 
 protected:
-	CC3Scene*					_cc3Scene;
-	CC3SceneDrawingSurfaceManager*	_surfaceManager;
-	CCArray*					_cc3GestureRecognizers;
-	std::string					_renderStreamGroupMarker;
-	bool						_shouldAlwaysUpdateViewport : 1;
-	bool						_shouldTrackViewSize : 1;
+	CC3Scene*					m_pScene;
+	CC3SceneDrawingSurfaceManager*	m_pSurfaceManager;
+	CCArray*					m_cc3GestureRecognizers;
+	std::string					m_renderStreamGroupMarker;
+	bool						m_shouldAlwaysUpdateViewport : 1;
+	bool						m_shouldTrackViewSize : 1;
 };
 
 

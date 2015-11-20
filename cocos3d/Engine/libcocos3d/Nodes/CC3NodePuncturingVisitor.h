@@ -64,10 +64,10 @@ public:
 	static CC3NodePuncture*		punctureOnNode( CC3Node* aNode, const CC3Ray& aRay );
 
 protected:
-	CC3Node*					_node;
-	CC3Vector					_punctureLocation;
-	CC3Vector					_globalPunctureLocation;
-	float						_sqGlobalPunctureDistance;
+	CC3Node*					m_pNode;
+	CC3Vector					m_punctureLocation;
+	CC3Vector					m_globalPunctureLocation;
+	float						m_sqGlobalPunctureDistance;
 };
 
 /**
@@ -268,10 +268,10 @@ public:
 	void						init();
 
 protected:
-	CCArray*					_nodePunctures;
-	CC3Ray						_ray;
-	bool						_shouldPunctureFromInside : 1;
-	bool						_shouldPunctureInvisibleNodes : 1;
+	CCArray*					m_nodePunctures;
+	CC3Ray						m_ray;
+	bool						m_shouldPunctureFromInside : 1;
+	bool						m_shouldPunctureInvisibleNodes : 1;
 };
 
 NS_COCOS3D_END

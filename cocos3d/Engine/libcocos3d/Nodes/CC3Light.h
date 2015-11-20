@@ -709,21 +709,21 @@ public:
 	static CC3Light*			nodeWithName( const std::string& name );
 
 protected:
-	CC3ShadowCastingVolume*		_shadowCastingVolume;
-	CC3CameraShadowVolume*		_cameraShadowVolume;
-	CC3StencilledShadowPainterNode* _stencilledShadowPainter;
-	CCArray*					_shadows;
-	ccColor4F					_ambientColor;
-	ccColor4F					_diffuseColor;
-	ccColor4F					_specularColor;
-	CC3AttenuationCoefficients	_attenuation;
-	GLfloat						_spotExponent;
-	GLfloat						_spotCutoffAngle;
-	GLfloat						_shadowIntensityFactor;
-	GLuint						_lightIndex;
-	bool						_isDirectionalOnly : 1;
-	bool						_shouldCopyLightIndex : 1;
-	bool						_shouldCastShadowsWhenInvisible : 1;
+	CC3ShadowCastingVolume*		m_shadowCastingVolume;
+	CC3CameraShadowVolume*		m_cameraShadowVolume;
+	CC3StencilledShadowPainterNode* m_stencilledShadowPainter;
+	CCArray*					m_shadows;
+	ccColor4F					m_ambientColor;
+	ccColor4F					m_diffuseColor;
+	ccColor4F					m_specularColor;
+	CC3AttenuationCoefficients	m_attenuation;
+	GLfloat						m_spotExponent;
+	GLfloat						m_spotCutoffAngle;
+	GLfloat						m_shadowIntensityFactor;
+	GLuint						m_lightIndex;
+	bool						m_isDirectionalOnly : 1;
+	bool						m_shouldCopyLightIndex : 1;
+	bool						m_shouldCastShadowsWhenInvisible : 1;
 };
 
 /**
@@ -812,7 +812,7 @@ public:
 	CC3Vector					getLightPosition();
 
 protected:
-	CC3Light*					_light;
+	CC3Light*					m_pLight;
 };
 
 /**
@@ -859,10 +859,10 @@ public:
 	CC3Plane*					getPlanes();
 
 protected:
-	CC3Plane					_planes[11];
-	CC3Vector					_vertices[9];
-	GLuint						_planeCount;
-	GLuint						_vertexCount;
+	CC3Plane					m_planes[11];
+	CC3Vector					m_vertices[9];
+	GLuint						m_planeCount;
+	GLuint						m_vertexCount;
 };
 
 /**
@@ -934,8 +934,8 @@ public:
 	GLuint						getVertexCount();
 
 protected:
-	CC3Plane					_planes[6];
-	CC3Vector					_vertices[5];
+	CC3Plane					m_planes[6];
+	CC3Vector					m_vertices[5];
 };
 
 NS_COCOS3D_END

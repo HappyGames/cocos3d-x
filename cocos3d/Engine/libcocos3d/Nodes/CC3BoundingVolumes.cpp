@@ -49,7 +49,7 @@ NS_COCOS3D_BEGIN
 
 CC3BoundingVolume::CC3BoundingVolume()
 {
-	_isDirty = false;
+	m_isDirty = false;
 }
 
 CC3BoundingVolume::~CC3BoundingVolume()
@@ -89,8 +89,8 @@ bool CC3BoundingVolume::init()
 	for (GLuint i = 0; i < vCnt; i++) 
 		vArray[i] = CC3Vector::kCC3VectorZero;
 
-	_isDirty = true;
-	_shouldIgnoreRayIntersection = false;
+	m_isDirty = true;
+	m_shouldIgnoreRayIntersection = false;
 	setShouldLogIntersections( false );			// Use setter
 	setShouldLogIntersectionMisses( false );	// Use setter
 
@@ -107,8 +107,8 @@ CC3BoundingVolume* CC3BoundingVolume::boundingVolume()
 
 void CC3BoundingVolume::populateFrom( CC3BoundingVolume* another )
 {
-	_isDirty = another->isDirty();
-	_shouldIgnoreRayIntersection = another->shouldIgnoreRayIntersection();
+	m_isDirty = another->isDirty();
+	m_shouldIgnoreRayIntersection = another->shouldIgnoreRayIntersection();
 	setShouldLogIntersections( another->shouldLogIntersections() );			// Use setter
 	setShouldLogIntersectionMisses( another->shouldLogIntersectionMisses() );	// Use setter
 
@@ -167,21 +167,21 @@ void CC3BoundingVolume::appendVerticesTo( std::string& desc )
 
 bool CC3BoundingVolume::isDirty()
 {
-	return _isDirty; 
+	return m_isDirty; 
 }
 
 void CC3BoundingVolume::markDirty()
 { 
-	_isDirty = true;
+	m_isDirty = true;
 }
 
 void CC3BoundingVolume::updateIfNeeded()
 {
-	if (_isDirty) 
+	if (m_isDirty) 
 	{
 		buildVolume();
 		buildPlanes();
-		_isDirty = false;
+		m_isDirty = false;
 	}
 }
 
@@ -262,7 +262,7 @@ bool CC3BoundingVolume::isRayBehindAllOtherPlanesAtPunctureOfPlane( const CC3Ray
  */
 bool CC3BoundingVolume::doesIntersectRay( const CC3Ray& aRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return false;
 	// MARK_TRACE_HERE
 	//CCAssert(getPlanes()!=NULL, "CC3BoundingVolume does not use planes. You must add planes or override method doesIntersectRay:");
@@ -282,12 +282,12 @@ bool CC3BoundingVolume::doesIntersectRay( const CC3Ray& aRay )
 
 bool CC3BoundingVolume::shouldIgnoreRayIntersection()
 {
-	return _shouldIgnoreRayIntersection;
+	return m_shouldIgnoreRayIntersection;
 }
 
 void CC3BoundingVolume::setShouldIgnoreRayIntersection( bool should )
 {
-	_shouldIgnoreRayIntersection = should;
+	m_shouldIgnoreRayIntersection = should;
 }
 
 bool CC3BoundingVolume::isInFrontOfPlane( const CC3Plane& aPlane )
@@ -411,22 +411,22 @@ CC3Vector CC3BoundingVolume::getGlobalLocationOfGlobalRayIntesection( const CC3R
 
 bool CC3BoundingVolume::shouldLogIntersections()
 { 
-	return _shouldLogIntersections; 
+	return m_shouldLogIntersections; 
 }
 
 void CC3BoundingVolume::setShouldLogIntersections( bool shouldLog )
 { 
-	_shouldLogIntersections = shouldLog; 
+	m_shouldLogIntersections = shouldLog; 
 }
 
 bool CC3BoundingVolume::shouldLogIntersectionMisses()
 { 
-	return _shouldLogIntersectionMisses; 
+	return m_shouldLogIntersectionMisses; 
 }
 
 void CC3BoundingVolume::setShouldLogIntersectionMisses( bool shouldLog )
 { 
-	_shouldLogIntersectionMisses = shouldLog; 
+	m_shouldLogIntersectionMisses = shouldLog; 
 }
 
 /**
@@ -447,24 +447,24 @@ void CC3BoundingVolume::logIntersection( bool intersects, CC3BoundingVolume* aBo
 
 CC3NodeBoundingVolume::CC3NodeBoundingVolume()
 {
-	_node = NULL;
+	m_pNode = NULL;
 }
 
 CC3NodeBoundingVolume::~CC3NodeBoundingVolume()
 {
-	_node = NULL;
+	m_pNode = NULL;
 }
 
 CC3Node* CC3NodeBoundingVolume::getNode()
 { 
-	return _node; 
+	return m_pNode; 
 }
 
 void CC3NodeBoundingVolume::setNode( CC3Node* node )
 {
-	CCAssert( !_node || !node, "%CC3NodeBoundingVolume may have only one primary node. If you want to change the"
+	CCAssert( !m_pNode || !node, "%CC3NodeBoundingVolume may have only one primary node. If you want to change the"
 			  " primary node, first set this property to nil, then set the new node.");
-	_node = node;			// weak reference
+	m_pNode = node;			// weak reference
 
 	// Update whether the BV should be built from the mesh
 	setShouldBuildFromMesh( shouldBuildFromMesh() );
@@ -472,21 +472,21 @@ void CC3NodeBoundingVolume::setNode( CC3Node* node )
 
 bool CC3NodeBoundingVolume::shouldBuildFromMesh()
 { 
-	return _shouldBuildFromMesh; 
+	return m_shouldBuildFromMesh; 
 }
 
 void CC3NodeBoundingVolume::setShouldBuildFromMesh( bool build )
 {
 #pragma _NOTE_TODO( "Bad behavior here!!!" )
-	_shouldBuildFromMesh = build && ( (_node == NULL) || dynamic_cast<CC3MeshNode*>(_node) != NULL );
-	if (_shouldBuildFromMesh)
+	m_shouldBuildFromMesh = build && ( (m_pNode == NULL) || dynamic_cast<CC3MeshNode*>(m_pNode) != NULL );
+	if (m_shouldBuildFromMesh)
 		markDirty();
 }
 
 CC3Vector* CC3NodeBoundingVolume::getVertices()
 {
 	updateIfNeeded();
-	return &_globalCenterOfGeometry;
+	return &m_globalCenterOfGeometry;
 }
 
 GLuint CC3NodeBoundingVolume::getVertexCount() 
@@ -497,20 +497,20 @@ GLuint CC3NodeBoundingVolume::getVertexCount()
 CC3Vector CC3NodeBoundingVolume::getCenterOfGeometry()
 {
 	updateIfNeeded();
-	return _centerOfGeometry;
+	return m_centerOfGeometry;
 }
 
 CC3Vector CC3NodeBoundingVolume::getGlobalCenterOfGeometry()
 {
 	updateIfNeeded();
-	return _globalCenterOfGeometry;
+	return m_globalCenterOfGeometry;
 }
 
 void CC3NodeBoundingVolume::setCenterOfGeometry( const CC3Vector& aLocation )
 {
-	_centerOfGeometry = aLocation;
-	_isDirty = false;
-	_shouldBuildFromMesh = false;
+	m_centerOfGeometry = aLocation;
+	m_isDirty = false;
+	m_shouldBuildFromMesh = false;
 	markTransformDirty();
 }
 
@@ -523,7 +523,7 @@ CC3VertexLocations* CC3NodeBoundingVolume::getVertexLocations()
 #pragma _NOTE_TODO( "class RTTI mesh node" )
 	/*CCAssert(_node->getNodeType() == KCC3MeshNode, "%CC3NodeBoundingVolume can only be assigned to a CC3MeshNode instance.");*/
 
-	CC3Mesh* pMesh = ((CC3MeshNode*)_node)->getMesh();
+	CC3Mesh* pMesh = ((CC3MeshNode*)m_pNode)->getMesh();
 	if ( pMesh )
 		return pMesh->getVertexLocations();
 
@@ -534,13 +534,13 @@ bool CC3NodeBoundingVolume::init()
 {
 	if ( CC3BoundingVolume::init() )
 	{
-		_node = NULL;
-		_shouldBuildFromMesh = true;
-		_centerOfGeometry = CC3Vector::kCC3VectorZero;
-		_globalCenterOfGeometry = CC3Vector::kCC3VectorZero;
-		_shouldMaximize = false;
-		_isTransformDirty = true;
-		_shouldDraw = false;
+		m_pNode = NULL;
+		m_shouldBuildFromMesh = true;
+		m_centerOfGeometry = CC3Vector::kCC3VectorZero;
+		m_globalCenterOfGeometry = CC3Vector::kCC3VectorZero;
+		m_shouldMaximize = false;
+		m_isTransformDirty = true;
+		m_shouldDraw = false;
 	}
 	return true;
 }
@@ -552,12 +552,12 @@ void CC3NodeBoundingVolume::populateFrom( CC3NodeBoundingVolume* another )
 	// Node property is not copied and must be set externally,
 	// because a node can only have one bounding volume.
 
-	_shouldBuildFromMesh = another->shouldBuildFromMesh();
-	_centerOfGeometry = another->getCenterOfGeometry();
-	_globalCenterOfGeometry = another->getGlobalCenterOfGeometry();
-	_shouldMaximize = another->shouldMaximize();
-	_isTransformDirty = another->isTransformDirty();
-	_shouldDraw = another->shouldDraw();
+	m_shouldBuildFromMesh = another->shouldBuildFromMesh();
+	m_centerOfGeometry = another->getCenterOfGeometry();
+	m_globalCenterOfGeometry = another->getGlobalCenterOfGeometry();
+	m_shouldMaximize = another->shouldMaximize();
+	m_isTransformDirty = another->isTransformDirty();
+	m_shouldDraw = another->shouldDraw();
 }
 
 CCObject* CC3NodeBoundingVolume::copyWithZone( CCZone* pZone )
@@ -576,12 +576,12 @@ void CC3NodeBoundingVolume::scaleBy( GLfloat scale )
 
 bool CC3NodeBoundingVolume::isTransformDirty()
 { 
-	return _isTransformDirty; 
+	return m_isTransformDirty; 
 }
 
 void CC3NodeBoundingVolume::markTransformDirty()
 { 
-	_isTransformDirty = true; 
+	m_isTransformDirty = true; 
 }
 
 /**
@@ -591,27 +591,27 @@ void CC3NodeBoundingVolume::markTransformDirty()
  */
 void CC3NodeBoundingVolume::updateIfNeeded()
 {
-	if (_isDirty) 
+	if (m_isDirty) 
 	{
 		buildVolume();
-		_isDirty = false;
+		m_isDirty = false;
 		updateDisplayNode();
 		markTransformDirty();
 	}
 
-	if (_node && _isTransformDirty) 
+	if (m_pNode && m_isTransformDirty) 
 	{
 		transformVolume();
 		buildPlanes();
-		_isTransformDirty = false;
+		m_isTransformDirty = false;
 	}
 }
 
 void CC3NodeBoundingVolume::transformVolume()
 {
-	_globalCenterOfGeometry = _centerOfGeometry.equals( CC3Vector::kCC3VectorZero )
-								? _node->getGlobalLocation()
-								: _node->getGlobalTransformMatrix()->transformLocation( _centerOfGeometry );
+	m_globalCenterOfGeometry = m_centerOfGeometry.equals( CC3Vector::kCC3VectorZero )
+								? m_pNode->getGlobalLocation()
+								: m_pNode->getGlobalTransformMatrix()->transformLocation( m_centerOfGeometry );
 }
 
 CC3Vector CC3NodeBoundingVolume::getLocationOfRayIntesection( const CC3Ray& localRay )
@@ -622,12 +622,12 @@ CC3Vector CC3NodeBoundingVolume::getLocationOfRayIntesection( const CC3Ray& loca
 
 CC3Vector CC3NodeBoundingVolume::getGlobalLocationOfGlobalRayIntesection( const CC3Ray& aRay )
 {
-	if ( !_node || _shouldIgnoreRayIntersection ) 
+	if ( !m_pNode || m_shouldIgnoreRayIntersection ) 
 		return CC3Vector::kCC3VectorNull;
 
-	CC3Ray localRay = _node->getGlobalTransformMatrixInverted()->transformRay( aRay );
+	CC3Ray localRay = m_pNode->getGlobalTransformMatrixInverted()->transformRay( aRay );
 	CC3Vector puncture = getLocationOfRayIntesection( localRay );
-	return puncture.isNull() ? puncture : _node->getGlobalTransformMatrix()->transformLocation( puncture );
+	return puncture.isNull() ? puncture : m_pNode->getGlobalTransformMatrix()->transformLocation( puncture );
 }
 
 /**
@@ -643,7 +643,7 @@ std::string CC3NodeBoundingVolume::displayNodeNameSuffix()
 /** The name to use when creating or retrieving the wireframe child node of this node. */
 std::string CC3NodeBoundingVolume::displayNodeName()
 {
-	return CC3String::stringWithFormat ( (char*)"%s-%s", _node->getName().c_str(), displayNodeNameSuffix().c_str() );
+	return CC3String::stringWithFormat ( (char*)"%s-%s", m_pNode->getName().c_str(), displayNodeNameSuffix().c_str() );
 }
 
 /**
@@ -653,7 +653,7 @@ std::string CC3NodeBoundingVolume::displayNodeName()
  */
 CC3BoundingVolumeDisplayNode* CC3NodeBoundingVolume::displayNode()
 {
-	return (CC3BoundingVolumeDisplayNode*)_node->getNodeNamed( displayNodeName().c_str() );
+	return (CC3BoundingVolumeDisplayNode*)m_pNode->getNodeNamed( displayNodeName().c_str() );
 }
 
 /** The color used to display the bounding volume. */
@@ -685,30 +685,30 @@ void CC3NodeBoundingVolume::populateDisplayNode()
  */
 void CC3NodeBoundingVolume::updateDisplayNode()
 { 
-	if (_shouldDraw) 
+	if (m_shouldDraw) 
 		populateDisplayNode(); 
 }
 
 bool CC3NodeBoundingVolume::shouldDraw()
 { 
-	return _shouldDraw; 
+	return m_shouldDraw; 
 }
 
 void CC3NodeBoundingVolume::setShouldDraw( bool shdDraw )
 {
-	_shouldDraw = shdDraw;
+	m_shouldDraw = shdDraw;
 	
 	// Fetch the display node.
 	CC3BoundingVolumeDisplayNode* dn = displayNode();
 	
 	// If the display node exists, but should not, remove it
-	if (dn && !_shouldDraw) 
+	if (dn && !m_shouldDraw) 
 		dn->remove();
 	
 	// If there is no display node, but there should be, add it by creating a
 	// CC3BoundingVolumeDisplayNode of the correct shape from the properties of
 	// this bounding volume, and add it as a child of this bounding volume's node.
-	if(!dn && _shouldDraw) 
+	if(!dn && m_shouldDraw) 
 	{
 		dn = CC3BoundingVolumeDisplayNode::nodeWithName( displayNodeName().c_str() );
 		dn->setMaterial( CC3Material::shiny() );
@@ -717,33 +717,33 @@ void CC3NodeBoundingVolume::setShouldDraw( bool shdDraw )
 
 		// Set drawing order and decal properties to minimize Z-fighting between the
 		// bounding volume display and the node which the bounding volume surrounds.
-		dn->setZOrder( _node->getZOrder() - 1 );
+		dn->setZOrder( m_pNode->getZOrder() - 1 );
 		dn->setDecalOffsetFactor( -5.0f );
 		dn->setDecalOffsetUnits( -5.0f );
 
 		dn->setShouldDisableDepthMask( true );	// Don't update depth mask, to allow later...
 											// ..overlapping transparencies to all be drawn
-		_node->addChild( dn );
+		m_pNode->addChild( dn );
 		populateDisplayNode();			// Populate with the right shape
 	}
 }
 
 void CC3NodeBoundingVolume::setShouldMaximize( bool should )
 {
-	_shouldMaximize = should;
+	m_shouldMaximize = should;
 }
 
 bool CC3NodeBoundingVolume::shouldMaximize()
 {
-	return _shouldMaximize;
+	return m_shouldMaximize;
 }
 
 void CC3NodeCenterOfGeometryBoundingVolume::buildVolume()
 {
-	if ( !(_node && _shouldBuildFromMesh) ) 
+	if ( !(m_pNode && m_shouldBuildFromMesh) ) 
 		return;
 	
-	_centerOfGeometry = getVertexLocations()->getCenterOfGeometry();
+	m_centerOfGeometry = getVertexLocations()->getCenterOfGeometry();
 }
 
 /** Double-dispatches to the other bounding volume as a single point location. */
@@ -761,7 +761,7 @@ bool CC3NodeCenterOfGeometryBoundingVolume::doesIntersectLocation( const CC3Vect
 
 bool CC3NodeCenterOfGeometryBoundingVolume::doesIntersectRay( const CC3Ray& aRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return false;
 
 	return aRay.passes( getGlobalCenterOfGeometry() );
@@ -796,7 +796,7 @@ bool CC3NodeCenterOfGeometryBoundingVolume::doesIntersectConvexHullOf( GLuint nu
 
 CC3Vector CC3NodeCenterOfGeometryBoundingVolume::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return CC3Vector::kCC3VectorNull;
 
 	CC3Vector cog = getCenterOfGeometry();
@@ -823,8 +823,8 @@ void CC3NodeCenterOfGeometryBoundingVolume::setShouldDraw( bool shdDraw )
 
 CC3NodeSphericalBoundingVolume::CC3NodeSphericalBoundingVolume()
 {
-	_radius = 0.f;
-	_globalRadius = 0.f;
+	m_radius = 0.f;
+	m_globalRadius = 0.f;
 }
 
 CC3NodeSphericalBoundingVolume::~CC3NodeSphericalBoundingVolume()
@@ -838,26 +838,26 @@ CC3NodeSphericalBoundingVolume::~CC3NodeSphericalBoundingVolume()
  */
 void CC3NodeSphericalBoundingVolume::buildVolume()
 {
-	if ( !(_node && _shouldBuildFromMesh) ) 
+	if ( !(m_pNode && m_shouldBuildFromMesh) ) 
 		return;
 	
 	CC3VertexLocations* vtxLocs = getVertexLocations();
 	if ( vtxLocs )
 	{
 		CC3Vector newCOG = vtxLocs->getCenterOfGeometry();
-		GLfloat newRadius = vtxLocs->getRadius() + _node->getBoundingVolumePadding();
+		GLfloat newRadius = vtxLocs->getRadius() + m_pNode->getBoundingVolumePadding();
 
-		if (_shouldMaximize) 
+		if (m_shouldMaximize) 
 		{
 			CC3Sphere unionSphere = CC3SphereUnion(CC3SphereMake(newCOG, newRadius),
-				CC3SphereMake(_centerOfGeometry, _radius));
-			_centerOfGeometry = unionSphere.center;
-			_radius = unionSphere.radius;
+				CC3SphereMake(m_centerOfGeometry, m_radius));
+			m_centerOfGeometry = unionSphere.center;
+			m_radius = unionSphere.radius;
 		} 
 		else
 		{
-			_centerOfGeometry = newCOG;
-			_radius = newRadius;
+			m_centerOfGeometry = newCOG;
+			m_radius = newRadius;
 		}
 	}
 }
@@ -865,21 +865,21 @@ void CC3NodeSphericalBoundingVolume::buildVolume()
 GLfloat CC3NodeSphericalBoundingVolume::getRadius()
 {
 	updateIfNeeded();
-	return _radius;
+	return m_radius;
 }
 
 void CC3NodeSphericalBoundingVolume::setRadius( GLfloat aRadius )
 {
-	_radius = aRadius;
-	_isDirty = false;
-	_shouldBuildFromMesh = false;
+	m_radius = aRadius;
+	m_isDirty = false;
+	m_shouldBuildFromMesh = false;
 	markTransformDirty();
 }
 
 GLfloat CC3NodeSphericalBoundingVolume::getGlobalRadius()
 {
 	updateIfNeeded();
-	return _globalRadius;
+	return m_globalRadius;
 }
 
 void CC3NodeSphericalBoundingVolume::scaleBy( GLfloat scale )
@@ -902,8 +902,8 @@ void CC3NodeSphericalBoundingVolume::populateFrom( CC3NodeSphericalBoundingVolum
 {
 	super::populateFrom( another );
 
-	_radius = another->getRadius();
-	_globalRadius = another->getGlobalRadius();
+	m_radius = another->getRadius();
+	m_globalRadius = another->getGlobalRadius();
 }
 
 CCObject* CC3NodeSphericalBoundingVolume::copyWithZone( CCZone* pZone )
@@ -930,8 +930,8 @@ void CC3NodeSphericalBoundingVolume::transformVolume()
 	// Expand the radius by the global scale of the node. In case the node's global scale is not
 	// uniform, use the largest of the three scale axes to ensure the scaled object is contained
 	// within the sphere, and ensure that the radius is positive even if scale is negative.
-	CC3Vector ngs = _node->getGlobalScale();
-	_globalRadius = _radius * fabs(MAX(MAX(ngs.x, ngs.y), ngs.z));
+	CC3Vector ngs = m_pNode->getGlobalScale();
+	m_globalRadius = m_radius * fabs(MAX(MAX(ngs.x, ngs.y), ngs.z));
 //	CC3_POP_NOSHADOW
 }
 
@@ -950,7 +950,7 @@ bool CC3NodeSphericalBoundingVolume::doesIntersectLocation( const CC3Vector& aLo
 
 bool CC3NodeSphericalBoundingVolume::doesIntersectRay( const CC3Ray& aRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return false;
 
 	return CC3DoesRayIntersectSphere(aRay, getGlobalSphere());
@@ -990,7 +990,7 @@ bool CC3NodeSphericalBoundingVolume::doesIntersectConvexHullOf( GLuint numOtherP
 
 CC3Vector CC3NodeSphericalBoundingVolume::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return CC3Vector::kCC3VectorNull;
 
 	return CC3RayIntersectionWithSphere(localRay, getSphere());
@@ -1022,7 +1022,7 @@ bool CC3NodeSphericalBoundingVolume::init()
 {
 	if ( super::init() ) 
 	{
-		_radius = 0.0f;
+		m_radius = 0.0f;
 		return true;
 	}
 
@@ -1033,9 +1033,9 @@ bool CC3NodeSphericalBoundingVolume::initFromSphere( const CC3Sphere& sphere )
 {
 	if ( super::init() ) 
 	{
-		_centerOfGeometry = sphere.center;
-		_radius = sphere.radius;
-		_shouldBuildFromMesh = false;		// We want a fixed volume
+		m_centerOfGeometry = sphere.center;
+		m_radius = sphere.radius;
+		m_shouldBuildFromMesh = false;		// We want a fixed volume
 
 		return true;
 	}
@@ -1073,25 +1073,25 @@ CC3NodeBoxBoundingVolume::~CC3NodeBoxBoundingVolume()
 
 void CC3NodeBoxBoundingVolume::buildVolume()
 {
-	if ( !(_node && _shouldBuildFromMesh) ) 
+	if ( !(m_pNode && m_shouldBuildFromMesh) ) 
 		return;
 
 	CC3Box newBB = ((CC3MeshNode*)getNode())->getLocalContentBoundingBox();	// Includes possible padding
-	_boundingBox = _shouldMaximize ? newBB.boxUnion(_boundingBox) : newBB;
-	_centerOfGeometry = _boundingBox.getCenter();
+	m_boundingBox = m_shouldMaximize ? newBB.boxUnion(m_boundingBox) : newBB;
+	m_centerOfGeometry = m_boundingBox.getCenter();
 }
 
 CC3Box CC3NodeBoxBoundingVolume::getBoundingBox()
 {
 	updateIfNeeded();
-	return _boundingBox;
+	return m_boundingBox;
 }
 
 void CC3NodeBoxBoundingVolume::setBoundingBox( const CC3Box& aBoundingBox )
 {
-	_boundingBox = aBoundingBox;
-	_isDirty = false;
-	_shouldBuildFromMesh = false;
+	m_boundingBox = aBoundingBox;
+	m_isDirty = false;
+	m_shouldBuildFromMesh = false;
 	
 	markTransformDirty();
 }
@@ -1105,7 +1105,7 @@ void CC3NodeBoxBoundingVolume::scaleBy( GLfloat scale )
 CC3Plane* CC3NodeBoxBoundingVolume::getPlanes()
 {
 	updateIfNeeded();
-	return _planes;
+	return m_planes;
 }
 
 GLuint CC3NodeBoxBoundingVolume::getPlaneCount()
@@ -1116,7 +1116,7 @@ GLuint CC3NodeBoxBoundingVolume::getPlaneCount()
 CC3Vector* CC3NodeBoxBoundingVolume::getVertices()
 {
 	updateIfNeeded();
-	return _vertices;
+	return m_vertices;
 }
 
 GLuint CC3NodeBoxBoundingVolume::getVertexCount()
@@ -1128,7 +1128,7 @@ void CC3NodeBoxBoundingVolume::populateFrom( CC3NodeBoxBoundingVolume* another )
 {
 	super::populateFrom( another );
 
-	_boundingBox = another->getBoundingBox();
+	m_boundingBox = another->getBoundingBox();
 }
 
 CCObject* CC3NodeBoxBoundingVolume::copyWithZone( CCZone* pZone )
@@ -1144,21 +1144,21 @@ void CC3NodeBoxBoundingVolume::transformVolume()
 {
 	super::transformVolume();
 
-	CC3Matrix* tMtx = _node->getGlobalTransformMatrix();
+	CC3Matrix* tMtx = m_pNode->getGlobalTransformMatrix();
 
 	// Get the corners of the local bounding box
-	CC3Vector bbMin = _boundingBox.minimum;
-	CC3Vector bbMax = _boundingBox.maximum;
+	CC3Vector bbMin = m_boundingBox.minimum;
+	CC3Vector bbMax = m_boundingBox.maximum;
 	
 	// Construct all 8 corner vertices of the local bounding box and transform each to global coordinates
-	_vertices[0] = tMtx->transformLocation( cc3v(bbMin.x, bbMin.y, bbMin.z) );
-	_vertices[1] = tMtx->transformLocation( cc3v(bbMin.x, bbMin.y, bbMax.z) );
-	_vertices[2] = tMtx->transformLocation( cc3v(bbMin.x, bbMax.y, bbMin.z) );
-	_vertices[3] = tMtx->transformLocation( cc3v(bbMin.x, bbMax.y, bbMax.z) );
-	_vertices[4] = tMtx->transformLocation( cc3v(bbMax.x, bbMin.y, bbMin.z) );
-	_vertices[5] = tMtx->transformLocation( cc3v(bbMax.x, bbMin.y, bbMax.z) );
-	_vertices[6] = tMtx->transformLocation( cc3v(bbMax.x, bbMax.y, bbMin.z) );
-	_vertices[7] = tMtx->transformLocation( cc3v(bbMax.x, bbMax.y, bbMax.z) );
+	m_vertices[0] = tMtx->transformLocation( cc3v(bbMin.x, bbMin.y, bbMin.z) );
+	m_vertices[1] = tMtx->transformLocation( cc3v(bbMin.x, bbMin.y, bbMax.z) );
+	m_vertices[2] = tMtx->transformLocation( cc3v(bbMin.x, bbMax.y, bbMin.z) );
+	m_vertices[3] = tMtx->transformLocation( cc3v(bbMin.x, bbMax.y, bbMax.z) );
+	m_vertices[4] = tMtx->transformLocation( cc3v(bbMax.x, bbMin.y, bbMin.z) );
+	m_vertices[5] = tMtx->transformLocation( cc3v(bbMax.x, bbMin.y, bbMax.z) );
+	m_vertices[6] = tMtx->transformLocation( cc3v(bbMax.x, bbMax.y, bbMin.z) );
+	m_vertices[7] = tMtx->transformLocation( cc3v(bbMax.x, bbMax.y, bbMax.z) );
 }
 
 /**
@@ -1169,33 +1169,33 @@ void CC3NodeBoxBoundingVolume::transformVolume()
 void CC3NodeBoxBoundingVolume::buildPlanes()
 {
 	CC3Vector normal;
-	CC3Matrix* tMtx = _node->getGlobalTransformMatrix();
-	CC3Vector bbMin = _vertices[0];
-	CC3Vector bbMax = _vertices[7];
+	CC3Matrix* tMtx = m_pNode->getGlobalTransformMatrix();
+	CC3Vector bbMin = m_vertices[0];
+	CC3Vector bbMax = m_vertices[7];
 	
 	// Front plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitZPositive ).normalize();
-    _planes[0] = CC3Plane::plane(normal, bbMax);
+    m_planes[0] = CC3Plane::plane(normal, bbMax);
 	
 	// Back plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitZNegative ).normalize();
-	_planes[1] = CC3Plane::plane(normal, bbMin);
+	m_planes[1] = CC3Plane::plane(normal, bbMin);
 	
 	// Right plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitXPositive ).normalize();
-	_planes[2] = CC3Plane::plane(normal, bbMax);
+	m_planes[2] = CC3Plane::plane(normal, bbMax);
 	
 	// Left plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitXNegative ).normalize();
-	_planes[3] = CC3Plane::plane(normal, bbMin);
+	m_planes[3] = CC3Plane::plane(normal, bbMin);
 	
 	// Top plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitYPositive ).normalize();
-	_planes[4] = CC3Plane::plane(normal, bbMax);
+	m_planes[4] = CC3Plane::plane(normal, bbMax);
 	
 	// Bottom plane
 	normal = tMtx->transformDirection( CC3Vector::kCC3VectorUnitYNegative ).normalize();
-	_planes[5] = CC3Plane::plane(normal, bbMin);
+	m_planes[5] = CC3Plane::plane(normal, bbMin);
 }
 
 std::string CC3NodeBoxBoundingVolume::fullDescription()
@@ -1205,7 +1205,7 @@ std::string CC3NodeBoxBoundingVolume::fullDescription()
 
 CC3Vector CC3NodeBoxBoundingVolume::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return CC3Vector::kCC3VectorNull;
 
 	return CC3RayIntersectionWithBox(localRay, getBoundingBox());
@@ -1236,7 +1236,7 @@ void CC3NodeBoxBoundingVolume::populateDisplayNode()
 bool  CC3NodeBoxBoundingVolume::init()
 {
 	if ( super::init() ) {
-		_boundingBox = CC3Box::kCC3BoxZero;
+		m_boundingBox = CC3Box::kCC3BoxZero;
 		return true;
 	}
 
@@ -1247,9 +1247,9 @@ bool CC3NodeBoxBoundingVolume::initFromBox( const CC3Box& box )
 {
 	if ( super::init() )
 	{
-		_centerOfGeometry = box.getCenter();
-		_boundingBox = box;
-		_shouldBuildFromMesh = false;		// We want a fixed volume
+		m_centerOfGeometry = box.getCenter();
+		m_boundingBox = box;
+		m_shouldBuildFromMesh = false;		// We want a fixed volume
 		return true;
 	}
 
@@ -1281,15 +1281,15 @@ CC3NodeTighteningBoundingVolumeSequence::CC3NodeTighteningBoundingVolumeSequence
 
 CC3NodeTighteningBoundingVolumeSequence::~CC3NodeTighteningBoundingVolumeSequence() 
 {
-	CC_SAFE_RELEASE( _boundingVolumes );
+	CC_SAFE_RELEASE( m_boundingVolumes );
 }
 
 void CC3NodeTighteningBoundingVolumeSequence::setShouldMaximize( bool shouldMax )
 {
-	_shouldMaximize = shouldMax;
+	m_shouldMaximize = shouldMax;
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1301,7 +1301,7 @@ void CC3NodeTighteningBoundingVolumeSequence::setNode( CC3Node* aNode )
 {
 	super::setNode( aNode );
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1315,7 +1315,7 @@ void CC3NodeTighteningBoundingVolumeSequence::setCenterOfGeometry( const CC3Vect
 	super::setCenterOfGeometry( aLocation );
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1328,7 +1328,7 @@ void CC3NodeTighteningBoundingVolumeSequence::scaleBy( GLfloat scale )
 	super::scaleBy( scale );
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1340,8 +1340,8 @@ bool CC3NodeTighteningBoundingVolumeSequence::init()
 {
 	if ( super::init() ) 
 	{
-		_boundingVolumes = CCArray::create();	// retained
-		_boundingVolumes->retain();
+		m_boundingVolumes = CCArray::create();	// retained
+		m_boundingVolumes->retain();
 		return true;
 	}
 	return false;
@@ -1351,11 +1351,11 @@ void CC3NodeTighteningBoundingVolumeSequence::populateFrom( CC3NodeTighteningBou
 {
 	super::populateFrom( another );
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CCObject* pCopy = pObj->copy();
 		pCopy->autorelease(); // retained through collection
-		_boundingVolumes->addObject( pCopy );
+		m_boundingVolumes->addObject( pCopy );
 	}
 }
 
@@ -1370,8 +1370,8 @@ CCObject* CC3NodeTighteningBoundingVolumeSequence::copyWithZone( CCZone* pZone )
 
 void CC3NodeTighteningBoundingVolumeSequence::addBoundingVolume( CC3NodeBoundingVolume* aBoundingVolume )
 {
-	_boundingVolumes->addObject( aBoundingVolume );
-	aBoundingVolume->setNode( _node );
+	m_boundingVolumes->addObject( aBoundingVolume );
+	aBoundingVolume->setNode( m_pNode );
 }
 
 void CC3NodeTighteningBoundingVolumeSequence::markDirty()
@@ -1379,7 +1379,7 @@ void CC3NodeTighteningBoundingVolumeSequence::markDirty()
 	super::markDirty();
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1392,7 +1392,7 @@ void CC3NodeTighteningBoundingVolumeSequence::markTransformDirty()
 	super::markTransformDirty();
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1404,13 +1404,13 @@ void CC3NodeTighteningBoundingVolumeSequence::markTransformDirty()
 void CC3NodeTighteningBoundingVolumeSequence::buildVolume()
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
 		{
 			pVolume->updateIfNeeded();
-			_centerOfGeometry = pVolume->getCenterOfGeometry();
+			m_centerOfGeometry = pVolume->getCenterOfGeometry();
 		}
 	}
 }
@@ -1419,7 +1419,7 @@ void CC3NodeTighteningBoundingVolumeSequence::transformVolume()
 {
 	super::transformVolume();
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1439,7 +1439,7 @@ bool CC3NodeTighteningBoundingVolumeSequence::doesIntersect( CC3BoundingVolume* 
 	bool intersects = true;
 	
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1455,7 +1455,7 @@ bool CC3NodeTighteningBoundingVolumeSequence::doesIntersect( CC3BoundingVolume* 
 bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectLocation( const CC3Vector& aLocation )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1470,11 +1470,11 @@ bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectLocation( const CC3Ve
 
 bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectRay( const CC3Ray& aRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return false;
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1490,7 +1490,7 @@ bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectRay( const CC3Ray& aR
 bool CC3NodeTighteningBoundingVolumeSequence::isInFrontOfPlane( const CC3Plane& aPlane )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1506,7 +1506,7 @@ bool CC3NodeTighteningBoundingVolumeSequence::isInFrontOfPlane( const CC3Plane& 
 bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectSphere( const CC3Sphere& aSphere, CC3BoundingVolume* otherBoundingVolume )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1522,7 +1522,7 @@ bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectSphere( const CC3Sphe
 bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectConvexHullOf( GLuint numOtherPlanes, CC3Plane* otherPlanes, CC3BoundingVolume* otherBoundingVolume )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1538,17 +1538,17 @@ bool CC3NodeTighteningBoundingVolumeSequence::doesIntersectConvexHullOf( GLuint 
 /** Returns the location of the intersection on the tightest child BV. */
 CC3Vector CC3NodeTighteningBoundingVolumeSequence::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return CC3Vector::kCC3VectorNull;
 
-	CC3NodeBoundingVolume* bv = (CC3NodeBoundingVolume*)_boundingVolumes->lastObject();
+	CC3NodeBoundingVolume* bv = (CC3NodeBoundingVolume*)m_boundingVolumes->lastObject();
 	return bv ? bv->getLocationOfRayIntesection( localRay ) : CC3Vector::kCC3VectorNull;
 }
 
 void CC3NodeTighteningBoundingVolumeSequence::setShouldDraw( bool shouldDraw )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _boundingVolumes, pObj )
+	CCARRAY_FOREACH( m_boundingVolumes, pObj )
 	{
 		CC3NodeBoundingVolume* pVolume = (CC3NodeBoundingVolume*)pObj;
 		if ( pVolume )
@@ -1565,58 +1565,58 @@ CC3NodeSphereThenBoxBoundingVolume::CC3NodeSphereThenBoxBoundingVolume()
 
 CC3NodeSphereThenBoxBoundingVolume::~CC3NodeSphereThenBoxBoundingVolume()
 {
-	_sphericalBoundingVolume->release();
-	_boxBoundingVolume->release();
+	m_sphericalBoundingVolume->release();
+	m_boxBoundingVolume->release();
 }
 
 CC3NodeSphericalBoundingVolume* CC3NodeSphereThenBoxBoundingVolume::getSphericalBoundingVolume()
 {
-	return _sphericalBoundingVolume;
+	return m_sphericalBoundingVolume;
 }
 
 CC3NodeBoxBoundingVolume* CC3NodeSphereThenBoxBoundingVolume::getBoxBoundingVolume()
 {
-	return _boxBoundingVolume;
+	return m_boxBoundingVolume;
 }
 
 void CC3NodeSphereThenBoxBoundingVolume::setShouldMaximize( bool shouldMax )
 {
 	super::setShouldMaximize( shouldMax );
-	_sphericalBoundingVolume->setShouldMaximize( shouldMax );
-	_boxBoundingVolume->setShouldMaximize( shouldMax );
+	m_sphericalBoundingVolume->setShouldMaximize( shouldMax );
+	m_boxBoundingVolume->setShouldMaximize( shouldMax );
 }
 
 void CC3NodeSphereThenBoxBoundingVolume::setNode( CC3Node* aNode )
 {
 	super::setNode( aNode );
-	_sphericalBoundingVolume->setNode( aNode );
-	_boxBoundingVolume->setNode( aNode );
+	m_sphericalBoundingVolume->setNode( aNode );
+	m_boxBoundingVolume->setNode( aNode );
 }
 
 /** Overridden to keep the COG consistent for all BV's.  */
 void CC3NodeSphereThenBoxBoundingVolume::setCenterOfGeometry( const CC3Vector& aLocation )
 {
 	super::setCenterOfGeometry( aLocation );
-	_sphericalBoundingVolume->setCenterOfGeometry( aLocation );
-	_boxBoundingVolume->setCenterOfGeometry( aLocation );
+	m_sphericalBoundingVolume->setCenterOfGeometry( aLocation );
+	m_boxBoundingVolume->setCenterOfGeometry( aLocation );
 }
 
 void CC3NodeSphereThenBoxBoundingVolume::scaleBy( GLfloat scale )
 {
 	super::scaleBy( scale );
-	_sphericalBoundingVolume->scaleBy( scale );
-	_boxBoundingVolume->scaleBy( scale );
+	m_sphericalBoundingVolume->scaleBy( scale );
+	m_boxBoundingVolume->scaleBy( scale );
 }
 
 void CC3NodeSphereThenBoxBoundingVolume::populateFrom( CC3NodeSphereThenBoxBoundingVolume* another )
 {
 	super::populateFrom( another );
 	
-	CC_SAFE_RELEASE(_sphericalBoundingVolume);
-	_sphericalBoundingVolume = (CC3NodeSphericalBoundingVolume*)another->getSphericalBoundingVolume()->copy();	// retained
+	CC_SAFE_RELEASE(m_sphericalBoundingVolume);
+	m_sphericalBoundingVolume = (CC3NodeSphericalBoundingVolume*)another->getSphericalBoundingVolume()->copy();	// retained
 
-	CC_SAFE_RELEASE(_boxBoundingVolume);
-	_boxBoundingVolume = (CC3NodeBoxBoundingVolume*)another->getBoxBoundingVolume()->copy();				// retained
+	CC_SAFE_RELEASE(m_boxBoundingVolume);
+	m_boxBoundingVolume = (CC3NodeBoxBoundingVolume*)another->getBoxBoundingVolume()->copy();				// retained
 }
 
 CCObject* CC3NodeSphereThenBoxBoundingVolume::copyWithZone( CCZone* pZone )
@@ -1631,44 +1631,44 @@ CCObject* CC3NodeSphereThenBoxBoundingVolume::copyWithZone( CCZone* pZone )
 void CC3NodeSphereThenBoxBoundingVolume::markDirty()
 {
 	super::markDirty();
-	_sphericalBoundingVolume->markDirty();
-	_boxBoundingVolume->markDirty();
+	m_sphericalBoundingVolume->markDirty();
+	m_boxBoundingVolume->markDirty();
 }
 
 void CC3NodeSphereThenBoxBoundingVolume::markTransformDirty()
 {
 	super::markTransformDirty();
-	_sphericalBoundingVolume->markTransformDirty();
-	_boxBoundingVolume->markTransformDirty();
+	m_sphericalBoundingVolume->markTransformDirty();
+	m_boxBoundingVolume->markTransformDirty();
 }
 
 /** Builds each contained bounding volume, if needed, and sets the local centerOfGeometry from the box. */
 void CC3NodeSphereThenBoxBoundingVolume::buildVolume()
 {
 	super::buildVolume();
-	_sphericalBoundingVolume->updateIfNeeded();
-	_boxBoundingVolume->updateIfNeeded();
-	_centerOfGeometry = (_boxBoundingVolume
-						 ? _boxBoundingVolume->getCenterOfGeometry()
-						 : _sphericalBoundingVolume->getCenterOfGeometry());
+	m_sphericalBoundingVolume->updateIfNeeded();
+	m_boxBoundingVolume->updateIfNeeded();
+	m_centerOfGeometry = (m_boxBoundingVolume
+						 ? m_boxBoundingVolume->getCenterOfGeometry()
+						 : m_sphericalBoundingVolume->getCenterOfGeometry());
 }
 
 void CC3NodeSphereThenBoxBoundingVolume::transformVolume()
 {
 	super::transformVolume();
-	_sphericalBoundingVolume->transformVolume();
-	_boxBoundingVolume->transformVolume();
+	m_sphericalBoundingVolume->transformVolume();
+	m_boxBoundingVolume->transformVolume();
 }
 
 bool CC3NodeSphereThenBoxBoundingVolume::doesIntersect( CC3BoundingVolume* aBoundingVolume )
 {
 	bool intersects = true;
 
-	if (_sphericalBoundingVolume)
-		intersects = intersects && _sphericalBoundingVolume->doesIntersect( aBoundingVolume );
+	if (m_sphericalBoundingVolume)
+		intersects = intersects && m_sphericalBoundingVolume->doesIntersect( aBoundingVolume );
 
-	if (_boxBoundingVolume)
-		intersects = intersects && _boxBoundingVolume->doesIntersect( aBoundingVolume );
+	if (m_boxBoundingVolume)
+		intersects = intersects && m_boxBoundingVolume->doesIntersect( aBoundingVolume );
 	
 	CC3LogBVIntersection(aBoundingVolume, intersects);
 	return intersects;
@@ -1676,54 +1676,54 @@ bool CC3NodeSphereThenBoxBoundingVolume::doesIntersect( CC3BoundingVolume* aBoun
 
 bool CC3NodeSphereThenBoxBoundingVolume::doesIntersectLocation( const CC3Vector& aLocation )
 {
-	return (_sphericalBoundingVolume->doesIntersectLocation( aLocation ) &&
-			_boxBoundingVolume->doesIntersectLocation( aLocation ));
+	return (m_sphericalBoundingVolume->doesIntersectLocation( aLocation ) &&
+			m_boxBoundingVolume->doesIntersectLocation( aLocation ));
 }
 
 bool CC3NodeSphereThenBoxBoundingVolume::doesIntersectRay( const CC3Ray& aRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return false;
 
-	return (_sphericalBoundingVolume->doesIntersectRay( aRay ) &&
-			_boxBoundingVolume->doesIntersectRay( aRay ));
+	return (m_sphericalBoundingVolume->doesIntersectRay( aRay ) &&
+			m_boxBoundingVolume->doesIntersectRay( aRay ));
 }
 
 bool CC3NodeSphereThenBoxBoundingVolume::isInFrontOfPlane( const CC3Plane& aPlane )
 {
-	return (_sphericalBoundingVolume->isInFrontOfPlane( aPlane ) ||
-			_boxBoundingVolume->isInFrontOfPlane( aPlane ));
+	return (m_sphericalBoundingVolume->isInFrontOfPlane( aPlane ) ||
+			m_boxBoundingVolume->isInFrontOfPlane( aPlane ));
 }
 
 bool CC3NodeSphereThenBoxBoundingVolume::doesIntersectSphere( const CC3Sphere& aSphere, CC3BoundingVolume* otherBoundingVolume )
 {
-	return (_sphericalBoundingVolume->doesIntersectSphere( aSphere, otherBoundingVolume ) &&
-			_boxBoundingVolume->doesIntersectSphere( aSphere, otherBoundingVolume) );
+	return (m_sphericalBoundingVolume->doesIntersectSphere( aSphere, otherBoundingVolume ) &&
+			m_boxBoundingVolume->doesIntersectSphere( aSphere, otherBoundingVolume) );
 }
 
 bool CC3NodeSphereThenBoxBoundingVolume::doesIntersectConvexHullOf( GLuint numOtherPlanes, CC3Plane* otherPlanes, CC3BoundingVolume* otherBoundingVolume )
 {
-	return (_sphericalBoundingVolume->doesIntersectConvexHullOf( numOtherPlanes, otherPlanes, otherBoundingVolume ) &&
-			_boxBoundingVolume->doesIntersectConvexHullOf( numOtherPlanes, otherPlanes, otherBoundingVolume ));
+	return (m_sphericalBoundingVolume->doesIntersectConvexHullOf( numOtherPlanes, otherPlanes, otherBoundingVolume ) &&
+			m_boxBoundingVolume->doesIntersectConvexHullOf( numOtherPlanes, otherPlanes, otherBoundingVolume ));
 }
 
 /** Returns the location of the intersection on the tightest BV. */
 CC3Vector CC3NodeSphereThenBoxBoundingVolume::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return CC3Vector::kCC3VectorNull;
 
-	CC3NodeBoundingVolume* bv = _boxBoundingVolume;
-	if ( !_boxBoundingVolume ) 
-		bv = _sphericalBoundingVolume;
+	CC3NodeBoundingVolume* bv = m_boxBoundingVolume;
+	if ( !m_boxBoundingVolume ) 
+		bv = m_sphericalBoundingVolume;
 
 	return bv ? bv->getLocationOfRayIntesection( localRay ) : CC3Vector::kCC3VectorNull;
 }
 
 void CC3NodeSphereThenBoxBoundingVolume::setShouldDraw( bool shouldDraw )
 {
-	_sphericalBoundingVolume->setShouldDraw( shouldDraw );
-	_boxBoundingVolume->setShouldDraw( shouldDraw );
+	m_sphericalBoundingVolume->setShouldDraw( shouldDraw );
+	m_boxBoundingVolume->setShouldDraw( shouldDraw );
 }
 
 bool CC3NodeSphereThenBoxBoundingVolume::init()
@@ -1745,10 +1745,10 @@ void CC3NodeSphereThenBoxBoundingVolume::initWithSphereVolume( CC3NodeSphericalB
 {
 	if ( super::init() ) 
 	{
-		_sphericalBoundingVolume = sphereBV;
-		_sphericalBoundingVolume->retain();
-		_boxBoundingVolume = boxBV;
-		_boxBoundingVolume->retain();
+		m_sphericalBoundingVolume = sphereBV;
+		m_sphericalBoundingVolume->retain();
+		m_boxBoundingVolume = boxBV;
+		m_boxBoundingVolume->retain();
 	}
 }
 
@@ -1820,7 +1820,7 @@ bool CC3NodeInfiniteBoundingVolume::doesIntersectLocation( const CC3Vector& aLoc
 
 bool CC3NodeInfiniteBoundingVolume::doesIntersectRay( const CC3Ray& aRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return false;
 
 	return true;
@@ -1843,7 +1843,7 @@ bool CC3NodeInfiniteBoundingVolume::doesIntersectConvexHullOf( GLuint numOtherPl
 
 CC3Vector CC3NodeInfiniteBoundingVolume::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return CC3Vector::kCC3VectorNull;
 
 	return localRay.startLocation;
@@ -1851,7 +1851,7 @@ CC3Vector CC3NodeInfiniteBoundingVolume::getLocationOfRayIntesection( const CC3R
 
 bool CC3NodeInfiniteBoundingVolume::shouldDraw()
 { 
-	return _shouldDraw;
+	return m_shouldDraw;
 }
 
 void CC3NodeInfiniteBoundingVolume::setShouldDraw( bool shdDraw )
@@ -1897,7 +1897,7 @@ CC3Vector CC3NodeNullBoundingVolume::getLocationOfRayIntesection( const CC3Ray& 
 
 bool CC3NodeNullBoundingVolume::shouldDraw()
 {
-	return _shouldDraw; 
+	return m_shouldDraw; 
 }
 
 void CC3NodeNullBoundingVolume::setShouldDraw( bool shdDraw )

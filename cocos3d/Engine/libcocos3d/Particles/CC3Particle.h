@@ -382,7 +382,7 @@ public:
 	virtual void				pointNormalAt( const CC3Vector& camLoc ) { }
 
 protected:
-	CC3ParticleEmitter*			_emitter;
+	CC3ParticleEmitter*			m_pEmitter;
 };
 
 NS_COCOS3D_END

@@ -68,8 +68,8 @@ public:
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 protected:
-	GLfloat						_lifeSpan;
-	GLfloat						_timeToLive;
+	GLfloat						m_lifeSpan;
+	GLfloat						m_timeToLive;
 };
 
 /**
@@ -100,7 +100,7 @@ public:
 	virtual std::string			fullDescription();
 
 protected:
-	CC3Vector					_velocity;
+	CC3Vector					m_velocity;
 };
 
 /**
@@ -125,9 +125,9 @@ public:
 	virtual std::string			fullDescription();
 
 protected:
-	ccColor4F					_colorVelocity;
-	CC3Vector					_rotationVelocity;
-	GLubyte						_rotationVelocityType;
+	ccColor4F					m_colorVelocity;
+	CC3Vector					m_rotationVelocity;
+	GLubyte						m_rotationVelocityType;
 };
 
 /**
@@ -217,7 +217,7 @@ public:
 	static CC3MultiTemplateMeshParticleEmitter* nodeWithName( const std::string& aName );
 
 protected:
-	CCArray*					_particleTemplateMeshes;
+	CCArray*					m_particleTemplateMeshes;
 };
 
 NS_COCOS3D_END

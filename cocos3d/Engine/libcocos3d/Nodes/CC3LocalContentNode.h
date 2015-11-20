@@ -214,8 +214,8 @@ public:
 	virtual bool				shouldContributeToParentBoundingBox();
 
 protected:
-	CC3Box						_globalLocalContentBoundingBox;
-	GLint						_zOrder;
+	CC3Box						m_globalLocalContentBoundingBox;
+	GLint						m_zOrder;
 };
 
 NS_COCOS3D_END

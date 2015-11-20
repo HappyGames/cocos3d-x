@@ -113,9 +113,9 @@ public:
 	void						init();
 
 protected:
-	std::vector<char>			_data;
-	unsigned int				_elementSize;
-	bool						_isReady : 1;
+	std::vector<char>			m_data;
+	unsigned int				m_elementSize;
+	bool						m_isReady : 1;
 };
 
 NS_COCOS3D_END

@@ -119,7 +119,7 @@ public:
 	virtual bool				init();
 
 protected:
-	CC3ParticleEmitter*			_emitter;
+	CC3ParticleEmitter*			m_pEmitter;
 };
 
 NS_COCOS3D_END

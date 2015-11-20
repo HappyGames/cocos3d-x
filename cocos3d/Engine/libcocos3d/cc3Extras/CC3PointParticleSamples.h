@@ -68,8 +68,8 @@ public:
 	virtual std::string			fullDescription();
 
 protected:
-	GLfloat						_lifeSpan;
-	GLfloat						_timeToLive;
+	GLfloat						m_lifeSpan;
+	GLfloat						m_timeToLive;
 };
 
 /**
@@ -102,7 +102,7 @@ public:
 	virtual void				setVelocity( const CC3Vector& vel );
 
 protected:
-	CC3Vector					_velocity;
+	CC3Vector					m_velocity;
 };
 
 /**
@@ -148,8 +148,8 @@ public:
 	virtual void				setColorVelocity( const ccColor4F& colorVel );
 
 protected:
-	ccColor4F					_colorVelocity;
-	GLfloat						_sizeVelocity;
+	ccColor4F					m_colorVelocity;
+	GLfloat						m_sizeVelocity;
 };
 
 /**
@@ -362,14 +362,14 @@ public:
 	static CC3VariegatedPointParticleHoseEmitter* nodeWithName( const std::string& aName );
 
 protected:
-	GLfloat						_minParticleStartingSize;
-	GLfloat						_maxParticleStartingSize;
-	GLfloat						_minParticleEndingSize;
-	GLfloat						_maxParticleEndingSize;
-	ccColor4F					_minParticleStartingColor;
-	ccColor4F					_maxParticleStartingColor;
-	ccColor4F					_minParticleEndingColor;
-	ccColor4F					_maxParticleEndingColor;
+	GLfloat						m_minParticleStartingSize;
+	GLfloat						m_maxParticleStartingSize;
+	GLfloat						m_minParticleEndingSize;
+	GLfloat						m_maxParticleEndingSize;
+	ccColor4F					m_minParticleStartingColor;
+	ccColor4F					m_maxParticleStartingColor;
+	ccColor4F					m_minParticleEndingColor;
+	ccColor4F					m_maxParticleEndingColor;
 };
 
 NS_COCOS3D_END

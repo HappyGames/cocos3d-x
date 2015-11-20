@@ -33,26 +33,26 @@ NS_COCOS3D_BEGIN
 
 CC3MeshParticleEmitter::CC3MeshParticleEmitter()
 {
-	_particleTemplateMesh = NULL;
+	m_pParticleTemplateMesh = NULL;
 }
 
 CC3MeshParticleEmitter::~CC3MeshParticleEmitter()
 {
-	CC_SAFE_RELEASE( _particleTemplateMesh );
+	CC_SAFE_RELEASE( m_pParticleTemplateMesh );
 }
 
 CC3Mesh* CC3MeshParticleEmitter::getParticleTemplateMesh()
 {
-	return _particleTemplateMesh; 
+	return m_pParticleTemplateMesh; 
 }
 
 void CC3MeshParticleEmitter::setParticleTemplateMesh( CC3Mesh* aMesh )
 {
-	if (aMesh == _particleTemplateMesh) 
+	if (aMesh == m_pParticleTemplateMesh) 
 		return;
 	
-	CC_SAFE_RELEASE( _particleTemplateMesh );
-	_particleTemplateMesh = aMesh;
+	CC_SAFE_RELEASE( m_pParticleTemplateMesh );
+	m_pParticleTemplateMesh = aMesh;
 	CC_SAFE_RETAIN( aMesh );
 
 	// Add vertex content if not already set, and align the drawing mode
@@ -80,9 +80,9 @@ void CC3MeshParticleEmitter::setParticleTemplate( CC3MeshNode* aParticleTemplate
 void CC3MeshParticleEmitter::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_particleTemplateMesh = NULL;
-	_isParticleTransformDirty = false;
-	_shouldTransformUnseenParticles = true;
+	m_pParticleTemplateMesh = NULL;
+	m_isParticleTransformDirty = false;
+	m_shouldTransformUnseenParticles = true;
 }
 
 void CC3MeshParticleEmitter::populateFrom( CC3MeshParticleEmitter* another )
@@ -90,8 +90,8 @@ void CC3MeshParticleEmitter::populateFrom( CC3MeshParticleEmitter* another )
 	super::populateFrom( another );
 	
 	setParticleTemplateMesh( another->getParticleTemplateMesh() );
-	_isParticleTransformDirty = another->isParticleTransformDirty();
-	_shouldTransformUnseenParticles = another->shouldTransformUnseenParticles();
+	m_isParticleTransformDirty = another->isParticleTransformDirty();
+	m_shouldTransformUnseenParticles = another->shouldTransformUnseenParticles();
 }
 
 CCObject* CC3MeshParticleEmitter::copyWithZone( CCZone* zone )
@@ -154,8 +154,8 @@ CC3Particle* CC3MeshParticleEmitter::makeParticle()
 
 void CC3MeshParticleEmitter::assignTemplateMeshToParticle( CC3MeshParticle* aParticle )
 {
-	CCAssert(_particleTemplateMesh, "The particleTemplateMesh property of CC3MeshParticleEmitter must be set before particles can be emitted.");
-	aParticle->setTemplateMesh( _particleTemplateMesh );
+	CCAssert(m_pParticleTemplateMesh, "The particleTemplateMesh property of CC3MeshParticleEmitter must be set before particles can be emitted.");
+	aParticle->setTemplateMesh( m_pParticleTemplateMesh );
 }
 
 void CC3MeshParticleEmitter::initializeParticle( CC3Particle* aParticle )
@@ -182,17 +182,17 @@ CC3MeshParticle* CC3MeshParticleEmitter::getMeshParticleAt( GLuint aParticleInde
 
 bool CC3MeshParticleEmitter::shouldTransformUnseenParticles()
 {
-	return _shouldTransformUnseenParticles;
+	return m_shouldTransformUnseenParticles;
 }
 
 void CC3MeshParticleEmitter::setShouldTransformUnseenParticles( bool transformUnseenParticles )
 {
-	_shouldTransformUnseenParticles = transformUnseenParticles;
+	m_shouldTransformUnseenParticles = transformUnseenParticles;
 }
 
 bool CC3MeshParticleEmitter::isParticleTransformDirty()
 {
-	return _isParticleTransformDirty;
+	return m_isParticleTransformDirty;
 }
 
 void CC3MeshParticleEmitter::removeParticle( CC3Particle* aParticle, GLuint anIndex )
@@ -233,7 +233,7 @@ void CC3MeshParticleEmitter::removeParticle( CC3Particle* aParticle, GLuint anIn
 		CC3_TRACE("[ptc]Removing particle at %d by swapping particles of identical size.", anIndex);
 		
 		// Move the last living particle into the slot that is being vacated
-		_particles->exchangeObjectAtIndex( anIndex, partCount );
+		m_particles->exchangeObjectAtIndex( anIndex, partCount );
 		
 		// Swap the vertex offsets of the two particles
 		deadParticle->setFirstVertexOffset( lastFirstVtx );
@@ -276,7 +276,7 @@ void CC3MeshParticleEmitter::removeParticle( CC3Particle* aParticle, GLuint anIn
 		
 		// Remove the particle from particles collection,
 		// Do this last in case the particle is only being held by this collection.
-		_particles->removeObjectAtIndex( anIndex );
+		m_particles->removeObjectAtIndex( anIndex );
 		
 		// Adjust the firstVertexOffset and firstVertexIndexOffset properties of each remaining
 		// particle to fill in the gap created by removing the particle from the mesh arrays.
@@ -302,7 +302,7 @@ bool CC3MeshParticleEmitter::isTransformDirty()
 
 void CC3MeshParticleEmitter::markParticleTransformDirty()
 {
-	_isParticleTransformDirty = true; 
+	m_isParticleTransformDirty = true; 
 }
 
 /**
@@ -332,15 +332,15 @@ bool CC3MeshParticleEmitter::shouldTransformParticles( CC3NodeUpdatingVisitor* v
 void CC3MeshParticleEmitter::transformParticles()
 {
 	GLuint partCount = getParticleCount();
-	CC3_TRACE("CC3MeshParticleEmitter transforming %d particles", _particleCount);
+	CC3_TRACE("CC3MeshParticleEmitter transforming %d particles", m_particleCount);
 
 	for (GLuint partIdx = 0; partIdx < partCount; partIdx++) 
 	{
-		CC3MeshParticle* mp = (CC3MeshParticle*)_particles->objectAtIndex( partIdx );
+		CC3MeshParticle* mp = (CC3MeshParticle*)m_particles->objectAtIndex( partIdx );
 		mp->transformVertices();
 	}
 
-	_isParticleTransformDirty = false;
+	m_isParticleTransformDirty = false;
 }
 
 CC3MeshParticleEmitter* CC3MeshParticleEmitter::nodeWithName( const std::string& aName )

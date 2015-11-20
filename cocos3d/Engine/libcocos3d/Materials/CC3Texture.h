@@ -1302,23 +1302,23 @@ protected:
 	virtual void			bindTextureOfColor( const ccColor4B& color, const CC3IntSize& size, GLenum target );
 
 protected:
-	GLuint					_textureID;
-	CC3IntSize				_size;
-	CCSize					_coverage;
-	GLenum					_pixelFormat;
-	GLenum					_pixelType;
-	GLenum					_minifyingFunction;
-	GLenum					_magnifyingFunction;
-	GLenum					_horizontalWrappingFunction;
-	GLenum					_verticalWrappingFunction;
-	CC3CCTexture*			_ccTexture;
-	bool					_texParametersAreDirty : 1;
-	bool					_hasMipmap : 1;
-	bool					_isUpsideDown : 1;
-	bool					_shouldFlipVerticallyOnLoad : 1;
-	bool					_shouldFlipHorizontallyOnLoad : 1;
-	bool					_hasAlpha : 1;
-	bool					_hasPremultipliedAlpha : 1;
+	GLuint					m_textureID;
+	CC3IntSize				m_size;
+	CCSize					m_coverage;
+	GLenum					m_pixelFormat;
+	GLenum					m_pixelType;
+	GLenum					m_minifyingFunction;
+	GLenum					m_magnifyingFunction;
+	GLenum					m_horizontalWrappingFunction;
+	GLenum					m_verticalWrappingFunction;
+	CC3CCTexture*			m_ccTexture;
+	bool					m_texParametersAreDirty : 1;
+	bool					m_hasMipmap : 1;
+	bool					m_isUpsideDown : 1;
+	bool					m_shouldFlipVerticallyOnLoad : 1;
+	bool					m_shouldFlipHorizontallyOnLoad : 1;
+	bool					m_hasAlpha : 1;
+	bool					m_hasPremultipliedAlpha : 1;
 };
 
 /**
@@ -1784,8 +1784,8 @@ public:
 	std::string				fullDescription();
 
 protected:
-	CC3Texture*				_texture;
-	CC3TextureUnit*			_textureUnit;
+	CC3Texture*				m_pTexture;
+	CC3TextureUnit*			m_pTextureUnit;
 };
 
 
@@ -2000,12 +2000,12 @@ protected:
 	GLuint					getImageDataSize( CCImage *image, unsigned int width, unsigned int height );
 
 protected:
-	GLvoid*					_imageData;
-	GLuint					_imageDataSize;
+	GLvoid*					m_imageData;
+	GLuint					m_imageDataSize;
 
-	GLenum					_pixelGLFormat;
-	GLenum					_pixelGLType;
-	bool					_isUpsideDown : 1;
+	GLenum					m_pixelGLFormat;
+	GLenum					m_pixelGLType;
+	bool					m_isUpsideDown : 1;
 };
 
 /** Extension category to support Cocos3D functionality. */

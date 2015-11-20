@@ -400,9 +400,9 @@ public:
 
 
 protected:
-	CCSize						_mapSize;
-	CCRect						_textureRectangle;
-	bool						_expectsVerticallyFlippedTextures : 1;
+	CCSize						m_mapSize;
+	CCRect						m_textureRectangle;
+	bool						m_expectsVerticallyFlippedTextures : 1;
 };
 
 NS_COCOS3D_END

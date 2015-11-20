@@ -186,10 +186,10 @@ public:
 	CCDictionary*				getAllObjects();
 
 protected:
-	CCDictionary*				_objectsByName;
-	std::string					_typeName;
-	pthread_mutex_t				_mutex;
-	bool						_isWeak : 1;
+	CCDictionary*				m_objectsByName;
+	std::string					m_typeName;
+	pthread_mutex_t				m_mutex;
+	bool						m_isWeak : 1;
 };
 
 NS_COCOS3D_END

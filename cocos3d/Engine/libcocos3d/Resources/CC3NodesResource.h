@@ -249,9 +249,9 @@ public:
 	static CC3NodesResource*	resource();
 
 protected:
-	CCArray*					_nodes;
-	bool						_expectsVerticallyFlippedTextures : 1;
-	bool						_shouldFreezeInanimateNodes : 1;
+	CCArray*					m_nodes;
+	bool						m_expectsVerticallyFlippedTextures : 1;
+	bool						m_shouldFreezeInanimateNodes : 1;
 };
 
 NS_COCOS3D_END

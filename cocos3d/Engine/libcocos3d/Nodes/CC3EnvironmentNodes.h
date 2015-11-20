@@ -81,7 +81,7 @@ public:
 	void						initWithTag( GLuint aTag, const std::string& aName );
 
 protected:
-	CC3Texture*					_texture;
+	CC3Texture*					m_pTexture;
 };
 
 /**
@@ -106,7 +106,7 @@ public:
 	static CC3LightProbe*		nodeWithTexture( CC3Texture* texture );
 
 protected:
-	ccColor4F					_diffuseColor;
+	ccColor4F					m_diffuseColor;
 };
 
 NS_COCOS3D_END

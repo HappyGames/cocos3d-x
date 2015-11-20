@@ -192,7 +192,7 @@ public:
 
 protected:
 	std::string				value_GL_SHADING_LANGUAGE_VERSION;
-	CC3ShaderPrewarmer*		_shaderProgramPrewarmer;
+	CC3ShaderPrewarmer*		m_pShaderProgramPrewarmer;
 };
 
 #endif	// CC3_GLSL

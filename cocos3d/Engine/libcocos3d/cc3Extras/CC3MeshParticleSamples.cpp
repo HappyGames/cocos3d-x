@@ -33,29 +33,29 @@ NS_COCOS3D_BEGIN
 
 void CC3MortalMeshParticle::setLifeSpan( GLfloat anInterval )
 {
-	_lifeSpan = anInterval;
-	_timeToLive = _lifeSpan;
+	m_lifeSpan = anInterval;
+	m_timeToLive = m_lifeSpan;
 }
 
 void CC3MortalMeshParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visitor )
 {
-	_timeToLive -= visitor->getDeltaTime();
-	if (_timeToLive <= 0.0f) 
+	m_timeToLive -= visitor->getDeltaTime();
+	if (m_timeToLive <= 0.0f) 
 		setIsAlive( false );
 }
 
 std::string CC3MortalMeshParticle::fullDescription()
 {
 	return CC3String::stringWithFormat( (char*)"%s\n\tlifeSpan: %.3f, timeToLive: %.3f",
-			super::fullDescription().c_str(), _lifeSpan, _timeToLive );
+			super::fullDescription().c_str(), m_lifeSpan, m_timeToLive );
 }
 
 bool CC3MortalMeshParticle::init()
 {
 	if ( super::init() )
 	{
-		_lifeSpan = 0.0f;
-		_timeToLive = 0.0f;
+		m_lifeSpan = 0.0f;
+		m_timeToLive = 0.0f;
 
 		return true;
 	}
@@ -67,8 +67,8 @@ void CC3MortalMeshParticle::populateFrom( CC3MortalMeshParticle* another )
 {
 	super::populateFrom( another );
 	
-	_lifeSpan = another->getLifeSpan();
-	_timeToLive = another->getTimeToLive();
+	m_lifeSpan = another->getLifeSpan();
+	m_timeToLive = another->getTimeToLive();
 }
 
 CCObject* CC3MortalMeshParticle::copyWithZone( CCZone* zone )
@@ -93,7 +93,7 @@ bool CC3SprayMeshParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_velocity = CC3Vector::kCC3VectorZero;
+		m_velocity = CC3Vector::kCC3VectorZero;
 		return true;
 	}
 
@@ -103,7 +103,7 @@ bool CC3SprayMeshParticle::init()
 void CC3SprayMeshParticle::populateFrom( CC3SprayMeshParticle* another )
 {
 	super::populateFrom( another );
- 	_velocity = another->getVelocity();
+ 	m_velocity = another->getVelocity();
 }
 
 CCObject* CC3SprayMeshParticle::copyWithZone( CCZone* zone )
@@ -118,12 +118,12 @@ CCObject* CC3SprayMeshParticle::copyWithZone( CCZone* zone )
 std::string  CC3SprayMeshParticle::fullDescription()
 {
 	return CC3String::stringWithFormat( (char*)"%s\n\tvelocity: %s",
-			super::fullDescription().c_str(), _velocity.stringfy().c_str() );
+			super::fullDescription().c_str(), m_velocity.stringfy().c_str() );
 }
 
 CC3Vector CC3UniformlyEvolvingMeshParticle::getRotationVelocity()
 {
-	switch (_rotationVelocityType) 
+	switch (m_rotationVelocityType) 
 	{
 		case kCC3RotationTypeAxisAngle: 
 		{
@@ -131,19 +131,19 @@ CC3Vector CC3UniformlyEvolvingMeshParticle::getRotationVelocity()
 			return CC3Quaternion().fromAxisAngle(axisAngle).toRotation();
 		}
 		default:
-			return _rotationVelocity;
+			return m_rotationVelocity;
 	}
 }
 
 void CC3UniformlyEvolvingMeshParticle::setRotationVelocity( const CC3Vector& aVector )
 {
-	_rotationVelocity = aVector;
-	_rotationVelocityType = kCC3RotationTypeEuler;
+	m_rotationVelocity = aVector;
+	m_rotationVelocityType = kCC3RotationTypeEuler;
 }
 
 GLfloat CC3UniformlyEvolvingMeshParticle::getRotationAngleVelocity()
 {
-	switch (_rotationVelocityType) 
+	switch (m_rotationVelocityType) 
 	{
 		case kCC3RotationTypeEuler: 
 		{
@@ -152,14 +152,14 @@ GLfloat CC3UniformlyEvolvingMeshParticle::getRotationAngleVelocity()
 			return axisAngle.w;
 		}
 		default:
-			return _rotationVelocity.x;
+			return m_rotationVelocity.x;
 	}
 }
 
 void CC3UniformlyEvolvingMeshParticle::setRotationAngleVelocity( GLfloat anAngle )
 {
-	_rotationVelocity = cc3v(anAngle, anAngle, anAngle);
-	_rotationVelocityType = kCC3RotationTypeAxisAngle;
+	m_rotationVelocity = cc3v(anAngle, anAngle, anAngle);
+	m_rotationVelocityType = kCC3RotationTypeAxisAngle;
 }
 
 void CC3UniformlyEvolvingMeshParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visitor )
@@ -170,7 +170,7 @@ void CC3UniformlyEvolvingMeshParticle::updateBeforeTransform( CC3NodeUpdatingVis
 	
 	GLfloat dt = visitor->getDeltaTime();
 	
-	switch (_rotationVelocityType) 
+	switch (m_rotationVelocityType) 
 	{
 		case kCC3RotationTypeEuler: 
 		{
@@ -194,15 +194,15 @@ void CC3UniformlyEvolvingMeshParticle::updateBeforeTransform( CC3NodeUpdatingVis
 			break;
 	}
 	
-	if ( hasColor() && !CCC4FAreEqual(_colorVelocity, kCCC4FBlackTransparent) ) 
+	if ( hasColor() && !CCC4FAreEqual(m_colorVelocity, kCCC4FBlackTransparent) ) 
 	{
 		// We have to do the math on each component instead of using the color math functions
 		// because the functions clamp prematurely, and we need negative values for the velocity.
 		ccColor4F currColor = getColor4F();
-		ccColor4F newColor = ccc4f(CLAMP(currColor.r + (_colorVelocity.r * dt), 0.0f, 1.0f),
-								   CLAMP(currColor.g + (_colorVelocity.g * dt), 0.0f, 1.0f),
-								   CLAMP(currColor.b + (_colorVelocity.b * dt), 0.0f, 1.0f),
-								   CLAMP(currColor.a + (_colorVelocity.a * dt), 0.0f, 1.0f));
+		ccColor4F newColor = ccc4f(CLAMP(currColor.r + (m_colorVelocity.r * dt), 0.0f, 1.0f),
+								   CLAMP(currColor.g + (m_colorVelocity.g * dt), 0.0f, 1.0f),
+								   CLAMP(currColor.b + (m_colorVelocity.b * dt), 0.0f, 1.0f),
+								   CLAMP(currColor.a + (m_colorVelocity.a * dt), 0.0f, 1.0f));
 		setColor4F( newColor );
 		/*LogTrace(@"Updating color of %@ from %@ to %@", self,
 					  NSStringFromCCC4F(currColor), NSStringFromCCC4F(newColor));*/
@@ -215,9 +215,9 @@ bool CC3UniformlyEvolvingMeshParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_rotationVelocity = CC3Vector::kCC3VectorZero;
-		_rotationVelocityType = kCC3RotationTypeUnknown;
-		_colorVelocity = kCCC4FBlackTransparent;
+		m_rotationVelocity = CC3Vector::kCC3VectorZero;
+		m_rotationVelocityType = kCC3RotationTypeUnknown;
+		m_colorVelocity = kCCC4FBlackTransparent;
 
 		return true;
 	}
@@ -229,9 +229,9 @@ void CC3UniformlyEvolvingMeshParticle::populateFrom( CC3UniformlyEvolvingMeshPar
 {
 	super::populateFrom( another );
 	
-	_rotationVelocity = another->getRotationVelocity();
-	_rotationVelocityType = another->_rotationVelocityType;
-	_colorVelocity = another->getColorVelocity();
+	m_rotationVelocity = another->getRotationVelocity();
+	m_rotationVelocityType = another->m_rotationVelocityType;
+	m_colorVelocity = another->getColorVelocity();
 }
 
 CCObject* CC3UniformlyEvolvingMeshParticle::copyWithZone( CCZone* zone )
@@ -246,22 +246,22 @@ CCObject* CC3UniformlyEvolvingMeshParticle::copyWithZone( CCZone* zone )
 std::string CC3UniformlyEvolvingMeshParticle::fullDescription()
 {
 	return CC3String::stringWithFormat( (char*)"%s\n\tvelocity: %s",
-			super::fullDescription().c_str(), _velocity.stringfy().c_str() );
+			super::fullDescription().c_str(), m_velocity.stringfy().c_str() );
 }
 
 CC3MultiTemplateMeshParticleEmitter::CC3MultiTemplateMeshParticleEmitter()
 {
-	_particleTemplateMeshes = NULL;
+	m_particleTemplateMeshes = NULL;
 }
 
 CC3MultiTemplateMeshParticleEmitter::~CC3MultiTemplateMeshParticleEmitter()
 {
-	CC_SAFE_RELEASE( _particleTemplateMeshes );
+	CC_SAFE_RELEASE( m_particleTemplateMeshes );
 }
 
 void CC3MultiTemplateMeshParticleEmitter::addParticleTemplateMesh( CC3Mesh* aVtxArrayMesh )
 {
-	_particleTemplateMeshes->addObject( aVtxArrayMesh );
+	m_particleTemplateMeshes->addObject( aVtxArrayMesh );
 	//LogTrace(@"%@ added particle template mesh %@ with %i vertices and %i vertex indices",
 	//			  self, aVtxArrayMesh, aVtxArrayMesh.vertexCount, aVtxArrayMesh.vertexIndexCount);
 }
@@ -269,26 +269,26 @@ void CC3MultiTemplateMeshParticleEmitter::addParticleTemplateMesh( CC3Mesh* aVtx
 /** Removes the specified mesh from the collection of meshes in the particleTemplateMeshes property. */
 void CC3MultiTemplateMeshParticleEmitter::removeParticleTemplateMesh( CC3Mesh* aVtxArrayMesh )
 {
-	_particleTemplateMeshes->removeObject( aVtxArrayMesh );
+	m_particleTemplateMeshes->removeObject( aVtxArrayMesh );
 }
 
 void CC3MultiTemplateMeshParticleEmitter::assignTemplateMeshToParticle( CC3MeshParticle* aParticle )
 {
-	unsigned int tmCount = _particleTemplateMeshes->count() + (_particleTemplateMesh ? 1 : 0);
+	unsigned int tmCount = m_particleTemplateMeshes->count() + (m_pParticleTemplateMesh ? 1 : 0);
 	CCAssert(tmCount > 0, "No particle template meshes available in CC3MultiTemplateMeshParticleEmitter. Use the addParticleTemplateMesh: method to add template meshes for the particles.");
 
 	unsigned int tmIdx = CC3RandomUIntBelow(tmCount);
-	aParticle->setTemplateMesh( (tmIdx < _particleTemplateMeshes->count())
-									? (CC3Mesh*)_particleTemplateMeshes->objectAtIndex( tmIdx )
-									: _particleTemplateMesh );
+	aParticle->setTemplateMesh( (tmIdx < m_particleTemplateMeshes->count())
+									? (CC3Mesh*)m_particleTemplateMeshes->objectAtIndex( tmIdx )
+									: m_pParticleTemplateMesh );
 }
 
 void CC3MultiTemplateMeshParticleEmitter::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 
-	_particleTemplateMeshes = CCArray::create();			// retained
-	_particleTemplateMeshes->retain();
+	m_particleTemplateMeshes = CCArray::create();			// retained
+	m_particleTemplateMeshes->retain();
 }
 
 CC3MultiTemplateMeshParticleEmitter* CC3MultiTemplateMeshParticleEmitter::nodeWithName( const std::string& aName )

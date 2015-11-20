@@ -33,20 +33,20 @@ NS_COCOS3D_BEGIN
 
 CC3Scene::CC3Scene()
 {
-	_backdrop = NULL;
-	_fog = NULL;
-	_activeCamera = NULL;
-	_drawingSequenceVisitor = NULL;
-	_drawingSequencer = NULL;
-	_viewDrawingVisitor = NULL;
-	_envMapDrawingVisitor = NULL;
-	_updateVisitor = NULL;
-	_shadowVisitor = NULL;
-	_touchedNodePicker = NULL;
-	_performanceStatistics = NULL;
-	_lights = NULL;
-	_lightProbes = NULL;
-	_billboards = NULL;
+	m_pBackdrop = NULL;
+	m_pFog = NULL;
+	m_pActiveCamera = NULL;
+	m_pDrawingSequenceVisitor = NULL;
+	m_pDrawingSequencer = NULL;
+	m_pViewDrawingVisitor = NULL;
+	m_pEnvMapDrawingVisitor = NULL;
+	m_pUpdateVisitor = NULL;
+	m_pShadowVisitor = NULL;
+	m_pTouchedNodePicker = NULL;
+	m_pPerformanceStatistics = NULL;
+	m_lights = NULL;
+	m_lightProbes = NULL;
+	m_billboards = NULL;
 }
 
 /**
@@ -69,9 +69,9 @@ CC3Scene::~CC3Scene()
 	setTouchedNodePicker( NULL );			// Use setter to release and make nil
 	setPerformanceStatistics( NULL );		// Use setter to release and make nil
 	
-	CC_SAFE_RELEASE( _lights );
-	CC_SAFE_RELEASE( _lightProbes );
-	CC_SAFE_RELEASE( _billboards );
+	CC_SAFE_RELEASE( m_lights );
+	CC_SAFE_RELEASE( m_lightProbes );
+	CC_SAFE_RELEASE( m_billboards );
 }
 
 bool CC3Scene::isScene()
@@ -87,20 +87,20 @@ bool CC3Scene::isScene()
 
 bool CC3Scene::shouldDisplayPickingRender()
 {
-	return _shouldDisplayPickingRender;
+	return m_shouldDisplayPickingRender;
 }
 
 CC3Camera* CC3Scene::getActiveCamera()
 {
-	return _activeCamera; 
+	return m_pActiveCamera; 
 }
 
 void CC3Scene::setActiveCamera( CC3Camera* aCamera )
 {
-	if (aCamera == _activeCamera) return;
+	if (aCamera == m_pActiveCamera) return;
 	
-	CC3Camera* oldCam = _activeCamera;
-	_activeCamera = aCamera;
+	CC3Camera* oldCam = m_pActiveCamera;
+	m_pActiveCamera = aCamera;
 	CC_SAFE_RETAIN(aCamera);
 	activeCameraChangedFrom( oldCam );
 	CC_SAFE_RELEASE(oldCam);
@@ -160,95 +160,95 @@ void CC3Scene::activeCameraChangedFrom( CC3Camera* oldCam  )
 
 CCArray* CC3Scene::getLights()
 {
-	return _lights;
+	return m_lights;
 }
 
 CC3MeshNode* CC3Scene::getBackdrop()
 {
-	return _backdrop;
+	return m_pBackdrop;
 }
 
 void CC3Scene::setBackdrop( CC3MeshNode* backdrop )
 {
-	if (backdrop == _backdrop) 
+	if (backdrop == m_pBackdrop) 
 		return;
 	
-	if ( _backdrop )
-		_backdrop->stopAllActions();		// Ensure all actions stopped before releasing
+	if ( m_pBackdrop )
+		m_pBackdrop->stopAllActions();		// Ensure all actions stopped before releasing
 	
-	CC_SAFE_RELEASE(_backdrop);
-	_backdrop = backdrop;
+	CC_SAFE_RELEASE(m_pBackdrop);
+	m_pBackdrop = backdrop;
 	CC_SAFE_RETAIN(backdrop);
 	
-	if ( _backdrop )
-		_backdrop->setParent( this );		// Ensure shaders can access scene content
+	if ( m_pBackdrop )
+		m_pBackdrop->setParent( this );		// Ensure shaders can access scene content
 }
 
 CC3Fog* CC3Scene::getFog()
 {
-	return _fog;
+	return m_pFog;
 }
 
 void CC3Scene::setFog( CC3Fog* fog )
 {
-	if (fog == _fog) 
+	if (fog == m_pFog) 
 		return;
 	
-	if ( _fog )
+	if ( m_pFog )
 	{
-		_fog->stopAllActions();			// Ensure all actions stopped before releasing
-		_fog->release();
+		m_pFog->stopAllActions();			// Ensure all actions stopped before releasing
+		m_pFog->release();
 	}
 
-	_fog = fog;
+	m_pFog = fog;
 	CC_SAFE_RETAIN( fog );
 
-	if ( _fog )
-		_fog->setParent( this );				// Ensure shaders can access scene content
+	if ( m_pFog )
+		m_pFog->setParent( this );				// Ensure shaders can access scene content
 }
 
 CC3TouchedNodePicker* CC3Scene::getTouchedNodePicker()
 {
-	return _touchedNodePicker;
+	return m_pTouchedNodePicker;
 }
 
 void CC3Scene::setTouchedNodePicker( CC3TouchedNodePicker* nodePicker )
 {
-	CC_SAFE_RELEASE(_touchedNodePicker);
+	CC_SAFE_RELEASE(m_pTouchedNodePicker);
 	CC_SAFE_RETAIN(nodePicker);
-	_touchedNodePicker = nodePicker;
+	m_pTouchedNodePicker = nodePicker;
 }
 
 void CC3Scene::setIsRunning( bool shouldRun )
 {
 	super::setIsRunning( shouldRun );
 
-	if ( _backdrop )
-		_backdrop->setIsRunning( shouldRun );
+	if ( m_pBackdrop )
+		m_pBackdrop->setIsRunning( shouldRun );
 
-	if ( _fog )
-		_fog->setIsRunning( shouldRun );
+	if ( m_pFog )
+		m_pFog->setIsRunning( shouldRun );
 }
 
 CCColorRef CC3Scene::getColor()
 {
-	return _backdrop ? _backdrop->getColor() : super::getColor(); 
+	return m_pBackdrop ? m_pBackdrop->getColor() : super::getColor(); 
 }
 
 void CC3Scene::setColor( const CCColorRef& color )
 { 
-	_backdrop->setColor( color ); 
+	m_pBackdrop->setColor( color ); 
 }
 
 CCOpacity CC3Scene::getOpacity()
 {
-	return _backdrop ? _backdrop->getOpacity() : super::getOpacity(); 
+	return m_pBackdrop ? m_pBackdrop->getOpacity() : super::getOpacity(); 
 }
 
 void CC3Scene::setOpacity( CCOpacity opacity )
 {
-	if ( _backdrop )
-		_backdrop->setOpacity( opacity );
+	if ( m_pBackdrop )
+		m_pBackdrop->setOpacity( opacity );
 	super::setOpacity( opacity );
 }
 
@@ -261,12 +261,12 @@ bool CC3Scene::init()
 void CC3Scene::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_lights = CCArray::create();			// retained
-	_lights->retain();
-	_lightProbes = CCArray::create();	// retained
-	_lightProbes->retain();
-	_billboards = CCArray::create();		// retained
-	_billboards->retain();
+	m_lights = CCArray::create();			// retained
+	m_lights->retain();
+	m_lightProbes = CCArray::create();	// retained
+	m_lightProbes->retain();
+	m_billboards = CCArray::create();		// retained
+	m_billboards->retain();
 	setDrawingSequenceVisitor( CC3NodeSequencerVisitor::visitorWithScene( this ) );
 	setDrawingSequencer( CC3BTreeNodeSequencer::sequencerLocalContentOpaqueFirst() );
 	setViewDrawingVisitor( CC3NodeDrawingVisitor::visitor() );
@@ -277,18 +277,18 @@ void CC3Scene::initWithTag( GLuint aTag, const std::string& aName )
 
 	CHECK_GL_ERROR_DEBUG();
 
-	_cc3Layer = NULL;
-	_backdrop = NULL;
-	_fog = NULL;
-	_activeCamera = NULL;
-	_performanceStatistics = NULL;
-	_ambientLight = kCC3DefaultLightColorAmbientScene;
-	_minUpdateInterval = kCC3DefaultMinimumUpdateInterval;
-	_maxUpdateInterval = kCC3DefaultMaximumUpdateInterval;
-	_deltaFrameTime = 0;
-	_timeAtOpen = 0;
-	_elapsedTimeSinceOpened = 0;
-	_shouldDisplayPickingRender = false;
+	m_pLayer = NULL;
+	m_pBackdrop = NULL;
+	m_pFog = NULL;
+	m_pActiveCamera = NULL;
+	m_pPerformanceStatistics = NULL;
+	m_ambientLight = kCC3DefaultLightColorAmbientScene;
+	m_minUpdateInterval = kCC3DefaultMinimumUpdateInterval;
+	m_maxUpdateInterval = kCC3DefaultMaximumUpdateInterval;
+	m_deltaFrameTime = 0;
+	m_timeAtOpen = 0;
+	m_elapsedTimeSinceOpened = 0;
+	m_shouldDisplayPickingRender = false;
 	processInitializeScene();
 	//LogGLErrorState(@"after initializing %@", self);
 }
@@ -338,10 +338,10 @@ void CC3Scene::populateFrom( CC3Scene* another )
 	setBackdrop( (CC3MeshNode*)another->getBackdrop()->copy()->autorelease() );
 	setFog( (CC3Fog*)another->getFog()->copy()->autorelease() );
 	
-	_ambientLight = another->getAmbientLight();
-	_minUpdateInterval = another->getMinUpdateInterval();
-	_maxUpdateInterval = another->getMaxUpdateInterval();
-	_shouldDisplayPickingRender = another->shouldDisplayPickingRender();
+	m_ambientLight = another->getAmbientLight();
+	m_minUpdateInterval = another->getMinUpdateInterval();
+	m_maxUpdateInterval = another->getMaxUpdateInterval();
+	m_shouldDisplayPickingRender = another->shouldDisplayPickingRender();
 }
 
 CCObject* CC3Scene::copyWithZone( CCZone* zone )
@@ -356,8 +356,8 @@ CCObject* CC3Scene::copyWithZone( CCZone* zone )
 
 void CC3Scene::open()
 {
-	_timeAtOpen = CC3Platform::getCurrentMilliseconds();
-	_elapsedTimeSinceOpened = 0;
+	m_timeAtOpen = CC3Platform::getCurrentMilliseconds();
+	m_elapsedTimeSinceOpened = 0;
 	
 	play();
 	updateScene();
@@ -396,34 +396,34 @@ void CC3Scene::pause()
 
 CC3NodeUpdatingVisitor* CC3Scene::getUpdateVisitor()
 {
-	return _updateVisitor;
+	return m_pUpdateVisitor;
 }
 
 void CC3Scene::setUpdateVisitor( CC3NodeUpdatingVisitor* visitor )
 {
-	CC_SAFE_RELEASE(_updateVisitor);
+	CC_SAFE_RELEASE(m_pUpdateVisitor);
 	CC_SAFE_RETAIN( visitor );
-	_updateVisitor = visitor;
+	m_pUpdateVisitor = visitor;
 }
 
 float CC3Scene::getMinUpdateInterval()
 {
-	return _minUpdateInterval;
+	return m_minUpdateInterval;
 }
 
 void CC3Scene::setMinUpdateInterval( float interval )
 {
-	_minUpdateInterval = interval;
+	m_minUpdateInterval = interval;
 }
 
 float CC3Scene::getMaxUpdateInterval()
 {
-	return _maxUpdateInterval;
+	return m_maxUpdateInterval;
 }
 
 void CC3Scene::setMaxUpdateInterval( float interval )
 {
-	_maxUpdateInterval = interval;
+	m_maxUpdateInterval = interval;
 }
 
 /**
@@ -440,20 +440,20 @@ void CC3Scene::updateScene( float dt )
 	// Clamp the specified interval to a range defined by the minimum and maximum
 	// update intervals. If the maximum update interval limit is zero or negative,
 	// its value is ignored, and the dt value is not limited to a maximum value.
-	_deltaFrameTime = CLAMP(dt, _minUpdateInterval,
-							(_maxUpdateInterval > 0.0 ? _maxUpdateInterval : dt));
+	m_deltaFrameTime = CLAMP(dt, m_minUpdateInterval,
+							(m_maxUpdateInterval > 0.0 ? m_maxUpdateInterval : dt));
 	
 	//LogTrace(@"******* %@ starting update: %.2f ms (clamped from %.2f ms)",
 	//		 self, _deltaFrameTime * 1000.0, dt * 1000.0);
 	
-	_touchedNodePicker->dispatchPickedNode();
+	m_pTouchedNodePicker->dispatchPickedNode();
 	
-	_updateVisitor->setDeltaTime( _deltaFrameTime );
-	_updateVisitor->visit( this );
+	m_pUpdateVisitor->setDeltaTime( m_deltaFrameTime );
+	m_pUpdateVisitor->visit( this );
 	
-	updateCamera( _deltaFrameTime );
-	updateBillboards( _deltaFrameTime );
-	updateShadows( _deltaFrameTime );
+	updateCamera( m_deltaFrameTime );
+	updateBillboards( m_deltaFrameTime );
+	updateShadows( m_deltaFrameTime );
 	updateDrawSequence();
 	
 	//LogTrace(@"******* %@ exiting update", self);
@@ -463,22 +463,22 @@ void CC3Scene::updateScene()
 {
 	bool wasRunning = m_isRunning;
 	m_isRunning = true;
-	updateScene( _minUpdateInterval );
+	updateScene( m_minUpdateInterval );
 	m_isRunning = wasRunning;
 }
 
 GLfloat CC3Scene::getDeltaFrameTime()
 {
-	return _deltaFrameTime;
+	return m_deltaFrameTime;
 }
 
 /** Updates various scene timing values. */
 void CC3Scene::updateTimes( float dt )
 {
-	_elapsedTimeSinceOpened = CC3Platform::getCurrentMilliseconds() - _timeAtOpen;
+	m_elapsedTimeSinceOpened = CC3Platform::getCurrentMilliseconds() - m_timeAtOpen;
 	
-	if ( _performanceStatistics )
-		_performanceStatistics->addUpdateTime( dt );
+	if ( m_pPerformanceStatistics )
+		m_pPerformanceStatistics->addUpdateTime( dt );
 }
 
 /** Template method to update the camera. */
@@ -491,7 +491,7 @@ void CC3Scene::updateCamera( float dt )
 void CC3Scene::updateShadows( float dt )
 {
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _lights, obj )
+	CCARRAY_FOREACH( m_lights, obj )
 	{
 		CC3Light* lgt = (CC3Light*)obj;
 		lgt->updateShadows();
@@ -505,10 +505,10 @@ void CC3Scene::updateShadows( float dt )
 void CC3Scene::updateBillboards( float dt )
 {
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _billboards, obj )
+	CCARRAY_FOREACH( m_billboards, obj )
 	{
 		CC3Billboard* bb = (CC3Billboard*)obj;
-		bb->alignToCamera( _activeCamera );
+		bb->alignToCamera( m_pActiveCamera );
 	}
 
 	//LogTrace(@"%@ updated %lu billboards", self, (unsigned long)_billboards.count);
@@ -532,8 +532,8 @@ void CC3Scene::drawSceneWithVisitor( CC3NodeDrawingVisitor* visitor )
 
 	open3DWithVisitor( visitor );
 	
-	_touchedNodePicker->pickTouchedNodeWithVisitor( visitor );
-	if ( !_shouldDisplayPickingRender ) 
+	m_pTouchedNodePicker->pickTouchedNodeWithVisitor( visitor );
+	if ( !m_shouldDisplayPickingRender ) 
 		drawSceneContentWithVisitor( visitor );
 
 	close3DWithVisitor( visitor );
@@ -553,10 +553,10 @@ void CC3Scene::drawSceneContentWithVisitor( CC3NodeDrawingVisitor* visitor )
 	visitor->visit( this );					// Draw the scene components
 	
 	// Shadows are drawn with a specialized visitor
-	if ( _shadowVisitor )
+	if ( m_pShadowVisitor )
 	{
-		_shadowVisitor->alignShotWith( visitor );
-		drawShadowsWithVisitor( _shadowVisitor );
+		m_pShadowVisitor->alignShotWith( visitor );
+		drawShadowsWithVisitor( m_pShadowVisitor );
 	}
 }
 
@@ -577,8 +577,8 @@ void CC3Scene::drawBackdropWithVisitor( CC3NodeDrawingVisitor* visitor )
  */
 void CC3Scene::collectFrameInterval()
 {
-	if (_performanceStatistics)
-		_performanceStatistics->addFrameTime( (float)CCDirector::sharedDirector()->getAnimationInterval() );
+	if (m_pPerformanceStatistics)
+		m_pPerformanceStatistics->addFrameTime( (float)CCDirector::sharedDirector()->getAnimationInterval() );
 }
 
 void CC3Scene::open3DWithVisitor( CC3NodeDrawingVisitor* visitor )
@@ -624,7 +624,7 @@ void CC3Scene::close3DWithVisitor( CC3NodeDrawingVisitor* visitor )
 	gl->enableLighting( false );
 	gl->enableTwoSidedLighting( false );
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _lights, obj )
+	CCARRAY_FOREACH( m_lights, obj )
 	{
 		CC3Light* lgt = (CC3Light*)obj;
 		lgt->turnOffWithVisitor( visitor );
@@ -644,11 +644,11 @@ void CC3Scene::illuminateWithVisitor( CC3NodeDrawingVisitor* visitor )
 	//LogTrace(@"%@ lighting is %@", self, (self.isIlluminated ? @"on" : @"off"));
 
 	// Set the ambient light for the whole scene
-	visitor->getGL()->setSceneAmbientLightColor( _ambientLight );
+	visitor->getGL()->setSceneAmbientLightColor( m_ambientLight );
 
 	// Turn on any individual lights
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _lights, obj )
+	CCARRAY_FOREACH( m_lights, obj )
 	{
 		CC3Light* lgt = (CC3Light*)obj;
 		lgt->turnOnWithVisitor( visitor );
@@ -659,19 +659,19 @@ void CC3Scene::illuminateWithVisitor( CC3NodeDrawingVisitor* visitor )
 
 bool CC3Scene::isIlluminated()
 {
-	return (_lights->count() > 0 ||
-			!(ccc4FEqual(_ambientLight, kCCC4FBlack) ||
-			  ccc4FEqual(_ambientLight, kCCC4FBlackTransparent)));
+	return (m_lights->count() > 0 ||
+			!(ccc4FEqual(m_ambientLight, kCCC4FBlack) ||
+			  ccc4FEqual(m_ambientLight, kCCC4FBlackTransparent)));
 }
 
 ccColor4F CC3Scene::getAmbientLight()
 {
-	return _ambientLight;
+	return m_ambientLight;
 }
 
 void CC3Scene::setAmbientLight( const ccColor4F& color )
 {
-	_ambientLight = color;
+	m_ambientLight = color;
 }
 
 ccColor4F CC3Scene::getTotalIllumination()
@@ -679,7 +679,7 @@ ccColor4F CC3Scene::getTotalIllumination()
 	ccColor4F totLgt = getAmbientLight();
 	//LogTrace(@"Start with scene ambient illumination %@", NSStringFromCCC4F(totLgt));
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _lights, obj )
+	CCARRAY_FOREACH( m_lights, obj )
 	{
 		CC3Light* lgt = (CC3Light*)obj;
 		if ( lgt->isVisible() )
@@ -701,7 +701,7 @@ void CC3Scene::updateRelativeLightIntensities()
 {
 	ccColor4F totLgt = getTotalIllumination();
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _lights, obj )
+	CCARRAY_FOREACH( m_lights, obj )
 	{
 		CC3Light* lgt = (CC3Light*)obj;
 		lgt->updateRelativeIntensityFrom( totLgt );
@@ -710,19 +710,19 @@ void CC3Scene::updateRelativeLightIntensities()
 
 CC3PerformanceStatistics* CC3Scene::getPerformanceStatistics()
 {
-	return _performanceStatistics;
+	return m_pPerformanceStatistics;
 }
 
 void CC3Scene::setPerformanceStatistics( CC3PerformanceStatistics* statistics )
 {
-	CC_SAFE_RELEASE(_performanceStatistics);
+	CC_SAFE_RELEASE(m_pPerformanceStatistics);
 	CC_SAFE_RETAIN(statistics);
-	_performanceStatistics = statistics;
+	m_pPerformanceStatistics = statistics;
 }
 
 bool CC3Scene::doesContainShadows()
 {
-	return _shadowVisitor != NULL; 
+	return m_pShadowVisitor != NULL; 
 }
 
 /** Template method to draw shadows cast by the lights. */
@@ -735,7 +735,7 @@ void CC3Scene::drawShadowsWithVisitor( CC3NodeDrawingVisitor* visitor )
 	visitor->getRenderSurface()->clearStencilContent();
 
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _lights, obj )
+	CCARRAY_FOREACH( m_lights, obj )
 	{
 		CC3Light* lgt = (CC3Light*)obj;
 		lgt->drawShadowsWithVisitor( visitor );
@@ -745,7 +745,7 @@ void CC3Scene::drawShadowsWithVisitor( CC3NodeDrawingVisitor* visitor )
 /** If this scene contains fog, configure it in the GL engine. */
 void CC3Scene::configureFogWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	visitor->getGL()->bindFog( _fog, visitor );
+	visitor->getGL()->bindFog( m_pFog, visitor );
 }
 
 /**
@@ -771,63 +771,63 @@ void CC3Scene::draw2DBillboardsWithVisitor( CC3NodeDrawingVisitor* visitor )
 
 CC3NodeDrawingVisitor* CC3Scene::getViewDrawingVisitor()
 {
-	return _viewDrawingVisitor;
+	return m_pViewDrawingVisitor;
 }
 
 void CC3Scene::setViewDrawingVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	CC_SAFE_RELEASE( _viewDrawingVisitor );
+	CC_SAFE_RELEASE( m_pViewDrawingVisitor );
 	CC_SAFE_RETAIN( visitor );
 
-	_viewDrawingVisitor = visitor;
+	m_pViewDrawingVisitor = visitor;
 }
 
 CC3NodeDrawingVisitor* CC3Scene::getEnvMapDrawingVisitor()
 {
-	if ( !_envMapDrawingVisitor ) 
+	if ( !m_pEnvMapDrawingVisitor ) 
 	{
 		setEnvMapDrawingVisitor( CC3NodeDrawingVisitor::visitor() );
-		_envMapDrawingVisitor->setIsDrawingEnvironmentMap( true );
-		_envMapDrawingVisitor->setCamera( CC3Camera::nodeWithName( "EnvMapCamera" ) );
-		_envMapDrawingVisitor->getCamera()->setFieldOfView( 90.0f );
+		m_pEnvMapDrawingVisitor->setIsDrawingEnvironmentMap( true );
+		m_pEnvMapDrawingVisitor->setCamera( CC3Camera::nodeWithName( "EnvMapCamera" ) );
+		m_pEnvMapDrawingVisitor->getCamera()->setFieldOfView( 90.0f );
 	}
-	return _envMapDrawingVisitor;
+	return m_pEnvMapDrawingVisitor;
 }
 
 void CC3Scene::setEnvMapDrawingVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	CC_SAFE_RELEASE(_envMapDrawingVisitor);
+	CC_SAFE_RELEASE(m_pEnvMapDrawingVisitor);
 	CC_SAFE_RETAIN( visitor );
-	_envMapDrawingVisitor = visitor;
+	m_pEnvMapDrawingVisitor = visitor;
 }
 
 CC3NodeDrawingVisitor* CC3Scene::getShadowVisitor()
 {
-	return _shadowVisitor;
+	return m_pShadowVisitor;
 }
 
 void CC3Scene::setShadowVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	CC_SAFE_RELEASE(_shadowVisitor);
+	CC_SAFE_RELEASE(m_pShadowVisitor);
 	CC_SAFE_RETAIN(visitor);
-	_shadowVisitor = visitor;
+	m_pShadowVisitor = visitor;
 }
 
 void CC3Scene::setDrawingSequenceVisitor( CC3NodeSequencerVisitor* visitor )
 {
-	CC_SAFE_RELEASE(_drawingSequenceVisitor);
+	CC_SAFE_RELEASE(m_pDrawingSequenceVisitor);
 	CC_SAFE_RETAIN(visitor);
-	_drawingSequenceVisitor = visitor;
+	m_pDrawingSequenceVisitor = visitor;
 }
 
 bool CC3Scene::isUsingDrawingSequence()
 {
-	return (_drawingSequencer != NULL); 
+	return (m_pDrawingSequencer != NULL); 
 }
 
 CC3NodeSequencer* CC3Scene::getDrawingSequencer()
 {
-	return _drawingSequencer; 
+	return m_pDrawingSequencer; 
 }
 
 /**
@@ -836,13 +836,13 @@ CC3NodeSequencer* CC3Scene::getDrawingSequencer()
  */
 void CC3Scene::setDrawingSequencer( CC3NodeSequencer* aNodeSequencer )
 {
-	if (aNodeSequencer == _drawingSequencer) 
+	if (aNodeSequencer == m_pDrawingSequencer) 
 		return;
-	CC_SAFE_RELEASE( _drawingSequencer );
-	_drawingSequencer = aNodeSequencer;
+	CC_SAFE_RELEASE( m_pDrawingSequencer );
+	m_pDrawingSequencer = aNodeSequencer;
 	CC_SAFE_RETAIN( aNodeSequencer );
 	
-	if (_drawingSequencer) 
+	if (m_pDrawingSequencer) 
 	{
 		CCArray* allNodes = flatten();
 
@@ -850,16 +850,16 @@ void CC3Scene::setDrawingSequencer( CC3NodeSequencer* aNodeSequencer )
 		CCARRAY_FOREACH( allNodes, obj )
 		{
 			CC3Node* aNode = (CC3Node*)obj;
-			_drawingSequencer->add( aNode, _drawingSequenceVisitor );
+			m_pDrawingSequencer->add( aNode, m_pDrawingSequenceVisitor );
 		}
 	}
 }
 
 void CC3Scene::updateDrawSequence()
 {
-	if (_drawingSequencer && _drawingSequencer->allowSequenceUpdates())
+	if (m_pDrawingSequencer && m_pDrawingSequencer->allowSequenceUpdates())
 	{
-		_drawingSequencer->updateSequenceWithVisitor( _drawingSequenceVisitor );
+		m_pDrawingSequencer->updateSequenceWithVisitor( m_pDrawingSequenceVisitor );
 		//LogTrace(@"%@ updated %@", self, [_drawingSequencer fullDescription]);
 	}
 }
@@ -871,9 +871,9 @@ void CC3Scene::updateDrawSequence()
  */
 void CC3Scene::descendantDidModifySequencingCriteria( CC3Node* aNode )
 {
-	if (_drawingSequencer)
-		if (_drawingSequencer->remove( aNode, _drawingSequenceVisitor))
-			_drawingSequencer->add( aNode, _drawingSequenceVisitor );
+	if (m_pDrawingSequencer)
+		if (m_pDrawingSequencer->remove( aNode, m_pDrawingSequenceVisitor))
+			m_pDrawingSequencer->add( aNode, m_pDrawingSequenceVisitor );
 }
 
 CC3Scene* CC3Scene::getScene()
@@ -899,23 +899,23 @@ void CC3Scene::didAddDescendant( CC3Node* aNode )
 	{
 		CC3Node* addedNode = (CC3Node*)obj;
 		// Attempt to add the node to the draw sequence sorter.
-		_drawingSequencer->add( addedNode, _drawingSequenceVisitor );
+		m_pDrawingSequencer->add( addedNode, m_pDrawingSequenceVisitor );
 
 		// If the node is a light, add it to the collection of lights
 		if (addedNode->isLight())
-			_lights->addObject( addedNode );
+			m_lights->addObject( addedNode );
 
 		// If the node is a light probe, add it to the collection of light probes
 		if (addedNode->isLightProbe())
-			_lightProbes->addObject( addedNode );
+			m_lightProbes->addObject( addedNode );
 
 		// if the node is the first camera to be added, make it the active camera.
-		if (addedNode->isCamera() && !_activeCamera) 
+		if (addedNode->isCamera() && !m_pActiveCamera) 
 			setActiveCamera( (CC3Camera*)addedNode );
 
 		// If the node is a billboard, add it to the collection of billboards
 		if (addedNode->isBillboard()) 
-			_billboards->addObject( addedNode );
+			m_billboards->addObject( addedNode );
 
 		// If the node is a shadow, check if we need to add the shadow visitor
 		if (addedNode->isShadowVolume()) 
@@ -941,19 +941,19 @@ void CC3Scene::didRemoveDescendant( CC3Node* aNode )
 	{
 		CC3Node* removedNode = (CC3Node*)obj;
 		// Attempt to remove the node to the draw sequence sorter.
-		_drawingSequencer->remove( removedNode, _drawingSequenceVisitor );
+		m_pDrawingSequencer->remove( removedNode, m_pDrawingSequenceVisitor );
 
 		// If the node is a light, remove it from the collection of lights
 		if (removedNode->isLight())
-			_lights->removeObject( removedNode );
+			m_lights->removeObject( removedNode );
 
 		// If the node is a light probe, remove it from the collection of light probes
 		if (removedNode->isLightProbe())
-			_lightProbes->removeObject( removedNode );
+			m_lightProbes->removeObject( removedNode );
 
 		// If the node is a billboard, remove it from the collection of billboards
 		if (removedNode->isBillboard()) 
-			_billboards->removeObject( removedNode );
+			m_billboards->removeObject( removedNode );
 
 		// If the node is a shadow, check if we need to remove the shadow visitor
 		if (removedNode->isShadowVolume()) 
@@ -970,16 +970,16 @@ void CC3Scene::checkNeedShadowVisitor()
 	bool needsShadowVisitor = false;
 
 	CCObject* obj = NULL;
-	CCARRAY_FOREACH( _lights, obj )
+	CCARRAY_FOREACH( m_lights, obj )
 	{
 		CC3Light* lgt = (CC3Light*)obj;
 		needsShadowVisitor |= lgt->hasShadows();
 	}
 
-	if (needsShadowVisitor && !_shadowVisitor) 
+	if (needsShadowVisitor && !m_pShadowVisitor) 
 		setShadowVisitor( CC3ShadowDrawingVisitor::visitor() );
 
-	if (!needsShadowVisitor && _shadowVisitor) 
+	if (!needsShadowVisitor && m_pShadowVisitor) 
 		setShadowVisitor( NULL );
 }
 
@@ -1006,8 +1006,8 @@ void CC3Scene::pickNodeFromTapAt( const CCPoint& tPoint )
 
 void CC3Scene::pickNodeFromTouchEvent( GLuint tType, const CCPoint& tPoint )
 {
-	if ( _touchedNodePicker )
-		_touchedNodePicker->pickNodeFromTouchEvent( tType, tPoint );
+	if ( m_pTouchedNodePicker )
+		m_pTouchedNodePicker->pickNodeFromTouchEvent( tType, tPoint );
 }
 
 /** Default does nothing. Subclasses that handle touch events will override. */
@@ -1018,55 +1018,55 @@ void CC3Scene::nodeSelected( CC3Node* aNode, GLuint touchType, const CCPoint& to
 
 unsigned long CC3Scene::getElapsedTimeSinceOpened()
 {
-	return _elapsedTimeSinceOpened;
+	return m_elapsedTimeSinceOpened;
 }
 
 CCArray* CC3Scene::getLightProbes()
 {
-	return _lightProbes;
+	return m_lightProbes;
 }
 
 CC3TouchedNodePicker::CC3TouchedNodePicker()
 {
-	_scene = NULL;				// weak reference
-	_pickVisitor = NULL;
-	_pickedNode = NULL;;
+	m_pScene = NULL;				// weak reference
+	m_pPickVisitor = NULL;
+	m_pPickedNode = NULL;;
 }
 
 CC3TouchedNodePicker::~CC3TouchedNodePicker()
 {
-	_scene = NULL;				// weak reference
-	CC_SAFE_RELEASE( _pickVisitor );
-	CC_SAFE_RELEASE( _pickedNode );
+	m_pScene = NULL;				// weak reference
+	CC_SAFE_RELEASE( m_pPickVisitor );
+	CC_SAFE_RELEASE( m_pPickedNode );
 }
 
 CC3NodePickingVisitor* CC3TouchedNodePicker::getPickVisitor()
 {
-	return _pickVisitor;
+	return m_pPickVisitor;
 }
 
 void CC3TouchedNodePicker::setPickVisitor( CC3NodePickingVisitor* visitor )
 {
-	CC_SAFE_RELEASE( _pickVisitor );
+	CC_SAFE_RELEASE( m_pPickVisitor );
 	CC_SAFE_RETAIN( visitor );
-	_pickVisitor = visitor;
+	m_pPickVisitor = visitor;
 }
 
 CCPoint	CC3TouchedNodePicker::getTouchPoint()
 {
-	return _touchPoint;
+	return m_touchPoint;
 }
 
 CC3Node* CC3TouchedNodePicker::getPickedNode()
 {
-	return _pickedNode;
+	return m_pPickedNode;
 }
 
 void CC3TouchedNodePicker::setPickedNode( CC3Node* node )
 {
 	CC_SAFE_RETAIN( node );
-	CC_SAFE_RELEASE( _pickedNode );
-	_pickedNode = node;
+	CC_SAFE_RELEASE( m_pPickedNode );
+	m_pPickedNode = node;
 }
 
 void CC3TouchedNodePicker::pickNodeFromTouchEvent( GLuint tType, const CCPoint& tPoint )
@@ -1076,15 +1076,15 @@ void CC3TouchedNodePicker::pickNodeFromTouchEvent( GLuint tType, const CCPoint& 
 
 	/*@synchronized(self)*/ 
 	{
-		if (_queuedTouchCount == 0 || tType != _touchQueue[_queuedTouchCount - 1] ) {
-			if (_queuedTouchCount == kCC3TouchQueueLength) _queuedTouchCount = 0;
-			_touchQueue[_queuedTouchCount++] = tType;
-			_wasTouched = true;
+		if (m_queuedTouchCount == 0 || tType != m_touchQueue[m_queuedTouchCount - 1] ) {
+			if (m_queuedTouchCount == kCC3TouchQueueLength) m_queuedTouchCount = 0;
+			m_touchQueue[m_queuedTouchCount++] = tType;
+			m_wasTouched = true;
 		}
 	}
 
 	// Update the touch location, even if the touch type is the same as the previous touch.
-	_touchPoint = tPoint;
+	m_touchPoint = tPoint;
 
 	//LogTrace(@"%@ touched %@ at %@. Queue length now %u.", self, NSStringFromTouchType(tType),
 	//		 NSStringFromCGPoint(_touchPoint), _queuedTouchCount);
@@ -1092,47 +1092,47 @@ void CC3TouchedNodePicker::pickNodeFromTouchEvent( GLuint tType, const CCPoint& 
 
 void CC3TouchedNodePicker::pickTouchedNodeWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( !(_wasTouched || _scene->shouldDisplayPickingRender()) ) 
+	if ( !(m_wasTouched || m_pScene->shouldDisplayPickingRender()) ) 
 		return;
 	
-	_wasPicked = _wasTouched;
-	_wasTouched = false;
+	m_wasPicked = m_wasTouched;
+	m_wasTouched = false;
 	
-	if ( _pickVisitor )
+	if ( m_pPickVisitor )
 	{
 		// Draw the scene for node picking. Don't bother drawing the backdrop.
-		_pickVisitor->alignShotWith( visitor );
-		_pickVisitor->visit( _scene );
+		m_pPickVisitor->alignShotWith( visitor );
+		m_pPickVisitor->visit( m_pScene );
 
-		setPickedNode( _pickVisitor->getPickedNode() );
+		setPickedNode( m_pPickVisitor->getPickedNode() );
 	}
 }
 
 void CC3TouchedNodePicker::dispatchPickedNode()
 {
-	if ( !_wasPicked ) 
+	if ( !m_wasPicked ) 
 		return;
 
-	_wasPicked = false;
+	m_wasPicked = false;
 		
 	GLuint touchesToDispatch[kCC3TouchQueueLength];
 
 	GLuint touchCount;
 	/*@synchronized(self) */
 	{
-		touchCount = _queuedTouchCount;
-		memcpy( touchesToDispatch, _touchQueue, (touchCount * sizeof(GLuint)) );
-		_queuedTouchCount = 0;
+		touchCount = m_queuedTouchCount;
+		memcpy( touchesToDispatch, m_touchQueue, (touchCount * sizeof(GLuint)) );
+		m_queuedTouchCount = 0;
 	}
 
-	if ( _pickedNode )
+	if ( m_pPickedNode )
 	{
 		for (GLuint i = 0; i < touchCount; i++) 
 		{
 			//LogTrace(@"%@ dispatching %@ with picked node %@ at %@ touched node %@",
 			//		 self, NSStringFromTouchType(_touchQueue[i]), _pickedNode.touchableNode,
 			//		 NSStringFromCGPoint(_touchPoint), _pickedNode);
-			_scene->nodeSelected( _pickedNode->getTouchableNode(), _touchQueue[i], _touchPoint );
+			m_pScene->nodeSelected( m_pPickedNode->getTouchableNode(), m_touchQueue[i], m_touchPoint );
 		}
 	}
 	
@@ -1147,13 +1147,13 @@ void CC3TouchedNodePicker::init()
 
 void CC3TouchedNodePicker::initOnScene( CC3Scene* aCC3Scene )
 {
-	_scene = aCC3Scene;					// weak reference
+	m_pScene = aCC3Scene;					// weak reference
 	setPickVisitor( CC3NodePickingVisitor::visitor() );
-	_touchPoint = CCPointZero;
-	_wasTouched = false;
-	_wasPicked = false;
-	_pickedNode = NULL;
-	_queuedTouchCount = 0;
+	m_touchPoint = CCPointZero;
+	m_wasTouched = false;
+	m_wasPicked = false;
+	m_pPickedNode = NULL;
+	m_queuedTouchCount = 0;
 }
 
 CC3TouchedNodePicker* CC3TouchedNodePicker::pickerOnScene( CC3Scene* aCC3Scene )

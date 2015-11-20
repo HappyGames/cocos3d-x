@@ -94,8 +94,8 @@ public:
     static CC3Bone*         create();
 
 protected:
-	CC3Matrix*				_skeletalTransformMatrix;
-	CC3Matrix*				_restPoseSkeletalTransformMatrixInverted;
+	CC3Matrix*				m_skeletalTransformMatrix;
+	CC3Matrix*				m_restPoseSkeletalTransformMatrixInverted;
 };
 
 NS_COCOS3D_END

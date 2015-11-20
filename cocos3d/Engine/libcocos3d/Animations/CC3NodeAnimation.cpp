@@ -43,17 +43,17 @@ CC3NodeAnimation::~CC3NodeAnimation()
 
 GLuint CC3NodeAnimation::getFrameCount()
 {
-	return _frameCount;
+	return m_frameCount;
 }
 
 bool CC3NodeAnimation::shouldInterpolate()
 {
-	return _shouldInterpolate;
+	return m_shouldInterpolate;
 }
 
 void CC3NodeAnimation::setShouldInterpolate( bool inter )
 {
-	_shouldInterpolate = inter;
+	m_shouldInterpolate = inter;
 }
 
 bool CC3NodeAnimation::isAnimatingLocation()
@@ -97,8 +97,8 @@ void CC3NodeAnimation::setInterpolationEpsilon( float epsilon )
 
 void CC3NodeAnimation::initWithFrameCount( GLuint numFrames )
 {
-	_frameCount = numFrames;
-	_shouldInterpolate = true;
+	m_frameCount = numFrames;
+	m_shouldInterpolate = true;
 }
 
 CC3NodeAnimation* CC3NodeAnimation::animationWithFrameCount( GLuint numFrames )
@@ -123,7 +123,7 @@ void CC3NodeAnimation::establishFrameAt( float t, CC3NodeAnimationState* animSta
 	// If we should interpolate, and we're not at the last frame, calc the interpolation amount.
 	// We only bother interpolating if difference is large enough. If close enough to this frame
 	// or the next frame, just use the appropriate frame outright.
-	if ( _shouldInterpolate && (frameIndex < _frameCount - 1) ) 
+	if ( m_shouldInterpolate && (frameIndex < m_frameCount - 1) ) 
 	{
 		float frameTime = timeAtFrame( frameIndex );
 		float nextFrameTime = timeAtFrame( frameIndex + 1 );
@@ -203,7 +203,7 @@ void CC3NodeAnimation::establishScaleAtFrame( GLuint frameIndex, GLfloat frameIn
 float CC3NodeAnimation::timeAtFrame( GLuint frameIndex )
 {
 	GLfloat thisIdx = (GLfloat)frameIndex;					// floatify
-	GLfloat lastIdx = (GLfloat)(MAX(_frameCount - 1, 1));		// floatify & ensure not zero
+	GLfloat lastIdx = (GLfloat)(MAX(m_frameCount - 1, 1));		// floatify & ensure not zero
 	return CLAMP(thisIdx / lastIdx, 0.0f, 1.0f);
 }
 
@@ -214,7 +214,7 @@ float CC3NodeAnimation::timeAtFrame( GLuint frameIndex )
  */
 GLuint CC3NodeAnimation::getFrameIndexAt( float t )
 {
-	return (GLuint)((_frameCount - 1) * t); 
+	return (GLuint)((m_frameCount - 1) * t); 
 }
 
 /**

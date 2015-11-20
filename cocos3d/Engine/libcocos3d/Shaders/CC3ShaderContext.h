@@ -289,12 +289,12 @@ public:
 	CCObject*					copyWithZone( CCZone* zone );
 
 protected:
-	CC3ShaderProgram*			_program;
-	CC3ShaderProgram*			_pureColorProgram;
-	CCArray*					_uniformOverrides;
-	CCDictionary*				_uniformOverridesByName;
-	bool						_shouldEnforceCustomOverrides : 1;
-	bool						_shouldEnforceVertexAttributes : 1;
+	CC3ShaderProgram*			m_pProgram;
+	CC3ShaderProgram*			m_pPureColorProgram;
+	CCArray*					m_uniformOverrides;
+	CCDictionary*				m_uniformOverridesByName;
+	bool						m_shouldEnforceCustomOverrides : 1;
+	bool						m_shouldEnforceVertexAttributes : 1;
 };
 
 // Legacy naming support

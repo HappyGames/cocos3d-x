@@ -1229,17 +1229,17 @@ public:
 	static CC3Camera*			nodeWithName( const std::string& name );
 
 protected:
-	CC3Frustum*					_frustum;
-	CC3Viewport					_viewport;
-	GLfloat						_fieldOfView;
-	CC3FieldOfViewOrientation	_fieldOfViewOrientation;
-	CC3UIInterfaceOrientation	_fieldOfViewAspectOrientation;
-	GLfloat						_nearClippingDistance;
-	GLfloat						_farClippingDistance;
-	bool						_isOpen : 1;
-	bool						_hasInfiniteDepthOfField : 1;
-	bool						_isProjectionDirty : 1;
-	bool						_shouldClipToViewport : 1;
+	CC3Frustum*					m_frustum;
+	CC3Viewport					m_viewport;
+	GLfloat						m_fieldOfView;
+	CC3FieldOfViewOrientation	m_fieldOfViewOrientation;
+	CC3UIInterfaceOrientation	m_fieldOfViewAspectOrientation;
+	GLfloat						m_nearClippingDistance;
+	GLfloat						m_farClippingDistance;
+	bool						m_isOpen : 1;
+	bool						m_hasInfiniteDepthOfField : 1;
+	bool						m_isProjectionDirty : 1;
+	bool						m_shouldClipToViewport : 1;
 };
 
 /**
@@ -1391,18 +1391,18 @@ protected:
 	void						markProjectionDirty();
 
 protected:
-	CC3Camera*					_camera;
-	CC3Matrix*					_finiteProjectionMatrix;
-	CC3Matrix*					_infiniteProjectionMatrix;
-	CC3Plane					_planes[6];
-	CC3Vector					_vertices[8];
-	GLfloat						_top;
-	GLfloat						_bottom;
-	GLfloat						_left;
-	GLfloat						_right;
-	GLfloat						_near;
-	GLfloat						_far;
-	bool						_isUsingParallelProjection : 1;
+	CC3Camera*					m_camera;
+	CC3Matrix*					m_finiteProjectionMatrix;
+	CC3Matrix*					m_infiniteProjectionMatrix;
+	CC3Plane					m_planes[6];
+	CC3Vector					m_vertices[8];
+	GLfloat						m_top;
+	GLfloat						m_bottom;
+	GLfloat						m_left;
+	GLfloat						m_right;
+	GLfloat						m_near;
+	GLfloat						m_far;
+	bool						m_isUsingParallelProjection : 1;
 };
 
 NS_COCOS3D_END

@@ -37,7 +37,7 @@ CC3Identifiable::CC3Identifiable()
 {
 	m_nTag = 0;
 	m_sName = "";
-	_userData = NULL;
+	m_userData = NULL;
 }
 
 CC3Identifiable::~CC3Identifiable()
@@ -138,7 +138,7 @@ bool CC3Identifiable::shouldIncludeInDeepCopy()
 
 void CC3Identifiable::initUserData()
 {
-	_userData = NULL; 
+	m_userData = NULL; 
 }
 
 void CC3Identifiable::copyUserDataFrom( CC3Identifiable* another )
@@ -148,12 +148,12 @@ void CC3Identifiable::copyUserDataFrom( CC3Identifiable* another )
 
 void* CC3Identifiable::getUserData()
 {
-	return _userData;
+	return m_userData;
 }
 
 void CC3Identifiable::setUserData( void* data )
 {
-	_userData = data;
+	m_userData = data;
 }
 
 // Class variable tracking the most recent tag value assigned. This class variable is 

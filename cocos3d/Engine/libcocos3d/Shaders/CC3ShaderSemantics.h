@@ -366,9 +366,9 @@ public:
 	virtual void				setSemanticIndex( GLuint index );
 
 protected:
-	std::string					_name;
-	GLenum						_semantic : 16;
-	GLuint						_semanticIndex : 8;
+	std::string					m_name;
+	GLenum						m_semantic : 16;
+	GLuint						m_semanticIndex : 8;
 };
 
 /**
@@ -509,7 +509,7 @@ public:
 	void						init();
 
 protected:
-	CCDictionary*				_varConfigsByName;
+	CCDictionary*				m_varConfigsByName;
 };
 
 

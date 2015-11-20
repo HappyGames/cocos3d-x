@@ -440,9 +440,9 @@ protected:
 	static void					ensureCache();
 
 protected:
-	CC3ShaderSourceCode*		_shaderPreamble;
-	GLuint						_shaderID;
-	bool						_wasLoadedFromFile : 1;
+	CC3ShaderSourceCode*		m_pShaderPreamble;
+	GLuint						m_shaderID;
+	bool						m_wasLoadedFromFile : 1;
 };
 
 /** A CC3Shader used as a vertex shader within a shader program. */
@@ -1202,21 +1202,21 @@ protected:
 	static void					ensureCache();
 
 protected:
-	CC3VertexShader*			_vertexShader;
-	CC3FragmentShader*			_fragmentShader;
-	CC3ShaderSemanticsDelegate* _semanticDelegate;
-	CCArray*					_attributes;
-	CCArray*					_uniformsSceneScope;
-	CCArray*					_uniformsNodeScope;
-	CCArray*					_uniformsDrawScope;
-	GLuint						_programID;
-	GLint						_maxUniformNameLength;
-	GLint						_maxAttributeNameLength;
-	GLuint						_texture2DCount;
-	GLuint						_textureCubeCount;
-	GLuint						_textureLightProbeCount;
-	bool						_shouldAllowDefaultVariableValues : 1;
-	bool						_isSceneScopeDirty : 1;
+	CC3VertexShader*			m_pVertexShader;
+	CC3FragmentShader*			m_pFragmentShader;
+	CC3ShaderSemanticsDelegate* m_pSemanticDelegate;
+	CCArray*					m_attributes;
+	CCArray*					m_uniformsSceneScope;
+	CCArray*					m_uniformsNodeScope;
+	CCArray*					m_uniformsDrawScope;
+	GLuint						m_programID;
+	GLint						m_maxUniformNameLength;
+	GLint						m_maxAttributeNameLength;
+	GLuint						m_texture2DCount;
+	GLuint						m_textureCubeCount;
+	GLuint						m_textureLightProbeCount;
+	bool						m_shouldAllowDefaultVariableValues : 1;
+	bool						m_isSceneScopeDirty : 1;
 };
 
 /**
@@ -1493,7 +1493,7 @@ protected:
 	static bool					lineContainsImportDirective( const std::string& srcLine );
 
 protected:
-	bool						_wasLoadedFromFile : 1;
+	bool						m_wasLoadedFromFile : 1;
 };
 
 /**
@@ -1514,7 +1514,7 @@ public:
 	void						initWithTag( GLuint tag, const std::string& name );
 
 protected:
-	std::string					_sourceCodeString;
+	std::string					m_sourceCodeString;
 };
 
 /**
@@ -1538,7 +1538,7 @@ public:
 	void						initWithTag( GLuint tag, const std::string& name );
 
 protected:
-	CCArray*					_sourceCodeLines;
+	CCArray*					m_sourceCodeLines;
 };
 
 /**
@@ -1579,7 +1579,7 @@ public:
 	void						initWithTag( GLuint tag, const std::string& name );
 
 protected:
-	CCArray*					_subsections;
+	CCArray*					m_subsections;
 };
 
 /**
@@ -1606,7 +1606,7 @@ public:
 	static CC3ShaderSourceCodeVisitor* visitor();
 
 protected:
-	std::map<std::string, bool>	_sourceCodeNamesTraversed;
+	std::map<std::string, bool>	m_sourceCodeNamesTraversed;
 };
 
 /** 
@@ -1635,7 +1635,7 @@ public:
 	void						addSourceCompilationStringCount( GLuint sourceStringCount );
 
 protected:
-	GLuint						_sourceCompilationStringCount;
+	GLuint						m_sourceCompilationStringCount;
 };
 
 /**
@@ -1667,7 +1667,7 @@ public:
 	static CC3ShaderSourceCodeCompilationStringVisitor* visitorWithCompilationStrings( const GLchar** sourceCompilationStrings );
 
 protected:
-	const GLchar**				_sourceCompilationStrings;
+	const GLchar**				m_sourceCompilationStrings;
 };
 
 /**
@@ -1762,9 +1762,9 @@ public:
 	static CC3ShaderSourceCodeLineNumberLocalizingVisitor* visitorWithLineNumber( GLuint lineNumber );
 
 protected:
-	CC3ShaderSourceCode*		_localizedSourceCode;
-	CCArray*					_lineNumberOffsets;
-	GLuint						_lineNumber;
+	CC3ShaderSourceCode*		m_localizedSourceCode;
+	CCArray*					m_lineNumberOffsets;
+	GLuint						m_lineNumber;
 };
 
 /**
@@ -1823,9 +1823,9 @@ public:
 	void						initWithTag( GLuint aTag, const std::string& aName );
 
 protected:
-	CC3RenderSurface*			_prewarmingSurface;
-	CC3MeshNode*				_prewarmingMeshNode;
-	CC3NodeDrawingVisitor*		_drawingVisitor;
+	CC3RenderSurface*			m_prewarmingSurface;
+	CC3MeshNode*				m_prewarmingMeshNode;
+	CC3NodeDrawingVisitor*		m_drawingVisitor;
 };
 
 NS_COCOS3D_END

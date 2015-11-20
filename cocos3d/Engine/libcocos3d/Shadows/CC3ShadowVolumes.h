@@ -322,17 +322,17 @@ public:
 	bool						isTouchable();
 
 protected:
-	CC3Light*					_light;
-	GLushort					_shadowLagFactor;
-	GLushort					_shadowLagCount;
-	GLfloat						_shadowVolumeVertexOffsetFactor;
-	GLfloat						_shadowExpansionLimitFactor;
-	bool						_isShadowDirty : 1;
-	bool						_shouldDrawTerminator : 1;
-	bool						_shouldShadowFrontFaces : 1;
-	bool						_shouldShadowBackFaces : 1;
-	bool						_useDepthFailAlgorithm : 1;
-	bool						_shouldAddEndCapsOnlyWhenNeeded : 1;
+	CC3Light*					m_pLight;
+	GLushort					m_shadowLagFactor;
+	GLushort					m_shadowLagCount;
+	GLfloat						m_shadowVolumeVertexOffsetFactor;
+	GLfloat						m_shadowExpansionLimitFactor;
+	bool						m_isShadowDirty : 1;
+	bool						m_shouldDrawTerminator : 1;
+	bool						m_shouldShadowFrontFaces : 1;
+	bool						m_shouldShadowBackFaces : 1;
+	bool						m_useDepthFailAlgorithm : 1;
+	bool						m_shouldAddEndCapsOnlyWhenNeeded : 1;
 };
 
 /**

@@ -33,28 +33,28 @@ NS_COCOS3D_BEGIN
 
 CC3Shader::CC3Shader()
 {
-	_shaderPreamble = NULL;
+	m_pShaderPreamble = NULL;
 }
 
 CC3Shader::~CC3Shader()
 {
 	remove();
 	deleteGLShader();
-	CC_SAFE_RELEASE( _shaderPreamble );
+	CC_SAFE_RELEASE( m_pShaderPreamble );
 }
 
 GLuint CC3Shader::getShaderID()
 {
-	if ( !_shaderID ) 
-		_shaderID = CC3OpenGL::sharedGL()->createShader( getShaderType() );
+	if ( !m_shaderID ) 
+		m_shaderID = CC3OpenGL::sharedGL()->createShader( getShaderType() );
 
-	return _shaderID;
+	return m_shaderID;
 }
 
 void CC3Shader::deleteGLShader()
 {
-	CC3OpenGL::sharedGL()->deleteShader( _shaderID );
-	_shaderID = 0;
+	CC3OpenGL::sharedGL()->deleteShader( m_shaderID );
+	m_shaderID = 0;
 }
 
 GLenum CC3Shader::getShaderType()
@@ -96,7 +96,7 @@ void CC3Shader::compileFromSourceCode( CC3ShaderSourceCode* shSrcCode )
 {
 	CCAssert(shSrcCode, "CC3Shader cannot complile NULL GLSL source.");
 	
-	_wasLoadedFromFile = shSrcCode->wasLoadedFromFile();
+	m_wasLoadedFromFile = shSrcCode->wasLoadedFromFile();
 
 	// Allocate an array of source code strings
 	GLuint scCnt = getShaderPreamble()->getSourceStringCount() + shSrcCode->getSourceStringCount();
@@ -147,14 +147,14 @@ void CC3Shader::compileFromSourceCodeString( const std::string& glslSource )
 
 CC3ShaderSourceCode* CC3Shader::getShaderPreamble()
 {
-	return _shaderPreamble;
+	return m_pShaderPreamble;
 }
 
 void CC3Shader::setShaderPreamble( CC3ShaderSourceCode* shaderPreamble )
 {
 	CC_SAFE_RETAIN( shaderPreamble );
-	CC_SAFE_RELEASE( _shaderPreamble );
-	_shaderPreamble = shaderPreamble;
+	CC_SAFE_RELEASE( m_pShaderPreamble );
+	m_pShaderPreamble = shaderPreamble;
 }
 
 /**
@@ -234,8 +234,8 @@ void CC3Shader::initWithTag( GLuint aTag, const std::string& aName )
 	CCAssert(!aName.empty(), "CC3Shader cannot be created without a name");
 	super::initWithTag( aTag, aName );
 	{
-		_shaderID = 0;
-		_wasLoadedFromFile = false;
+		m_shaderID = 0;
+		m_wasLoadedFromFile = false;
 		setShaderPreamble( defaultShaderPreamble() );
 	}
 }
@@ -262,7 +262,7 @@ CC3Shader* CC3Shader::shaderFromSourceCode( CC3ShaderSourceCode* shSrcCode )
 
 bool CC3Shader::wasLoadedFromFile()
 {
-	return _wasLoadedFromFile;
+	return m_wasLoadedFromFile;
 }
 
 void CC3Shader::initWithName( const std::string& name, const std::string& glslSource )
@@ -471,12 +471,12 @@ CC3FragmentShader* CC3FragmentShader::shaderWithName( const std::string& name, c
 
 CC3ShaderProgram::CC3ShaderProgram()
 {
-	_attributes = NULL;
-	_uniformsSceneScope = NULL;
-	_uniformsNodeScope = NULL;
-	_uniformsDrawScope = NULL;
-	_semanticDelegate = NULL;
-	_programID = 0;
+	m_attributes = NULL;
+	m_uniformsSceneScope = NULL;
+	m_uniformsNodeScope = NULL;
+	m_uniformsDrawScope = NULL;
+	m_pSemanticDelegate = NULL;
+	m_programID = 0;
 }
 
 CC3ShaderProgram::~CC3ShaderProgram()
@@ -489,21 +489,21 @@ CC3ShaderProgram::~CC3ShaderProgram()
 
 	deleteGLProgram();
 
-	if ( _attributes )
-		_attributes->removeAllObjects();
-	CC_SAFE_RELEASE( _attributes );
+	if ( m_attributes )
+		m_attributes->removeAllObjects();
+	CC_SAFE_RELEASE( m_attributes );
 
-	if ( _uniformsSceneScope )
-		_uniformsSceneScope->removeAllObjects();
-	CC_SAFE_RELEASE( _uniformsSceneScope );
+	if ( m_uniformsSceneScope )
+		m_uniformsSceneScope->removeAllObjects();
+	CC_SAFE_RELEASE( m_uniformsSceneScope );
 
-	if ( _uniformsNodeScope )
-		_uniformsNodeScope->removeAllObjects();
-	CC_SAFE_RELEASE( _uniformsNodeScope );
+	if ( m_uniformsNodeScope )
+		m_uniformsNodeScope->removeAllObjects();
+	CC_SAFE_RELEASE( m_uniformsNodeScope );
 
-	if ( _uniformsDrawScope )
-		_uniformsDrawScope->removeAllObjects();
-	CC_SAFE_RELEASE( _uniformsDrawScope );
+	if ( m_uniformsDrawScope )
+		m_uniformsDrawScope->removeAllObjects();
+	CC_SAFE_RELEASE( m_uniformsDrawScope );
 }
 
 static CC3Cache* _programCache = NULL;
@@ -519,74 +519,74 @@ void CC3ShaderProgram::ensureCache()
 
 GLuint CC3ShaderProgram::getProgramID()
 {
-	if ( !_programID ) 
-		_programID = CC3OpenGL::sharedGL()->createShaderProgram();
-	return _programID;
+	if ( !m_programID ) 
+		m_programID = CC3OpenGL::sharedGL()->createShaderProgram();
+	return m_programID;
 }
 
 void CC3ShaderProgram::deleteGLProgram()
 {
-	CC3OpenGL::sharedGL()->deleteShaderProgram( _programID );
-	_programID = 0;
+	CC3OpenGL::sharedGL()->deleteShaderProgram( m_programID );
+	m_programID = 0;
 }
 
 CC3VertexShader* CC3ShaderProgram::getVertexShader()
 {
-	return _vertexShader; 
+	return m_pVertexShader; 
 }
 
 void CC3ShaderProgram::setVertexShader( CC3VertexShader* vertexShader )
 {
-	if (vertexShader == _vertexShader) 
+	if (vertexShader == m_pVertexShader) 
 		return;
 	
-	detachShader( _vertexShader );
+	detachShader( m_pVertexShader );
 	
-	CC_SAFE_RELEASE( _vertexShader );
-	_vertexShader = vertexShader;
+	CC_SAFE_RELEASE( m_pVertexShader );
+	m_pVertexShader = vertexShader;
 	CC_SAFE_RETAIN( vertexShader );
 	
-	attachShader( _vertexShader );
+	attachShader( m_pVertexShader );
 }
 
 CC3FragmentShader* CC3ShaderProgram::getFragmentShader()
 {
-	return _fragmentShader; 
+	return m_pFragmentShader; 
 }
 
 void CC3ShaderProgram::setFragmentShader( CC3FragmentShader* fragmentShader )
 {
-	if (fragmentShader == _fragmentShader) 
+	if (fragmentShader == m_pFragmentShader) 
 		return;
 	
-	detachShader( _fragmentShader );
+	detachShader( m_pFragmentShader );
 	
-	CC_SAFE_RELEASE( _fragmentShader );
-	_fragmentShader = fragmentShader;
-	CC_SAFE_RETAIN(_fragmentShader);
+	CC_SAFE_RELEASE( m_pFragmentShader );
+	m_pFragmentShader = fragmentShader;
+	CC_SAFE_RETAIN(m_pFragmentShader);
 
-	attachShader( _fragmentShader );
+	attachShader( m_pFragmentShader );
 }
 
 GLint CC3ShaderProgram::getMaxUniformNameLength()
 {
-	return _maxUniformNameLength;
+	return m_maxUniformNameLength;
 }
 
 GLint CC3ShaderProgram::getMaxAttributeNameLength()
 {
-	return _maxAttributeNameLength;
+	return m_maxAttributeNameLength;
 }
 
 CC3ShaderSemanticsDelegate* CC3ShaderProgram::getSemanticDelegate()
 {
-	return _semanticDelegate;
+	return m_pSemanticDelegate;
 }
 
 void CC3ShaderProgram::setSemanticDelegate( CC3ShaderSemanticsDelegate* pDelegate )
 {
-	CC_SAFE_RELEASE( _semanticDelegate );
-	_semanticDelegate = pDelegate;
+	CC_SAFE_RELEASE( m_pSemanticDelegate );
+	m_pSemanticDelegate = pDelegate;
 	CC_SAFE_RETAIN( pDelegate );
 }
 
@@ -604,15 +604,15 @@ void CC3ShaderProgram::detachShader( CC3Shader* shader )
 
 GLuint CC3ShaderProgram::getUniformCount()
 {
-	return (GLuint)(_uniformsSceneScope->count() + _uniformsNodeScope->count() + _uniformsDrawScope->count());
+	return (GLuint)(m_uniformsSceneScope->count() + m_uniformsNodeScope->count() + m_uniformsDrawScope->count());
 }
 
 CCArray* CC3ShaderProgram::getUniforms()
 {
 	CCArray* uniforms = CCArray::createWithCapacity( getUniformCount() );
-	uniforms->addObjectsFromArray( _uniformsSceneScope );
-	uniforms->addObjectsFromArray( _uniformsNodeScope );
-	uniforms->addObjectsFromArray( _uniformsDrawScope );
+	uniforms->addObjectsFromArray( m_uniformsSceneScope );
+	uniforms->addObjectsFromArray( m_uniformsNodeScope );
+	uniforms->addObjectsFromArray( m_uniformsDrawScope );
 	return uniforms;
 }
 
@@ -620,19 +620,19 @@ GLuint CC3ShaderProgram::getUniformStorageElementCount()
 {
 	GLuint seCnt = 0;
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformsSceneScope, pObj )
+	CCARRAY_FOREACH( m_uniformsSceneScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		seCnt  += var->getStorageElementCount();
 	}
 
-	CCARRAY_FOREACH( _uniformsNodeScope, pObj )
+	CCARRAY_FOREACH( m_uniformsNodeScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		seCnt  += var->getStorageElementCount();
 	}
 
-	CCARRAY_FOREACH( _uniformsDrawScope, pObj )
+	CCARRAY_FOREACH( m_uniformsDrawScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		seCnt  += var->getStorageElementCount();
@@ -644,21 +644,21 @@ GLuint CC3ShaderProgram::getUniformStorageElementCount()
 CC3GLSLUniform* CC3ShaderProgram::getUniformNamed( const std::string& varName )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformsSceneScope, pObj )
+	CCARRAY_FOREACH( m_uniformsSceneScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getName() == varName )
 			return var;
 	}
 
-	CCARRAY_FOREACH( _uniformsNodeScope, pObj )
+	CCARRAY_FOREACH( m_uniformsNodeScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getName() == varName )
 			return var;
 	}
 
-	CCARRAY_FOREACH( _uniformsDrawScope, pObj )
+	CCARRAY_FOREACH( m_uniformsDrawScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getName() == varName )
@@ -671,21 +671,21 @@ CC3GLSLUniform* CC3ShaderProgram::getUniformNamed( const std::string& varName )
 CC3GLSLUniform* CC3ShaderProgram::getUniformAtLocation( GLint uniformLocation )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformsSceneScope, pObj )
+	CCARRAY_FOREACH( m_uniformsSceneScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getLocation() == uniformLocation )
 			return var;
 	}
 
-	CCARRAY_FOREACH( _uniformsNodeScope, pObj )
+	CCARRAY_FOREACH( m_uniformsNodeScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getLocation() == uniformLocation )
 			return var;
 	}
 
-	CCARRAY_FOREACH( _uniformsDrawScope, pObj )
+	CCARRAY_FOREACH( m_uniformsDrawScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getLocation() == uniformLocation )
@@ -703,21 +703,21 @@ CC3GLSLUniform* CC3ShaderProgram::getUniformForSemantic( GLenum semantic )
 CC3GLSLUniform* CC3ShaderProgram::getUniformForSemantic( GLenum semantic, GLuint semanticIndex )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformsSceneScope, pObj )
+	CCARRAY_FOREACH( m_uniformsSceneScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getSemantic() == semantic && var->getSemanticIndex() == semanticIndex )
 			return var;
 	}
 
-	CCARRAY_FOREACH( _uniformsNodeScope, pObj )
+	CCARRAY_FOREACH( m_uniformsNodeScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getSemantic() == semantic && var->getSemanticIndex() == semanticIndex )
 			return var;
 	}
 
-	CCARRAY_FOREACH( _uniformsDrawScope, pObj )
+	CCARRAY_FOREACH( m_uniformsDrawScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		if ( var->getSemantic() == semantic && var->getSemanticIndex() == semanticIndex )
@@ -729,13 +729,13 @@ CC3GLSLUniform* CC3ShaderProgram::getUniformForSemantic( GLenum semantic, GLuint
 
 GLuint CC3ShaderProgram::getAttributeCount()
 {
-	return (GLuint)_attributes->count(); 
+	return (GLuint)m_attributes->count(); 
 }
 
 CC3GLSLAttribute* CC3ShaderProgram::getAttributeNamed( const std::string& varName )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _attributes, pObj )
+	CCARRAY_FOREACH( m_attributes, pObj )
 	{
 		CC3GLSLAttribute* var = (CC3GLSLAttribute*)pObj;
 		if ( var->getName() == varName )
@@ -749,7 +749,7 @@ CC3GLSLAttribute* CC3ShaderProgram::getAttributeNamed( const std::string& varNam
 CC3GLSLAttribute* CC3ShaderProgram::getAttributeAtLocation( GLint attrLocation )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _attributes, pObj )
+	CCARRAY_FOREACH( m_attributes, pObj )
 	{
 		CC3GLSLAttribute* var = (CC3GLSLAttribute*)pObj;
 		if ( var->getLocation() == attrLocation )
@@ -767,7 +767,7 @@ CC3GLSLAttribute* CC3ShaderProgram::getAttributeForSemantic( GLenum semantic )
 CC3GLSLAttribute* CC3ShaderProgram::getAttributeForSemantic( GLenum semantic, GLuint semanticIndex )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _attributes, pObj )
+	CCARRAY_FOREACH( m_attributes, pObj )
 	{
 		CC3GLSLAttribute* var = (CC3GLSLAttribute*)pObj;
 		if ( var->getSemantic() == semantic && var->getSemanticIndex() == semanticIndex )
@@ -779,7 +779,7 @@ CC3GLSLAttribute* CC3ShaderProgram::getAttributeForSemantic( GLenum semantic, GL
 
 void CC3ShaderProgram::markSceneScopeDirty()
 {
-	_isSceneScopeDirty = true; 
+	m_isSceneScopeDirty = true; 
 }
 
 void CC3ShaderProgram::willBeginDrawingScene()
@@ -812,19 +812,19 @@ void CC3ShaderProgram::setWillBeginDrawingScene()
 void CC3ShaderProgram::resetGLState()
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _uniformsSceneScope, pObj )
+	CCARRAY_FOREACH( m_uniformsSceneScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		var->setIsGLStateKnown( false );
 	}
 
-	CCARRAY_FOREACH( _uniformsNodeScope, pObj )
+	CCARRAY_FOREACH( m_uniformsNodeScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		var->setIsGLStateKnown( false );
 	}
 
-	CCARRAY_FOREACH( _uniformsDrawScope, pObj )
+	CCARRAY_FOREACH( m_uniformsDrawScope, pObj )
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		var->setIsGLStateKnown( false );
@@ -833,12 +833,12 @@ void CC3ShaderProgram::resetGLState()
 
 bool CC3ShaderProgram::shouldAllowDefaultVariableValues()
 {
-	return _shouldAllowDefaultVariableValues;
+	return m_shouldAllowDefaultVariableValues;
 }
 
 void CC3ShaderProgram::setShouldAllowDefaultVariableValues( bool shouldAllow )
 {
-	_shouldAllowDefaultVariableValues = shouldAllow;
+	m_shouldAllowDefaultVariableValues = shouldAllow;
 }
 
 static bool _defaultShouldAllowDefaultVariableValues = false;
@@ -860,33 +860,33 @@ GLuint CC3ShaderProgram::getTexture2DStart()
 
 GLuint CC3ShaderProgram::getTextureCubeStart()
 {
-	return _texture2DCount; 
+	return m_texture2DCount; 
 }
 
 GLuint CC3ShaderProgram::getTexture2DCount()
 {
-	return _texture2DCount;
+	return m_texture2DCount;
 }
 
 GLuint CC3ShaderProgram::getTextureCubeCount()
 {
-	return _textureCubeCount;
+	return m_textureCubeCount;
 }
 
 GLuint CC3ShaderProgram::getTextureLightProbeStart()
 {
-	return _texture2DCount + _textureCubeCount; 
+	return m_texture2DCount + m_textureCubeCount; 
 }
 
 GLuint CC3ShaderProgram::getTextureLightProbeCount()
 {
-	return _textureLightProbeCount;
+	return m_textureLightProbeCount;
 }
 
 void CC3ShaderProgram::link()
 {
-	CCAssert(_vertexShader && _fragmentShader, "CC3Shader requires both vertex and fragment shaders to be assigned before linking.");
-	CCAssert(_semanticDelegate, "CC3Shader requires the semanticDelegate property be set before linking.");
+	CCAssert(m_pVertexShader && m_pFragmentShader, "CC3Shader requires both vertex and fragment shaders to be assigned before linking.");
+	CCAssert(m_pSemanticDelegate, "CC3Shader requires the semanticDelegate property be set before linking.");
 	
 	CC3OpenGL* gl = CC3OpenGL::sharedGL();
 	gl->linkShaderProgram( getProgramID() );
@@ -915,7 +915,7 @@ void CC3ShaderProgram::configureUniforms()
 	CC3OpenGL* gl = CC3OpenGL::sharedGL();
 	GLuint progID = getProgramID();
 	GLint varCnt = gl->getIntegerParameterForShaderProgram( GL_ACTIVE_UNIFORMS, progID );
-	_maxUniformNameLength = gl->getIntegerParameterForShaderProgram( GL_ACTIVE_UNIFORM_MAX_LENGTH, progID );
+	m_maxUniformNameLength = gl->getIntegerParameterForShaderProgram( GL_ACTIVE_UNIFORM_MAX_LENGTH, progID );
 	for (GLint varIdx = 0; varIdx < varCnt; varIdx++) 
 	{
 		CC3GLSLUniform* var = CC3GLSLUniform::variableInProgram( this, varIdx );
@@ -934,27 +934,27 @@ void CC3ShaderProgram::configureUniforms()
 
 void CC3ShaderProgram::clearUniforms()
 {
-	_uniformsSceneScope->removeAllObjects();
-	_uniformsNodeScope->removeAllObjects();
-	_uniformsDrawScope->removeAllObjects();
-	_texture2DCount = 0;
-	_textureCubeCount = 0;
-	_textureLightProbeCount = 0;
+	m_uniformsSceneScope->removeAllObjects();
+	m_uniformsNodeScope->removeAllObjects();
+	m_uniformsDrawScope->removeAllObjects();
+	m_texture2DCount = 0;
+	m_textureCubeCount = 0;
+	m_textureLightProbeCount = 0;
 }
 
 /** Let the delegate configure the uniform, and then update the texture counts. */
 void CC3ShaderProgram::configureUniform( CC3GLSLUniform* var )
 {
-	_semanticDelegate->configureVariable( var );
+	m_pSemanticDelegate->configureVariable( var );
 	
 	if (var->getSemantic() == kCC3SemanticTextureSampler) 
-		_texture2DCount += var->getSize();
+		m_texture2DCount += var->getSize();
 	if (var->getSemantic() == kCC3SemanticTexture2DSampler) 
-		_texture2DCount += var->getSize();
+		m_texture2DCount += var->getSize();
 	if (var->getSemantic() == kCC3SemanticTextureCubeSampler) 
-		_textureCubeCount += var->getSize();
+		m_textureCubeCount += var->getSize();
 	if (var->getSemantic() == kCC3SemanticTextureLightProbeSampler) 
-		_textureLightProbeCount += var->getSize();
+		m_textureLightProbeCount += var->getSize();
 }
 
 /** Adds the specified uniform to the appropriate internal collection, based on variable scope. */
@@ -963,13 +963,13 @@ void CC3ShaderProgram::addUniform( CC3GLSLUniform* var )
 	switch (var->getScope()) 
 	{
 		case kCC3GLSLVariableScopeScene:
-			_uniformsSceneScope->addObject(var);
+			m_uniformsSceneScope->addObject(var);
 			return;
 		case kCC3GLSLVariableScopeDraw:
-			_uniformsDrawScope->addObject(var);
+			m_uniformsDrawScope->addObject(var);
 			return;
 		default:
-			_uniformsNodeScope->addObject(var);
+			m_uniformsNodeScope->addObject(var);
 			return;
 	}
 }
@@ -985,7 +985,7 @@ void CC3ShaderProgram::configureAttributes()
 	CC3OpenGL* gl = CC3OpenGL::sharedGL();
 	GLuint progID = getProgramID();
 	GLint varCnt = gl->getIntegerParameterForShaderProgram( GL_ACTIVE_ATTRIBUTES, progID );
-	_maxAttributeNameLength = gl->getIntegerParameterForShaderProgram( GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, progID );
+	m_maxAttributeNameLength = gl->getIntegerParameterForShaderProgram( GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, progID );
 	for (GLint varIdx = 0; varIdx < varCnt; varIdx++) 
 	{
 		CC3GLSLAttribute* var = CC3GLSLAttribute::variableInProgram( this, varIdx );
@@ -1002,19 +1002,19 @@ void CC3ShaderProgram::configureAttributes()
 
 void CC3ShaderProgram::clearAttributes()
 {
-	_attributes->removeAllObjects(); 
+	m_attributes->removeAllObjects(); 
 }
 
 /** Let the delegate configure the attribute. */
 void CC3ShaderProgram::configureAttribute( CC3GLSLAttribute* var )
 {
-	_semanticDelegate->configureVariable(var); 
+	m_pSemanticDelegate->configureVariable(var); 
 }
 
 /** Adds the specified attribute to the internal collection. */
 void CC3ShaderProgram::addAttribute( CC3GLSLAttribute* var )
 {
-	_attributes->addObject(var); 
+	m_attributes->addObject(var); 
 }
 
 void CC3ShaderProgram::prewarm()
@@ -1041,7 +1041,7 @@ void CC3ShaderProgram::populateVertexAttributesWithVisitor( CC3NodeDrawingVisito
 	CC3OpenGL* gl = visitor->getGL();
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH ( _attributes, pObj )
+	CCARRAY_FOREACH ( m_attributes, pObj )
 	{
 		CC3GLSLAttribute* var = (CC3GLSLAttribute*)pObj;
 		gl->bindVertexAttribute( var, visitor );
@@ -1050,12 +1050,12 @@ void CC3ShaderProgram::populateVertexAttributesWithVisitor( CC3NodeDrawingVisito
 
 void CC3ShaderProgram::populateSceneScopeUniformsWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( _isSceneScopeDirty ) 
+	if ( m_isSceneScopeDirty ) 
 	{
 		// MARK_TRACE_HERE
 		//CCLOG("CC3Shader populating scene scope");
-		populateUniforms( _uniformsSceneScope, visitor );
-		_isSceneScopeDirty = false;
+		populateUniforms( m_uniformsSceneScope, visitor );
+		m_isSceneScopeDirty = false;
 	}
 }
 
@@ -1064,14 +1064,14 @@ void CC3ShaderProgram::populateNodeScopeUniformsWithVisitor( CC3NodeDrawingVisit
 	populateSceneScopeUniformsWithVisitor( visitor );
 	// MARK_TRACE_HERE
 	//CCLOG("CC3Shader populating node scope");
-	populateUniforms( _uniformsNodeScope, visitor );
+	populateUniforms( m_uniformsNodeScope, visitor );
 }
 
 void CC3ShaderProgram::populateDrawScopeUniformsWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	// MARK_TRACE_HERE
 	//CCLOG("CC3Shader populating draw scope");
-	populateUniforms( _uniformsDrawScope, visitor );
+	populateUniforms( m_uniformsDrawScope, visitor );
 }
 
 void CC3ShaderProgram::populateUniforms( CCArray* uniforms, CC3NodeDrawingVisitor* visitor )
@@ -1083,7 +1083,7 @@ void CC3ShaderProgram::populateUniforms( CCArray* uniforms, CC3NodeDrawingVisito
 	{
 		CC3GLSLUniform* var = (CC3GLSLUniform*)pObj;
 		bool wasSet = (progCtx->populateUniform(var, visitor) ||
-					   _semanticDelegate->populateUniform(var, visitor));
+					   m_pSemanticDelegate->populateUniform(var, visitor));
 
 		if ( !wasSet ) 
 		{
@@ -1105,24 +1105,24 @@ void CC3ShaderProgram::initWithTag( GLuint aTag, const std::string& aName )
 	CCAssert(!aName.empty(), "CC3Shader cannot be created without a name");
 	super::initWithTag( aTag, aName );
 	{
-		_attributes = CCArray::create();				// retained
-		_attributes->retain();
-		_uniformsSceneScope = CCArray::create();		// retained
-		_uniformsSceneScope->retain();
-		_uniformsNodeScope = CCArray::create();		// retained
-		_uniformsNodeScope->retain();
-		_uniformsDrawScope = CCArray::create();		// retained
-		_uniformsDrawScope->retain();
-		_vertexShader = NULL;
-		_fragmentShader = NULL;
-		_maxUniformNameLength = 0;
-		_maxAttributeNameLength = 0;
-		_texture2DCount = 0;
-		_textureCubeCount = 0;
-		_textureLightProbeCount = 0;
-		_isSceneScopeDirty = true;	// start out dirty for auto-loaded programs
-		_semanticDelegate = NULL;
-		_shouldAllowDefaultVariableValues = defaultShouldAllowDefaultVariableValues();
+		m_attributes = CCArray::create();				// retained
+		m_attributes->retain();
+		m_uniformsSceneScope = CCArray::create();		// retained
+		m_uniformsSceneScope->retain();
+		m_uniformsNodeScope = CCArray::create();		// retained
+		m_uniformsNodeScope->retain();
+		m_uniformsDrawScope = CCArray::create();		// retained
+		m_uniformsDrawScope->retain();
+		m_pVertexShader = NULL;
+		m_pFragmentShader = NULL;
+		m_maxUniformNameLength = 0;
+		m_maxAttributeNameLength = 0;
+		m_texture2DCount = 0;
+		m_textureCubeCount = 0;
+		m_textureLightProbeCount = 0;
+		m_isSceneScopeDirty = true;	// start out dirty for auto-loaded programs
+		m_pSemanticDelegate = NULL;
+		m_shouldAllowDefaultVariableValues = defaultShouldAllowDefaultVariableValues();
 	}
 }
 
@@ -1191,7 +1191,7 @@ std::string CC3ShaderProgram::programNameFromVertexShaderName( const std::string
 
 bool CC3ShaderProgram::wasLoadedFromFile()
 {
-	return _vertexShader->wasLoadedFromFile() && _fragmentShader->wasLoadedFromFile();
+	return m_pVertexShader->wasLoadedFromFile() && m_pFragmentShader->wasLoadedFromFile();
 }
 
 static GLuint _lastAssignedProgramTag = 0;
@@ -1400,7 +1400,7 @@ void CC3ShaderSourceCode::initWithTag( GLuint tag, const std::string& name )
 {
 	CCAssert(!name.empty(), "CC3ShaderSourceCode cannot be created without a name");
 	super::initWithTag(tag, name);
-	_wasLoadedFromFile = false;
+	m_wasLoadedFromFile = false;
 }
 
 CC3ShaderSourceCode* CC3ShaderSourceCode::shaderSourceCodeWithName( const std::string& name, const std::string& srcCodeString )
@@ -1567,17 +1567,17 @@ std::string CC3ShaderSourceCode::loadedShaderSourceCodeDescription()
 
 void CC3ShaderSourceCode::setWasLoadedFromFile( bool fromFile )
 {
-	_wasLoadedFromFile = fromFile;
+	m_wasLoadedFromFile = fromFile;
 }
 
 bool CC3ShaderSourceCode::wasLoadedFromFile()
 {
-	return _wasLoadedFromFile;
+	return m_wasLoadedFromFile;
 }
 
 std::string CC3ShaderSourceCodeString::getSourceCodeString()
 {
-	return _sourceCodeString; 
+	return m_sourceCodeString; 
 }
 
 GLuint CC3ShaderSourceCodeString::getLineCount()
@@ -1588,8 +1588,8 @@ GLuint CC3ShaderSourceCodeString::getLineCount()
 
 void CC3ShaderSourceCodeString::appendSourceCodeString( const std::string& srcCode )
 {
-	_sourceCodeString += srcCode; 
-	_sourceCodeString += "\n";
+	m_sourceCodeString += srcCode; 
+	m_sourceCodeString += "\n";
 }
 
 void CC3ShaderSourceCodeString::accumulateSourceCompilationStringsWithVisitor( CC3ShaderSourceCodeCompilationStringVisitor* visitor )
@@ -1597,7 +1597,7 @@ void CC3ShaderSourceCodeString::accumulateSourceCompilationStringsWithVisitor( C
 	if ( visitor->hasAlreadyVisited( this ) ) 
 		return;
 
-	visitor->addSourceCompilationString( _sourceCodeString.c_str() );
+	visitor->addSourceCompilationString( m_sourceCodeString.c_str() );
 }
 
 void CC3ShaderSourceCodeString::accumulateSourceCompilationStringCountWithVisitor( CC3ShaderSourceCodeCompilationStringCountVisitor* visitor )
@@ -1611,20 +1611,20 @@ void CC3ShaderSourceCodeString::accumulateSourceCompilationStringCountWithVisito
 void CC3ShaderSourceCodeString::initWithTag( GLuint tag, const std::string& name )
 {
 	super::initWithTag( tag, name );
-	_sourceCodeString = "";
+	m_sourceCodeString = "";
 }
 
 CC3ShaderSourceCodeLines::CC3ShaderSourceCodeLines()
 {
-	_sourceCodeLines = NULL;
+	m_sourceCodeLines = NULL;
 }
 
 CC3ShaderSourceCodeLines::~CC3ShaderSourceCodeLines()
 {
-	if ( _sourceCodeLines )
-		_sourceCodeLines->removeAllObjects();
+	if ( m_sourceCodeLines )
+		m_sourceCodeLines->removeAllObjects();
 
-	CC_SAFE_RELEASE( _sourceCodeLines );
+	CC_SAFE_RELEASE( m_sourceCodeLines );
 }
 
 
@@ -1639,7 +1639,7 @@ std::string CC3ShaderSourceCodeLines::getSourceCodeString()
 
 GLuint CC3ShaderSourceCodeLines::getLineCount()
 {
-	return (GLuint)_sourceCodeLines->count(); 
+	return (GLuint)m_sourceCodeLines->count(); 
 }
 
 void CC3ShaderSourceCodeLines::appendSourceCodeString( const std::string& srcCode )
@@ -1663,38 +1663,38 @@ void CC3ShaderSourceCodeLines::accumulateSourceCompilationStringCountWithVisitor
 	if ( visitor->hasAlreadyVisited(this) ) 
 		return;
 	
-	visitor->addSourceCompilationStringCount( (GLuint)_sourceCodeLines->count() );
+	visitor->addSourceCompilationStringCount( (GLuint)m_sourceCodeLines->count() );
 }
 
 void CC3ShaderSourceCodeLines::initWithTag( GLuint tag, const std::string& name )
 {
 	super::initWithTag( tag, name );
-	_sourceCodeLines = CCArray::create();	// retained
-	_sourceCodeLines->retain();
+	m_sourceCodeLines = CCArray::create();	// retained
+	m_sourceCodeLines->retain();
 }
 
 CC3ShaderSourceCodeGroup::CC3ShaderSourceCodeGroup()
 {
-	_subsections = NULL;
+	m_subsections = NULL;
 }
 
 CC3ShaderSourceCodeGroup::~CC3ShaderSourceCodeGroup()
 {
-	if ( _subsections )
-		_subsections->removeAllObjects();
+	if ( m_subsections )
+		m_subsections->removeAllObjects();
 
-	CC_SAFE_RELEASE( _subsections );
+	CC_SAFE_RELEASE( m_subsections );
 }
 
 CCArray* CC3ShaderSourceCodeGroup::getSubsections()
 {
-	return _subsections; 
+	return m_subsections; 
 }
 
 void CC3ShaderSourceCodeGroup::addSubsection( CC3ShaderSourceCode* shSrcCode )
 {
 	if (shSrcCode) 
-		_subsections->addObject( shSrcCode );
+		m_subsections->addObject( shSrcCode );
 }
 
 GLuint CC3ShaderSourceCodeGroup::getLineCount() 
@@ -1702,7 +1702,7 @@ GLuint CC3ShaderSourceCodeGroup::getLineCount()
 	GLuint lineCnt = 0;
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _subsections, pObj )
+	CCARRAY_FOREACH( m_subsections, pObj )
 	{
 		CC3ShaderSourceCode* shSrc = (CC3ShaderSourceCode*)pObj;
 		lineCnt += shSrc->getLineCount();
@@ -1734,7 +1734,7 @@ void CC3ShaderSourceCodeGroup::accumulateSourceCompilationStringsWithVisitor( CC
 		return;
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _subsections, pObj )
+	CCARRAY_FOREACH( m_subsections, pObj )
 	{
 		CC3ShaderSourceCode* shSrc = (CC3ShaderSourceCode*)pObj;
 		shSrc->accumulateSourceCompilationStringsWithVisitor( visitor );
@@ -1747,7 +1747,7 @@ void CC3ShaderSourceCodeGroup::accumulateSourceCompilationStringCountWithVisitor
 		return;
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _subsections, pObj )
+	CCARRAY_FOREACH( m_subsections, pObj )
 	{
 		CC3ShaderSourceCode* shSrc = (CC3ShaderSourceCode*)pObj;
 		shSrc->accumulateSourceCompilationStringCountWithVisitor( visitor );
@@ -1768,7 +1768,7 @@ bool CC3ShaderSourceCodeGroup::localizeLineNumberWithVisitor( CC3ShaderSourceCod
 	visitor->pushLineNumberOffset(0);
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _subsections, pObj )
+	CCARRAY_FOREACH( m_subsections, pObj )
 	{
 		CC3ShaderSourceCode* shSrc = (CC3ShaderSourceCode*)pObj;
 		if ( shSrc->localizeLineNumberWithVisitor( visitor ) )
@@ -1792,27 +1792,27 @@ bool CC3ShaderSourceCodeGroup::localizeLineNumberWithVisitor( CC3ShaderSourceCod
 void CC3ShaderSourceCodeGroup::initWithTag( GLuint tag, const std::string& name )
 {
 	super::initWithTag( tag, name );
-	_subsections = CCArray::create();	// retained
-	_subsections->retain();
+	m_subsections = CCArray::create();	// retained
+	m_subsections->retain();
 }
 
 CC3ShaderSourceCodeVisitor::CC3ShaderSourceCodeVisitor()
 {
-	_sourceCodeNamesTraversed.clear();
+	m_sourceCodeNamesTraversed.clear();
 }
 
 CC3ShaderSourceCodeVisitor::~CC3ShaderSourceCodeVisitor()
 {
-	_sourceCodeNamesTraversed.clear();
+	m_sourceCodeNamesTraversed.clear();
 }
 
 bool CC3ShaderSourceCodeVisitor::hasAlreadyVisited( CC3ShaderSourceCode* srcCode )
 {
 	std::string ssName = srcCode->getName();
-	if ( ssName.empty() || _sourceCodeNamesTraversed.find(ssName) != _sourceCodeNamesTraversed.end() )
+	if ( ssName.empty() || m_sourceCodeNamesTraversed.find(ssName) != m_sourceCodeNamesTraversed.end() )
 		return true;
 
-	_sourceCodeNamesTraversed[ssName] = true;
+	m_sourceCodeNamesTraversed[ssName] = true;
 	return false;
 }
 
@@ -1840,34 +1840,34 @@ CC3ShaderSourceCodeCompilationStringCountVisitor* CC3ShaderSourceCodeCompilation
 
 void CC3ShaderSourceCodeCompilationStringCountVisitor::addSourceCompilationStringCount( GLuint sourceStringCount )
 {
-	_sourceCompilationStringCount += sourceStringCount;
+	m_sourceCompilationStringCount += sourceStringCount;
 }
 
 void CC3ShaderSourceCodeCompilationStringCountVisitor::init()
 {
 	super::init();
-	_sourceCompilationStringCount = 0;
+	m_sourceCompilationStringCount = 0;
 }
 
 GLuint CC3ShaderSourceCodeCompilationStringCountVisitor::getSourceCompilationStringCount()
 {
-	return _sourceCompilationStringCount;
+	return m_sourceCompilationStringCount;
 }
 
 void CC3ShaderSourceCodeCompilationStringVisitor::addSourceCompilationString( const GLchar* sourceCompilationString )
 {
 	unsigned int strLen = strlen( sourceCompilationString );
-	_sourceCompilationStrings[_sourceCompilationStringCount] = new GLchar[strLen+1];
-	memset( (void*)_sourceCompilationStrings[_sourceCompilationStringCount], 0, strLen+1 );
-	memcpy( (void*)_sourceCompilationStrings[_sourceCompilationStringCount], sourceCompilationString, strLen );
+	m_sourceCompilationStrings[m_sourceCompilationStringCount] = new GLchar[strLen+1];
+	memset( (void*)m_sourceCompilationStrings[m_sourceCompilationStringCount], 0, strLen+1 );
+	memcpy( (void*)m_sourceCompilationStrings[m_sourceCompilationStringCount], sourceCompilationString, strLen );
 
-	_sourceCompilationStringCount ++;
+	m_sourceCompilationStringCount ++;
 }
 
 void CC3ShaderSourceCodeCompilationStringVisitor::initWithCompilationStrings( const GLchar** sourceCompilationStrings )
 {
 	super::init();
-	_sourceCompilationStrings = sourceCompilationStrings;
+	m_sourceCompilationStrings = sourceCompilationStrings;
 }
 
 CC3ShaderSourceCodeCompilationStringVisitor* CC3ShaderSourceCodeCompilationStringVisitor::visitorWithCompilationStrings( const GLchar** sourceCompilationStrings )
@@ -1881,44 +1881,44 @@ CC3ShaderSourceCodeCompilationStringVisitor* CC3ShaderSourceCodeCompilationStrin
 
 CC3ShaderSourceCodeLineNumberLocalizingVisitor::CC3ShaderSourceCodeLineNumberLocalizingVisitor()
 {
-	_localizedSourceCode = NULL;
-	_lineNumberOffsets = NULL;
+	m_localizedSourceCode = NULL;
+	m_lineNumberOffsets = NULL;
 }
 
 CC3ShaderSourceCodeLineNumberLocalizingVisitor::~CC3ShaderSourceCodeLineNumberLocalizingVisitor()
 {
-	CC_SAFE_RELEASE( _localizedSourceCode );
-	CC_SAFE_RELEASE( _lineNumberOffsets );
+	CC_SAFE_RELEASE( m_localizedSourceCode );
+	CC_SAFE_RELEASE( m_lineNumberOffsets );
 }
 
 CC3ShaderSourceCode* CC3ShaderSourceCodeLineNumberLocalizingVisitor::getLocalizedSourceCode()
 {
-	return _localizedSourceCode;
+	return m_localizedSourceCode;
 }
 
 void CC3ShaderSourceCodeLineNumberLocalizingVisitor::setLocalizedSourceCode( CC3ShaderSourceCode* code )
 {
-	CC_SAFE_RELEASE( _localizedSourceCode );
+	CC_SAFE_RELEASE( m_localizedSourceCode );
 	CC_SAFE_RETAIN( code );
-	_localizedSourceCode = code;
+	m_localizedSourceCode = code;
 }
 
 GLuint CC3ShaderSourceCodeLineNumberLocalizingVisitor::getLineNumberOffset()
 {
-	if ( _lineNumberOffsets && _lineNumberOffsets->count() > 0 )
+	if ( m_lineNumberOffsets && m_lineNumberOffsets->count() > 0 )
 		return 0;
 
-	return ((CCInteger*)_lineNumberOffsets->lastObject())->getValue(); 
+	return ((CCInteger*)m_lineNumberOffsets->lastObject())->getValue(); 
 }
 
 void CC3ShaderSourceCodeLineNumberLocalizingVisitor::pushLineNumberOffset( GLuint lineNumberOffset )
 {
-	_lineNumberOffsets->addObject( CCInteger::create( lineNumberOffset ) );
+	m_lineNumberOffsets->addObject( CCInteger::create( lineNumberOffset ) );
 }
 
 void CC3ShaderSourceCodeLineNumberLocalizingVisitor::popLineNumberOffset()
 {
-	_lineNumberOffsets->removeLastObject(); 
+	m_lineNumberOffsets->removeLastObject(); 
 }
 
 void CC3ShaderSourceCodeLineNumberLocalizingVisitor::addLineNumberOffset( GLuint lineNumberOffset )
@@ -1932,21 +1932,21 @@ void CC3ShaderSourceCodeLineNumberLocalizingVisitor::initWithLineNumber( GLuint 
 {
 	super::init();
 	{
-		_lineNumber = lineNumber;
-		_lineNumberOffsets = CCArray::create();		// retained
-		_lineNumberOffsets->retain();
+		m_lineNumber = lineNumber;
+		m_lineNumberOffsets = CCArray::create();		// retained
+		m_lineNumberOffsets->retain();
 		pushLineNumberOffset( 0 );					// Init stack with a base value
 	}
 }
 
 GLuint CC3ShaderSourceCodeLineNumberLocalizingVisitor::getLineNumber()
 {
-	return _lineNumber;
+	return m_lineNumber;
 }
 
 void CC3ShaderSourceCodeLineNumberLocalizingVisitor::setLineNumber( GLuint number )
 {
-	_lineNumber = number;
+	m_lineNumber = number;
 }
 
 CC3ShaderSourceCodeLineNumberLocalizingVisitor* CC3ShaderSourceCodeLineNumberLocalizingVisitor::visitorWithLineNumber( GLuint lineNumber )
@@ -1960,80 +1960,80 @@ CC3ShaderSourceCodeLineNumberLocalizingVisitor* CC3ShaderSourceCodeLineNumberLoc
 
 CC3ShaderPrewarmer::CC3ShaderPrewarmer()
 {
-	_prewarmingSurface = NULL;
-	_prewarmingMeshNode = NULL;
-	_drawingVisitor = NULL;
+	m_prewarmingSurface = NULL;
+	m_prewarmingMeshNode = NULL;
+	m_drawingVisitor = NULL;
 }
 
 CC3ShaderPrewarmer::~CC3ShaderPrewarmer()
 {
-	CC_SAFE_RELEASE( _prewarmingSurface );
-	CC_SAFE_RELEASE( _prewarmingMeshNode );
-	CC_SAFE_RELEASE( _drawingVisitor );
+	CC_SAFE_RELEASE( m_prewarmingSurface );
+	CC_SAFE_RELEASE( m_prewarmingMeshNode );
+	CC_SAFE_RELEASE( m_drawingVisitor );
 }
 
 CC3RenderSurface* CC3ShaderPrewarmer::getPrewarmingSurface()
 {
-	if ( !_prewarmingSurface ) 
+	if ( !m_prewarmingSurface ) 
 	{
 		setPrewarmingSurface( CC3GLFramebuffer::surface() );
-		CC3GLFramebuffer* prewarmingSurface = (CC3GLFramebuffer*)_prewarmingSurface;
+		CC3GLFramebuffer* prewarmingSurface = (CC3GLFramebuffer*)m_prewarmingSurface;
 		prewarmingSurface->setName( "Prewarming surface" );
 		prewarmingSurface->setColorAttachment( CC3GLRenderbuffer::renderbufferWithPixelFormat(GL_RGBA4) );
 		prewarmingSurface->setSize( CC3IntSizeMake(4, 4) );
 	}
-	return _prewarmingSurface;
+	return m_prewarmingSurface;
 }
 
 void CC3ShaderPrewarmer::setPrewarmingSurface( CC3RenderSurface* renderSurface )
 {
 	CC_SAFE_RETAIN( renderSurface );
-	CC_SAFE_RELEASE( _prewarmingSurface );
-	_prewarmingSurface = renderSurface;
+	CC_SAFE_RELEASE( m_prewarmingSurface );
+	m_prewarmingSurface = renderSurface;
 }
 
 CC3MeshNode* CC3ShaderPrewarmer::getPrewarmingMeshNode()
 {
-	if ( !_prewarmingMeshNode ) 
+	if ( !m_prewarmingMeshNode ) 
 	{	
 		// Create mesh node that only has vertex locations
 		setPrewarmingMeshNode( CC3MeshNode::nodeWithName( "ShaderPrewarmer" ) );
-		_prewarmingMeshNode->setVertexContentTypes( kCC3VertexContentLocation );
+		m_prewarmingMeshNode->setVertexContentTypes( kCC3VertexContentLocation );
 		
 		// Populate the mesh as a single triangular face of zero dimensions
 		CC3Face triangle = CC3Face(CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero, CC3Vector::kCC3VectorZero);
 		ccTex2F texCoords[3] = { {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0} };				// unused
-		_prewarmingMeshNode->populateAsTriangle( triangle, texCoords, 1 );
+		m_prewarmingMeshNode->populateAsTriangle( triangle, texCoords, 1 );
 
-		_prewarmingMeshNode->getShaderContext()->setShouldEnforceCustomOverrides( false );
-		_prewarmingMeshNode->getShaderContext()->setShouldEnforceVertexAttributes( false );
+		m_prewarmingMeshNode->getShaderContext()->setShouldEnforceCustomOverrides( false );
+		m_prewarmingMeshNode->getShaderContext()->setShouldEnforceVertexAttributes( false );
 
 		/// Fix OpenGL error 0x0506
 		//_prewarmingMeshNode->createGLBuffers();
 	}
 
-	return _prewarmingMeshNode;
+	return m_prewarmingMeshNode;
 }
 
 void CC3ShaderPrewarmer::setPrewarmingMeshNode( CC3MeshNode* node )
 {
 	CC_SAFE_RETAIN( node );
-	CC_SAFE_RELEASE( _prewarmingMeshNode );
-	_prewarmingMeshNode = node;
+	CC_SAFE_RELEASE( m_prewarmingMeshNode );
+	m_prewarmingMeshNode = node;
 }
 
 CC3NodeDrawingVisitor* CC3ShaderPrewarmer::getDrawingVisitor()
 {
-	if ( !_drawingVisitor ) 
+	if ( !m_drawingVisitor ) 
 		setDrawingVisitor( CC3NodeDrawingVisitor::visitor() );
-	return _drawingVisitor;
+	return m_drawingVisitor;
 }
 
 void CC3ShaderPrewarmer::setDrawingVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	CC_SAFE_RETAIN( visitor );
-	CC_SAFE_RELEASE( _drawingVisitor );
-	_drawingVisitor = visitor;
+	CC_SAFE_RELEASE( m_drawingVisitor );
+	m_drawingVisitor = visitor;
 }
 
 void CC3ShaderPrewarmer::prewarmShaderProgram( CC3ShaderProgram* program )
@@ -2059,9 +2059,9 @@ void CC3ShaderPrewarmer::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName  );
 	{
-		_prewarmingSurface = NULL;
-		_prewarmingMeshNode = NULL;
-		_drawingVisitor = NULL;
+		m_prewarmingSurface = NULL;
+		m_prewarmingMeshNode = NULL;
+		m_drawingVisitor = NULL;
 	}
 }
 

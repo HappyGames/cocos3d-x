@@ -2558,29 +2558,29 @@ public:
 	virtual void				flipNormals();
 
 protected:
-	CC3Mesh*					_mesh;
-	CC3Material*				_material;
-	CC3ShaderContext*			_shaderContext;
-	std::string					_renderStreamGroupMarker;
-	GLenum						_depthFunction;
-	GLfloat						_decalOffsetFactor;
-	GLfloat						_decalOffsetUnits;
-	GLfloat						_lineWidth;
-	GLenum						_lineSmoothingHint;
+	CC3Mesh*					m_pMesh;
+	CC3Material*				m_pMaterial;
+	CC3ShaderContext*			m_pShaderContext;
+	std::string					m_renderStreamGroupMarker;
+	GLenum						m_depthFunction;
+	GLfloat						m_decalOffsetFactor;
+	GLfloat						m_decalOffsetUnits;
+	GLfloat						m_lineWidth;
+	GLenum						m_lineSmoothingHint;
 
-	CC3NormalScaling			_normalScalingMethod : 4;
-	bool						_shouldUseLightProbes : 1;
-	bool						_shouldSmoothLines : 1;
-	bool						_shouldDisableDepthMask : 1;
-	bool						_shouldDisableDepthTest : 1;
-	bool						_shouldCullFrontFaces : 1;
-	bool						_shouldCullBackFaces : 1;
-	bool						_shouldDrawInClipSpace : 1;
-	bool						_shouldUseClockwiseFrontFaceWinding : 1;
-	bool						_shouldUseSmoothShading : 1;
-	bool						_shouldCastShadowsWhenInvisible : 1;
-	bool						_shouldApplyOpacityAndColorToMeshContent : 1;
-	bool						_hasRigidSkeleton : 1;		// Used by skinned mesh node subclasses
+	CC3NormalScaling			m_normalScalingMethod : 4;
+	bool						m_shouldUseLightProbes : 1;
+	bool						m_shouldSmoothLines : 1;
+	bool						m_shouldDisableDepthMask : 1;
+	bool						m_shouldDisableDepthTest : 1;
+	bool						m_shouldCullFrontFaces : 1;
+	bool						m_shouldCullBackFaces : 1;
+	bool						m_shouldDrawInClipSpace : 1;
+	bool						m_shouldUseClockwiseFrontFaceWinding : 1;
+	bool						m_shouldUseSmoothShading : 1;
+	bool						m_shouldCastShadowsWhenInvisible : 1;
+	bool						m_shouldApplyOpacityAndColorToMeshContent : 1;
+	bool						m_hasRigidSkeleton : 1;		// Used by skinned mesh node subclasses
 };
 
 NS_COCOS3D_END

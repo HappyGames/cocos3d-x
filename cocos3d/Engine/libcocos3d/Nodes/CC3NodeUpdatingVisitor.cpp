@@ -68,12 +68,12 @@ CC3NodeUpdatingVisitor* CC3NodeUpdatingVisitor::visitor()
 
 void CC3NodeUpdatingVisitor::setDeltaTime( float dt )
 {
-	_deltaTime = dt;
+	m_fDeltaTime = dt;
 }
 
 float CC3NodeUpdatingVisitor::getDeltaTime()
 {
-	return _deltaTime;
+	return m_fDeltaTime;
 }
 
 NS_COCOS3D_END

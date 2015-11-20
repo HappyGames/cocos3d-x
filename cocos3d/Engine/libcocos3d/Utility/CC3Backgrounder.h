@@ -115,8 +115,8 @@ protected:
 
 protected:
 	//dispatch_queue_t	_taskQueue;
-	long				_queuePriority;
-	bool				_shouldRunTasksOnRequestingThread : 1;
+	long				m_queuePriority;
+	bool				m_shouldRunTasksOnRequestingThread : 1;
 };
 
 

@@ -142,8 +142,8 @@ public:
 	static CC3NodePickingVisitor* visitor();
 
 protected:
-	CC3Node*					_pickedNode;
-	GLuint						_tagColorShift;
+	CC3Node*					m_pPickedNode;
+	GLuint						m_tagColorShift;
 };
 
 NS_COCOS3D_END

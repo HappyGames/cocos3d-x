@@ -33,92 +33,92 @@ NS_COCOS3D_BEGIN
 
 CC3NodeAnimationSegment::CC3NodeAnimationSegment()
 {
-	_baseAnimation = NULL;
+	m_pBaseAnimation = NULL;
 }
 
 CC3NodeAnimationSegment::~CC3NodeAnimationSegment()
 {
-	CC_SAFE_RELEASE( _baseAnimation );
+	CC_SAFE_RELEASE( m_pBaseAnimation );
 }
 
 CC3NodeAnimation* CC3NodeAnimationSegment::getBaseAnimation()
 {
-	return _baseAnimation;
+	return m_pBaseAnimation;
 }
 
 GLfloat CC3NodeAnimationSegment::getStartTime()
 {
-	return _startTime;
+	return m_startTime;
 }
 
 void CC3NodeAnimationSegment::setStartTime( float time )
 {
-	_startTime = time;
+	m_startTime = time;
 }
 
 GLfloat CC3NodeAnimationSegment::getEndTime()
 {
-	return _endTime;
+	return m_endTime;
 }
 
 void CC3NodeAnimationSegment::setEndTime( float time )
 {
-	_endTime = time;
+	m_endTime = time;
 }
 
 GLuint CC3NodeAnimationSegment::getFrameCount()
 {
-	return _baseAnimation->getFrameCount(); 
+	return m_pBaseAnimation->getFrameCount(); 
 }
 
 bool CC3NodeAnimationSegment::shouldInterpolate()
 {
-	return _baseAnimation->shouldInterpolate(); 
+	return m_pBaseAnimation->shouldInterpolate(); 
 }
 
 void CC3NodeAnimationSegment::setShouldInterpolate( bool _shouldInterpolate )
 {
-	_baseAnimation->setShouldInterpolate( _shouldInterpolate );
+	m_pBaseAnimation->setShouldInterpolate( _shouldInterpolate );
 }
 
 bool CC3NodeAnimationSegment::isAnimatingLocation()
 {
-	return _baseAnimation->isAnimatingLocation(); 
+	return m_pBaseAnimation->isAnimatingLocation(); 
 }
 
 bool CC3NodeAnimationSegment::isAnimatingQuaternion()
 {
-	return _baseAnimation->isAnimatingQuaternion(); 
+	return m_pBaseAnimation->isAnimatingQuaternion(); 
 }
 
 bool CC3NodeAnimationSegment::isAnimatingScale()
 {
-	return _baseAnimation->isAnimatingScale(); 
+	return m_pBaseAnimation->isAnimatingScale(); 
 }
 
 bool CC3NodeAnimationSegment::hasVariableFrameTiming()
 {
-	return _baseAnimation->hasVariableFrameTiming(); 
+	return m_pBaseAnimation->hasVariableFrameTiming(); 
 }
 
 GLuint CC3NodeAnimationSegment::getStartFrameIndex()
 {
-	return _baseAnimation->getFrameIndexAt( getStartTime() ); 
+	return m_pBaseAnimation->getFrameIndexAt( getStartTime() ); 
 }
 
 void CC3NodeAnimationSegment::setStartFrameIndex( GLuint startFrameIndex )
 {
-	setStartTime( _baseAnimation->timeAtFrame(startFrameIndex) );
+	setStartTime( m_pBaseAnimation->timeAtFrame(startFrameIndex) );
 }
 
 GLuint CC3NodeAnimationSegment::getEndFrameIndex()
 {
-	return _baseAnimation->getFrameIndexAt( getEndTime() ); 
+	return m_pBaseAnimation->getFrameIndexAt( getEndTime() ); 
 }
 
 void CC3NodeAnimationSegment::setEndFrameIndex( GLuint endFrameIndex )
 {
-	setEndTime( _baseAnimation->timeAtFrame( endFrameIndex ) );
+	setEndTime( m_pBaseAnimation->timeAtFrame( endFrameIndex ) );
 }
 
 // Will raise assertion because base animation cannot be nil.
@@ -146,10 +146,10 @@ void CC3NodeAnimationSegment::initOnAnimation( CC3NodeAnimation* baseAnimation, 
 	CCAssert(baseAnimation, "CC3NodeAnimationSegment cannot be initialized without a base animation");
 	super::initWithFrameCount(0);
 	{
-		_baseAnimation = baseAnimation;
-		_baseAnimation->retain();
-		_startTime = startTime;
-		_endTime = endTime;
+		m_pBaseAnimation = baseAnimation;
+		m_pBaseAnimation->retain();
+		m_startTime = startTime;
+		m_endTime = endTime;
 	}
 }
 
@@ -185,28 +185,28 @@ CC3NodeAnimationSegment* CC3NodeAnimationSegment::animationOnAnimation( CC3NodeA
  */
 GLuint CC3NodeAnimationSegment::getFrameIndexAt( float t )
 {
-	float adjTime = _startTime + ((_endTime - _startTime) * t);
-	return _baseAnimation->getFrameIndexAt(adjTime);
+	float adjTime = m_startTime + ((m_endTime - m_startTime) * t);
+	return m_pBaseAnimation->getFrameIndexAt(adjTime);
 }
 
 float CC3NodeAnimationSegment::timeAtFrame( GLuint frameIndex )
 {
-	return _baseAnimation->timeAtFrame( frameIndex ); 
+	return m_pBaseAnimation->timeAtFrame( frameIndex ); 
 }
 
 CC3Vector CC3NodeAnimationSegment::getLocationAtFrame( GLuint frameIndex )
 {
-	return _baseAnimation->getLocationAtFrame( frameIndex );
+	return m_pBaseAnimation->getLocationAtFrame( frameIndex );
 }
 
 CC3Quaternion CC3NodeAnimationSegment::getQuaternionAtFrame( GLuint frameIndex )
 {
-	return _baseAnimation->getQuaternionAtFrame( frameIndex );
+	return m_pBaseAnimation->getQuaternionAtFrame( frameIndex );
 }
 
 CC3Vector CC3NodeAnimationSegment::getScaleAtFrame( GLuint frameIndex  )
 {
-	return _baseAnimation->getScaleAtFrame( frameIndex );
+	return m_pBaseAnimation->getScaleAtFrame( frameIndex );
 }
 
 NS_COCOS3D_END

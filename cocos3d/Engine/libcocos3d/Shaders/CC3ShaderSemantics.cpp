@@ -235,39 +235,39 @@ CC3GLSLVariableConfiguration::~CC3GLSLVariableConfiguration()
 
 void CC3GLSLVariableConfiguration::init()
 {
-	_name = "";
-	_semantic = kCC3SemanticNone;
-	_semanticIndex = 0;
+	m_name = "";
+	m_semantic = kCC3SemanticNone;
+	m_semanticIndex = 0;
 }
 
 std::string CC3GLSLVariableConfiguration::getName()
 {
-	return _name;
+	return m_name;
 }
 
 void CC3GLSLVariableConfiguration::setName( const std::string& name )
 {
-	_name = name;
+	m_name = name;
 }
 
 GLenum CC3GLSLVariableConfiguration::getSemantic()
 {
-	return _semantic;
+	return m_semantic;
 }
 	
 void CC3GLSLVariableConfiguration::setSemantic( GLenum semantic )
 {
-	_semantic = semantic;
+	m_semantic = semantic;
 }
 
 GLuint CC3GLSLVariableConfiguration::getSemanticIndex()
 {
-	return _semanticIndex;
+	return m_semanticIndex;
 }
 
 void CC3GLSLVariableConfiguration::setSemanticIndex( GLuint index )
 {
-	_semanticIndex = index;
+	m_semanticIndex = index;
 }
 
 CC3ShaderSemanticsBase* CC3ShaderSemanticsBase::semanticsDelegate()
@@ -1419,21 +1419,21 @@ bool CC3ShaderSemanticsBase::populateColorUniforms( CC3GLSLUniform *uniform, CC3
 
 CC3ShaderSemanticsByVarName::CC3ShaderSemanticsByVarName()
 {
-	_varConfigsByName = NULL;
+	m_varConfigsByName = NULL;
 }
 
 CC3ShaderSemanticsByVarName::~CC3ShaderSemanticsByVarName()
 {
-	if ( _varConfigsByName )
-		_varConfigsByName->removeAllObjects();
+	if ( m_varConfigsByName )
+		m_varConfigsByName->removeAllObjects();
 
-	CC_SAFE_RELEASE( _varConfigsByName );
+	CC_SAFE_RELEASE( m_varConfigsByName );
 }
 
 void CC3ShaderSemanticsByVarName::init()
 {
-	_varConfigsByName = CCDictionary::create();		// retained
-	_varConfigsByName->retain();
+	m_varConfigsByName = CCDictionary::create();		// retained
+	m_varConfigsByName->retain();
 }
 
 /**
@@ -1442,7 +1442,7 @@ void CC3ShaderSemanticsByVarName::init()
  */
 bool CC3ShaderSemanticsByVarName::configureVariable( CC3GLSLVariable* variable )
 {
-	CC3GLSLVariableConfiguration* varConfig = (CC3GLSLVariableConfiguration*)_varConfigsByName->objectForKey( variable->getName() );
+	CC3GLSLVariableConfiguration* varConfig = (CC3GLSLVariableConfiguration*)m_varConfigsByName->objectForKey( variable->getName() );
 	if (varConfig) 
 	{
 		variable->setSemantic( varConfig->getSemantic() );
@@ -1455,7 +1455,7 @@ bool CC3ShaderSemanticsByVarName::configureVariable( CC3GLSLVariable* variable )
 
 void CC3ShaderSemanticsByVarName::addVariableConfiguration( CC3GLSLVariableConfiguration* varConfig )
 {
-	_varConfigsByName->setObject(varConfig, varConfig->getName() );
+	m_varConfigsByName->setObject(varConfig, varConfig->getName() );
 }
 
 void CC3ShaderSemanticsByVarName::mapVarName( const std::string& name, GLenum semantic, GLuint semanticIndex )

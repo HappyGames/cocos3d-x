@@ -61,12 +61,12 @@ bool CCNodeAdornmentBase::init()
 
 float CCNodeAdornmentBase::getActionDuration()
 {
-	return _actionDuration;
+	return m_fActionDuration;
 }
 
 void CCNodeAdornmentBase::setActionDuration( float actionDuration )
 {
-	_actionDuration = actionDuration;
+	m_fActionDuration = actionDuration;
 }
 
 CCNodeAdornmentBase* CCNodeAdornmentBase::adornment()
@@ -82,7 +82,7 @@ void CCNodeAdornmentBase::initWithActionDuration( float aDuration )
 {
 	if ( super::init() ) 
 	{
-		_actionDuration = aDuration;
+		m_fActionDuration = aDuration;
 		setZOrder( kAdornmentOverZOrder );
 	}
 }

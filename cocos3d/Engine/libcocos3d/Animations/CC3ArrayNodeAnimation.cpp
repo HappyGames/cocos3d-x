@@ -46,46 +46,46 @@ CC3ArrayNodeAnimation::~CC3ArrayNodeAnimation()
 
 bool CC3ArrayNodeAnimation::isAnimatingLocation()
 {
-	return _animatedLocations != NULL; 
+	return m_animatedLocations != NULL; 
 }
 
 bool CC3ArrayNodeAnimation::isAnimatingQuaternion()
 {
-	return _animatedQuaternions != NULL; 
+	return m_animatedQuaternions != NULL; 
 }
 
 bool CC3ArrayNodeAnimation::isAnimatingScale() 
 {
-	return _animatedScales != NULL; 
+	return m_animatedScales != NULL; 
 }
 
 bool CC3ArrayNodeAnimation::hasVariableFrameTiming()
 {
-	return _frameTimes != NULL; 
+	return m_frameTimes != NULL; 
 }
 
 void CC3ArrayNodeAnimation::initWithFrameCount( GLuint numFrames )
 {
 	super::initWithFrameCount( numFrames );
 	{
-		_frameTimes = NULL;
-		_animatedLocations = NULL;
-		_animatedQuaternions = NULL;
-		_animatedScales = NULL;
-		_frameTimesAreRetained = false;
-		_locationsAreRetained = false;
-		_quaternionsAreRetained = false;
-		_scalesAreRetained = false;
+		m_frameTimes = NULL;
+		m_animatedLocations = NULL;
+		m_animatedQuaternions = NULL;
+		m_animatedScales = NULL;
+		m_frameTimesAreRetained = false;
+		m_locationsAreRetained = false;
+		m_quaternionsAreRetained = false;
+		m_scalesAreRetained = false;
 	}
 }
 
 // All times should be in range between zero and one
 float CC3ArrayNodeAnimation::timeAtFrame( GLuint frameIndex )
 {
-	if (!_frameTimes) 
+	if (!m_frameTimes) 
 		return super::timeAtFrame(frameIndex);
 
-	return _frameTimes[MIN(frameIndex, _frameCount - 1)];
+	return m_frameTimes[MIN(frameIndex, m_frameCount - 1)];
 }
 
 // Iterate backwards through the frames looking for the first frame whose time is at or before
@@ -93,11 +93,11 @@ float CC3ArrayNodeAnimation::timeAtFrame( GLuint frameIndex )
 // frame, return the first frame.
 GLuint CC3ArrayNodeAnimation::getFrameIndexAt( float t )
 {
-	if (!_frameTimes) 
+	if (!m_frameTimes) 
 		return super::getFrameIndexAt(t);
 
-	for (GLint fIdx = _frameCount - 1; fIdx >= 0; fIdx--)	// start at last frame
-		if (_frameTimes[fIdx] <= t) 
+	for (GLint fIdx = m_frameCount - 1; fIdx >= 0; fIdx--)	// start at last frame
+		if (m_frameTimes[fIdx] <= t) 
 			return fIdx;			// return frame
 
 	return 0;
@@ -105,145 +105,145 @@ GLuint CC3ArrayNodeAnimation::getFrameIndexAt( float t )
 
 CC3Vector CC3ArrayNodeAnimation::getLocationAtFrame( GLuint frameIndex )
 {
-	if (!_animatedLocations) 
+	if (!m_animatedLocations) 
 		return super::getLocationAtFrame( frameIndex );
 
-	return _animatedLocations[MIN(frameIndex, _frameCount - 1)];
+	return m_animatedLocations[MIN(frameIndex, m_frameCount - 1)];
 }
 
 CC3Quaternion CC3ArrayNodeAnimation::getQuaternionAtFrame( GLuint frameIndex )
 {
-	if (!_animatedQuaternions) 
+	if (!m_animatedQuaternions) 
 		return super::getQuaternionAtFrame( frameIndex );
 
-	return _animatedQuaternions[MIN(frameIndex, _frameCount - 1)];
+	return m_animatedQuaternions[MIN(frameIndex, m_frameCount - 1)];
 }
 
 CC3Vector CC3ArrayNodeAnimation::getScaleAtFrame( GLuint frameIndex )
 {
-	if (!_animatedScales) 
+	if (!m_animatedScales) 
 		return super::getScaleAtFrame( frameIndex );
 
-	return _animatedScales[MIN(frameIndex, _frameCount - 1)];
+	return m_animatedScales[MIN(frameIndex, m_frameCount - 1)];
 }
 
 void CC3ArrayNodeAnimation::setFrameTimes( float* frameTimes )
 {
 	deallocateFrameTimes();			// get rid of any existing array
-	_frameTimes = frameTimes;
+	m_frameTimes = frameTimes;
 }
 
 void CC3ArrayNodeAnimation::setAnimatedLocations( CC3Vector* vectorArray )
 {
 	deallocateLocations();				// get rid of any existing array
-	_animatedLocations = vectorArray;
+	m_animatedLocations = vectorArray;
 }
 
 void CC3ArrayNodeAnimation::setAnimatedQuaternions( CC3Quaternion* vectorArray )
 {
 	deallocateQuaternions();			// get rid of any existing array
-	_animatedQuaternions = vectorArray;
+	m_animatedQuaternions = vectorArray;
 }
 
 void CC3ArrayNodeAnimation::setAnimatedScales( CC3Vector* vectorArray )
 {
 	deallocateScales();				// get rid of any existing array
-	_animatedScales= vectorArray;
+	m_animatedScales= vectorArray;
 }
 
 float* CC3ArrayNodeAnimation::allocateFrameTimes()
 {
-	if (_frameCount) 
+	if (m_frameCount) 
 	{
-		setFrameTimes( (float*)calloc(_frameCount, sizeof(float)) );
-		_frameTimesAreRetained = true;
-		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d frame times", _frameCount);
+		setFrameTimes( (float*)calloc(m_frameCount, sizeof(float)) );
+		m_frameTimesAreRetained = true;
+		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d frame times", m_frameCount);
 	}
-	return _frameTimes;
+	return m_frameTimes;
 }
 
 void CC3ArrayNodeAnimation::deallocateFrameTimes()
 {
-	if (_frameTimesAreRetained) 
+	if (m_frameTimesAreRetained) 
 	{
-		free(_frameTimes);
-		_frameTimes = NULL;
-		_frameTimesAreRetained = false;
-		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated frame times", _frameCount);
+		free(m_frameTimes);
+		m_frameTimes = NULL;
+		m_frameTimesAreRetained = false;
+		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated frame times", m_frameCount);
 	}
 }
 
 CC3Vector* CC3ArrayNodeAnimation::allocateLocations()
 {
-	if (_frameCount) 
+	if (m_frameCount) 
 	{
-		setAnimatedLocations( (CC3Vector*)calloc(_frameCount, sizeof(CC3Vector)) );
-		_locationsAreRetained = true;
-		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d locations", _frameCount);
+		setAnimatedLocations( (CC3Vector*)calloc(m_frameCount, sizeof(CC3Vector)) );
+		m_locationsAreRetained = true;
+		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d locations", m_frameCount);
 	}
-	return _animatedLocations;
+	return m_animatedLocations;
 }
 
 void CC3ArrayNodeAnimation::deallocateLocations()
 {
-	if (_locationsAreRetained) 
+	if (m_locationsAreRetained) 
 	{
-		free(_animatedLocations);
-		_animatedLocations = NULL;
-		_locationsAreRetained = false;
-		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated animated locations", _frameCount);
+		free(m_animatedLocations);
+		m_animatedLocations = NULL;
+		m_locationsAreRetained = false;
+		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated animated locations", m_frameCount);
 	}
 }
 
 CC3Quaternion* CC3ArrayNodeAnimation::allocateQuaternions()
 {
-	if (_frameCount) 
+	if (m_frameCount) 
 	{
-		setAnimatedQuaternions( (CC3Quaternion*)calloc(_frameCount, sizeof(CC3Quaternion)) );
+		setAnimatedQuaternions( (CC3Quaternion*)calloc(m_frameCount, sizeof(CC3Quaternion)) );
 
-		for (GLuint i = 0; i < _frameCount; i++) 
-			_animatedQuaternions[i] = CC3Quaternion::kCC3QuaternionIdentity;
+		for (GLuint i = 0; i < m_frameCount; i++) 
+			m_animatedQuaternions[i] = CC3Quaternion::kCC3QuaternionIdentity;
 
-		_quaternionsAreRetained = true;
-		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d quaternions", _frameCount);
+		m_quaternionsAreRetained = true;
+		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d quaternions", m_frameCount);
 	}
 
-	return _animatedQuaternions;
+	return m_animatedQuaternions;
 }
 
 void CC3ArrayNodeAnimation::deallocateQuaternions()
 {
-	if (_quaternionsAreRetained) 
+	if (m_quaternionsAreRetained) 
 	{
-		free(_animatedQuaternions);
-		_animatedQuaternions = NULL;
-		_quaternionsAreRetained = false;
-		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated animated quaternions", _frameCount);
+		free(m_animatedQuaternions);
+		m_animatedQuaternions = NULL;
+		m_quaternionsAreRetained = false;
+		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated animated quaternions", m_frameCount);
 	}
 }
 
 CC3Vector* CC3ArrayNodeAnimation::allocateScales()
 {
-	if (_frameCount) 
+	if (m_frameCount) 
 	{
-		setAnimatedScales( (CC3Vector*)calloc(_frameCount, sizeof(CC3Vector)) );
-		for (GLuint i = 0; i < _frameCount; i++) 
-			_animatedScales[i] = CC3Vector::kCC3VectorUnitCube;
+		setAnimatedScales( (CC3Vector*)calloc(m_frameCount, sizeof(CC3Vector)) );
+		for (GLuint i = 0; i < m_frameCount; i++) 
+			m_animatedScales[i] = CC3Vector::kCC3VectorUnitCube;
 		
-		_scalesAreRetained = true;
-		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d scales", _frameCount);
+		m_scalesAreRetained = true;
+		CC3_TRACE("CC3ArrayNodeAnimation allocated space for %d scales", m_frameCount);
 	}
-	return _animatedScales;
+	return m_animatedScales;
 }
 
 void CC3ArrayNodeAnimation::deallocateScales()
 {
-	if (_scalesAreRetained) 
+	if (m_scalesAreRetained) 
 	{
-		free(_animatedScales);
-		_animatedScales = NULL;
-		_scalesAreRetained = false;
-		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated animated scales", _frameCount);
+		free(m_animatedScales);
+		m_animatedScales = NULL;
+		m_scalesAreRetained = false;
+		CC3_TRACE("CC3ArrayNodeAnimation deallocated %d previously allocated animated scales", m_frameCount);
 	}
 }
 

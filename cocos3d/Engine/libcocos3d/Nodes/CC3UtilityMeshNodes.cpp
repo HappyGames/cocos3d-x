@@ -63,9 +63,9 @@ void CC3SimpleLineNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_lineVertices[0] = CC3Vector::kCC3VectorZero;
-		_lineVertices[1] = CC3Vector::kCC3VectorZero;
-		populateAsLineStripWith( 2, _lineVertices, false );
+		m_lineVertices[0] = CC3Vector::kCC3VectorZero;
+		m_lineVertices[1] = CC3Vector::kCC3VectorZero;
+		populateAsLineStripWith( 2, m_lineVertices, false );
 		retainVertexLocations();
 	}
 }
@@ -128,7 +128,7 @@ void CC3TouchBox::setParent( CC3Node* aNode )
 {
 	super::setParent( aNode );
 	deriveNameFrom( aNode );
-	if ( !_mesh ) 
+	if ( !m_pMesh ) 
 		setBox( getParentBoundingBox() );
 }
 
@@ -171,73 +171,73 @@ void CC3TouchBox::populateBox( const CC3Box& aBox )
 /** Overridden because we only need vertex locations, and to allocate and populate indices. */
 CC3Mesh* CC3TouchBox::prepareParametricMesh()
 {
-	if (_mesh) 
-		return _mesh;
+	if (m_pMesh) 
+		return m_pMesh;
 	
 	if (getVertexContentTypes() == kCC3VertexContentNone)
 		setVertexContentTypes( kCC3VertexContentLocation );
 	
 	// Prepare the vertex content and allocate space for vertices and indices.
-	_mesh->setAllocatedVertexCapacity( 8 );
-	_mesh->setAllocatedVertexIndexCapacity( 36 );
+	m_pMesh->setAllocatedVertexCapacity( 8 );
+	m_pMesh->setAllocatedVertexIndexCapacity( 36 );
 	
 	GLuint vIdx = 0;
 	
 	// Front
-	_mesh->setVertexIndex( 1, vIdx++ );
-	_mesh->setVertexIndex( 5, vIdx++ );
-	_mesh->setVertexIndex( 7, vIdx++ );
-	_mesh->setVertexIndex( 7, vIdx++ );
-	_mesh->setVertexIndex( 3, vIdx++ );
-	_mesh->setVertexIndex( 1, vIdx++ );
+	m_pMesh->setVertexIndex( 1, vIdx++ );
+	m_pMesh->setVertexIndex( 5, vIdx++ );
+	m_pMesh->setVertexIndex( 7, vIdx++ );
+	m_pMesh->setVertexIndex( 7, vIdx++ );
+	m_pMesh->setVertexIndex( 3, vIdx++ );
+	m_pMesh->setVertexIndex( 1, vIdx++ );
 						 	 		 
 	// Back				 	 		 
-	_mesh->setVertexIndex( 0, vIdx++ );
-	_mesh->setVertexIndex( 2, vIdx++ );
-	_mesh->setVertexIndex( 6, vIdx++ );
-	_mesh->setVertexIndex( 6, vIdx++ );
-	_mesh->setVertexIndex( 4, vIdx++ );
-	_mesh->setVertexIndex( 0, vIdx++ );
+	m_pMesh->setVertexIndex( 0, vIdx++ );
+	m_pMesh->setVertexIndex( 2, vIdx++ );
+	m_pMesh->setVertexIndex( 6, vIdx++ );
+	m_pMesh->setVertexIndex( 6, vIdx++ );
+	m_pMesh->setVertexIndex( 4, vIdx++ );
+	m_pMesh->setVertexIndex( 0, vIdx++ );
 						 			 
 	// Left				 	 		 
-	_mesh->setVertexIndex( 0, vIdx++ );
-	_mesh->setVertexIndex( 1, vIdx++ );
-	_mesh->setVertexIndex( 3, vIdx++ );
-	_mesh->setVertexIndex( 3, vIdx++ );
-	_mesh->setVertexIndex( 2, vIdx++ );
-	_mesh->setVertexIndex( 0, vIdx++ );
+	m_pMesh->setVertexIndex( 0, vIdx++ );
+	m_pMesh->setVertexIndex( 1, vIdx++ );
+	m_pMesh->setVertexIndex( 3, vIdx++ );
+	m_pMesh->setVertexIndex( 3, vIdx++ );
+	m_pMesh->setVertexIndex( 2, vIdx++ );
+	m_pMesh->setVertexIndex( 0, vIdx++ );
 						 			 
 	// Right			 	 		 
-	_mesh->setVertexIndex( 4, vIdx++ );
-	_mesh->setVertexIndex( 6, vIdx++ );
-	_mesh->setVertexIndex( 7, vIdx++ );
-	_mesh->setVertexIndex( 7, vIdx++ );
-	_mesh->setVertexIndex( 5, vIdx++ );
-	_mesh->setVertexIndex( 4, vIdx++ );
+	m_pMesh->setVertexIndex( 4, vIdx++ );
+	m_pMesh->setVertexIndex( 6, vIdx++ );
+	m_pMesh->setVertexIndex( 7, vIdx++ );
+	m_pMesh->setVertexIndex( 7, vIdx++ );
+	m_pMesh->setVertexIndex( 5, vIdx++ );
+	m_pMesh->setVertexIndex( 4, vIdx++ );
 							 		 
 	// Top					 		 
-	_mesh->setVertexIndex( 2, vIdx++ );
-	_mesh->setVertexIndex( 3, vIdx++ );
-	_mesh->setVertexIndex( 7, vIdx++ );
-	_mesh->setVertexIndex( 7, vIdx++ );
-	_mesh->setVertexIndex( 6, vIdx++ );
-	_mesh->setVertexIndex( 2, vIdx++ );
+	m_pMesh->setVertexIndex( 2, vIdx++ );
+	m_pMesh->setVertexIndex( 3, vIdx++ );
+	m_pMesh->setVertexIndex( 7, vIdx++ );
+	m_pMesh->setVertexIndex( 7, vIdx++ );
+	m_pMesh->setVertexIndex( 6, vIdx++ );
+	m_pMesh->setVertexIndex( 2, vIdx++ );
 									 
 	// Bottom				 		 
-	_mesh->setVertexIndex( 0, vIdx++ );
-	_mesh->setVertexIndex( 4, vIdx++ );
-	_mesh->setVertexIndex( 5, vIdx++ );
-	_mesh->setVertexIndex( 5, vIdx++ );
-	_mesh->setVertexIndex( 1, vIdx++ );
-	_mesh->setVertexIndex( 0, vIdx++ );
+	m_pMesh->setVertexIndex( 0, vIdx++ );
+	m_pMesh->setVertexIndex( 4, vIdx++ );
+	m_pMesh->setVertexIndex( 5, vIdx++ );
+	m_pMesh->setVertexIndex( 5, vIdx++ );
+	m_pMesh->setVertexIndex( 1, vIdx++ );
+	m_pMesh->setVertexIndex( 0, vIdx++ );
 	
-	return _mesh;
+	return m_pMesh;
 }
 
 /** If we should remeasure and update the bounding box dimensions, do so. */
 void CC3TouchBox::updateAfterTransform( CC3NodeUpdatingVisitor* visitor )
 {
-	if (_shouldAlwaysMeasureParentBoundingBox)
+	if (m_shouldAlwaysMeasureParentBoundingBox)
 		setBox( getParentBoundingBox() );
 }
 
@@ -245,7 +245,7 @@ void CC3TouchBox::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_shouldAlwaysMeasureParentBoundingBox = false;
+		m_shouldAlwaysMeasureParentBoundingBox = false;
 		setVisible( false );
 		setShouldAllowTouchableWhenInvisible( true );
 	}
@@ -446,24 +446,24 @@ CC3Material* CC3WireframeBoundingBoxNode::makeMaterial()
 void CC3WireframeBoundingBoxNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_shouldAlwaysMeasureParentBoundingBox = false;
+	m_shouldAlwaysMeasureParentBoundingBox = false;
 }
 
 bool CC3WireframeBoundingBoxNode::shouldAlwaysMeasureParentBoundingBox()
 {
-	return _shouldAlwaysMeasureParentBoundingBox;
+	return m_shouldAlwaysMeasureParentBoundingBox;
 }
 
 void CC3WireframeBoundingBoxNode::setShouldAlwaysMeasureParentBoundingBox( bool alwaysMeasure )
 {
-	_shouldAlwaysMeasureParentBoundingBox = alwaysMeasure;
+	m_shouldAlwaysMeasureParentBoundingBox = alwaysMeasure;
 }
 
 void CC3WireframeBoundingBoxNode::populateFrom( CC3WireframeBoundingBoxNode* another )
 {
 	super::populateFrom( another );
 	
-	_shouldAlwaysMeasureParentBoundingBox = another->shouldAlwaysMeasureParentBoundingBox();
+	m_shouldAlwaysMeasureParentBoundingBox = another->shouldAlwaysMeasureParentBoundingBox();
 }
 
 CCObject* CC3WireframeBoundingBoxNode::copyWithZone( CCZone* zone )
@@ -490,7 +490,7 @@ void CC3WireframeBoundingBoxNode::updateFromParentBoundingBox()
 /** If we should remeasure and update the bounding box dimensions, do so. */
 void CC3WireframeBoundingBoxNode::updateAfterTransform( CC3NodeUpdatingVisitor* visitor )
 {
-	if (_shouldAlwaysMeasureParentBoundingBox)
+	if (m_shouldAlwaysMeasureParentBoundingBox)
 		updateFromParentBoundingBoxWithVisitor( visitor );
 }
 
@@ -561,12 +561,12 @@ CC3Box CC3WireframeLocalContentBoundingBoxNode::getParentBoundingBox()
 
 CC3Vector CC3DirectionMarkerNode::getMarkerDirection()
 {
-	return _markerDirection; 
+	return m_markerDirection; 
 }
 
 void CC3DirectionMarkerNode::setMarkerDirection( const CC3Vector& aDirection )
 {
-	_markerDirection = aDirection.normalize(); 
+	m_markerDirection = aDirection.normalize(); 
 }
 
 void CC3DirectionMarkerNode::setParent( CC3Node* aNode )
@@ -597,14 +597,14 @@ CC3Box CC3DirectionMarkerNode::getParentBoundingBox()
 void CC3DirectionMarkerNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_markerDirection = CC3Vector::kCC3VectorUnitZNegative;
+	m_markerDirection = CC3Vector::kCC3VectorUnitZNegative;
 }
 
 void CC3DirectionMarkerNode::populateFrom( CC3DirectionMarkerNode* another )
 {
 	super::populateFrom( another );
 	
-	_markerDirection = another->getMarkerDirection();
+	m_markerDirection = another->getMarkerDirection();
 }
 
 CCObject* CC3DirectionMarkerNode::copyWithZone( CCZone* zone )
@@ -817,11 +817,11 @@ bool CC3BoundingVolumeDisplayNode::isVisible()
 
 bool CC3Fog::init()
 {
-	_attenuationMode = GL_EXP2;
-	_performanceHint = GL_DONT_CARE;
-	_density = 1.0f;
-	_startDistance = 0.0f;
-	_endDistance = 1.0f;
+	m_attenuationMode = GL_EXP2;
+	m_performanceHint = GL_DONT_CARE;
+	m_density = 1.0f;
+	m_startDistance = 0.0f;
+	m_endDistance = 1.0f;
 	setDiffuseColor( kCCC4FLightGray );
 	setShouldDrawInClipSpace( true );
 
@@ -841,11 +841,11 @@ void CC3Fog::populateFrom( CC3Fog* another )
 {
 	super::populateFrom( another );
 	
-	_attenuationMode = another->getAttenuationMode();
-	_performanceHint = another->getPerformanceHint();
-	_density = another->getDensity();
-	_startDistance = another->getStartDistance();
-	_endDistance = another->getEndDistance();
+	m_attenuationMode = another->getAttenuationMode();
+	m_performanceHint = another->getPerformanceHint();
+	m_density = another->getDensity();
+	m_startDistance = another->getStartDistance();
+	m_endDistance = another->getEndDistance();
 }
 
 CCObject* CC3Fog::copyWithZone( CCZone* zone )
@@ -860,52 +860,52 @@ CCObject* CC3Fog::copyWithZone( CCZone* zone )
 
 GLenum	CC3Fog::getAttenuationMode()
 {
-	return _attenuationMode;
+	return m_attenuationMode;
 }
 
 void CC3Fog::setAttenuationMode( GLenum mode )
 {
-	_attenuationMode = mode;
+	m_attenuationMode = mode;
 }
 
 GLenum	CC3Fog::getPerformanceHint()
 {
-	return _performanceHint;
+	return m_performanceHint;
 }
 
 void CC3Fog::setPerformanceHint( GLenum hint )
 {
-	_performanceHint = hint;
+	m_performanceHint = hint;
 }
 
 GLfloat	CC3Fog::getDensity()
 {
-	return _density;
+	return m_density;
 }
 
 void CC3Fog::setDensity( GLfloat density )
 {
-	_density = density;
+	m_density = density;
 }
 
 GLfloat CC3Fog::getStartDistance()
 {
-	return _startDistance;
+	return m_startDistance;
 }
 
 void CC3Fog::setStartDistance( GLfloat startDistance )
 {
-	_startDistance = startDistance;
+	m_startDistance = startDistance;
 }
 
 GLfloat CC3Fog::getEndDistance()
 {
-	return _endDistance;
+	return m_endDistance;
 }
 
 void CC3Fog::setEndDistance( GLfloat endDistance )
 {
-	_endDistance = endDistance;
+	m_endDistance = endDistance;
 }
 
 NS_COCOS3D_END

@@ -57,7 +57,7 @@ GLenum CC3VertexIndices::getBufferTarget()
 GLuint CC3VertexIndices::getIndexAt( GLuint index )
 {
 	GLvoid* ptr = getAddressOfElement(index);
-	if ( _elementType == GL_UNSIGNED_BYTE )
+	if ( m_elementType == GL_UNSIGNED_BYTE )
 		return *(GLubyte*)ptr;
 
 	return *(GLushort*)ptr;
@@ -66,7 +66,7 @@ GLuint CC3VertexIndices::getIndexAt( GLuint index )
 void CC3VertexIndices::setIndex( GLuint vtxIdx, GLuint index )
 {
 	GLvoid* ptr = getAddressOfElement(index);
-	if (_elementType == GL_UNSIGNED_BYTE) 
+	if (m_elementType == GL_UNSIGNED_BYTE) 
 		*(GLubyte*)ptr = vtxIdx;
 	else
 		*(GLushort*)ptr = vtxIdx;
@@ -91,11 +91,11 @@ void CC3VertexIndices::drawFrom( GLuint vtxIdx, GLuint vtxCount, CC3NodeDrawingV
 {
 	super::drawFrom( vtxIdx, vtxCount, visitor );
 
-	GLbyte* firstVtx = _bufferID ? 0 : (GLbyte*)_vertices;
+	GLbyte* firstVtx = m_bufferID ? 0 : (GLbyte*)m_vertices;
 	firstVtx += getVertexStride() * vtxIdx;
-	firstVtx += _elementOffset;
+	firstVtx += m_elementOffset;
 	
-	visitor->getGL()->drawIndicies( firstVtx, vtxCount, _elementType, _drawingMode );
+	visitor->getGL()->drawIndicies( firstVtx, vtxCount, m_elementType, m_drawingMode );
 }
 
 void CC3VertexIndices::copyVertices( GLuint vtxCount, GLuint srcIdx, GLuint dstIdx, GLint offset )
@@ -119,7 +119,7 @@ void CC3VertexIndices::copyVertices( GLuint vtxCount, GLvoid* srcPtr, GLuint dst
 
 void CC3VertexIndices::copyVertices( GLuint vtxCount, GLvoid* srcPtr, GLvoid* dstPtr, GLint offset )
 {
-	if (_elementType == GL_UNSIGNED_BYTE) 
+	if (m_elementType == GL_UNSIGNED_BYTE) 
 	{
 		GLubyte* srcByte = (GLubyte*)srcPtr;
 		GLubyte* dstByte = (GLubyte*)dstPtr;
@@ -148,8 +148,8 @@ void CC3VertexIndices::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_elementType = GL_UNSIGNED_SHORT;
-		_elementSize = 1;
+		m_elementType = GL_UNSIGNED_SHORT;
+		m_elementSize = 1;
 	}
 }
 
@@ -188,7 +188,7 @@ void CC3VertexIndices::populateFromRunLengthArray( GLushort* runLenArray, GLuint
 	while( rlaIdx < rlaLen ) 
 	{
 		GLushort runLength = runLenArray[rlaIdx++];
-		_stripLengths[runNum++] = runLength;
+		m_stripLengths[runNum++] = runLength;
 		for (int i = 0; i < runLength; i++) 
 		{
 			setIndex( runLenArray[rlaIdx++], elemNum++ );

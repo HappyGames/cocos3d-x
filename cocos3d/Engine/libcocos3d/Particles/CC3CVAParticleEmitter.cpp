@@ -35,14 +35,14 @@ void CC3CommonVertexArrayParticleEmitter::initWithTag( GLuint aTag, const std::s
 {
 	super::initWithTag( aTag, aName );
 	clearDirtyVertexRanges();
-	_wasVertexCapacityChanged = false;
+	m_wasVertexCapacityChanged = false;
 }
 
 void CC3CommonVertexArrayParticleEmitter::populateFrom( CC3CommonVertexArrayParticleEmitter* another )
 {
 	super::populateFrom( another );
-	_dirtyVertexRange = another->_dirtyVertexRange;
-	_dirtyVertexIndexRange = another->_dirtyVertexIndexRange;
+	m_dirtyVertexRange = another->m_dirtyVertexRange;
+	m_dirtyVertexIndexRange = another->m_dirtyVertexIndexRange;
 }
 
 CCObject* CC3CommonVertexArrayParticleEmitter::copyWithZone( CCZone* zone )
@@ -125,14 +125,14 @@ bool CC3CommonVertexArrayParticleEmitter::ensureParticleCapacityFor( CC3Particle
 	newRqmt = meshVtxCount + partVtxCount;
 	if (newRqmt > currCap) 
 	{		// Needs expansion...so expand by a large chunk
-		if (_particleCapacityExpansionIncrement == 0) 
+		if (m_particleCapacityExpansionIncrement == 0) 
 			return false;		// Oops...can't expand
-		newCap = currCap + (partVtxCount * _particleCapacityExpansionIncrement);
+		newCap = currCap + (partVtxCount * m_particleCapacityExpansionIncrement);
 		vaMesh->setAllocatedVertexCapacity( newCap );
 		vaMesh->setVertexCount( meshVtxCount );							// Leave the vertex count unchanged
 		if ( vaMesh->getAllocatedVertexCapacity() != newCap ) 
 			return false;	// Expansion failed
-		_wasVertexCapacityChanged = true;
+		m_wasVertexCapacityChanged = true;
 		CC3_TRACE( "[ptc]CC3CommonVertexArrayParticleEmitter changed capacity to %d vertices", vaMesh->getAllocatedVertexCapacity() );
 	}
 
@@ -148,9 +148,9 @@ bool CC3CommonVertexArrayParticleEmitter::ensureParticleCapacityFor( CC3Particle
 		newRqmt = vaMesh->getVertexIndexCount() + partVtxCount;
 		if ( newRqmt > currCap ) 
 		{		// Needs expansion...so expand by a large chunk
-			if ( _particleCapacityExpansionIncrement == 0 ) 
+			if ( m_particleCapacityExpansionIncrement == 0 ) 
 				return false;			// Oops...can't expand
-			newCap = currCap + (partVtxCount * _particleCapacityExpansionIncrement);
+			newCap = currCap + (partVtxCount * m_particleCapacityExpansionIncrement);
 			meshVtxIdxCount = vaMesh->getVertexIndexCount();
 			vaMesh->setAllocatedVertexIndexCapacity( newCap );
 			vaMesh->setVertexIndexCount( meshVtxIdxCount );			// Leave the vertex count unchanged
@@ -158,7 +158,7 @@ bool CC3CommonVertexArrayParticleEmitter::ensureParticleCapacityFor( CC3Particle
 			vaMesh->retainVertexIndices();						// Make sure the indices stick around to be modified
 			if ( vaMesh->getAllocatedVertexIndexCapacity() != newCap ) 
 				return false;	// Expansion failed
-			_wasVertexCapacityChanged = true;
+			m_wasVertexCapacityChanged = true;
 			CC3_TRACE("[ptc]CC3CommonVertexArrayParticleEmitter changed capacity to %d vertex indices", vaMesh->getAllocatedVertexIndexCapacity());
 		}
 	} 
@@ -167,10 +167,10 @@ bool CC3CommonVertexArrayParticleEmitter::ensureParticleCapacityFor( CC3Particle
 		// The underlying mesh does not yet have vertex indices, but the particle requires them.
 		// Add a new vertex indices array, with enough capacity for one vertex index per vertex,
 		// plus an expansion component.
-		if ( _particleCapacityExpansionIncrement == 0 ) 
+		if ( m_particleCapacityExpansionIncrement == 0 ) 
 			return false;			// Oops...can't expand
 		partVtxCount = ((CC3CommonVertexArrayParticle*)aParticle)->getVertexIndexCount();
-		newCap = meshVtxCount + (partVtxCount * _particleCapacityExpansionIncrement);
+		newCap = meshVtxCount + (partVtxCount * m_particleCapacityExpansionIncrement);
 		meshVtxIdxCount = vaMesh->getVertexIndexCount();
 		vaMesh->setAllocatedVertexIndexCapacity( newCap );
 		vaMesh->setVertexIndexCount( meshVtxIdxCount );		// Leave the vertex count unchanged
@@ -178,7 +178,7 @@ bool CC3CommonVertexArrayParticleEmitter::ensureParticleCapacityFor( CC3Particle
 		vaMesh->retainVertexIndices();					// Make sure the indices stick around to be modified
 		if ( vaMesh->getAllocatedVertexIndexCapacity() != newCap ) 
 			return false;	// Expansion failed
-		_wasVertexCapacityChanged = true;
+		m_wasVertexCapacityChanged = true;
 		CC3_TRACE("[ptc]CC3CommonVertexArrayParticleEmitter created new capacity for %d vertex indices", vaMesh->getAllocatedVertexIndexCapacity());
 
 		// Synthesize vertex indices for the existing vertex content
@@ -195,7 +195,7 @@ bool CC3CommonVertexArrayParticleEmitter::ensureParticleCapacityFor( CC3Particle
  */
 void CC3CommonVertexArrayParticleEmitter::addDirtyVertexRange( const CCRange& aRange )
 {
-	_dirtyVertexRange = _dirtyVertexRange.unionRange( aRange );
+	m_dirtyVertexRange = m_dirtyVertexRange.unionRange( aRange );
 }
 
 /**
@@ -213,7 +213,7 @@ void CC3CommonVertexArrayParticleEmitter::addDirtyVertex( GLuint vtxIdx )
  */
 void CC3CommonVertexArrayParticleEmitter::addDirtyVertexIndexRange( const CCRange& aRange )
 {
-	_dirtyVertexIndexRange = _dirtyVertexIndexRange.unionRange( aRange );
+	m_dirtyVertexIndexRange = m_dirtyVertexIndexRange.unionRange( aRange );
 }
 
 /**
@@ -228,19 +228,19 @@ void CC3CommonVertexArrayParticleEmitter::addDirtyVertexIndex( GLuint vtxIdx )
 /** Returns whether any vertices are dirty, by being either expanded or changed. */
 bool CC3CommonVertexArrayParticleEmitter::verticesAreDirty()
 {
-	return _wasVertexCapacityChanged || (_dirtyVertexRange.length > 0); 
+	return m_wasVertexCapacityChanged || (m_dirtyVertexRange.length > 0); 
 }
 
 /** Returns whether any vertex indices are dirty, by being either expanded or changed. */
 bool CC3CommonVertexArrayParticleEmitter::vertexIndicesAreDirty()
 {
-	return _wasVertexCapacityChanged || (_dirtyVertexIndexRange.length > 0); 
+	return m_wasVertexCapacityChanged || (m_dirtyVertexIndexRange.length > 0); 
 }
 
 /** Clears the range of dirty vertices and vertex indices. */
 void CC3CommonVertexArrayParticleEmitter::clearDirtyVertexRanges()
 {
-	_dirtyVertexIndexRange = _dirtyVertexRange = CCRangeMake( 0, 0 ); 
+	m_dirtyVertexIndexRange = m_dirtyVertexRange = CCRangeMake( 0, 0 ); 
 }
 
 /**
@@ -285,7 +285,7 @@ void CC3CommonVertexArrayParticleEmitter::updateParticleMeshWithVisitor( CC3Node
 		updateParticleMeshGLBuffers();
 		markBoundingVolumeDirty();
 		clearDirtyVertexRanges();
-		_wasVertexCapacityChanged = false;
+		m_wasVertexCapacityChanged = false;
 	}
 }
 
@@ -298,7 +298,7 @@ void CC3CommonVertexArrayParticleEmitter::updateParticleMeshGLBuffers()
 	if ( isUsingGLBuffers() ) 
 	{
 		CC3Mesh* vaMesh = getMesh();
-		if ( _wasVertexCapacityChanged ) 
+		if ( m_wasVertexCapacityChanged ) 
 		{
 			vaMesh->deleteGLBuffers();
 			vaMesh->createGLBuffers();
@@ -307,10 +307,10 @@ void CC3CommonVertexArrayParticleEmitter::updateParticleMeshGLBuffers()
 		} 
 		else 
 		{
-			vaMesh->updateGLBuffersStartingAt( (GLuint)_dirtyVertexRange.location, (GLuint)_dirtyVertexRange.length );
+			vaMesh->updateGLBuffersStartingAt( (GLuint)m_dirtyVertexRange.location, (GLuint)m_dirtyVertexRange.length );
 			
 			if ( vaMesh->hasVertexIndices() && vertexIndicesAreDirty() )
-				vaMesh->getVertexIndices()->updateGLBufferStartingAt( (GLuint)_dirtyVertexIndexRange.location, (GLuint)_dirtyVertexIndexRange.length );
+				vaMesh->getVertexIndices()->updateGLBufferStartingAt( (GLuint)m_dirtyVertexIndexRange.location, (GLuint)m_dirtyVertexIndexRange.length );
 		
 			/*CCLOG_TRACE( "[ptc]CC3CommonVertexArrayParticleEmitter updated vertex content GL buffer (ID %d) "
 				"range (%ld, %ld) of %d vertices (out of %d allocated as %s) and index GL buffer (ID %d) range (%ld, %ld) of %d indices "

@@ -33,41 +33,41 @@ NS_COCOS3D_BEGIN
 
 CC3NodePuncture::CC3NodePuncture()
 {
-	_node = NULL;
+	m_pNode = NULL;
 }
 
 CC3NodePuncture::~CC3NodePuncture()
 {
-	CC_SAFE_RELEASE( _node );
+	CC_SAFE_RELEASE( m_pNode );
 }
 
 CC3Node* CC3NodePuncture::getNode()
 {
-	return _node;
+	return m_pNode;
 }
 
 CC3Vector CC3NodePuncture::getPunctureLocation()
 {
-	return _punctureLocation;
+	return m_punctureLocation;
 }
 
 CC3Vector CC3NodePuncture::getGlobalPunctureLocation()
 {
-	return _globalPunctureLocation;
+	return m_globalPunctureLocation;
 }
 
 GLfloat CC3NodePuncture::getSQGlobalPunctureDistance()
 {
-	return _sqGlobalPunctureDistance;
+	return m_sqGlobalPunctureDistance;
 }
 
 void CC3NodePuncture::initOnNode( CC3Node* aNode, const CC3Ray& aRay )
 {
-	_node = aNode;
-	_node->retain();
-	_punctureLocation = aNode->getLocationOfGlobalRayIntesection( aRay );
-	_globalPunctureLocation = aNode->getGlobalTransformMatrix()->transformLocation( _punctureLocation );
-	_sqGlobalPunctureDistance = _globalPunctureLocation.distanceSquared( aRay.startLocation );
+	m_pNode = aNode;
+	m_pNode->retain();
+	m_punctureLocation = aNode->getLocationOfGlobalRayIntesection( aRay );
+	m_globalPunctureLocation = aNode->getGlobalTransformMatrix()->transformLocation( m_punctureLocation );
+	m_sqGlobalPunctureDistance = m_globalPunctureLocation.distanceSquared( aRay.startLocation );
 }
 
 CC3NodePuncture* CC3NodePuncture::punctureOnNode( CC3Node* aNode, const CC3Ray& aRay )
@@ -86,17 +86,17 @@ CC3NodePuncturingVisitor::CC3NodePuncturingVisitor()
 
 CC3NodePuncturingVisitor::~CC3NodePuncturingVisitor()
 {
-	_nodePunctures->release();
+	m_nodePunctures->release();
 }
 
 CC3NodePuncture* CC3NodePuncturingVisitor::getNodePunctureAt( unsigned int index )
 {
-	return (CC3NodePuncture*)_nodePunctures->objectAtIndex( index );
+	return (CC3NodePuncture*)m_nodePunctures->objectAtIndex( index );
 }
 
 unsigned int CC3NodePuncturingVisitor::getNodeCount()
 { 
-	return _nodePunctures->count();
+	return m_nodePunctures->count();
 }
 
 CC3Node* CC3NodePuncturingVisitor::getPuncturedNodeAt( unsigned int index )
@@ -132,7 +132,7 @@ CC3Vector CC3NodePuncturingVisitor::getClosestGlobalPunctureLocation()
 void CC3NodePuncturingVisitor::open()
 {
 	super::open();
-	_nodePunctures->removeAllObjects();
+	m_nodePunctures->removeAllObjects();
 }
 
 /**
@@ -148,28 +148,28 @@ bool CC3NodePuncturingVisitor::doesPuncture( CC3Node* aNode )
 	CC3BoundingVolume* bv = aNode->getBoundingVolume();
 	if ( !bv ) 
 		return false;
-	if ( !_shouldPunctureInvisibleNodes && !aNode->isVisible() ) 
+	if ( !m_shouldPunctureInvisibleNodes && !aNode->isVisible() ) 
 		return false;
-	if ( !_shouldPunctureFromInside && bv->doesIntersectLocation( _ray.startLocation ) ) 
+	if ( !m_shouldPunctureFromInside && bv->doesIntersectLocation( m_ray.startLocation ) ) 
 		return false;
-	return bv->doesIntersectRay( _ray );
+	return bv->doesIntersectRay( m_ray );
 }
 
 void CC3NodePuncturingVisitor::processBeforeChildren( CC3Node* aNode )
 {
 	if ( doesPuncture( aNode ) ) 
 	{
-		CC3NodePuncture* np = CC3NodePuncture::punctureOnNode( aNode, _ray );
-		unsigned int nodeCount = _nodePunctures->count();
+		CC3NodePuncture* np = CC3NodePuncture::punctureOnNode( aNode, m_ray );
+		unsigned int nodeCount = m_nodePunctures->count();
 		for (unsigned int i = 0; i < nodeCount; i++) 
 		{
-			CC3NodePuncture* existNP = (CC3NodePuncture*)_nodePunctures->objectAtIndex( i );
+			CC3NodePuncture* existNP = (CC3NodePuncture*)m_nodePunctures->objectAtIndex( i );
 			if (np->getSQGlobalPunctureDistance() < existNP->getSQGlobalPunctureDistance()) {
-				_nodePunctures->insertObject( np, i );
+				m_nodePunctures->insertObject( np, i );
 				return;
 			}
 		}
-		_nodePunctures->addObject( np );
+		m_nodePunctures->addObject( np );
 	}
 }
 
@@ -181,11 +181,11 @@ void CC3NodePuncturingVisitor::init()
 void CC3NodePuncturingVisitor::initWithRay( const CC3Ray& aRay )
 {
 	super::init();
-	_ray = aRay;
-	_nodePunctures = CCArray::create();
-	_nodePunctures->retain();
-	_shouldPunctureFromInside = false;
-	_shouldPunctureInvisibleNodes = false;
+	m_ray = aRay;
+	m_nodePunctures = CCArray::create();
+	m_nodePunctures->retain();
+	m_shouldPunctureFromInside = false;
+	m_shouldPunctureInvisibleNodes = false;
 }
 
 CC3NodePuncturingVisitor* CC3NodePuncturingVisitor::visitorWithRay( const CC3Ray& aRay )

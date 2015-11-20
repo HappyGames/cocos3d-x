@@ -33,24 +33,24 @@ NS_COCOS3D_BEGIN
 
 CC3NodeAnimationState::CC3NodeAnimationState()
 {
-	_node = NULL;
-	_animation = NULL;
+	m_pNode = NULL;
+	m_pAnimation = NULL;
 }
 
 CC3NodeAnimationState::~CC3NodeAnimationState()
 {
-	_node = NULL;
-	CC_SAFE_RELEASE( _animation );
+	m_pNode = NULL;
+	CC_SAFE_RELEASE( m_pAnimation );
 }
 
 bool CC3NodeAnimationState::isEnabled()
 {
-	return _isEnabled; 
+	return m_isEnabled; 
 }
 
 void CC3NodeAnimationState::setIsEnabled( bool isEnabled )
 {
-	_isEnabled = isEnabled;
+	m_isEnabled = isEnabled;
 	markDirty();
 }
 
@@ -66,71 +66,71 @@ void CC3NodeAnimationState::disable()
 
 GLfloat CC3NodeAnimationState::getBlendingWeight()
 {
-	return _blendingWeight; 
+	return m_fBlendingWeight; 
 }
 
 void CC3NodeAnimationState::setBlendingWeight( GLfloat blendingWeight )
 {
-	_blendingWeight = CLAMP(blendingWeight, 0.0f, 1.0f);
+	m_fBlendingWeight = CLAMP(blendingWeight, 0.0f, 1.0f);
 	markDirty();
 }
 
 CC3Vector CC3NodeAnimationState::getLocation()
 {
-	return _location; 
+	return m_location; 
 }
 
 void CC3NodeAnimationState::setLocation( const CC3Vector& location )
 {
-	_location = location;
+	m_location = location;
 	markDirty();
 }
 
 CC3Quaternion CC3NodeAnimationState::getQuaternion()
 {
-	return _quaternion; 
+	return m_quaternion; 
 }
 
 void CC3NodeAnimationState::setQuaternion( const CC3Quaternion& quaternion )
 {
-	_quaternion = quaternion;
+	m_quaternion = quaternion;
 	markDirty();
 }
 
 CC3Vector CC3NodeAnimationState::getScale()
 {
-	return _scale; 
+	return m_scale; 
 }
 
 void CC3NodeAnimationState::setScale( const CC3Vector& scale )
 {
-	_scale = scale;
+	m_scale = scale;
 	markDirty();
 }
 
 void CC3NodeAnimationState::markDirty()
 {
-	_node->markAnimationDirty(); 
+	m_pNode->markAnimationDirty(); 
 }
 
 GLuint CC3NodeAnimationState::getFrameCount()
 {
-	return _animation->getFrameCount(); 
+	return m_pAnimation->getFrameCount(); 
 }
 
 bool CC3NodeAnimationState::isAnimatingLocation()
 {
-	return _isLocationAnimationEnabled && _animation->isAnimatingLocation(); 
+	return m_isLocationAnimationEnabled && m_pAnimation->isAnimatingLocation(); 
 }
 
 bool CC3NodeAnimationState::isAnimatingQuaternion()
 {
-	return _isQuaternionAnimationEnabled && _animation->isAnimatingQuaternion(); 
+	return m_isQuaternionAnimationEnabled && m_pAnimation->isAnimatingQuaternion(); 
 }
 
 bool CC3NodeAnimationState::isAnimatingScale()
 {
-	return _isScaleAnimationEnabled && _animation->isAnimatingScale(); 
+	return m_isScaleAnimationEnabled && m_pAnimation->isAnimatingScale(); 
 }
 
 bool CC3NodeAnimationState::isAnimating()
@@ -141,33 +141,33 @@ bool CC3NodeAnimationState::isAnimating()
 
 bool CC3NodeAnimationState::hasVariableFrameTiming()
 {
-	return _animation->hasVariableFrameTiming(); 
+	return m_pAnimation->hasVariableFrameTiming(); 
 }
 
 void CC3NodeAnimationState::establishFrameAt( float t )
 {
-	_animationTime = t;
+	m_fAnimationTime = t;
 	if (isEnabled()) 
-		_animation->establishFrameAt( t, this );
+		m_pAnimation->establishFrameAt( t, this );
 }
 
 void CC3NodeAnimationState::initWithAnimation( CC3NodeAnimation* animation, GLuint trackID, CC3Node* node )
 {
 	CCAssert(animation, "CC3NodeAnimationState must be created with a valid animation.");
 	CCAssert(node, "CC3NodeAnimationState must be created with a valid node.");
-	_node = node;						// weak reference
-	_animation = animation;
+	m_pNode = node;						// weak reference
+	m_pAnimation = animation;
 	animation->retain();
-	_trackID = trackID;
-	_blendingWeight = 1.0f;
-	_animationTime = 0.0f;
-	_location = CC3Vector::kCC3VectorZero;
-	_quaternion = CC3Quaternion::kCC3QuaternionIdentity;
-	_scale = CC3Vector::kCC3VectorUnitCube;
-	_isEnabled = true;
-	_isLocationAnimationEnabled = true;
-	_isQuaternionAnimationEnabled = true;
-	_isScaleAnimationEnabled = true;
+	m_trackID = trackID;
+	m_fBlendingWeight = 1.0f;
+	m_fAnimationTime = 0.0f;
+	m_location = CC3Vector::kCC3VectorZero;
+	m_quaternion = CC3Quaternion::kCC3QuaternionIdentity;
+	m_scale = CC3Vector::kCC3VectorUnitCube;
+	m_isEnabled = true;
+	m_isLocationAnimationEnabled = true;
+	m_isQuaternionAnimationEnabled = true;
+	m_isScaleAnimationEnabled = true;
 	establishFrameAt( 0.0f );		// Start on the initial frame
 }
 
@@ -191,13 +191,13 @@ GLuint CC3NodeAnimationState::generateTrackID()
 std::string CC3NodeAnimationState::description()
 {
 	return CC3String::stringWithFormat( (char*)"CC3NodeAnimationState for node %s with animation on track %u",
-			 _node->getName().c_str(), _trackID );
+			 m_pNode->getName().c_str(), m_trackID );
 }
 
 std::string CC3NodeAnimationState::describeCurrentState()
 {
 	std::string desc = "";
-	desc += CC3String::stringWithFormat( (char*)"Time: %.4f", _animationTime );
+	desc += CC3String::stringWithFormat( (char*)"Time: %.4f", m_fAnimationTime );
 	if (isAnimatingLocation()) 
 		desc += CC3String::stringWithFormat( (char*)" Loc: %s", getLocation().stringfy().c_str() );
 	if (isAnimatingQuaternion())
@@ -216,7 +216,7 @@ std::string CC3NodeAnimationState::describeStateForFrames( GLuint frameCount, fl
 	endTime = CLAMP(endTime, 0.0f, 1.0f);
 
 	// Generating the description changes current state, so cache it for resortation below
-	float currTime = _animationTime;
+	float currTime = m_fAnimationTime;
 	bool wasCurrentlyEnabled = isEnabled();
 	setIsEnabled( true );
 	
@@ -224,7 +224,7 @@ std::string CC3NodeAnimationState::describeStateForFrames( GLuint frameCount, fl
 	if (frameCount > 1) 
 		frameDur = (endTime - startTime) / (GLfloat)(frameCount - 1);
 	std::string desc = "";
-	desc += CC3String::stringWithFormat( (char*)"%s animated state on track %d over %d frames from %.4f to %.4f:", _node->getName().c_str(), _trackID, frameCount, startTime, endTime );
+	desc += CC3String::stringWithFormat( (char*)"%s animated state on track %d over %d frames from %.4f to %.4f:", m_pNode->getName().c_str(), m_trackID, frameCount, startTime, endTime );
 	if (isAnimating() && frameCount > 0)
 	{
 		for (GLuint fIdx = 0; fIdx < frameCount; fIdx++) 
@@ -252,57 +252,57 @@ std::string CC3NodeAnimationState::describeStateForFrames( GLuint frameCount )
 
 bool CC3NodeAnimationState::isLocationAnimationEnabled()
 {
-	return _isLocationAnimationEnabled;
+	return m_isLocationAnimationEnabled;
 }
 
 void CC3NodeAnimationState::setIsLocationAnimationEnabled( bool enable )
 {
-	_isLocationAnimationEnabled = enable;
+	m_isLocationAnimationEnabled = enable;
 }
 
 bool CC3NodeAnimationState::isQuaternionAnimationEnabled()
 {
-	return _isQuaternionAnimationEnabled;
+	return m_isQuaternionAnimationEnabled;
 }
 
 void CC3NodeAnimationState::setIsQuaternionAnimationEnabled( bool enable )
 {
-	_isQuaternionAnimationEnabled = enable;
+	m_isQuaternionAnimationEnabled = enable;
 }
 
 bool CC3NodeAnimationState::isScaleAnimationEnabled()
 {
-	return _isScaleAnimationEnabled;
+	return m_isScaleAnimationEnabled;
 }
 
 void CC3NodeAnimationState::setIsScaleAnimationEnabled( bool enable )
 {
-	_isScaleAnimationEnabled = enable;
+	m_isScaleAnimationEnabled = enable;
 }
 
 float CC3NodeAnimationState::getAnimationTime()
 {
-	return _animationTime;
+	return m_fAnimationTime;
 }
 
 void CC3NodeAnimationState::setAnimationTime( float time )
 {
-	_animationTime = time;
+	m_fAnimationTime = time;
 }
 
 GLuint CC3NodeAnimationState::getTrackID()
 {
-	return _trackID;
+	return m_trackID;
 }
 
 void CC3NodeAnimationState::setTrackID( GLuint trackID )
 {
-	_trackID = trackID;
+	m_trackID = trackID;
 }
 
 CC3NodeAnimation* CC3NodeAnimationState::getAnimation()
 {
-	return _animation;
+	return m_pAnimation;
 }
 
 

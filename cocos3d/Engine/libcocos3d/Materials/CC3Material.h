@@ -987,20 +987,20 @@ public:
 	virtual std::string			getNameSuffix();
 
 protected:
-	CC3Texture*					_texture;
-	CCArray*					_textureOverlays;
-	ccColor4F					_ambientColor;
-	ccColor4F					_diffuseColor;
-	ccColor4F					_specularColor;
-	ccColor4F					_emissionColor;
-	GLfloat						_shininess;
-	GLfloat						_reflectivity;
-	GLenum						_alphaTestFunction;
-	GLfloat						_alphaTestReference;
-	ccBlendFunc					_blendFuncRGB;
-	ccBlendFunc					_blendFuncAlpha;
-	bool						_shouldUseLighting : 1;
-	bool						_shouldBlendAtFullOpacity : 1;
+	CC3Texture*					m_pTexture;
+	CCArray*					m_textureOverlays;
+	ccColor4F					m_ambientColor;
+	ccColor4F					m_diffuseColor;
+	ccColor4F					m_specularColor;
+	ccColor4F					m_emissionColor;
+	float						m_fShininess;
+	float						m_fReflectivity;
+	GLenum						m_alphaTestFunction;
+	float						m_fAlphaTestReference;
+	ccBlendFunc					m_blendFuncRGB;
+	ccBlendFunc					m_blendFuncAlpha;
+	bool						m_shouldUseLighting : 1;
+	bool						m_shouldBlendAtFullOpacity : 1;
 };
 
 NS_COCOS3D_END

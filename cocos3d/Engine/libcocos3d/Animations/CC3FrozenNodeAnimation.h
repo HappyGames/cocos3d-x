@@ -126,9 +126,9 @@ public:
 	virtual void				initWithFrameCount( GLuint numFrames );
 
 protected:
-	CC3Vector					_location;
-	CC3Quaternion				_quaternion;
-	CC3Vector					_scale;
+	CC3Vector					m_location;
+	CC3Quaternion				m_quaternion;
+	CC3Vector					m_scale;
 };
 
 NS_COCOS3D_END

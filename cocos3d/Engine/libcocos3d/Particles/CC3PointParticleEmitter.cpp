@@ -60,16 +60,16 @@ GLfloat CC3PointParticleEmitter::getNormalizedParticleSizeMaximum()
 
 GLfloat CC3PointParticleEmitter::getUnityScaleDistance()
 {
-	GLfloat sqDistAtten = _particleSizeAttenuation.c;
+	GLfloat sqDistAtten = m_particleSizeAttenuation.c;
 	return (sqDistAtten > 0.0f) ? sqrt(1.0f / sqDistAtten) : 0.0f;
 }
 
 void CC3PointParticleEmitter::setUnityScaleDistance( GLfloat aDistance )
 {
 	if (aDistance > 0.0)
-		_particleSizeAttenuation = CC3AttenuationCoefficientsMake( 0.0f, 0.0f, 1.0f / (aDistance * aDistance) );
+		m_particleSizeAttenuation = CC3AttenuationCoefficientsMake( 0.0f, 0.0f, 1.0f / (aDistance * aDistance) );
 	else
-		_particleSizeAttenuation = kCC3AttenuationNone;
+		m_particleSizeAttenuation = kCC3AttenuationNone;
 }
 
 // Overridden to retain all vertex content in memory.
@@ -81,48 +81,48 @@ void CC3PointParticleEmitter::setVertexContentTypes( CC3VertexContent vtxContent
 
 GLfloat CC3PointParticleEmitter::getParticleSizeAt( GLuint vtxIndex )
 {
-	return _mesh ? denormalizeParticleSizeFromDevice( _mesh->getVertexPointSizeAt(vtxIndex) ) : 0.0f;
+	return m_pMesh ? denormalizeParticleSizeFromDevice( m_pMesh->getVertexPointSizeAt(vtxIndex) ) : 0.0f;
 }
 
 void CC3PointParticleEmitter::setParticleSize( GLfloat aSize, GLuint vtxIndex )
 {
-	_mesh->setVertexPointSize( normalizeParticleSizeToDevice(aSize), vtxIndex );
+	m_pMesh->setVertexPointSize( normalizeParticleSizeToDevice(aSize), vtxIndex );
 	addDirtyVertex( vtxIndex );
 }
 
 void CC3PointParticleEmitter::setParticleSize( GLfloat particleSize )
 {
-	_particleSize = particleSize;
+	m_particleSize = particleSize;
 }
 
 GLfloat CC3PointParticleEmitter::getParticleSize()
 {
-	return _particleSize;
+	return m_particleSize;
 }
 
 GLfloat CC3PointParticleEmitter::getParticleSizeMaximum()
 {
-	return _particleSizeMaximum;
+	return m_particleSizeMaximum;
 }
 
 GLfloat CC3PointParticleEmitter::getParticleSizeMinimum()
 {
-	return _particleSizeMinimum;
+	return m_particleSizeMinimum;
 }
 
 CC3AttenuationCoefficients CC3PointParticleEmitter::getParticleSizeAttenuation()
 {		
-	return _particleSizeAttenuation;
+	return m_particleSizeAttenuation;
 }
 
 bool CC3PointParticleEmitter::shouldNormalizeParticleSizesToDevice()
 {
-	return _shouldNormalizeParticleSizesToDevice;
+	return m_shouldNormalizeParticleSizesToDevice;
 }
 
 bool CC3PointParticleEmitter::shouldSmoothPoints()
 {
-	return _shouldSmoothPoints;
+	return m_shouldSmoothPoints;
 }
 
 void CC3PointParticleEmitter::updateParticleSizesGLBuffer()
@@ -145,15 +145,15 @@ void CC3PointParticleEmitter::doNotBufferVertexPointSizes()
 void CC3PointParticleEmitter::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_globalCameraLocation = CC3Vector::kCC3VectorNull;
-	_areParticleNormalsDirty = false;
+	m_globalCameraLocation = CC3Vector::kCC3VectorNull;
+	m_areParticleNormalsDirty = false;
 	setParticleSize( kCC3DefaultParticleSize );
-	_particleSizeMinimum = kCC3ParticleSizeMinimumNone;
-	_particleSizeMaximum = kCC3ParticleSizeMaximumNone;
-	_particleSizeAttenuation = kCC3AttenuationNone;
-	_shouldSmoothPoints = false;
-	_shouldNormalizeParticleSizesToDevice = true;
-	_shouldDisableDepthMask = true;
+	m_particleSizeMinimum = kCC3ParticleSizeMinimumNone;
+	m_particleSizeMaximum = kCC3ParticleSizeMaximumNone;
+	m_particleSizeAttenuation = kCC3AttenuationNone;
+	m_shouldSmoothPoints = false;
+	m_shouldNormalizeParticleSizesToDevice = true;
+	m_shouldDisableDepthMask = true;
 	deviceScaleFactor();	// Force init the static deviceScaleFactor before accessing it.
 }
 
@@ -171,12 +171,12 @@ void CC3PointParticleEmitter::populateFrom( CC3PointParticleEmitter* another )
 {
 	super::populateFrom( another );
 	
-	_particleSize = another->getParticleSize();
-	_particleSizeMinimum = another->getParticleSizeMinimum();
-	_particleSizeMaximum = another->getParticleSizeMaximum();
-	_shouldSmoothPoints = another->shouldSmoothPoints();
-	_shouldNormalizeParticleSizesToDevice = another->shouldNormalizeParticleSizesToDevice();
-	_particleSizeAttenuation = another->getParticleSizeAttenuation();
+	m_particleSize = another->getParticleSize();
+	m_particleSizeMinimum = another->getParticleSizeMinimum();
+	m_particleSizeMaximum = another->getParticleSizeMaximum();
+	m_shouldSmoothPoints = another->shouldSmoothPoints();
+	m_shouldNormalizeParticleSizesToDevice = another->shouldNormalizeParticleSizesToDevice();
+	m_particleSizeAttenuation = another->getParticleSizeAttenuation();
 }
 
 CCObject* CC3PointParticleEmitter::copyWithZone( CCZone* zone )
@@ -194,10 +194,10 @@ void CC3PointParticleEmitter::initializeParticle( CC3Particle* aPointParticle )
 	super::initializeParticle( aPointParticle );
 	
 	// particleCount not yet incremented, so it points to this particle
-	aPointParticle->setParticleIndex( _particleCount );
+	aPointParticle->setParticleIndex( m_particleCount );
 
 	// Set the particle size directly so the CC3PointParticleProtocol does not need to support size
-	setParticleSize( getParticleSize(), _particleCount );
+	setParticleSize( getParticleSize(), m_particleCount );
 }
 
 /** Marks the range of vertices in the underlying mesh that are affected by this particle. */
@@ -210,13 +210,13 @@ void CC3PointParticleEmitter::acceptParticle( CC3Particle* aParticle )
 /** Returns whether this mesh is making use of normals and lighting. */
 bool CC3PointParticleEmitter::hasIlluminatedNormals()
 {
-	return _mesh && _mesh->hasVertexNormals() && shouldUseLighting(); 
+	return m_pMesh && m_pMesh->hasVertexNormals() && shouldUseLighting(); 
 }
 
 void CC3PointParticleEmitter::markTransformDirty()
 {
 	super::markTransformDirty();
-	_areParticleNormalsDirty = true;
+	m_areParticleNormalsDirty = true;
 }
 
 void CC3PointParticleEmitter::nodeWasTransformed( CC3Node* aNode )
@@ -224,8 +224,8 @@ void CC3PointParticleEmitter::nodeWasTransformed( CC3Node* aNode )
 	super::nodeWasTransformed( aNode );
 	if ( aNode->isCamera() ) 
 	{
-		_globalCameraLocation = aNode->getGlobalLocation();
-		_areParticleNormalsDirty = true;
+		m_globalCameraLocation = aNode->getGlobalLocation();
+		m_areParticleNormalsDirty = true;
 	}
 }
 
@@ -249,24 +249,24 @@ void CC3PointParticleEmitter::updateParticleNormals( CC3NodeUpdatingVisitor* vis
 	{
 		// If we haven't already registered as a camera listener, do so now.
 		// Get the current cam location, because cam might not immediately callback.
-		if ( _globalCameraLocation.isNull() ) 
+		if ( m_globalCameraLocation.isNull() ) 
 		{
 			CC3Camera* cam = getActiveCamera();
-			_globalCameraLocation = cam->getGlobalLocation();
+			m_globalCameraLocation = cam->getGlobalLocation();
 			cam->addTransformListener( this );
-			CC3_TRACE("[ptc]CC3PointParticleEmitter registered as listener of camera at %s", _globalCameraLocation.stringfy().c_str());
+			CC3_TRACE("[ptc]CC3PointParticleEmitter registered as listener of camera at %s", m_globalCameraLocation.stringfy().c_str());
 		}
 
-		if (_areParticleNormalsDirty) 
+		if (m_areParticleNormalsDirty) 
 		{
-			CC3_TRACE("[ptc]CC3PointParticleEmitter updating particle normals from camera location %s", _globalCameraLocation.stringfy().c_str());
+			CC3_TRACE("[ptc]CC3PointParticleEmitter updating particle normals from camera location %s", m_globalCameraLocation.stringfy().c_str());
 			
 			// Get the direction to the camera and transform it to local coordinates
-			CC3Vector camDir = _globalCameraLocation.difference( getGlobalLocation() );
+			CC3Vector camDir = m_globalCameraLocation.difference( getGlobalLocation() );
 			camDir = getGlobalTransformMatrixInverted()->transformDirection( camDir );
 
 			CCObject* pObj = NULL;
-			CCARRAY_FOREACH( _particles, pObj )
+			CCARRAY_FOREACH( m_particles, pObj )
 			{
 				CC3Particle* particle = (CC3Particle*)pObj;
 				particle->pointNormalAt( camDir );
@@ -289,7 +289,7 @@ void CC3PointParticleEmitter::setParticleNormal( CC3Particle* pointParticle )
 {
 	if ( hasIlluminatedNormals() )
 	{
-		CC3Vector camDir = _globalCameraLocation.difference( getGlobalLocation() );
+		CC3Vector camDir = m_globalCameraLocation.difference( getGlobalLocation() );
 		camDir = getGlobalTransformMatrixInverted()->transformDirection( camDir );
 		pointParticle->pointNormalAt( camDir );
 	}
@@ -313,17 +313,17 @@ void CC3PointParticleEmitter::removeParticle( CC3Particle* aParticle, GLuint anI
 	super::removeParticle( aParticle, anIndex );		// Decrements particleCount and vertexCount
 	
 	// Get the last living particle
-	CC3PointParticle* lastParticle = getPointParticleAt( _particleCount );
+	CC3PointParticle* lastParticle = getPointParticleAt( m_particleCount );
 	
 	// Swap the particles in the particles array
-	_particles->exchangeObjectAtIndex( anIndex, _particleCount );
+	m_particles->exchangeObjectAtIndex( anIndex, m_particleCount );
 	
 	// Update the particle's index. This also updates the vertex indices array, if it exists.
-	aParticle->setParticleIndex( _particleCount );
+	aParticle->setParticleIndex( m_particleCount );
 	lastParticle->setParticleIndex( anIndex );
 	
 	// Update the underlying mesh
-	getMesh()->copyVertices( 1, _particleCount, anIndex );
+	getMesh()->copyVertices( 1, m_particleCount, anIndex );
 	
 	// Mark the vertex and vertex indices as dirty
 	addDirtyVertex( anIndex );
@@ -358,8 +358,8 @@ void CC3PointParticleEmitter::configurePointProperties( CC3NodeDrawingVisitor* v
 	gl->setPointSize( getNormalizedParticleSize() );
 	gl->setPointSizeMinimum( getNormalizedParticleSizeMinimum() );
 	gl->setPointSizeMaximum( getNormalizedParticleSizeMaximum() );
-	gl->setPointSizeAttenuation( _particleSizeAttenuation );
-	gl->enablePointSmoothing( _shouldSmoothPoints );
+	gl->setPointSizeAttenuation( m_particleSizeAttenuation );
+	gl->enablePointSmoothing( m_shouldSmoothPoints );
 }
 
 void CC3PointParticleEmitter::cleanupDrawingParameters( CC3NodeDrawingVisitor* visitor )
@@ -415,7 +415,7 @@ GLfloat CC3PointParticleEmitter::deviceScaleFactor()
  */
 GLfloat CC3PointParticleEmitter::normalizeParticleSizeToDevice( GLfloat aSize )
 {
-	return _shouldNormalizeParticleSizesToDevice ? (aSize * _deviceScaleFactor) : aSize;
+	return m_shouldNormalizeParticleSizesToDevice ? (aSize * _deviceScaleFactor) : aSize;
 }
 
 /**
@@ -428,7 +428,7 @@ GLfloat CC3PointParticleEmitter::normalizeParticleSizeToDevice( GLfloat aSize )
  */
 GLfloat CC3PointParticleEmitter::denormalizeParticleSizeFromDevice( GLfloat aSize )
 {
-	return _shouldNormalizeParticleSizesToDevice ? (aSize / _deviceScaleFactor) : aSize;
+	return m_shouldNormalizeParticleSizesToDevice ? (aSize / _deviceScaleFactor) : aSize;
 }
 
 NS_COCOS3D_END

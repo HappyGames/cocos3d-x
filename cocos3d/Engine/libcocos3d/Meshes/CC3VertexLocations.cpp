@@ -51,14 +51,14 @@ CC3VertexLocations* CC3VertexLocations::vertexArrayWithName( const std::string& 
 
 void CC3VertexLocations::markBoundaryDirty()
 {
-	_boundaryIsDirty = true;
-	_radiusIsDirty = true;
+	m_boundaryIsDirty = true;
+	m_radiusIsDirty = true;
 }
 
 // Mark boundary dirty, but only if vertices are valid (to avoid marking dirty on dealloc)
 void CC3VertexLocations::verticesWereChanged()
 {
-	if (_vertices && _vertexCount) 
+	if (m_vertices && m_vertexCount) 
 		markBoundaryDirty(); 
 }
 
@@ -74,12 +74,12 @@ void CC3VertexLocations::populateFrom( CC3VertexLocations* another )
 {
 	super::populateFrom( another );
 
-	_firstVertex = another->_firstVertex;
-	_boundingBox = another->getBoundingBox();
-	_centerOfGeometry = another->getCenterOfGeometry();
-	_radius = another->getRadius();
-	_boundaryIsDirty = another->_boundaryIsDirty;
-	_radiusIsDirty = another->_radiusIsDirty;
+	m_firstVertex = another->m_firstVertex;
+	m_boundingBox = another->getBoundingBox();
+	m_centerOfGeometry = another->getCenterOfGeometry();
+	m_radius = another->getRadius();
+	m_boundaryIsDirty = another->m_boundaryIsDirty;
+	m_radiusIsDirty = another->m_radiusIsDirty;
 }
 
 CCObject* CC3VertexLocations::copyWithZone( CCZone* zone )
@@ -94,7 +94,7 @@ CCObject* CC3VertexLocations::copyWithZone( CCZone* zone )
 CC3Vector CC3VertexLocations::getLocationAt( GLuint index )
 {
 	CC3Vector loc = *(CC3Vector*)getAddressOfElement(index);
-	switch (_elementSize) 
+	switch (m_elementSize) 
 	{
 		case 2:
 			loc.z = 0.0f;
@@ -108,11 +108,11 @@ CC3Vector CC3VertexLocations::getLocationAt( GLuint index )
 
 void CC3VertexLocations::setLocation( const CC3Vector& aLocation, GLuint index )
 {
-	if ( index >= _allocatedVertexCapacity )
+	if ( index >= m_allocatedVertexCapacity )
 		return;
 
 	GLvoid* elemAddr = getAddressOfElement(index);
-	switch (_elementSize) {
+	switch (m_elementSize) {
 		case 2:		// Just store X & Y
 			*(CCPoint*)elemAddr = *(CCPoint*)&aLocation;
 			break;
@@ -130,7 +130,7 @@ void CC3VertexLocations::setLocation( const CC3Vector& aLocation, GLuint index )
 CC3Vector4 CC3VertexLocations::getHomogeneousLocationAt( GLuint index )
 {
 	CC3Vector4 hLoc = *(CC3Vector4*)getAddressOfElement(index);
-	switch (_elementSize) {
+	switch (m_elementSize) {
 		case 2:
 			hLoc.z = 0.0f;
 		case 3:
@@ -145,7 +145,7 @@ CC3Vector4 CC3VertexLocations::getHomogeneousLocationAt( GLuint index )
 void CC3VertexLocations::setHomogeneousLocation( const CC3Vector4& aLocation, GLuint index )
 {
 	GLvoid* elemAddr = getAddressOfElement(index);
-	switch (_elementSize) {
+	switch (m_elementSize) {
 		case 2:		// Just store X & Y
 			*(CCPoint*)elemAddr = *(CCPoint*)&aLocation;
 			break;
@@ -176,20 +176,20 @@ CC3Face CC3VertexLocations::getFaceFromIndices( const CC3FaceIndices& faceIndice
 CC3Box CC3VertexLocations::getBoundingBox()
 {
 	buildBoundingBoxIfNecessary();
-	return _boundingBox;
+	return m_boundingBox;
 }
 
 /** Returns the centerOfGeometry, calculating it via the bounding box if necessary. */
 CC3Vector CC3VertexLocations::getCenterOfGeometry()
 {
 	buildBoundingBoxIfNecessary();
-	return _centerOfGeometry;
+	return m_centerOfGeometry;
 }
 
 /** Builds the bounding box if it needs to be built. */
 void CC3VertexLocations::buildBoundingBoxIfNecessary()
 {
-	if (_boundaryIsDirty) 
+	if (m_boundaryIsDirty) 
 		buildBoundingBox(); 
 }
 
@@ -197,13 +197,13 @@ void CC3VertexLocations::buildBoundingBoxIfNecessary()
 GLfloat CC3VertexLocations::getRadius()
 {
 	calcRadiusIfNecessary();
-	return _radius;
+	return m_radius;
 }
 
 /** Calculates the radius if it necessary. */
 void CC3VertexLocations::calcRadiusIfNecessary()
 {
-	if (_radiusIsDirty) 
+	if (m_radiusIsDirty) 
 		calcRadius(); 
 }
 
@@ -217,23 +217,23 @@ void CC3VertexLocations::calcRadiusIfNecessary()
 void CC3VertexLocations::buildBoundingBox()
 {
 	// If we don't have vertices, but do have a non-zero vertexCount, raise an assertion
-	CCAssert( !( !_vertices && _vertexCount ), "CC3VertexLocations bounding box requested after vertex data have been released");
-	CCAssert(_elementType == GL_FLOAT, "CC3VertexLocations must have elementType GLFLOAT to build the bounding box");
+	CCAssert( !( !m_vertices && m_vertexCount ), "CC3VertexLocations bounding box requested after vertex data have been released");
+	CCAssert(m_elementType == GL_FLOAT, "CC3VertexLocations must have elementType GLFLOAT to build the bounding box");
 
 	CC3Vector vl, vlMin, vlMax;
-	vl = (_vertexCount > 0) ?  getLocationAt(0) : CC3Vector::kCC3VectorZero;
+	vl = (m_vertexCount > 0) ?  getLocationAt(0) : CC3Vector::kCC3VectorZero;
 	vlMin = vl;
 	vlMax = vl;
-	for (GLuint i = 1; i < _vertexCount; i++) 
+	for (GLuint i = 1; i < m_vertexCount; i++) 
 	{
 		vl = getLocationAt(i);
 		vlMin = vlMin.minimize( vl );
 		vlMax = vlMax.maxmize( vl );
 	}
-	_boundingBox.minimum = vlMin;
-	_boundingBox.maximum = vlMax;
-	_centerOfGeometry = _boundingBox.getCenter();
-	_boundaryIsDirty = false;
+	m_boundingBox.minimum = vlMin;
+	m_boundingBox.maximum = vlMax;
+	m_centerOfGeometry = m_boundingBox.getCenter();
+	m_boundaryIsDirty = false;
 }
 
 /**
@@ -244,29 +244,29 @@ void CC3VertexLocations::buildBoundingBox()
  */
 void CC3VertexLocations::calcRadius()
 {
-	CCAssert(_elementType == GL_FLOAT, "CC3VertexLocations must have elementType GLFLOAT to calculate mesh radius");
+	CCAssert(m_elementType == GL_FLOAT, "CC3VertexLocations must have elementType GLFLOAT to calculate mesh radius");
 
 	CC3Vector cog = getCenterOfGeometry();		// Will measure it if necessary
-	if (_vertices && _vertexCount) 
+	if (m_vertices && m_vertexCount) 
 	{
 		// Work with the square of the radius so that all distances can be compared
 		// without having to run expensive square-root calculations.
 		GLfloat radiusSq = 0.0;
-		for (GLuint i=0; i < _vertexCount; i++) 
+		for (GLuint i=0; i < m_vertexCount; i++) 
 		{
 			CC3Vector vl = getLocationAt( i );
 			GLfloat distSq = vl.distanceSquared( cog );
 			radiusSq = MAX(radiusSq, distSq);
 		}
 
-		_radius = sqrtf(radiusSq);		// Now finally take the square-root
-		_radiusIsDirty = false;
+		m_radius = sqrtf(radiusSq);		// Now finally take the square-root
+		m_radiusIsDirty = false;
 	}
 }
 
 void CC3VertexLocations::moveMeshOriginTo( const CC3Vector& aLocation )
 {
-	for (GLuint i = 0; i < _vertexCount; i++) 
+	for (GLuint i = 0; i < m_vertexCount; i++) 
 	{
 		CC3Vector locOld = getLocationAt(i);
 		CC3Vector locNew = locOld.difference( aLocation );
@@ -293,7 +293,7 @@ void CC3VertexLocations::drawFrom( GLuint vtxIdx, GLuint vtxCount, CC3NodeDrawin
 {
 	super::drawFrom( vtxIdx, vtxCount, visitor );
 
-	visitor->getGL()->drawVerticiesAs( _drawingMode, _firstVertex + vtxIdx, vtxCount );
+	visitor->getGL()->drawVerticiesAs( m_drawingMode, m_firstVertex + vtxIdx, vtxCount );
 }
 
 std::string CC3VertexLocations::getNameSuffix()
@@ -305,10 +305,10 @@ void CC3VertexLocations::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_firstVertex = 0;
-		_centerOfGeometry = CC3Vector::kCC3VectorZero;
-		_boundingBox = CC3Box::kCC3BoxZero;
-		_radius = 0.0;
+		m_firstVertex = 0;
+		m_centerOfGeometry = CC3Vector::kCC3VectorZero;
+		m_boundingBox = CC3Box::kCC3BoxZero;
+		m_radius = 0.0;
 		markBoundaryDirty();
 	}
 }

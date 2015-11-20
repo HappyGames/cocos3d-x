@@ -33,21 +33,21 @@ NS_COCOS3D_BEGIN
 
 CC3DataReader::CC3DataReader()
 {
-	_data = NULL;
+	m_pData = NULL;
 }
 
 CC3DataReader::~CC3DataReader()
 {
-	CC_SAFE_RELEASE( _data );
+	CC_SAFE_RELEASE( m_pData );
 }
 
 void CC3DataReader::initOnData( CCData* data )
 {
-	_data = data;
-	_data->retain();
-	_readRange = CCRangeMake(0, 0);
-	_isBigEndian = false;
-	_wasReadBeyondEOF = false;
+	m_pData = data;
+	m_pData->retain();
+	m_readRange = CCRangeMake(0, 0);
+	m_isBigEndian = false;
+	m_wasReadBeyondEOF = false;
 }
 
 CC3DataReader* CC3DataReader::readerOnData( CCData* data )
@@ -60,23 +60,23 @@ CC3DataReader* CC3DataReader::readerOnData( CCData* data )
 
 unsigned long CC3DataReader::getPosition()
 {
-	return _readRange.location; 
+	return m_readRange.location; 
 }
 
 unsigned long CC3DataReader::getBytesRemaining()
 {
-	return _data->getSize() - _readRange.location; 
+	return m_pData->getSize() - m_readRange.location; 
 }
 
 bool CC3DataReader::readAll( unsigned int count, char* bytes )
 {
-	_readRange.length = count;
-	unsigned long endRange = _readRange.maxRange();
-	_wasReadBeyondEOF |= (endRange > _data->getSize());
-	if( !_wasReadBeyondEOF )
+	m_readRange.length = count;
+	unsigned long endRange = m_readRange.maxRange();
+	m_wasReadBeyondEOF |= (endRange > m_pData->getSize());
+	if( !m_wasReadBeyondEOF )
 	{
-		bytes = (char*)_data->getBytes() + _readRange.location;
-		_readRange.location = endRange;
+		bytes = (char*)m_pData->getBytes() + m_readRange.location;
+		m_readRange.location = endRange;
 		return true;
 	} else {
 		memset(bytes, 0, count);	// Couldn't read, so zero the result

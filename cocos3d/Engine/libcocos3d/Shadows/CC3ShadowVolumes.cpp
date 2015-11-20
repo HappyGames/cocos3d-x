@@ -33,15 +33,15 @@ NS_COCOS3D_BEGIN
 
 CC3ShadowVolumeMeshNode::CC3ShadowVolumeMeshNode()
 {
-	_light = NULL;
+	m_pLight = NULL;
 }
 
 CC3ShadowVolumeMeshNode::~CC3ShadowVolumeMeshNode()
 {
-	if ( _light )
+	if ( m_pLight )
 	{
-		_light->removeShadow( this );
-		_light = NULL;
+		m_pLight->removeShadow( this );
+		m_pLight = NULL;
 	}
 }
 
@@ -69,107 +69,107 @@ void CC3ShadowVolumeMeshNode::setVisible( bool _isVisible )
 
 void CC3ShadowVolumeMeshNode::setShouldDrawTerminator( bool shouldDraw )
 {
-	_shouldDrawTerminator = shouldDraw;
-	setDrawingMode( _shouldDrawTerminator ? GL_LINES : GL_TRIANGLES );
+	m_shouldDrawTerminator = shouldDraw;
+	setDrawingMode( m_shouldDrawTerminator ? GL_LINES : GL_TRIANGLES );
 	checkShadowMaterial();
 }
 
 GLushort CC3ShadowVolumeMeshNode::getShadowLagFactor()
 {
-	return _shadowLagFactor; 
+	return m_shadowLagFactor; 
 }
 
 void CC3ShadowVolumeMeshNode::setShadowLagFactor( GLushort lagFactor )
 {
-	_shadowLagFactor = MAX(lagFactor, 1);
+	m_shadowLagFactor = MAX(lagFactor, 1);
 	super::setShadowLagFactor( lagFactor );
 }
 
 GLushort CC3ShadowVolumeMeshNode::getShadowLagCount()
 {
-	return _shadowLagCount; 
+	return m_shadowLagCount; 
 }
 
 void CC3ShadowVolumeMeshNode::setShadowLagCount( GLushort lagCount )
 {
-	_shadowLagCount = lagCount;
+	m_shadowLagCount = lagCount;
 	super::setShadowLagCount( lagCount );
 }
 
 bool CC3ShadowVolumeMeshNode::shouldShadowFrontFaces()
 {
-	return _shouldShadowFrontFaces; 
+	return m_shouldShadowFrontFaces; 
 }
 
 void CC3ShadowVolumeMeshNode::setShouldShadowFrontFaces( bool shouldShadow )
 {
-	_shouldShadowFrontFaces = shouldShadow;
+	m_shouldShadowFrontFaces = shouldShadow;
 	super::setShouldShadowFrontFaces( shouldShadow );
 }
 
 bool CC3ShadowVolumeMeshNode::shouldShadowBackFaces()
 {
-	return _shouldShadowBackFaces; 
+	return m_shouldShadowBackFaces; 
 }
 
 void CC3ShadowVolumeMeshNode::setShouldShadowBackFaces( bool shouldShadow )
 {
-	_shouldShadowBackFaces = shouldShadow;
+	m_shouldShadowBackFaces = shouldShadow;
 	super::setShouldShadowBackFaces( shouldShadow );
 }
 
 GLfloat CC3ShadowVolumeMeshNode::getShadowOffsetFactor()
 {
-	return _decalOffsetFactor ? _decalOffsetFactor : super::getShadowOffsetFactor(); 
+	return m_decalOffsetFactor ? m_decalOffsetFactor : super::getShadowOffsetFactor(); 
 }
 
 void CC3ShadowVolumeMeshNode::setShadowOffsetFactor( GLfloat factor )
 {
-	_decalOffsetFactor = factor;
+	m_decalOffsetFactor = factor;
 	super::setShadowOffsetFactor( factor );
 }
 
 GLfloat CC3ShadowVolumeMeshNode::shadowOffsetUnits()
 {
-	return _decalOffsetUnits ? _decalOffsetUnits : super::getShadowOffsetUnits(); 
+	return m_decalOffsetUnits ? m_decalOffsetUnits : super::getShadowOffsetUnits(); 
 }
 
 void CC3ShadowVolumeMeshNode::setShadowOffsetUnits( GLfloat units )
 {
-	_decalOffsetUnits = units;
+	m_decalOffsetUnits = units;
 	super::setShadowOffsetUnits( units );
 }
 
 GLfloat CC3ShadowVolumeMeshNode::getShadowVolumeVertexOffsetFactor()
 {
-	return _shadowVolumeVertexOffsetFactor ? _shadowVolumeVertexOffsetFactor : super::getShadowVolumeVertexOffsetFactor();
+	return m_shadowVolumeVertexOffsetFactor ? m_shadowVolumeVertexOffsetFactor : super::getShadowVolumeVertexOffsetFactor();
 }
 
 void CC3ShadowVolumeMeshNode::setShadowVolumeVertexOffsetFactor( GLfloat factor )
 {
-	_shadowVolumeVertexOffsetFactor = factor;
+	m_shadowVolumeVertexOffsetFactor = factor;
 	super::setShadowVolumeVertexOffsetFactor( factor );
 }
 
 GLfloat CC3ShadowVolumeMeshNode::getShadowExpansionLimitFactor()
 {
-	return _shadowExpansionLimitFactor; 
+	return m_shadowExpansionLimitFactor; 
 }
 
 void CC3ShadowVolumeMeshNode::setShadowExpansionLimitFactor( GLfloat factor )
 {
-	_shadowExpansionLimitFactor = factor;
+	m_shadowExpansionLimitFactor = factor;
 	super::setShadowExpansionLimitFactor( factor );
 }
 
 bool CC3ShadowVolumeMeshNode::shouldAddShadowVolumeEndCapsOnlyWhenNeeded()
 {
-	return _shouldAddEndCapsOnlyWhenNeeded; 
+	return m_shouldAddEndCapsOnlyWhenNeeded; 
 }
 
 void CC3ShadowVolumeMeshNode::setShouldAddShadowVolumeEndCapsOnlyWhenNeeded( bool onlyWhenNeeded )
 {
-	_shouldAddEndCapsOnlyWhenNeeded = onlyWhenNeeded;
+	m_shouldAddEndCapsOnlyWhenNeeded = onlyWhenNeeded;
 	super::setShouldAddShadowVolumeEndCapsOnlyWhenNeeded( onlyWhenNeeded );
 }
 
@@ -186,21 +186,21 @@ bool CC3ShadowVolumeMeshNode::hasShadowVolumes()
 void CC3ShadowVolumeMeshNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_light = NULL;
-	_isShadowDirty = true;
-	_shouldDrawTerminator = false;
-	_shouldShadowFrontFaces = true;
-	_shouldShadowBackFaces = false;
-	_shouldAddEndCapsOnlyWhenNeeded = false;
-	_useDepthFailAlgorithm = false;
+	m_pLight = NULL;
+	m_isShadowDirty = true;
+	m_shouldDrawTerminator = false;
+	m_shouldShadowFrontFaces = true;
+	m_shouldShadowBackFaces = false;
+	m_shouldAddEndCapsOnlyWhenNeeded = false;
+	m_useDepthFailAlgorithm = false;
 	setShouldUseLighting( false );
 	setShouldDisableDepthMask( true );
-	_shadowLagFactor = 1;
-	_shadowLagCount = 1;
+	m_shadowLagFactor = 1;
+	m_shadowLagCount = 1;
 	setShadowOffsetFactor( 0 );
 	setShadowOffsetUnits( -1 );
-	_shadowVolumeVertexOffsetFactor = 0;
-	_shadowExpansionLimitFactor = 100;
+	m_shadowVolumeVertexOffsetFactor = 0;
+	m_shadowExpansionLimitFactor = 100;
 	setVisible( defaultVisible() );		// Use setter
 	setEmissionColor( kCCC4FYellow );				// For terminator lines
 }
@@ -218,16 +218,16 @@ void CC3ShadowVolumeMeshNode::populateFrom( CC3ShadowVolumeMeshNode* another )
 	super::populateFrom( another );
 	
 	setLight( another->getLight() );						// weak reference
-	_isShadowDirty = another->isShadowDirty();
-	_shouldShadowFrontFaces = another->shouldShadowFrontFaces();
-	_shouldShadowBackFaces = another->shouldShadowBackFaces();
-	_shouldDrawTerminator = another->shouldDrawTerminator();
-	_shouldAddEndCapsOnlyWhenNeeded = another->shouldAddShadowVolumeEndCapsOnlyWhenNeeded();
-	_useDepthFailAlgorithm = another->useDepthFailAlgorithm();
-	_shadowLagFactor = another->getShadowLagFactor();
-	_shadowLagCount = another->getShadowLagCount();
-	_shadowVolumeVertexOffsetFactor = another->getShadowVolumeVertexOffsetFactor();
-	_shadowExpansionLimitFactor = another->getShadowExpansionLimitFactor();
+	m_isShadowDirty = another->isShadowDirty();
+	m_shouldShadowFrontFaces = another->shouldShadowFrontFaces();
+	m_shouldShadowBackFaces = another->shouldShadowBackFaces();
+	m_shouldDrawTerminator = another->shouldDrawTerminator();
+	m_shouldAddEndCapsOnlyWhenNeeded = another->shouldAddShadowVolumeEndCapsOnlyWhenNeeded();
+	m_useDepthFailAlgorithm = another->useDepthFailAlgorithm();
+	m_shadowLagFactor = another->getShadowLagFactor();
+	m_shadowLagCount = another->getShadowLagCount();
+	m_shadowVolumeVertexOffsetFactor = another->getShadowVolumeVertexOffsetFactor();
+	m_shadowExpansionLimitFactor = another->getShadowExpansionLimitFactor();
 }
 
 CCObject* CC3ShadowVolumeMeshNode::copyWithZone( CCZone* zone )
@@ -258,7 +258,7 @@ CC3MeshNode* CC3ShadowVolumeMeshNode::getShadowCaster()
 /** A shadow volume only uses a material when it is to be visible during development. */
 void CC3ShadowVolumeMeshNode::checkShadowMaterial()
 {
-	if ( !_shouldDrawTerminator && isVisible() ) 
+	if ( !m_shouldDrawTerminator && isVisible() ) 
 	{
 		setColor( CCColorRefFromCCC4F(ccc4f(kCC3OneThird, kCC3OneThird, kCC3OneThird, 1.0)) );	// Will lazily init material if needed
 		setOpacity( (CCOpacity)(kCCOpacityFull * kCC3OneThird) );
@@ -303,13 +303,13 @@ CC3Vector4 CC3ShadowVolumeMeshNode::getShadowVolumeVertexOffsetForLightAt( const
 	CC3Vector camLoc = getShadowCaster()->getGlobalTransformMatrixInverted()->transformLocation( getActiveCamera()->getGlobalLocation() );	
 
 	// Get a unit offset vector in the direction away from the light
-	CC3Vector offsetDir = _light->isDirectionalOnly() ? lgtLoc.negate() : scLoc.difference( lgtLoc );
+	CC3Vector offsetDir = m_pLight->isDirectionalOnly() ? lgtLoc.negate() : scLoc.difference( lgtLoc );
 	offsetDir = offsetDir.normalize();
 
 	// Get the distance from the shadow caster CoG and the camera, and scale the
 	// unit offset vector by that distance and the shadowVolumeVertexOffsetFactor
 	GLfloat camDist = scLoc.distance( camLoc );
-	CC3Vector offset = offsetDir.scaleUniform( camDist * _shadowVolumeVertexOffsetFactor );
+	CC3Vector offset = offsetDir.scaleUniform( camDist * m_shadowVolumeVertexOffsetFactor );
 	CC3_TRACE("CC3ShadowVolumeMeshNode nudging vertices by %s", offset.stringfy().c_str());
 
 	// Create and return a 4D directional vector from the offset
@@ -337,14 +337,14 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 	GLuint faceCnt = scNode->getFaceCount();
 	GLuint shdwVtxIdx = 0;
 	bool wasMeshExpanded = false;
-	bool doesRequireCapping = _useDepthFailAlgorithm || !_shouldAddEndCapsOnlyWhenNeeded;
+	bool doesRequireCapping = m_useDepthFailAlgorithm || !m_shouldAddEndCapsOnlyWhenNeeded;
 	
 	// Transform the 4D position of the light into the local coordinates of the shadow caster.
-	CC3Vector4 lightPosition = _light->getGlobalHomogeneousPosition();
+	CC3Vector4 lightPosition = m_pLight->getGlobalHomogeneousPosition();
 	CC3Vector4 localLightPosition = scNode->getGlobalTransformMatrixInverted()->transformHomogeneousVector( lightPosition );
 	
 	// Determine whether we want to nudge the shadow volume vertices away from the shadow caster
-	bool isNudgingVertices = (_shadowVolumeVertexOffsetFactor != 0.0f);
+	bool isNudgingVertices = (m_shadowVolumeVertexOffsetFactor != 0.0f);
 	CC3Vector4 svVtxNudge = isNudgingVertices ? getShadowVolumeVertexOffsetForLightAt(localLightPosition) : CC3Vector4::kCC3Vector4Zero;
 	
 	// Iterate through all the faces in the mesh of the shadow caster.
@@ -374,8 +374,8 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 		// faces (typical), or it's a lit face and shadowing is (also) based on back faces
 		// (as with some open meshes).
 		if ( doesRequireCapping &&
-			(isFaceLit ? _shouldShadowBackFaces : _shouldShadowFrontFaces) &&
-			!_shouldDrawTerminator) 
+			(isFaceLit ? m_shouldShadowBackFaces : m_shouldShadowFrontFaces) &&
+			!m_shouldDrawTerminator) 
 		{
 			/*LogTrace(@"%@ adding end cap for face %i", self, faceIdx);*/
 			wasMeshExpanded |= addShadowVolumeCapFor( isFaceLit,  vertices4d, localLightPosition, &shdwVtxIdx );
@@ -400,7 +400,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 			bool isTerminatorEdge = false;
 			if ( neighbourFaceIdx == kCC3FaceNoNeighbour ) 
 			{
-				isTerminatorEdge = isFaceLit ? _shouldShadowFrontFaces : _shouldShadowBackFaces;
+				isTerminatorEdge = isFaceLit ? m_shouldShadowFrontFaces : m_shouldShadowBackFaces;
 			} 
 			else if ( neighbourFaceIdx > faceIdx ) 
 			{		// Don't double count edges
@@ -457,21 +457,21 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 	}
 	
 	// Update the vertex count of the shadow volume mesh, based on how many sides we've added.
-	_mesh->setVertexCount( shdwVtxIdx );
+	m_pMesh->setVertexCount( shdwVtxIdx );
 	//LogTrace(@"%@ setting vertex count to %u", self, shdwVtxIdx);
 	
 	// If the mesh is using GL VBO's, update them. If the mesh was expanded,
 	// recreate the VBO's, otherwise update them.
-	if ( _mesh->isUsingGLBuffers() ) 
+	if ( m_pMesh->isUsingGLBuffers() ) 
 	{
 		if ( wasMeshExpanded )
 		{
-			_mesh->deleteGLBuffers();
-			_mesh->createGLBuffers();
+			m_pMesh->deleteGLBuffers();
+			m_pMesh->createGLBuffers();
 		} 
 		else 
 		{
-			_mesh->updateVertexLocationsGLBuffer();
+			m_pMesh->updateVertexLocationsGLBuffer();
 		}
 	}
 	// LogTrace(@"Finshed populating %@", self);
@@ -497,9 +497,9 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeSta
 	
 	// Add a single triangle from the edge to a single point at infinity,
 	// with the same winding as the dark face.
-	_mesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
-	_mesh->setVertexHomogeneousLocation( farLoc, (*shdwVtxIdx)++ );
-	_mesh->setVertexHomogeneousLocation( edgeEndLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( farLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( edgeEndLoc, (*shdwVtxIdx)++ );
 	
 	//LogTrace(@"%@ drawing shadow volume side face for directional light", self);
 	
@@ -557,14 +557,14 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeSta
 	
 	// The shadow volume faces have the same winding as the dark face.
 	// First triangular face:
-	_mesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
-	_mesh->setVertexHomogeneousLocation( farStartLoc, (*shdwVtxIdx)++ );
-	_mesh->setVertexHomogeneousLocation( farEndLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( farStartLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( farEndLoc, (*shdwVtxIdx)++ );
 	
 	// Second triangular face:
-	_mesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
-	_mesh->setVertexHomogeneousLocation( farEndLoc, (*shdwVtxIdx)++ );
-	_mesh->setVertexHomogeneousLocation( edgeEndLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( farEndLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( edgeEndLoc, (*shdwVtxIdx)++ );
 
 	if ( doesRequireCapping ) 
 	{
@@ -589,7 +589,7 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeSideFrom( const CC3Vector4& edgeSta
 CC3Vector4 CC3ShadowVolumeMeshNode::expand( const CC3Vector4& edgeLoc, const CC3Vector4& lightLoc )
 {
 	CC3Vector4 extDir = edgeLoc.difference( lightLoc );
-	CC3Vector4 extrusion = extDir.scaleUniform( _shadowExpansionLimitFactor );
+	CC3Vector4 extrusion = extDir.scaleUniform( m_shadowExpansionLimitFactor );
 	return edgeLoc.add( extrusion );
 }
 
@@ -609,15 +609,15 @@ bool CC3ShadowVolumeMeshNode::addShadowVolumeCapFor( bool isFaceLit, CC3Vector4*
 	// same winding order. If the face is dark, use the opposite winding.
 	if ( isFaceLit ) 
 	{
-		_mesh->setVertexHomogeneousLocation( vertices[0], (*shdwVtxIdx)++ );
-		_mesh->setVertexHomogeneousLocation( vertices[1], (*shdwVtxIdx)++ );
-		_mesh->setVertexHomogeneousLocation( vertices[2], (*shdwVtxIdx)++ );
+		m_pMesh->setVertexHomogeneousLocation( vertices[0], (*shdwVtxIdx)++ );
+		m_pMesh->setVertexHomogeneousLocation( vertices[1], (*shdwVtxIdx)++ );
+		m_pMesh->setVertexHomogeneousLocation( vertices[2], (*shdwVtxIdx)++ );
 	} 
 	else 
 	{															  
-		_mesh->setVertexHomogeneousLocation( vertices[0], (*shdwVtxIdx)++ );
-		_mesh->setVertexHomogeneousLocation( vertices[2], (*shdwVtxIdx)++ );
-		_mesh->setVertexHomogeneousLocation( vertices[1], (*shdwVtxIdx)++ );
+		m_pMesh->setVertexHomogeneousLocation( vertices[0], (*shdwVtxIdx)++ );
+		m_pMesh->setVertexHomogeneousLocation( vertices[2], (*shdwVtxIdx)++ );
+		m_pMesh->setVertexHomogeneousLocation( vertices[1], (*shdwVtxIdx)++ );
 	}
 	
 	return wasMeshExpanded;
@@ -633,8 +633,8 @@ bool CC3ShadowVolumeMeshNode::addTerminatorLineFrom( const CC3Vector4& edgeStart
 	bool wasMeshExpanded = getMesh()->ensureVertexCapacity( *shdwVtxIdx + 2 );
 	
 	// Add just the two end points of the terminator edge
-	_mesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
-	_mesh->setVertexHomogeneousLocation( edgeEndLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( edgeStartLoc, (*shdwVtxIdx)++ );
+	m_pMesh->setVertexHomogeneousLocation( edgeEndLoc, (*shdwVtxIdx)++ );
 	
 	//LogTrace(@"%@ drawing terminator line", self);
 	
@@ -645,7 +645,7 @@ bool CC3ShadowVolumeMeshNode::addTerminatorLineFrom( const CC3Vector4& edgeStart
 /** Overridden to decrement the shadow lag count on each update. */
 void CC3ShadowVolumeMeshNode::processUpdateBeforeTransform( CC3NodeUpdatingVisitor* visitor )
 {
-	_shadowLagCount = MAX(_shadowLagCount - 1, 0);
+	m_shadowLagCount = MAX(m_shadowLagCount - 1, 0);
 	super::processUpdateBeforeTransform( visitor );
 }
 
@@ -653,9 +653,9 @@ void CC3ShadowVolumeMeshNode::processUpdateBeforeTransform( CC3NodeUpdatingVisit
 bool CC3ShadowVolumeMeshNode::isShadowVisible()
 {
 	CC3MeshNode* scNode = getShadowCaster();
-	return (_light->isVisible() || _light->shouldCastShadowsWhenInvisible()) &&
+	return (m_pLight->isVisible() || m_pLight->shouldCastShadowsWhenInvisible()) &&
 			(scNode->isVisible() || scNode->shouldCastShadowsWhenInvisible() || isVisible()) &&
-			scNode->doesIntersectBoundingVolume( _light->getShadowCastingVolume() );
+			scNode->doesIntersectBoundingVolume( m_pLight->getShadowCastingVolume() );
 }
 
 /**
@@ -664,7 +664,7 @@ bool CC3ShadowVolumeMeshNode::isShadowVisible()
  */
 bool CC3ShadowVolumeMeshNode::isReadyToUpdate()
 {
-	return (_shadowLagCount == 0); 
+	return (m_shadowLagCount == 0); 
 }
 
 /**
@@ -684,14 +684,14 @@ void CC3ShadowVolumeMeshNode::updateShadow()
 		if (isShadowVisible())
 		{
 			updateStencilAlgorithm();
-			if (_isShadowDirty) 
+			if (m_isShadowDirty) 
 			{
 				//LogTrace(@"Updating %@", self);
 				populateShadowMesh();
-				_isShadowDirty = false;
+				m_isShadowDirty = false;
 			}
 		}
-		_shadowLagCount = _shadowLagFactor;
+		m_shadowLagCount = m_shadowLagFactor;
 	}
 }
 
@@ -709,50 +709,50 @@ void CC3ShadowVolumeMeshNode::updateShadow()
  */
 void CC3ShadowVolumeMeshNode::updateStencilAlgorithm()
 {
-	bool oldAlgo = _useDepthFailAlgorithm;
+	bool oldAlgo = m_useDepthFailAlgorithm;
 
-	_useDepthFailAlgorithm = !_shouldAddEndCapsOnlyWhenNeeded ||
-							getShadowCaster()->doesIntersectBoundingVolume( _light->getCameraShadowVolume() );
+	m_useDepthFailAlgorithm = !m_shouldAddEndCapsOnlyWhenNeeded ||
+							getShadowCaster()->doesIntersectBoundingVolume( m_pLight->getCameraShadowVolume() );
 	
 	// If the stencil algo was changed, mark this shadow as dirty,
 	// so that end caps will be added or removed.
-	if (_useDepthFailAlgorithm != oldAlgo) 
-		_isShadowDirty = true;
+	if (m_useDepthFailAlgorithm != oldAlgo) 
+		m_isShadowDirty = true;
 }
 
 /** Overridden to remove this shadow node from the light. */
 void CC3ShadowVolumeMeshNode::wasRemoved()
 {
-	_light->removeShadow( this );
+	m_pLight->removeShadow( this );
 	super::wasRemoved();
 }
 
 void CC3ShadowVolumeMeshNode::markTransformDirty()
 {
 	super::markTransformDirty();
-	_isShadowDirty = true;
+	m_isShadowDirty = true;
 }
 
 bool CC3ShadowVolumeMeshNode::isShadowDirty()
 {
-	return _isShadowDirty;
+	return m_isShadowDirty;
 }
 
 bool CC3ShadowVolumeMeshNode::shouldDrawTerminator()
 {
-	return _shouldDrawTerminator;
+	return m_shouldDrawTerminator;
 }
 
 bool CC3ShadowVolumeMeshNode::useDepthFailAlgorithm()
 {
-	return _useDepthFailAlgorithm;
+	return m_useDepthFailAlgorithm;
 }
 
 /** A node that affects this shadow (generally the light) was transformed. Mark the shadow as dirty. */
 void CC3ShadowVolumeMeshNode::nodeWasTransformed( CC3Node* aNode )
 { 
 	super::nodeWasTransformed( aNode );
-	_isShadowDirty = true;
+	m_isShadowDirty = true;
 }
 
 void CC3ShadowVolumeMeshNode::nodeWasDestroyed( CC3Node* node )
@@ -764,7 +764,7 @@ void CC3ShadowVolumeMeshNode::nodeWasDestroyed( CC3Node* node )
 void CC3ShadowVolumeMeshNode::configureDrawingParameters( CC3NodeDrawingVisitor* visitor )
 {
 	super::configureDrawingParameters( visitor );
-	if (_shouldDrawTerminator) 
+	if (m_shouldDrawTerminator) 
 		visitor->getGL()->setLineWidth( 1.0f );
 }
 
@@ -788,7 +788,7 @@ void CC3ShadowVolumeMeshNode::drawToStencilIncrementing( bool isIncrementing, CC
 	// and simply retain the current stencil value otherwise. Also, determine whether we want
 	// to cull either the front or back faces, depending on which stencil algorithm we are
 	// using, and whether we are on the incrementing or decrementing pass.
-	if (_useDepthFailAlgorithm) {
+	if (m_useDepthFailAlgorithm) {
 		zFailOp = stencilOp;				// Increment/decrment the stencil on depth fail...
 		zPassOp = GL_KEEP;					// ...otherwise keep the current stencil value.
 		useFrontFaces = !isIncrementing;	// Cull front faces when incrementing, back faces when decrementing
@@ -934,7 +934,7 @@ void CC3StencilledShadowPainterNode::nodeWasDestroyed( CC3Node* aNode )
 void CC3ShadowDrawingVisitor::init()
 {
 	super::init();
-	_shouldVisitChildren = false;
+	m_shouldVisitChildren = false;
 }
 
 bool CC3ShadowDrawingVisitor::shouldDrawNode( CC3Node* aNode )

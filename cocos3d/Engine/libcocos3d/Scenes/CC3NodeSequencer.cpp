@@ -153,12 +153,12 @@ bool CC3TranslucentNodeAcceptor::evaluateLocalContentNode( CC3LocalContentNode* 
 
 CC3NodeSequencer::CC3NodeSequencer()
 {
-	_evaluator = NULL;
+	m_pEvaluator = NULL;
 }
 
 CC3NodeSequencer::~CC3NodeSequencer()
 {
-	CC_SAFE_RELEASE( _evaluator ); 
+	CC_SAFE_RELEASE( m_pEvaluator ); 
 }
 
 CCArray* CC3NodeSequencer::getNodes()
@@ -168,12 +168,12 @@ CCArray* CC3NodeSequencer::getNodes()
 
 bool CC3NodeSequencer::allowSequenceUpdates()
 {
-	return _allowSequenceUpdates;
+	return m_allowSequenceUpdates;
 }
 
 void CC3NodeSequencer::setAllowSequenceUpdates( bool allow )
 {
-	_allowSequenceUpdates = allow;
+	m_allowSequenceUpdates = allow;
 }
 
 bool CC3NodeSequencer::shouldUseOnlyForwardDistance()
@@ -203,7 +203,7 @@ CC3NodeSequencer* CC3NodeSequencer::sequencer()
 void CC3NodeSequencer::initWithEvaluator( CC3NodeEvaluator* anEvaluator )
 {
 	setEvaluator( anEvaluator );
-	_allowSequenceUpdates = true;
+	m_allowSequenceUpdates = true;
 }
 
 CC3NodeSequencer* CC3NodeSequencer::sequencerWithEvaluator( CC3NodeEvaluator* anEvaluator )
@@ -217,13 +217,13 @@ CC3NodeSequencer* CC3NodeSequencer::sequencerWithEvaluator( CC3NodeEvaluator* an
 
 void CC3NodeSequencer::populateFrom( CC3NodeSequencer* another )
 {
-	_allowSequenceUpdates = another->allowSequenceUpdates();
+	m_allowSequenceUpdates = another->allowSequenceUpdates();
 }
 
 CCObject* CC3NodeSequencer::copyWithZone( CCZone* zone )
 {
 	CC3NodeSequencer* aCopy = new CC3NodeSequencer;
-	aCopy->initWithEvaluator( (CC3NodeEvaluator*)(_evaluator->copy()->autorelease()) );
+	aCopy->initWithEvaluator( (CC3NodeEvaluator*)(m_pEvaluator->copy()->autorelease()) );
 	aCopy->populateFrom( this );
 	return aCopy;
 }
@@ -273,9 +273,9 @@ void CC3NodeSequencer::visitNodesWithNodeVisitor( CC3NodeVisitor* nodeVisitor )
 
 void CC3NodeSequencer::setEvaluator( CC3NodeEvaluator* evaluator )
 {
-	CC_SAFE_RELEASE( _evaluator );
+	CC_SAFE_RELEASE( m_pEvaluator );
 	CC_SAFE_RETAIN( evaluator );
-	_evaluator = evaluator;
+	m_pEvaluator = evaluator;
 }
 
 CC3BTreeNodeSequencer::CC3BTreeNodeSequencer()
@@ -285,14 +285,14 @@ CC3BTreeNodeSequencer::CC3BTreeNodeSequencer()
 
 CC3BTreeNodeSequencer::~CC3BTreeNodeSequencer()
 {
-	CC_SAFE_RELEASE( _sequencers );
+	CC_SAFE_RELEASE( m_sequencers );
 }
 
 void CC3BTreeNodeSequencer::initWithEvaluator( CC3NodeEvaluator* anEvaluator )
 {
 	super::initWithEvaluator( anEvaluator );
-	_sequencers = CCArray::create();		// retained
-	_sequencers->retain();
+	m_sequencers = CCArray::create();		// retained
+	m_sequencers->retain();
 }
 
 void CC3BTreeNodeSequencer::populateFrom( CC3BTreeNodeSequencer* another )
@@ -320,16 +320,16 @@ CCObject* CC3BTreeNodeSequencer::copyWithZone( CCZone* zone )
 
 void CC3BTreeNodeSequencer::addSequencer( CC3NodeSequencer* aNodeSequencer )
 {
-	_sequencers->addObject( aNodeSequencer );
+	m_sequencers->addObject( aNodeSequencer );
 }
 
 /** Iterates through the sequencers, adding it to the first one that accepts the node. */
 bool CC3BTreeNodeSequencer::add( CC3Node* aNode, CC3NodeSequencerVisitor* visitor )
 {
-	if ( _evaluator && _evaluator->evaluate( aNode ) )
+	if ( m_pEvaluator && m_pEvaluator->evaluate( aNode ) )
 	{
 		CCObject* pObj;
-		CCARRAY_FOREACH( _sequencers, pObj )
+		CCARRAY_FOREACH( m_sequencers, pObj )
 		{
 			CC3NodeSequencer* s = (CC3NodeSequencer*)pObj;
 			if ( s->add( aNode, visitor ) )
@@ -346,7 +346,7 @@ bool CC3BTreeNodeSequencer::add( CC3Node* aNode, CC3NodeSequencerVisitor* visito
 bool CC3BTreeNodeSequencer::remove( CC3Node* aNode, CC3NodeSequencerVisitor* visitor )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _sequencers, pObj )
+	CCARRAY_FOREACH( m_sequencers, pObj )
 	{
 		CC3NodeSequencer* s = (CC3NodeSequencer*)pObj;
 		if ( s->remove( aNode, visitor ) )
@@ -361,10 +361,10 @@ bool CC3BTreeNodeSequencer::remove( CC3Node* aNode, CC3NodeSequencerVisitor* vis
 /** Iterates through the sequencers, collecting misplaced nodes in the visitor. */
 void CC3BTreeNodeSequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequencerVisitor* visitor )
 {
-	if (_allowSequenceUpdates)
+	if (m_allowSequenceUpdates)
 	{
 		CCObject* pObj;
-		CCARRAY_FOREACH( _sequencers, pObj )
+		CCARRAY_FOREACH( m_sequencers, pObj )
 		{
 			CC3NodeSequencer* s = (CC3NodeSequencer*)pObj;
 			s->identifyMisplacedNodesWithVisitor( visitor );
@@ -375,7 +375,7 @@ void CC3BTreeNodeSequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequencerV
 void CC3BTreeNodeSequencer::visitNodesWithNodeVisitor( CC3NodeVisitor* aNodeVisitor )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _sequencers, pObj )
+	CCARRAY_FOREACH( m_sequencers, pObj )
 	{
 		CC3NodeSequencer* s = (CC3NodeSequencer*)pObj;
 		s->visitNodesWithNodeVisitor( aNodeVisitor );
@@ -388,7 +388,7 @@ CCArray* CC3BTreeNodeSequencer::getNodes()
 	CCArray* nodes = CCArray::create();
 	
 	CCObject* pObj;
-	CCARRAY_FOREACH( _sequencers, pObj )
+	CCARRAY_FOREACH( m_sequencers, pObj )
 	{
 		CC3NodeSequencer* s = (CC3NodeSequencer*)pObj;
 		nodes->addObjectsFromArray( s->getNodes() );
@@ -400,7 +400,7 @@ CCArray* CC3BTreeNodeSequencer::getNodes()
 bool CC3BTreeNodeSequencer::shouldUseOnlyForwardDistance()
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _sequencers, pObj )
+	CCARRAY_FOREACH( m_sequencers, pObj )
 	{
 		CC3NodeSequencer* s = (CC3NodeSequencer*)pObj;
 		if ( s->shouldUseOnlyForwardDistance() )
@@ -413,7 +413,7 @@ bool CC3BTreeNodeSequencer::shouldUseOnlyForwardDistance()
 void CC3BTreeNodeSequencer::setShouldUseOnlyForwardDistance( bool onlyForward )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _sequencers, pObj )
+	CCARRAY_FOREACH( m_sequencers, pObj )
 	{
 		CC3NodeSequencer* s = (CC3NodeSequencer*)pObj;
 		s->setShouldUseOnlyForwardDistance( onlyForward );
@@ -455,29 +455,29 @@ CC3BTreeNodeSequencer* CC3BTreeNodeSequencer::sequencerWithEvaluator( CC3NodeEva
 
 CCArray* CC3BTreeNodeSequencer::getSequencers()
 {
-	return _sequencers;
+	return m_sequencers;
 }
 
 CC3NodeArraySequencer::CC3NodeArraySequencer()
 {
-	_nodes = NULL;
+	m_nodes = NULL;
 }
 
 CC3NodeArraySequencer::~CC3NodeArraySequencer()
 {
-	CC_SAFE_RELEASE( _nodes );
+	CC_SAFE_RELEASE( m_nodes );
 }
 
 CCArray* CC3NodeArraySequencer::getNodes()
 {
-	return CCArray::createWithArray( _nodes ); 
+	return CCArray::createWithArray( m_nodes ); 
 }
 
 void CC3NodeArraySequencer::initWithEvaluator( CC3NodeEvaluator* anEvaluator )
 {
 	super::initWithEvaluator( anEvaluator );
-	_nodes = CCArray::create();		// retained
-	_nodes->retain();
+	m_nodes = CCArray::create();		// retained
+	m_nodes->retain();
 }
 
 /**
@@ -488,21 +488,21 @@ void CC3NodeArraySequencer::initWithEvaluator( CC3NodeEvaluator* anEvaluator )
  */
 bool CC3NodeArraySequencer::add( CC3Node* aNode, CC3NodeSequencerVisitor* visitor )
 {
-	if ( _evaluator && _evaluator->evaluate( aNode ) ) 
+	if ( m_pEvaluator && m_pEvaluator->evaluate( aNode ) ) 
 	{
-		unsigned int nodeCount = _nodes->count();
+		unsigned int nodeCount = m_nodes->count();
 		for (unsigned int i = 0; i < nodeCount; i++) 
 		{
-			CC3Node* leftNode = i > 0 ? (CC3Node*)_nodes->objectAtIndex( i - 1 ) : NULL;
-			CC3Node* rightNode = (CC3Node*)_nodes->objectAtIndex( i );
+			CC3Node* leftNode = i > 0 ? (CC3Node*)m_nodes->objectAtIndex( i - 1 ) : NULL;
+			CC3Node* rightNode = (CC3Node*)m_nodes->objectAtIndex( i );
 			CCAssert(aNode != rightNode, "CC3NodeArraySequenceralready contains node aNode!");
 			if ( shouldInsertNode( aNode, leftNode, rightNode, visitor ) ) 
 			{
-				_nodes->insertObject( aNode, i );
+				m_nodes->insertObject( aNode, i );
 				return true;
 			}
 		}
-		_nodes->addObject( aNode );
+		m_nodes->addObject( aNode );
 		return true;
 	}
 
@@ -516,10 +516,10 @@ bool CC3NodeArraySequencer::shouldInsertNode( CC3Node* aNode, CC3Node* leftNode,
 
 bool CC3NodeArraySequencer::remove( CC3Node* aNode, CC3NodeSequencerVisitor* visitor )
 {
-	unsigned int nodeIndex = _nodes->indexOfObject( aNode );
+	unsigned int nodeIndex = m_nodes->indexOfObject( aNode );
 	if (nodeIndex != -1) 
 	{
-		_nodes->removeObjectAtIndex( nodeIndex );
+		m_nodes->removeObjectAtIndex( nodeIndex );
 		return true;
 	}
 	return false;
@@ -528,14 +528,14 @@ bool CC3NodeArraySequencer::remove( CC3Node* aNode, CC3NodeSequencerVisitor* vis
 void CC3NodeArraySequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequencerVisitor* visitor )
 {
 	// Leave if sequence updating should not happen or if there is nothing to sort.
-	if (!_allowSequenceUpdates || _nodes->count() == 0) 
+	if (!m_allowSequenceUpdates || m_nodes->count() == 0) 
 		return;
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _nodes, pObj )
+	CCARRAY_FOREACH( m_nodes, pObj )
 	{
 		CC3Node* aNode = (CC3Node*)pObj;
-		if ( !(_evaluator && _evaluator->evaluate( aNode )) )
+		if ( !(m_pEvaluator && m_pEvaluator->evaluate( aNode )) )
 			visitor->addMisplacedNode( aNode );
 	}
 }
@@ -543,7 +543,7 @@ void CC3NodeArraySequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequencerV
 void CC3NodeArraySequencer::visitNodesWithNodeVisitor( CC3NodeVisitor* aNodeVisitor )
 {
 	CCObject* pObj;
-	CCARRAY_FOREACH( _nodes, pObj )
+	CCARRAY_FOREACH( m_nodes, pObj )
 	{
 		CC3Node* aNode = (CC3Node*)pObj;
 		aNodeVisitor->visit( aNode );
@@ -562,13 +562,13 @@ CC3NodeArraySequencer* CC3NodeArraySequencer::sequencerWithEvaluator( CC3NodeEva
 void CC3NodeArrayZOrderSequencer::initWithEvaluator( CC3NodeEvaluator* anEvaluator )
 {
 	super::initWithEvaluator( anEvaluator );
-	_shouldUseOnlyForwardDistance = false;
+	m_shouldUseOnlyForwardDistance = false;
 }
 
 void CC3NodeArrayZOrderSequencer::populateFrom( CC3NodeArrayZOrderSequencer* another )
 {
 	super::populateFrom( another );
-	_shouldUseOnlyForwardDistance = another->shouldUseOnlyForwardDistance();
+	m_shouldUseOnlyForwardDistance = another->shouldUseOnlyForwardDistance();
 }
 
 CCObject* CC3NodeArrayZOrderSequencer::copyWithZone( CCZone* zone )
@@ -608,7 +608,7 @@ bool CC3NodeArrayZOrderSequencer::shouldInsertNode( CC3Node* aNode, CC3Node* lef
 void CC3NodeArrayZOrderSequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequencerVisitor* visitor )
 {
 	// Leave if sequence updating should not happen or if there is nothing to sort.
-	if (!_allowSequenceUpdates || _nodes->count() == 0) 
+	if (!m_allowSequenceUpdates || m_nodes->count() == 0) 
 		return;
 
 	CC3Camera* cam = visitor->getScene()->getActiveCamera();
@@ -620,10 +620,10 @@ void CC3NodeArrayZOrderSequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequ
 	GLfloat prevCamDistProduct = kCC3MaxGLfloat;
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _nodes, pObj )
+	CCARRAY_FOREACH( m_nodes, pObj )
 	{
 		CC3Node* aNode = (CC3Node*)pObj;
-		if ( !(_evaluator && _evaluator->evaluate( aNode )) )
+		if ( !(m_pEvaluator && m_pEvaluator->evaluate( aNode )) )
 			visitor->addMisplacedNode( aNode );
 		else 
 		{
@@ -633,7 +633,7 @@ void CC3NodeArrayZOrderSequencer::identifyMisplacedNodesWithVisitor( CC3NodeSequ
 			// Determine the direction in which to measure from the camera. This will either be
 			// in the direction of a straight line between the camera and the node, or will be
 			// restricted to the direction "staight-out" from the camera.
-			CC3Vector measureDir = _shouldUseOnlyForwardDistance ? cam->getForwardDirection() : node2Cam;
+			CC3Vector measureDir = m_shouldUseOnlyForwardDistance ? cam->getForwardDirection() : node2Cam;
 
 			// Cache the dot product of the direction vector, and the vector between the node
 			// and the camera. This is a relative measure of the distance in that direction.
@@ -711,24 +711,24 @@ bool CC3MeshNodeArraySequencerGroupMeshes::shouldInsertMeshNode( CC3MeshNode* aN
 
 CC3NodeSequencerVisitor::CC3NodeSequencerVisitor()
 {
-	_misplacedNodes = NULL;
-	_scene = NULL;
+	m_misplacedNodes = NULL;
+	m_pScene = NULL;
 }
 
 CC3NodeSequencerVisitor::~CC3NodeSequencerVisitor()
 {
-	_scene = NULL;
-	CC_SAFE_RELEASE( _misplacedNodes );
+	m_pScene = NULL;
+	CC_SAFE_RELEASE( m_misplacedNodes );
 }
 
 CC3Scene* CC3NodeSequencerVisitor::getScene()
 {
-	return _scene;
+	return m_pScene;
 }
 
 void CC3NodeSequencerVisitor::setScene( CC3Scene* scene )
 {
-	_scene = scene;
+	m_pScene = scene;
 }
 
 void CC3NodeSequencerVisitor::init()
@@ -738,9 +738,9 @@ void CC3NodeSequencerVisitor::init()
 
 void CC3NodeSequencerVisitor::initWithScene( CC3Scene* aCC3Scene )
 {
-	_scene = aCC3Scene;							// weak reference
-	_misplacedNodes = CCArray::create();		// retained
-	_misplacedNodes->retain();
+	m_pScene = aCC3Scene;							// weak reference
+	m_misplacedNodes = CCArray::create();		// retained
+	m_misplacedNodes->retain();
 }
 
 CC3NodeSequencerVisitor* CC3NodeSequencerVisitor::visitorWithScene( CC3Scene* aCC3Scene )
@@ -754,22 +754,22 @@ CC3NodeSequencerVisitor* CC3NodeSequencerVisitor::visitorWithScene( CC3Scene* aC
 
 bool CC3NodeSequencerVisitor::hasMisplacedNodes()
 {
-	return (_misplacedNodes->count() > 0); 
+	return (m_misplacedNodes->count() > 0); 
 }
 
 void CC3NodeSequencerVisitor::addMisplacedNode( CC3Node* aNode )
 { 
-	_misplacedNodes->addObject( aNode ); 
+	m_misplacedNodes->addObject( aNode ); 
 }
 
 void CC3NodeSequencerVisitor::clearMisplacedNodes()
 {
-	_misplacedNodes->removeAllObjects(); 
+	m_misplacedNodes->removeAllObjects(); 
 }
 
 CCArray* CC3NodeSequencerVisitor::getMisplacedNodes()
 {
-	return _misplacedNodes;
+	return m_misplacedNodes;
 }
 
 NS_COCOS3D_END

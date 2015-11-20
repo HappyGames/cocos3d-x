@@ -33,22 +33,22 @@ NS_COCOS3D_BEGIN
 
 CC3ParticleNavigator::CC3ParticleNavigator()
 {
-	_emitter = NULL;
+	m_pEmitter = NULL;
 }
 
 CC3ParticleNavigator::~CC3ParticleNavigator()
 {
-	_emitter = NULL;			// weak reference
+	m_pEmitter = NULL;			// weak reference
 }
 
 CC3ParticleEmitter* CC3ParticleNavigator::getEmitter()
 {
-	return _emitter;
+	return m_pEmitter;
 }
 
 void CC3ParticleNavigator::setEmitter( CC3ParticleEmitter* emitter )
 {
-	_emitter = emitter;
+	m_pEmitter = emitter;
 }
 
 void CC3ParticleNavigator::initializeParticle( CC3Particle* aParticle )
@@ -58,7 +58,7 @@ void CC3ParticleNavigator::initializeParticle( CC3Particle* aParticle )
 
 bool CC3ParticleNavigator::init()
 {
-	_emitter = NULL;
+	m_pEmitter = NULL;
 	return true;
 }
 

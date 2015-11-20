@@ -185,9 +185,9 @@ public:
 	virtual CC3Vector               getScaleAtFrame( GLuint frameIndex  );
 
 protected:
-	CC3NodeAnimation*               _baseAnimation;
-	float                           _startTime;
-	float                           _endTime;
+	CC3NodeAnimation*               m_pBaseAnimation;
+	float                           m_startTime;
+	float                           m_endTime;
 };
 
 NS_COCOS3D_END

@@ -33,7 +33,7 @@ NS_COCOS3D_BEGIN
 
 CC3GLRenderbuffer::CC3GLRenderbuffer()
 {
-	_rbID = 0;
+	m_renderBufferId = 0;
 }
 
 CC3GLRenderbuffer::~CC3GLRenderbuffer()
@@ -44,45 +44,45 @@ CC3GLRenderbuffer::~CC3GLRenderbuffer()
 GLuint CC3GLRenderbuffer::getRenderbufferID()
 {
 	ensureGLRenderbuffer();
-	return _rbID;
+	return m_renderBufferId;
 }
 
 void CC3GLRenderbuffer::ensureGLRenderbuffer()
 {
-	if (_isManagingGL && !_rbID) 
-		_rbID = CC3OpenGL::sharedGL()->generateRenderbuffer();
+	if (m_isManagingGL && !m_renderBufferId) 
+		m_renderBufferId = CC3OpenGL::sharedGL()->generateRenderbuffer();
 }
 
 void CC3GLRenderbuffer::deleteGLRenderbuffer()
 {
-	if (_isManagingGL && _rbID) 
-		CC3OpenGL::sharedGL()->deleteRenderbuffer( _rbID );
-	_rbID = 0;
+	if (m_isManagingGL && m_renderBufferId) 
+		CC3OpenGL::sharedGL()->deleteRenderbuffer( m_renderBufferId );
+	m_renderBufferId = 0;
 }
 
 /** If the renderbuffer has been created, set its debug label as well. */
 void CC3GLRenderbuffer::setName( const std::string& name )
 {
 	super::setName( name );
-	if (!name.empty() && _rbID) 
-		CC3OpenGL::sharedGL()->setRenderBufferDebugLabel( name.c_str(), _rbID );
+	if (!name.empty() && m_renderBufferId) 
+		CC3OpenGL::sharedGL()->setRenderBufferDebugLabel( name.c_str(), m_renderBufferId );
 }
 
 CC3IntSize CC3GLRenderbuffer::getSize()
 {
-	return _size; 
+	return m_size; 
 }
 
 void CC3GLRenderbuffer::setSize( const CC3IntSize& size )
 {
-	if ( CC3IntSizesAreEqual(size, _size) ) 
+	if ( CC3IntSizesAreEqual(size, m_size) ) 
 		return;
 
-	_size = size;
+	m_size = size;
 
 	if (isManagingGL()) 
 	{
-		CC3OpenGL::sharedGL()->allocateStorageForRenderbuffer( getRenderbufferID(), _size, _format, _samples );
+		CC3OpenGL::sharedGL()->allocateStorageForRenderbuffer( getRenderbufferID(), m_size, m_format, m_samples );
 	}
 }
 
@@ -115,11 +115,11 @@ void CC3GLRenderbuffer::deriveNameFromFramebuffer( CC3GLFramebuffer* framebuffer
 void CC3GLRenderbuffer::initWithTag( GLuint tag, const std::string& name )
 {
 	super::initWithTag( tag, name );
-	_rbID = 0;
-	_size = CC3IntSizeMake(0, 0);
-	_format = GL_ZERO;
-	_samples = 1;
-	_isManagingGL = true;
+	m_renderBufferId = 0;
+	m_size = CC3IntSizeMake(0, 0);
+	m_format = GL_ZERO;
+	m_samples = 1;
+	m_isManagingGL = true;
 }
 
 CC3GLRenderbuffer* CC3GLRenderbuffer::renderbuffer()
@@ -147,8 +147,8 @@ CC3GLRenderbuffer* CC3GLRenderbuffer::renderbufferWithPixelFormat( GLenum format
 void CC3GLRenderbuffer::initWithPixelFormatAndSampls( GLenum format, GLuint samples )
 {
 	init();
-	_format = format;
-	_samples = samples;
+	m_format = format;
+	m_samples = samples;
 }
 
 CC3GLRenderbuffer* CC3GLRenderbuffer::renderbufferWithPixelFormatAndSamples( GLenum format, GLuint samples )
@@ -177,8 +177,8 @@ CC3GLRenderbuffer* CC3GLRenderbuffer::renderbufferWithPixelFormatAndRenderBuffer
 void CC3GLRenderbuffer::initWithPixelFormat( GLenum format, GLuint samples, GLuint rbID )
 {
 	initWithPixelFormatAndSampls( format, samples );
-	_rbID = rbID;
-	_isManagingGL = false;
+	m_renderBufferId = rbID;
+	m_isManagingGL = false;
 }
 
 CC3GLRenderbuffer* CC3GLRenderbuffer::renderbufferWithPixelFormat( GLenum format, GLuint samples, GLuint rbID )
@@ -192,35 +192,35 @@ CC3GLRenderbuffer* CC3GLRenderbuffer::renderbufferWithPixelFormat( GLenum format
 
 GLuint CC3GLRenderbuffer::getPixelSamples()
 {
-	return _samples;
+	return m_samples;
 }
 
 GLuint CC3GLRenderbuffer::getPixelFormat()
 {
-	return _format;
+	return m_format;
 }
 
 bool CC3GLRenderbuffer::isManagingGL()
 {
-	return _isManagingGL;
+	return m_isManagingGL;
 }
 
 CC3TextureFramebufferAttachment::CC3TextureFramebufferAttachment()
 {
-	_texObj = NULL;
+	m_pTexObj = NULL;
 }
 
 CC3TextureFramebufferAttachment::~CC3TextureFramebufferAttachment()
 {
 	if ( shouldUseStrongReferenceToTexture() )
 	{
-		CC_SAFE_RELEASE( _texObj );	
+		CC_SAFE_RELEASE( m_pTexObj );	
 	}
 }
 
 CC3Texture* CC3TextureFramebufferAttachment::getTexture()
 {
-	return (CC3Texture*)_texObj;
+	return (CC3Texture*)m_pTexObj;
 }
 
 void CC3TextureFramebufferAttachment::setTexture( CC3Texture* texture )
@@ -239,15 +239,15 @@ void CC3TextureFramebufferAttachment::setTexture( CC3Texture* texture )
 
 bool CC3TextureFramebufferAttachment::shouldUseStrongReferenceToTexture()
 {
-	return _shouldUseStrongReferenceToTexture; 
+	return m_shouldUseStrongReferenceToTexture; 
 }
 
 void CC3TextureFramebufferAttachment::setShouldUseStrongReferenceToTexture( bool shouldUseStrongRef )
 {
-	if ( shouldUseStrongRef == _shouldUseStrongReferenceToTexture ) 
+	if ( shouldUseStrongRef == m_shouldUseStrongReferenceToTexture ) 
 		return;
 
-	_shouldUseStrongReferenceToTexture = shouldUseStrongRef;
+	m_shouldUseStrongReferenceToTexture = shouldUseStrongRef;
 
 	setTexObj( getTexture() );		// Update the reference type of the texture
 }
@@ -277,11 +277,11 @@ void CC3TextureFramebufferAttachment::setTexObj( CC3Texture* texture )
 	CC_SAFE_RETAIN( newTexObj );
 #else
     CC3Ref<CC3Texture> newTexObj = shouldUseStrongReferenceToTexture() ? texture : (CC3Texture*)CC3WeakRef<CC3Texture>( texture );
-    if ( newTexObj == _texObj )
+    if ( newTexObj == m_pTexObj )
         return;
     
-    CC_SAFE_RELEASE( _texObj );
-    _texObj = newTexObj;
+    CC_SAFE_RELEASE( m_pTexObj );
+    m_pTexObj = newTexObj;
     CC_SAFE_RETAIN( newTexObj );
 #endif
 }
@@ -303,12 +303,12 @@ GLenum CC3TextureFramebufferAttachment::getPixelFormat()
 
 void CC3TextureFramebufferAttachment::bindToFramebuffer( CC3GLFramebuffer* framebuffer, GLenum attachment )
 {
-	CC3OpenGL::sharedGL()->bindTexture2D( getTexture()->getTextureID(), _face, _mipmapLevel, framebuffer->getFramebufferID(), attachment );
+	CC3OpenGL::sharedGL()->bindTexture2D( getTexture()->getTextureID(), m_face, m_mipmapLevel, framebuffer->getFramebufferID(), attachment );
 }
 
 void CC3TextureFramebufferAttachment::unbindFromFramebuffer( CC3GLFramebuffer* framebuffer, GLenum attachment )
 {
-	CC3OpenGL::sharedGL()->bindTexture2D( 0, _face, _mipmapLevel, framebuffer->getFramebufferID(), attachment );
+	CC3OpenGL::sharedGL()->bindTexture2D( 0, m_face, m_mipmapLevel, framebuffer->getFramebufferID(), attachment );
 }
 
 /** Only update the texture if it has not already been given a name, and if the framebuffer does have a name. */
@@ -321,7 +321,7 @@ void CC3TextureFramebufferAttachment::deriveNameFromFramebuffer( CC3GLFramebuffe
 
 void CC3TextureFramebufferAttachment::replacePixels( const CC3Viewport& rect, ccColor4B* colorArray )
 {
-	getTexture()->replacePixels( rect, _face, colorArray );
+	getTexture()->replacePixels( rect, m_face, colorArray );
 }
 
 bool CC3TextureFramebufferAttachment::init()
@@ -370,9 +370,9 @@ CC3TextureFramebufferAttachment* CC3TextureFramebufferAttachment::attachmentWith
 void CC3TextureFramebufferAttachment::initWithTexture( CC3Texture* texture, GLenum face, GLint mipmapLevel )
 {
 	super::init();
-	_face = face;
-	_mipmapLevel = mipmapLevel;
-	_shouldUseStrongReferenceToTexture = true;
+	m_face = face;
+	m_mipmapLevel = mipmapLevel;
+	m_shouldUseStrongReferenceToTexture = true;
 	setTexture( texture );
 }
 
@@ -387,86 +387,86 @@ CC3TextureFramebufferAttachment* CC3TextureFramebufferAttachment::attachmentWith
 
 void CC3TextureFramebufferAttachment::setMipmapLevel( GLint miplevel )
 {
-	_mipmapLevel = miplevel;
+	m_mipmapLevel = miplevel;
 }
 
 GLint CC3TextureFramebufferAttachment::getMipmapLevel()
 {
-	return _mipmapLevel;
+	return m_mipmapLevel;
 }
 
 void CC3TextureFramebufferAttachment::setFace( GLenum face )
 {
-	_face = face;
+	m_face = face;
 }
 
 GLenum CC3TextureFramebufferAttachment::getFace()
 {
-	return _face;
+	return m_face;
 }
 
 CC3SurfaceSection::CC3SurfaceSection()
 {
-	_baseSurface = NULL;
+	m_pBaseSurface = NULL;
 }
 
 CC3SurfaceSection::~CC3SurfaceSection()
 {
-	CC_SAFE_RELEASE( _baseSurface );
+	CC_SAFE_RELEASE( m_pBaseSurface );
 }
 
 CC3RenderSurface* CC3SurfaceSection::getBaseSurface()
 {
-	return _baseSurface; 
+	return m_pBaseSurface; 
 }
 
 void CC3SurfaceSection::setBaseSurface( CC3RenderSurface* baseSurface )
 {
-	if ( baseSurface == _baseSurface ) 
+	if ( baseSurface == m_pBaseSurface ) 
 		return;
 	
-	CC_SAFE_RELEASE( _baseSurface );
-	_baseSurface = baseSurface;
+	CC_SAFE_RELEASE( m_pBaseSurface );
+	m_pBaseSurface = baseSurface;
 	CC_SAFE_RETAIN( baseSurface );
 	
-	if ( CC3IntSizeIsZero(_size) && _baseSurface ) 
-		setSize( _baseSurface->getSize() );
+	if ( CC3IntSizeIsZero(m_size) && m_pBaseSurface ) 
+		setSize( m_pBaseSurface->getSize() );
 	
 	checkCoverage();
 }
 
 CC3IntSize CC3SurfaceSection::getSize()
 {
-	return _size; 
+	return m_size; 
 }
 
 void CC3SurfaceSection::setSize( const CC3IntSize& size )
 {
-	_size = size;
+	m_size = size;
 	checkCoverage();
 }
 
 CC3IntPoint CC3SurfaceSection::getOrigin()
 {
-	return _origin; 
+	return m_origin; 
 }
 
 void CC3SurfaceSection::setOrigin( const CC3IntPoint& origin )
 {
-	_origin = origin;
+	m_origin = origin;
 	checkCoverage();
 }
 
 /** Checks if this surface section covers the entire base surface. */
 void CC3SurfaceSection::checkCoverage()
 {
-	_isFullCoverage = (CC3IntPointIsZero(getOrigin()) &&
-					   CC3IntSizesAreEqual(getSize(), _baseSurface->getSize()));
+	m_isFullCoverage = (CC3IntPointIsZero(getOrigin()) &&
+					   CC3IntSizesAreEqual(getSize(), m_pBaseSurface->getSize()));
 }
 
 bool CC3SurfaceSection::isFullCoverage()
 {
-	return _isFullCoverage && _baseSurface->isFullCoverage(); 
+	return m_isFullCoverage && m_pBaseSurface->isFullCoverage(); 
 }
 
 CC3Viewport CC3SurfaceSection::getViewport()
@@ -476,7 +476,7 @@ CC3Viewport CC3SurfaceSection::getViewport()
 
 bool CC3SurfaceSection::isOnScreen()
 {
-	return _baseSurface->isOnScreen(); 
+	return m_pBaseSurface->isOnScreen(); 
 }
 
 void CC3SurfaceSection::setIsOnScreen( bool isOnScreen )
@@ -486,7 +486,7 @@ void CC3SurfaceSection::setIsOnScreen( bool isOnScreen )
 
 CC3RenderSurfaceAttachment* CC3SurfaceSection::getColorAttachment()
 {
-	return _baseSurface->getColorAttachment(); 
+	return m_pBaseSurface->getColorAttachment(); 
 }
 
 void CC3SurfaceSection::setColorAttachment( CC3RenderSurfaceAttachment* colorAttachment )
@@ -496,7 +496,7 @@ void CC3SurfaceSection::setColorAttachment( CC3RenderSurfaceAttachment* colorAtt
 
 CC3RenderSurfaceAttachment* CC3SurfaceSection::getDepthAttachment()
 {
-	return _baseSurface->getDepthAttachment(); 
+	return m_pBaseSurface->getDepthAttachment(); 
 }
 
 void CC3SurfaceSection::setDepthAttachment( CC3RenderSurfaceAttachment* depthAttachment )
@@ -505,7 +505,7 @@ void CC3SurfaceSection::setDepthAttachment( CC3RenderSurfaceAttachment* depthAtt
 
 CC3RenderSurfaceAttachment* CC3SurfaceSection::getStencilAttachment()
 {
-	return _baseSurface->getStencilAttachment(); 
+	return m_pBaseSurface->getStencilAttachment(); 
 }
 
 void CC3SurfaceSection::setStencilAttachment( CC3RenderSurfaceAttachment* stencilAttachment )
@@ -517,28 +517,28 @@ void CC3SurfaceSection::setStencilAttachment( CC3RenderSurfaceAttachment* stenci
 void CC3SurfaceSection::clearColorContent()
 {
 	openScissors();
-	_baseSurface->clearColorContent();
+	m_pBaseSurface->clearColorContent();
 	closeScissors();
 }
 
 void CC3SurfaceSection::clearDepthContent()
 {
 	openScissors();
-	_baseSurface->clearDepthContent();
+	m_pBaseSurface->clearDepthContent();
 	closeScissors();
 }
 
 void CC3SurfaceSection::clearStencilContent()
 {
 	openScissors();
-	_baseSurface->clearStencilContent();
+	m_pBaseSurface->clearStencilContent();
 	closeScissors();
 }
 
 void CC3SurfaceSection::clearColorAndDepthContent()
 {
 	openScissors();
-	_baseSurface->clearColorAndDepthContent();
+	m_pBaseSurface->clearColorAndDepthContent();
 	closeScissors();
 }
 
@@ -558,33 +558,33 @@ void CC3SurfaceSection::closeScissors()
 
 void CC3SurfaceSection::readColorContentFrom( const CC3Viewport& rect, ccColor4B* colorArray )
 {
-	_baseSurface->readColorContentFrom( transformRect( rect ), colorArray );
+	m_pBaseSurface->readColorContentFrom( transformRect( rect ), colorArray );
 }
 
 void CC3SurfaceSection::replaceColorPixels( const CC3Viewport& rect, ccColor4B* colorArray )
 {
-	_baseSurface->replaceColorPixels( transformRect( rect ), colorArray );
+	m_pBaseSurface->replaceColorPixels( transformRect( rect ), colorArray );
 }
 
 /** Offsets the specified rectangle by the value of origin property. */
 CC3Viewport CC3SurfaceSection::transformRect( const CC3Viewport& rect )
 {
-	return CC3ViewportTranslate(rect, _origin); 
+	return CC3ViewportTranslate(rect, m_origin); 
 }
 
 void CC3SurfaceSection::activate()
 {
-	_baseSurface->activate();	
+	m_pBaseSurface->activate();	
 	openScissors();
 }
 
 void CC3SurfaceSection::initWithTag( GLuint tag, const std::string& aName )
 {
 	super::initWithTag( tag, aName );
-	_baseSurface = NULL;
-	_origin = kCC3IntPointZero;
-	_size = kCC3IntSizeZero;
-	_isFullCoverage = false;
+	m_pBaseSurface = NULL;
+	m_origin = kCC3IntPointZero;
+	m_size = kCC3IntSizeZero;
+	m_isFullCoverage = false;
 }
 
 void CC3SurfaceSection::initOnSurface( CC3RenderSurface* baseSurface )
@@ -604,99 +604,99 @@ CC3SurfaceSection* CC3SurfaceSection::surfaceOnSurface( CC3RenderSurface* baseSu
 
 CC3GLFramebuffer::CC3GLFramebuffer()
 {
-	_fbID = 0;
-	_size = CC3IntSizeMake(0, 0);
-	_isManagingGL = true;
-	_shouldBindGLAttachments = true;
-	_isOnScreen = false;
-	_colorAttachment = NULL;
-	_depthAttachment = NULL;
-	_stencilAttachment = NULL;
-	_glLabelWasSet = false;
+	m_frameBufferId = 0;
+	m_size = CC3IntSizeMake(0, 0);
+	m_isManagingGL = true;
+	m_shouldBindGLAttachments = true;
+	m_isOnScreen = false;
+	m_colorAttachment = NULL;
+	m_depthAttachment = NULL;
+	m_stencilAttachment = NULL;
+	m_glLabelWasSet = false;
 }
 
 CC3GLFramebuffer::~CC3GLFramebuffer()
 {
 	deleteGLFramebuffer();
-	CC_SAFE_RELEASE( _colorAttachment );
-	CC_SAFE_RELEASE( _depthAttachment );
-	CC_SAFE_RELEASE( _stencilAttachment );
+	CC_SAFE_RELEASE( m_colorAttachment );
+	CC_SAFE_RELEASE( m_depthAttachment );
+	CC_SAFE_RELEASE( m_stencilAttachment );
 }
 
 GLuint CC3GLFramebuffer::getFramebufferID()
 {
 	ensureGLFramebuffer();
-	return _fbID;
+	return m_frameBufferId;
 }
 
 void CC3GLFramebuffer::ensureGLFramebuffer()
 {
-	if (_isManagingGL && !_fbID) 
-		_fbID = CC3OpenGL::sharedGL()->generateFramebuffer();
+	if (m_isManagingGL && !m_frameBufferId) 
+		m_frameBufferId = CC3OpenGL::sharedGL()->generateFramebuffer();
 }
 
 void CC3GLFramebuffer::deleteGLFramebuffer()
 {
-	if (_isManagingGL && _fbID) 
-		CC3OpenGL::sharedGL()->deleteFramebuffer( _fbID );
-	_fbID = 0;
+	if (m_isManagingGL && m_frameBufferId) 
+		CC3OpenGL::sharedGL()->deleteFramebuffer( m_frameBufferId );
+	m_frameBufferId = 0;
 }
 
 bool CC3GLFramebuffer::shouldBindGLAttachments()
 {
-	return _shouldBindGLAttachments;
+	return m_shouldBindGLAttachments;
 }
 
 void CC3GLFramebuffer::setShouldBindGLAttachments( bool shouldBind )
 {
-	_shouldBindGLAttachments = shouldBind;
+	m_shouldBindGLAttachments = shouldBind;
 }
 
 void CC3GLFramebuffer::setName( const std::string& name )
 {
 	super::setName( name );
-	if ( !name.empty() && _fbID ) 
-		CC3OpenGL::sharedGL()->setFrameBufferDebugLabel( name.c_str(), _fbID );
+	if ( !name.empty() && m_frameBufferId ) 
+		CC3OpenGL::sharedGL()->setFrameBufferDebugLabel( name.c_str(), m_frameBufferId );
 
-	if ( _colorAttachment )
-		_colorAttachment->deriveNameFromFramebuffer( this, GL_COLOR_ATTACHMENT0 );
-	if ( _depthAttachment )
-		_depthAttachment->deriveNameFromFramebuffer( this, GL_DEPTH_ATTACHMENT );
-	if ( _stencilAttachment )
-		_stencilAttachment->deriveNameFromFramebuffer( this, GL_STENCIL_ATTACHMENT );
+	if ( m_colorAttachment )
+		m_colorAttachment->deriveNameFromFramebuffer( this, GL_COLOR_ATTACHMENT0 );
+	if ( m_depthAttachment )
+		m_depthAttachment->deriveNameFromFramebuffer( this, GL_DEPTH_ATTACHMENT );
+	if ( m_stencilAttachment )
+		m_stencilAttachment->deriveNameFromFramebuffer( this, GL_STENCIL_ATTACHMENT );
 }
 
 CC3IntSize CC3GLFramebuffer::getSize()
 {
-	return _size; 
+	return m_size; 
 }
 
 void CC3GLFramebuffer::setSize( const CC3IntSize& size )
 {
-	if ( CC3IntSizesAreEqual(size, _size) ) 
+	if ( CC3IntSizesAreEqual(size, m_size) ) 
 		return;
 	
-	_size = size;
+	m_size = size;
 
 	// Set the size of each attachment. After changing the size, we rebind each attachment because
 	// texture attachments require the texture to be the correct size at the time of binding, and
 	// changing the size of the texture itself is not enough.
-	if ( _colorAttachment )
+	if ( m_colorAttachment )
 	{
-		_colorAttachment->setSize( size );
-		bind( _colorAttachment, GL_COLOR_ATTACHMENT0 );
+		m_colorAttachment->setSize( size );
+		bind( m_colorAttachment, GL_COLOR_ATTACHMENT0 );
 	}
 	
-	if ( _depthAttachment )
+	if ( m_depthAttachment )
 	{
-		_depthAttachment->setSize( size );
-		bind( _depthAttachment, GL_DEPTH_ATTACHMENT );
+		m_depthAttachment->setSize( size );
+		bind( m_depthAttachment, GL_DEPTH_ATTACHMENT );
 	}
 
-	if ( _stencilAttachment )
+	if ( m_stencilAttachment )
 	{
-		_stencilAttachment->setSize( size );
-		bind( _stencilAttachment, GL_STENCIL_ATTACHMENT );
+		m_stencilAttachment->setSize( size );
+		bind( m_stencilAttachment, GL_STENCIL_ATTACHMENT );
 	}
 	
 	validate();
@@ -714,77 +714,77 @@ CC3Viewport CC3GLFramebuffer::getViewport()
 
 CC3FramebufferAttachment* CC3GLFramebuffer::getColorAttachment()
 {
-	return _colorAttachment; 
+	return m_colorAttachment; 
 }
 
 void CC3GLFramebuffer::setColorAttachment( CC3FramebufferAttachment* colorAttachment )
 {
-	if ( colorAttachment == _colorAttachment ) 
+	if ( colorAttachment == m_colorAttachment ) 
 		return;
 	
-	if ( _colorAttachment )
+	if ( m_colorAttachment )
 	{
-		unbind( _colorAttachment, GL_COLOR_ATTACHMENT0 );
-		_colorAttachment->release();
+		unbind( m_colorAttachment, GL_COLOR_ATTACHMENT0 );
+		m_colorAttachment->release();
 	}
 
-	_colorAttachment = colorAttachment;
+	m_colorAttachment = colorAttachment;
 	CC_SAFE_RETAIN( colorAttachment );
-	alignSizeOfAttachment( _colorAttachment );		// After attaching, as may change size of attachments.
-	bind( _colorAttachment, GL_COLOR_ATTACHMENT0 );
+	alignSizeOfAttachment( m_colorAttachment );		// After attaching, as may change size of attachments.
+	bind( m_colorAttachment, GL_COLOR_ATTACHMENT0 );
 	
 	validate();
 }
 
 CC3FramebufferAttachment* CC3GLFramebuffer::getDepthAttachment()
 {
-	return _depthAttachment; 
+	return m_depthAttachment; 
 }
 
 void CC3GLFramebuffer::setDepthAttachment( CC3FramebufferAttachment* depthAttachment )
 {
-	if ( depthAttachment == _depthAttachment ) 
+	if ( depthAttachment == m_depthAttachment ) 
 		return;
 	
-	if ( _depthAttachment )
+	if ( m_depthAttachment )
 	{
-		unbind( _depthAttachment, GL_DEPTH_ATTACHMENT );
-		_depthAttachment->release();
+		unbind( m_depthAttachment, GL_DEPTH_ATTACHMENT );
+		m_depthAttachment->release();
 	}
 
-	_depthAttachment = depthAttachment;
+	m_depthAttachment = depthAttachment;
 
 	CC_SAFE_RETAIN( depthAttachment );
-	alignSizeOfAttachment( _depthAttachment );		// After attaching, as may change size of attachments.
-	bind( _depthAttachment, GL_DEPTH_ATTACHMENT );
+	alignSizeOfAttachment( m_depthAttachment );		// After attaching, as may change size of attachments.
+	bind( m_depthAttachment, GL_DEPTH_ATTACHMENT );
 
 	// Check for combined depth and stencil buffer
-	if ( _depthAttachment && CC3DepthFormatIncludesStencil(_depthAttachment->getPixelFormat()) )
-		setStencilAttachment( _depthAttachment );
+	if ( m_depthAttachment && CC3DepthFormatIncludesStencil(m_depthAttachment->getPixelFormat()) )
+		setStencilAttachment( m_depthAttachment );
 	
 	validate();
 }
 
 CC3FramebufferAttachment* CC3GLFramebuffer::getStencilAttachment()
 {
-	return _stencilAttachment; 
+	return m_stencilAttachment; 
 }
 
 void CC3GLFramebuffer::setStencilAttachment( CC3FramebufferAttachment* stencilAttachment )
 {
-	if ( stencilAttachment == _stencilAttachment ) 
+	if ( stencilAttachment == m_stencilAttachment ) 
 		return;
 	
-	if ( _stencilAttachment )
+	if ( m_stencilAttachment )
 	{
-		unbind( _stencilAttachment, GL_STENCIL_ATTACHMENT );
-		_stencilAttachment->release();
+		unbind( m_stencilAttachment, GL_STENCIL_ATTACHMENT );
+		m_stencilAttachment->release();
 	}
 
-	_stencilAttachment = stencilAttachment;
+	m_stencilAttachment = stencilAttachment;
 	CC_SAFE_RETAIN ( stencilAttachment );
-	alignSizeOfAttachment( _stencilAttachment );		// After attaching, as may change size of attachments.
-	bind( _stencilAttachment, GL_STENCIL_ATTACHMENT );
+	alignSizeOfAttachment( m_stencilAttachment );		// After attaching, as may change size of attachments.
+	bind( m_stencilAttachment, GL_STENCIL_ATTACHMENT );
 
 	validate();
 }
@@ -860,7 +860,7 @@ void CC3GLFramebuffer::setDepthTexture( CC3Texture* depthTexture )
 void CC3GLFramebuffer::validate()
 {
 	// Validate only if this framebuffer has a size, and at least one attachment
-	if ( !(_colorAttachment || _depthAttachment || _stencilAttachment) ) 
+	if ( !(m_colorAttachment || m_depthAttachment || m_stencilAttachment) ) 
 		return;
 
 	if (CC3IntSizeIsZero(getSize())) 
@@ -877,20 +877,20 @@ bool CC3GLFramebuffer::init()
 
 bool CC3GLFramebuffer::isOnScreen()
 {
-	return _isOnScreen;
+	return m_isOnScreen;
 }
 
 void CC3GLFramebuffer::setIsOnScreen( bool bOnScreen )
 {
-	_isOnScreen = bOnScreen;
+	m_isOnScreen = bOnScreen;
 }
 
 /** Sets the GL debug label for the framebuffer, if required. */
 void CC3GLFramebuffer::checkGLDebugLabel()
 {
-	if (_fbID && !_glLabelWasSet) {
-		CC3OpenGL::sharedGL()->setFrameBufferDebugLabel( getName().c_str(), _fbID );
-		_glLabelWasSet = true;
+	if (m_frameBufferId && !m_glLabelWasSet) {
+		CC3OpenGL::sharedGL()->setFrameBufferDebugLabel( getName().c_str(), m_frameBufferId );
+		m_glLabelWasSet = true;
 	}
 }
 
@@ -938,7 +938,7 @@ void CC3GLFramebuffer::readColorContentFrom( const CC3Viewport& rect, ccColor4B*
 
 void CC3GLFramebuffer::replaceColorPixels( const CC3Viewport& rect, ccColor4B* colorArray )
 {
-	_colorAttachment->replacePixels( rect, colorArray );
+	m_colorAttachment->replacePixels( rect, colorArray );
 }
 
 void CC3GLFramebuffer::activate()
@@ -949,15 +949,15 @@ void CC3GLFramebuffer::activate()
 void CC3GLFramebuffer::initWithTag( GLuint tag, const std::string& name )
 {
 	super::initWithTag( tag, name );
-	_fbID = 0;
-	_size = CC3IntSizeMake(0, 0);
-	_isManagingGL = true;
-	_shouldBindGLAttachments = true;
-	_isOnScreen = false;
-	_colorAttachment = NULL;
-	_depthAttachment = NULL;
-	_stencilAttachment = NULL;
-	_glLabelWasSet = false;
+	m_frameBufferId = 0;
+	m_size = CC3IntSizeMake(0, 0);
+	m_isManagingGL = true;
+	m_shouldBindGLAttachments = true;
+	m_isOnScreen = false;
+	m_colorAttachment = NULL;
+	m_depthAttachment = NULL;
+	m_stencilAttachment = NULL;
+	m_glLabelWasSet = false;
 }
 
 CC3GLFramebuffer* CC3GLFramebuffer::surface()
@@ -1030,8 +1030,8 @@ CC3GLFramebuffer* CC3GLFramebuffer::colorTextureSurfaceWithPixelFormat( GLenum p
 void CC3GLFramebuffer::initWithFramebufferID( GLuint fbID )
 {
 	init();
-	_fbID = fbID;
-	_isManagingGL = false;
+	m_frameBufferId = fbID;
+	m_isManagingGL = false;
 }
 
 CC3GLFramebuffer* CC3GLFramebuffer::surfaceWithFramebufferID( GLuint fbID )
@@ -1045,31 +1045,31 @@ CC3GLFramebuffer* CC3GLFramebuffer::surfaceWithFramebufferID( GLuint fbID )
 
 CC3EnvironmentMapTexture::CC3EnvironmentMapTexture()
 {
-	_renderSurface = NULL;
+	m_pRenderSurface = NULL;
 }
 
 CC3EnvironmentMapTexture::~CC3EnvironmentMapTexture()
 {
-	CC_SAFE_RELEASE( _renderSurface );
+	CC_SAFE_RELEASE( m_pRenderSurface );
 }
 
 /** Set name of internal framebuffer. */
 void CC3EnvironmentMapTexture::setName( const std::string& name )
 {
 	super::setName( name );
-	if ( _renderSurface )
-		_renderSurface->setName( CC3String::stringWithFormat( (char*)"%s surface", name.c_str() ) );
+	if ( m_pRenderSurface )
+		m_pRenderSurface->setName( CC3String::stringWithFormat( (char*)"%s surface", name.c_str() ) );
 }
 
 // Clamp to between zero and six
 void CC3EnvironmentMapTexture::setNumberOfFacesPerSnapshot( GLfloat numberOfFacesPerSnapshot )
 {
-	_numberOfFacesPerSnapshot = CLAMP(numberOfFacesPerSnapshot, 0.0f, 6.0f);
+	m_numberOfFacesPerSnapshot = CLAMP(numberOfFacesPerSnapshot, 0.0f, 6.0f);
 }
 
 GLfloat CC3EnvironmentMapTexture::getNumberOfFacesPerSnapshot()
 {
-	return _numberOfFacesPerSnapshot;
+	return m_numberOfFacesPerSnapshot;
 }
 
 void CC3EnvironmentMapTexture::generateSnapshotOfScene( CC3Scene* scene, const CC3Vector& location )
@@ -1101,9 +1101,9 @@ void CC3EnvironmentMapTexture::generateSnapshotOfScene( CC3Scene* scene, const C
 		moveToNextFace();
 
 		// Bind the texture face to the framebuffer
-		CC3TextureFramebufferAttachment* fbAtt = (CC3TextureFramebufferAttachment*)_renderSurface->getColorAttachment();
-		fbAtt->setFace( _currentFace );
-		fbAtt->bindToFramebuffer( _renderSurface, GL_COLOR_ATTACHMENT0 );
+		CC3TextureFramebufferAttachment* fbAtt = (CC3TextureFramebufferAttachment*)m_pRenderSurface->getColorAttachment();
+		fbAtt->setFace( m_currentFace );
+		fbAtt->bindToFramebuffer( m_pRenderSurface, GL_COLOR_ATTACHMENT0 );
 		
 		// Point the camera towards the face
 		envMapCam->setForwardDirection( getCameraDirection() );
@@ -1118,7 +1118,7 @@ void CC3EnvironmentMapTexture::generateSnapshotOfScene( CC3Scene* scene, const C
 
 CC3GLFramebuffer* CC3EnvironmentMapTexture::getRenderSurface()
 {
-	return _renderSurface;
+	return m_pRenderSurface;
 }
 
 /** 
@@ -1129,7 +1129,7 @@ CC3GLFramebuffer* CC3EnvironmentMapTexture::getRenderSurface()
  */
 void CC3EnvironmentMapTexture::paintFace()
 {
-	CC3IntSize faceSize = _renderSurface->getSize();
+	CC3IntSize faceSize = m_pRenderSurface->getSize();
 	GLuint pixCnt = faceSize.width * faceSize.height;
 	ccColor4B* canvas = new ccColor4B[pixCnt];
 	ccColor4B faceColor = getFaceColor();
@@ -1137,7 +1137,7 @@ void CC3EnvironmentMapTexture::paintFace()
 	for (GLuint pixIdx = 0; pixIdx < pixCnt; pixIdx++) 
 		canvas[pixIdx] = faceColor;
 
-	_renderSurface->replaceColorPixels( CC3ViewportFromOriginAndSize(kCC3IntPointZero, faceSize), canvas );
+	m_pRenderSurface->replaceColorPixels( CC3ViewportFromOriginAndSize(kCC3IntPointZero, faceSize), canvas );
 
 	CC_SAFE_DELETE_ARRAY( canvas );
 }
@@ -1145,7 +1145,7 @@ void CC3EnvironmentMapTexture::paintFace()
 /** Returns the color to paint the current face, using the diagnostic paintFace method. */
 ccColor4B CC3EnvironmentMapTexture::getFaceColor()
 {
-	switch (_currentFace) 
+	switch (m_currentFace) 
 	{
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
 			return CCC4BFromCCC4F(kCCC4FRed);
@@ -1177,9 +1177,9 @@ ccColor4B CC3EnvironmentMapTexture::getFaceColor()
  */
 GLuint CC3EnvironmentMapTexture::getFacesToGenerate()
 {
-	_faceCount += _numberOfFacesPerSnapshot;
-	GLfloat facesToGenerate = _faceCount;		// Convert to int (rounding down)
-	_faceCount -= facesToGenerate;				// Reduce by number that will be done now
+	m_faceCount += m_numberOfFacesPerSnapshot;
+	GLfloat facesToGenerate = m_faceCount;		// Convert to int (rounding down)
+	m_faceCount -= facesToGenerate;				// Reduce by number that will be done now
 	return (GLuint)facesToGenerate;
 }
 
@@ -1192,19 +1192,19 @@ GLuint CC3EnvironmentMapTexture::getFacesToGenerate()
  */
 void CC3EnvironmentMapTexture::moveToNextFace()
 {
-	switch ( _currentFace ) 
+	switch ( m_currentFace ) 
 	{
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
-			_currentFace++;
+			m_currentFace++;
 			break;
 		case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
 		case GL_ZERO:
 		default:
-			_currentFace = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+			m_currentFace = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 			break;
 	}
 }
@@ -1212,7 +1212,7 @@ void CC3EnvironmentMapTexture::moveToNextFace()
 /** Returns the direction to point the camera in order to render the current cube-map face. */
 CC3Vector CC3EnvironmentMapTexture::getCameraDirection()
 {
-	switch (_currentFace) 
+	switch (m_currentFace) 
 	{
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
 			return CC3Vector::kCC3VectorUnitXPositive;
@@ -1236,7 +1236,7 @@ CC3Vector CC3EnvironmentMapTexture::getCameraDirection()
 /** Returns the direction to orient the top of the camera to render the current cube-map face. */
 CC3Vector CC3EnvironmentMapTexture::getUpDirection()
 {
-	switch (_currentFace) 
+	switch (m_currentFace) 
 	{
 		case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
 			return CC3Vector::kCC3VectorUnitYNegative;
@@ -1304,21 +1304,21 @@ void CC3EnvironmentMapTexture::initCubeWithSideLength( GLuint sideLength, GLenum
 {
 	super::initCubeWithSideLength( sideLength, colorFormat, colorType );
 
-	_faceCount = 0;
-	_numberOfFacesPerSnapshot = 1;
-	_currentFace = GL_ZERO;
-	_renderSurface = new CC3GLFramebuffer;	// retained
-	_renderSurface->init();
+	m_faceCount = 0;
+	m_numberOfFacesPerSnapshot = 1;
+	m_currentFace = GL_ZERO;
+	m_pRenderSurface = new CC3GLFramebuffer;	// retained
+	m_pRenderSurface->init();
 
 	// Create the texture attachment, based on this texture. Since this texture holds the rendering surface,
 	// it must be attached to the surface attachment with a weak reference, to avoid a retain cycle.
 	CC3TextureFramebufferAttachment* ta = CC3TextureFramebufferAttachment::attachmentWithTexture( this );
 	ta->setShouldUseStrongReferenceToTexture( false );
 
-	_renderSurface->setColorAttachment( ta ); 
-	_renderSurface->setDepthAttachment( depthAttachment );
-	_renderSurface->setSize( CC3IntSizeMake(sideLength, sideLength) );
-	_renderSurface->validate();
+	m_pRenderSurface->setColorAttachment( ta ); 
+	m_pRenderSurface->setDepthAttachment( depthAttachment );
+	m_pRenderSurface->setSize( CC3IntSizeMake(sideLength, sideLength) );
+	m_pRenderSurface->validate();
 }
 
 CC3EnvironmentMapTexture* CC3EnvironmentMapTexture::textureCubeWithSideLength( GLuint sideLength, GLenum colorFormat, GLenum colorType, 
@@ -1333,46 +1333,46 @@ CC3EnvironmentMapTexture* CC3EnvironmentMapTexture::textureCubeWithSideLength( G
 
 CC3SurfaceManager::CC3SurfaceManager()
 {
-	_resizeableSurfaces = NULL;
+	m_resizeableSurfaces = NULL;
 }
 
 CC3SurfaceManager::~CC3SurfaceManager()
 {
-	if ( _resizeableSurfaces )
-		_resizeableSurfaces->removeAllObjects();
+	if ( m_resizeableSurfaces )
+		m_resizeableSurfaces->removeAllObjects();
 
-	CC_SAFE_RELEASE( _resizeableSurfaces );
+	CC_SAFE_RELEASE( m_resizeableSurfaces );
 }
 
 void CC3SurfaceManager::addSurface( CC3RenderSurface* surface )
 {
-	if ( !surface || _resizeableSurfaces->containsObject( surface ) ) 
+	if ( !surface || m_resizeableSurfaces->containsObject( surface ) ) 
 		return;
 	
-	_resizeableSurfaces->addObject( surface );
+	m_resizeableSurfaces->addObject( surface );
 	alignSizeOfSurface( surface );
 }
 
 void CC3SurfaceManager::removeSurface( CC3RenderSurface* surface )
 {
 	if ( surface ) 
-		_resizeableSurfaces->removeObject( surface );
+		m_resizeableSurfaces->removeObject( surface );
 }
 
 CC3IntSize CC3SurfaceManager::getSize()
 {
-	return _size; 
+	return m_size; 
 }
 
 void CC3SurfaceManager::setSize( const CC3IntSize& size )
 {
-	if ( CC3IntSizesAreEqual(size, _size) ) 
+	if ( CC3IntSizesAreEqual(size, m_size) ) 
 		return;
 	
-	_size = size;
+	m_size = size;
 
 	CCObject* pObj;
-	CCARRAY_FOREACH (_resizeableSurfaces, pObj)
+	CCARRAY_FOREACH (m_resizeableSurfaces, pObj)
 	{
 		CC3RenderSurface* surface = (CC3RenderSurface*)pObj;
 		surface->setSize( size );
@@ -1400,9 +1400,9 @@ void CC3SurfaceManager::alignSizeOfSurface( CC3RenderSurface* aSurface )
 
 bool CC3SurfaceManager::init()
 {
-	_resizeableSurfaces = CCArray::create();		// retained
-	_resizeableSurfaces->retain();
-	_size = CC3IntSizeMake(0, 0);
+	m_resizeableSurfaces = CCArray::create();		// retained
+	m_resizeableSurfaces->retain();
+	m_size = CC3IntSizeMake(0, 0);
 
 	return true;
 }
@@ -1418,14 +1418,14 @@ CC3SurfaceManager* CC3SurfaceManager::surfaceManager()
 
 CC3SceneDrawingSurfaceManager::CC3SceneDrawingSurfaceManager()
 {
-	_viewSurface = NULL;
-	_pickingSurface = NULL;
+	m_viewSurface = NULL;
+	m_pickingSurface = NULL;
 }
 
 CC3SceneDrawingSurfaceManager::~CC3SceneDrawingSurfaceManager()
 {
-	CC_SAFE_RELEASE( _viewSurface );
-	CC_SAFE_RELEASE( _pickingSurface );
+	CC_SAFE_RELEASE( m_viewSurface );
+	CC_SAFE_RELEASE( m_pickingSurface );
 }
 
 CC3SceneDrawingSurfaceManager* CC3SceneDrawingSurfaceManager::surfaceManager()
@@ -1440,29 +1440,29 @@ CC3SceneDrawingSurfaceManager* CC3SceneDrawingSurfaceManager::surfaceManager()
 /** Lazily create a surface section on the renderingSurface from the CC3ViewSurfaceManager singleton. */
 CC3RenderSurface* CC3SceneDrawingSurfaceManager::getViewSurface()
 {
-	if ( !_viewSurface ) 
+	if ( !m_viewSurface ) 
 		setViewSurface( CC3SurfaceSection::surfaceOnSurface( CC3ViewSurfaceManager::sharedViewSurfaceManager()->getRenderingSurface() ) );
-	return _viewSurface;
+	return m_viewSurface;
 }
 
 void CC3SceneDrawingSurfaceManager::setViewSurface( CC3SurfaceSection* aSurface )
 {
-	if ( aSurface == _viewSurface )
+	if ( aSurface == m_viewSurface )
 		return;
 
-	if ( _viewSurface )
-		removeSurface( _viewSurface );
+	if ( m_viewSurface )
+		removeSurface( m_viewSurface );
 
-	CC_SAFE_RELEASE( _viewSurface );
-	_viewSurface = aSurface;
+	CC_SAFE_RELEASE( m_viewSurface );
+	m_viewSurface = aSurface;
 	CC_SAFE_RETAIN( aSurface );
 
-	addSurface( _viewSurface );
+	addSurface( m_viewSurface );
 }
 
 CC3IntPoint CC3SceneDrawingSurfaceManager::getViewSurfaceOrigin()
 {
-	return _viewSurface->getOrigin(); 
+	return m_viewSurface->getOrigin(); 
 }
 
 void CC3SceneDrawingSurfaceManager::setViewSurfaceOrigin( const CC3IntPoint& viewSurfaceOrigin )
@@ -1476,7 +1476,7 @@ void CC3SceneDrawingSurfaceManager::setViewSurfaceOrigin( const CC3IntPoint& vie
  */
 CC3RenderSurface* CC3SceneDrawingSurfaceManager::getPickingSurface()
 {
-	if ( !_pickingSurface ) 
+	if ( !m_pickingSurface ) 
 	{
 		CC3ViewSurfaceManager* viewSurfMgr = CC3ViewSurfaceManager::sharedViewSurfaceManager();
 		GLenum viewColorFormat = viewSurfMgr->getColorFormat();
@@ -1502,79 +1502,79 @@ CC3RenderSurface* CC3SceneDrawingSurfaceManager::getPickingSurface()
 		NSStringFromGLEnum(pickSurf.colorAttachment.pixelFormat),
 		NSStringFromGLEnum(pickSurf.depthAttachment.pixelFormat));*/
 	}
-	return _pickingSurface;
+	return m_pickingSurface;
 }
 
 void CC3SceneDrawingSurfaceManager::setPickingSurface( CC3RenderSurface* aSurface )
 {
-	if ( aSurface == _pickingSurface )
+	if ( aSurface == m_pickingSurface )
 		return;
 
-	if ( _pickingSurface )
-		removeSurface( _pickingSurface );
+	if ( m_pickingSurface )
+		removeSurface( m_pickingSurface );
 
-	CC_SAFE_RELEASE( _pickingSurface );
-	_pickingSurface = aSurface;
+	CC_SAFE_RELEASE( m_pickingSurface );
+	m_pickingSurface = aSurface;
 	CC_SAFE_RETAIN( aSurface );
 
-	addSurface( _pickingSurface );
+	addSurface( m_pickingSurface );
 }
 
 CC3ViewSurfaceManager::CC3ViewSurfaceManager()
 {
-	_viewSurface = NULL;
-	_multisampleSurface = NULL;
+	m_pViewSurface = NULL;
+	m_pMultisampleSurface = NULL;
 }
 
 CC3ViewSurfaceManager::~CC3ViewSurfaceManager()
 {
-	CC_SAFE_RELEASE( _viewSurface );
-	CC_SAFE_RELEASE( _multisampleSurface );
+	CC_SAFE_RELEASE( m_pViewSurface );
+	CC_SAFE_RELEASE( m_pMultisampleSurface );
 }
 
 CC3GLFramebuffer* CC3ViewSurfaceManager::getViewSurface()
 {
-	return _viewSurface; 
+	return m_pViewSurface; 
 }
 
 void CC3ViewSurfaceManager::setViewSurface( CC3GLFramebuffer* aSurface )
 {
-	if ( aSurface == _viewSurface )
+	if ( aSurface == m_pViewSurface )
 		return;
 
-	if ( _viewSurface )
-		removeSurface( _viewSurface );
+	if ( m_pViewSurface )
+		removeSurface( m_pViewSurface );
 
-	CC_SAFE_RELEASE( _viewSurface );
-	_viewSurface = aSurface;
+	CC_SAFE_RELEASE( m_pViewSurface );
+	m_pViewSurface = aSurface;
 	CC_SAFE_RETAIN( aSurface );
 
-	addSurface( _viewSurface );
+	addSurface( m_pViewSurface );
 }
 
 CC3GLFramebuffer* CC3ViewSurfaceManager::getMultisampleSurface()
 {
-	return _multisampleSurface; 
+	return m_pMultisampleSurface; 
 }
 
 void CC3ViewSurfaceManager::setMultisampleSurface( CC3GLFramebuffer* aSurface )
 {
-	if ( aSurface == _multisampleSurface )
+	if ( aSurface == m_pMultisampleSurface )
 		return;
 
-	if ( _multisampleSurface )
-		removeSurface( _multisampleSurface );
+	if ( m_pMultisampleSurface )
+		removeSurface( m_pMultisampleSurface );
 
-	CC_SAFE_RELEASE( _multisampleSurface );
-	_multisampleSurface = aSurface;
+	CC_SAFE_RELEASE( m_pMultisampleSurface );
+	m_pMultisampleSurface = aSurface;
 	CC_SAFE_RETAIN( aSurface );
 
-	addSurface( _multisampleSurface );
+	addSurface( m_pMultisampleSurface );
 }
 
 CC3GLFramebuffer* CC3ViewSurfaceManager::getRenderingSurface()
 {
-	return _multisampleSurface ? _multisampleSurface : _viewSurface;
+	return m_pMultisampleSurface ? m_pMultisampleSurface : m_pViewSurface;
 }
 
 bool CC3ViewSurfaceManager::shouldUseDedicatedPickingSurface()
@@ -1678,8 +1678,8 @@ void CC3ViewSurfaceManager::resolveMultisampling()
 	CC3OpenGL* gl = CC3OpenGL::sharedGL();
 	
 	// If it exists, resolve the multisample buffer into the screen buffer
-	if (_multisampleSurface)
-		gl->resolveMultisampleFramebuffer( _multisampleSurface->getFramebufferID(), _viewSurface->getFramebufferID() );
+	if (m_pMultisampleSurface)
+		gl->resolveMultisampleFramebuffer( m_pMultisampleSurface->getFramebufferID(), m_pViewSurface->getFramebufferID() );
 	
 	// Discard used buffers by assembling an array of framebuffer attachments to discard.
 	// If multisampling, discard multisampling color buffer.
@@ -1687,7 +1687,7 @@ void CC3ViewSurfaceManager::resolveMultisampling()
 	GLenum fbAtts[3];			// Make room for color, depth & stencil attachments
 	GLuint fbAttCount = 0;
 	CC3RenderSurface* rendSurf = getRenderingSurface();
-	if (_multisampleSurface) 
+	if (m_pMultisampleSurface) 
 		fbAtts[fbAttCount++] = GL_COLOR_ATTACHMENT0;
 	if (rendSurf->getDepthAttachment()) 
 		fbAtts[fbAttCount++] = GL_DEPTH_ATTACHMENT;
@@ -1696,7 +1696,7 @@ void CC3ViewSurfaceManager::resolveMultisampling()
 
 	gl->discard( fbAttCount, fbAtts, ((CC3GLFramebuffer*)rendSurf)->getFramebufferID() );
 	
-	((CC3GLRenderbuffer*)_viewSurface->getColorAttachment())->bind();
+	((CC3GLRenderbuffer*)m_pViewSurface->getColorAttachment())->bind();
 }
 
 void CC3ViewSurfaceManager::initFromView( CCEGLView* view )

@@ -155,10 +155,10 @@ public:
 	void						setShouldCacheFaces( bool shouldCache );
 	
 protected:
-	CC3SkinMeshNode*			_node;
-	CC3Vector*					_deformedVertexLocations;
-	bool						_deformedVertexLocationsAreRetained : 1;
-	bool						_deformedVertexLocationsAreDirty : 1;
+	CC3SkinMeshNode*			m_pNode;
+	CC3Vector*					m_deformedVertexLocations;
+	bool						m_deformedVertexLocationsAreRetained : 1;
+	bool						m_deformedVertexLocationsAreDirty : 1;
 };
 
 NS_COCOS3D_END

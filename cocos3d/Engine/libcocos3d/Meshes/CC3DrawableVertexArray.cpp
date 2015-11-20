@@ -44,32 +44,32 @@ CC3DrawableVertexArray::~CC3DrawableVertexArray()
 
 GLenum CC3DrawableVertexArray::getDrawingMode()
 {
-	return _drawingMode;
+	return m_drawingMode;
 }
 
 void CC3DrawableVertexArray::setDrawingMode( GLenum drawingMode )
 {
-	_drawingMode = drawingMode;
+	m_drawingMode = drawingMode;
 }
 
 GLuint CC3DrawableVertexArray::getStripCount()
 {
-	return _stripCount;
+	return m_stripCount;
 }
 
 void CC3DrawableVertexArray::setStripCount( GLuint count )
 {
-	_stripCount = count;
+	m_stripCount = count;
 }
 
 GLuint* CC3DrawableVertexArray::getStripLengths()
 {
-	return _stripLengths;
+	return m_stripLengths;
 }
 
 void CC3DrawableVertexArray::setStripLengths( GLuint* lengths )
 {
-	_stripLengths = lengths;
+	m_stripLengths = lengths;
 }
 
 // Template method that populates this instance from the specified other instance.
@@ -78,14 +78,14 @@ void CC3DrawableVertexArray::populateFrom( CC3DrawableVertexArray* another )
 {
 	super::populateFrom( another );
 
-	_drawingMode = another->getDrawingMode();
+	m_drawingMode = another->getDrawingMode();
 
 	// Allocate memory for strips, then copy them over
 	allocateStripLengths( another->getStripCount() );
 	GLuint* otherStripLengths = another->getStripLengths();
-	for( GLuint i = 0; i < _stripCount; i++ ) 
+	for( GLuint i = 0; i < m_stripCount; i++ ) 
 	{
-		_stripLengths[i] = otherStripLengths[i];
+		m_stripLengths[i] = otherStripLengths[i];
 	}
 }
 
@@ -100,14 +100,14 @@ CCObject* CC3DrawableVertexArray::copyWithZone( CCZone* zone )
 
 void CC3DrawableVertexArray::drawWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if (_stripCount) 
+	if (m_stripCount) 
 	{
 		// MARK_TRACE_HERE
 		//CCLOG("CC3DrawableVertexArray drawing %d strips", _stripCount);
 		GLuint startOfStrip = 0;
-		for (GLuint i = 0; i < _stripCount; i++) 
+		for (GLuint i = 0; i < m_stripCount; i++) 
 		{
-			GLuint stripLen = _stripLengths[i];
+			GLuint stripLen = m_stripLengths[i];
 			// MARK_TRACE_HERE
 			//CCLOG("CC3DrawableVertexArray drawing strip %d of %d starting at %d for length %d", i, _stripCount, startOfStrip, stripLen);
 			drawFrom( startOfStrip, stripLen, visitor );
@@ -116,7 +116,7 @@ void CC3DrawableVertexArray::drawWithVisitor( CC3NodeDrawingVisitor* visitor )
 	} 
 	else 
 	{
-		drawFrom( 0, _vertexCount, visitor );
+		drawFrom( 0, m_vertexCount, visitor );
 	}
 }
 
@@ -135,21 +135,21 @@ void CC3DrawableVertexArray::allocateStripLengths( GLuint sCount )
 	
 	if ( sCount ) 
 	{
-		_stripCount = sCount;
-		_stripLengths = (GLuint*)calloc(_stripCount, sizeof(GLuint));
-		_stripLengthsAreRetained = true;
+		m_stripCount = sCount;
+		m_stripLengths = (GLuint*)calloc(m_stripCount, sizeof(GLuint));
+		m_stripLengthsAreRetained = true;
 	}
 }
 
 void CC3DrawableVertexArray::deallocateStripLengths()
 {
-	if ( _stripLengthsAreRetained ) 
+	if ( m_stripLengthsAreRetained ) 
 	{
-		free(_stripLengths);
-		_stripLengthsAreRetained = false;
+		free(m_stripLengths);
+		m_stripLengthsAreRetained = false;
 	}
-	_stripLengths = NULL;
-	_stripCount = 0;
+	m_stripLengths = NULL;
+	m_stripCount = 0;
 }
 
 /** Converts the specified vertex count to a face count, based on the drawingMode property. */
@@ -205,18 +205,18 @@ GLuint CC3DrawableVertexArray::getVertexIndexCountFromFaceCount( GLuint fc )
  */
 GLuint CC3DrawableVertexArray::getFaceCount()
 {
-	if (_stripCount) 
+	if (m_stripCount) 
 	{
 		GLuint fCnt = 0;
-		for (GLuint i = 0; i < _stripCount; i++) 
+		for (GLuint i = 0; i < m_stripCount; i++) 
 		{
-			fCnt += getFaceCountFromVertexIndexCount(_stripLengths[i]);
+			fCnt += getFaceCountFromVertexIndexCount(m_stripLengths[i]);
 		}
 		return fCnt;
 	}
 	else 
 	{
-		return getFaceCountFromVertexIndexCount( _vertexCount );
+		return getFaceCountFromVertexIndexCount( m_vertexCount );
 	}
 }
 
@@ -228,7 +228,7 @@ GLuint CC3DrawableVertexArray::getFaceCount()
  */
 CC3FaceIndices CC3DrawableVertexArray::getFaceIndicesAt( GLuint faceIndex )
 {
-	if (_stripCount) 
+	if (m_stripCount) 
 	{
 		// Mesh is divided into strips. Find the strip that contains the face,
 		// by accumulating faces and element counts until we reach the strip
@@ -237,9 +237,9 @@ CC3FaceIndices CC3DrawableVertexArray::getFaceIndicesAt( GLuint faceIndex )
 		GLuint currStripStartFaceCnt = 0;
 		GLuint nextStripStartFaceCnt = 0;
 		GLuint stripStartVtxCnt = 0;
-		for (GLuint i = 0; i < _stripCount; i++) 
+		for (GLuint i = 0; i < m_stripCount; i++) 
 		{
-			GLuint stripLen = _stripLengths[i];
+			GLuint stripLen = m_stripLengths[i];
 			nextStripStartFaceCnt += getFaceCountFromVertexIndexCount( stripLen );
 			if (nextStripStartFaceCnt > faceIndex) 
 			{
@@ -258,7 +258,7 @@ CC3FaceIndices CC3DrawableVertexArray::getFaceIndicesAt( GLuint faceIndex )
 		return kCC3FaceIndicesZero;
 	} else {
 		// Mesh is monolithic. Simply extract the face from the vertices array.
-		return getFaceIndicesAt( faceIndex, _vertexCount );
+		return getFaceIndicesAt( faceIndex, m_vertexCount );
 	}
 }
 
@@ -269,7 +269,7 @@ CC3FaceIndices CC3DrawableVertexArray::getFaceIndicesAt( GLuint faceIndex )
 CC3FaceIndices CC3DrawableVertexArray::getFaceIndicesAt( GLuint faceIndex, GLuint stripLen )
 {
 	GLuint firstVtxIdx;			// The first index of the face.
-	switch ( _drawingMode ) 
+	switch ( m_drawingMode ) 
 	{
 		case GL_TRIANGLES:
 			firstVtxIdx = faceIndex * 3;
@@ -309,10 +309,10 @@ void CC3DrawableVertexArray::initWithTag( GLuint aTag, const std::string& aName 
 {
 	super::initWithTag( aTag, aName );
 	{
-		_drawingMode = GL_TRIANGLES;
-		_stripCount = 0;
-		_stripLengths = NULL;
-		_stripLengthsAreRetained = false;
+		m_drawingMode = GL_TRIANGLES;
+		m_stripCount = 0;
+		m_stripLengths = NULL;
+		m_stripLengthsAreRetained = false;
 	}
 }
 

@@ -234,14 +234,14 @@ public:
 	virtual CC3Vector			getScaleAtFrame( GLuint frameIndex );
 
 protected:
-	float*						_frameTimes;
-	CC3Vector*					_animatedLocations;
-	CC3Quaternion*				_animatedQuaternions;
-	CC3Vector*					_animatedScales;
-	bool						_frameTimesAreRetained : 1;
-	bool						_locationsAreRetained : 1;
-	bool						_quaternionsAreRetained : 1;
-	bool						_scalesAreRetained : 1;
+	float*						m_frameTimes;
+	CC3Vector*					m_animatedLocations;
+	CC3Quaternion*				m_animatedQuaternions;
+	CC3Vector*					m_animatedScales;
+	bool						m_frameTimesAreRetained : 1;
+	bool						m_locationsAreRetained : 1;
+	bool						m_quaternionsAreRetained : 1;
+	bool						m_scalesAreRetained : 1;
 };
 
 NS_COCOS3D_END

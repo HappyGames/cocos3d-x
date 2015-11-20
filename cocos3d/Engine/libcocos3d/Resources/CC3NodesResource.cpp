@@ -33,17 +33,17 @@ NS_COCOS3D_BEGIN
 
 CC3NodesResource::CC3NodesResource()
 {
-	_nodes = NULL;
+	m_nodes = NULL;
 }
 
 CC3NodesResource::~CC3NodesResource()
 {
-	CC_SAFE_RELEASE( _nodes );
+	CC_SAFE_RELEASE( m_nodes );
 }
 
 CCArray* CC3NodesResource::getNodes()
 {
-	return _nodes;
+	return m_nodes;
 }
 
 CC3Node* CC3NodesResource::getNodeMatching( CC3Node* node )
@@ -65,22 +65,22 @@ CC3Node* CC3NodesResource::getNodeMatching( CC3Node* node )
 
 void CC3NodesResource::addNode( CC3Node* node )
 {
-	_nodes->addObject( node ); 
+	m_nodes->addObject( node ); 
 }
 
 void CC3NodesResource::removeNode( CC3Node* node )
 {
-	_nodes->removeObject( node ); 
+	m_nodes->removeObject( node ); 
 }
 
 bool CC3NodesResource::init()
 {
 	if ( super::init() )
 	{
-		_nodes = CCArray::create();		// retained
-		_nodes->retain();
-		_expectsVerticallyFlippedTextures = defaultExpectsVerticallyFlippedTextures();
-		_shouldFreezeInanimateNodes = defaultShouldFreezeInanimateNodes();
+		m_nodes = CCArray::create();		// retained
+		m_nodes->retain();
+		m_expectsVerticallyFlippedTextures = defaultExpectsVerticallyFlippedTextures();
+		m_shouldFreezeInanimateNodes = defaultShouldFreezeInanimateNodes();
 
 		return true;
 	}
@@ -104,12 +104,12 @@ CC3NodesResource* CC3NodesResource::resourceFromFile( const std::string& aFilePa
 
 bool CC3NodesResource::expectsVerticallyFlippedTextures()
 {
-	return _expectsVerticallyFlippedTextures;
+	return m_expectsVerticallyFlippedTextures;
 }
 
 void CC3NodesResource::setExpectsVerticallyFlippedTextures( bool expects )
 {
-	_expectsVerticallyFlippedTextures = expects;
+	m_expectsVerticallyFlippedTextures = expects;
 }
 
 static bool _defaultExpectsVerticallyFlippedTextures = false;
@@ -138,12 +138,12 @@ void CC3NodesResource::setDefaultShouldFreezeInanimateNodes( bool shouldFreeze )
 
 bool CC3NodesResource::shouldFreezeInanimateNodes()
 {
-	return _shouldFreezeInanimateNodes;
+	return m_shouldFreezeInanimateNodes;
 }
 
 void CC3NodesResource::setShouldFreezeInanimateNodes( bool shouldFreeze )
 {
-	_shouldFreezeInanimateNodes = shouldFreeze;
+	m_shouldFreezeInanimateNodes = shouldFreeze;
 }
 
 CC3NodesResource* CC3NodesResource::resource()

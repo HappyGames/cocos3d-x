@@ -33,12 +33,12 @@ NS_COCOS3D_BEGIN
 
 CC3NodePickingVisitor::CC3NodePickingVisitor()
 {
-	_pickedNode = NULL;
+	m_pPickedNode = NULL;
 }
 
 CC3NodePickingVisitor::~CC3NodePickingVisitor()
 {
-	CC_SAFE_RELEASE( _pickedNode );
+	CC_SAFE_RELEASE( m_pPickedNode );
 }
 
 /** 
@@ -49,14 +49,14 @@ CC3NodePickingVisitor::~CC3NodePickingVisitor()
  */
 CC3Node* CC3NodePickingVisitor::getPickedNode()
 {
-	if ( _pickedNode )
+	if ( m_pPickedNode )
 	{
-		_pickedNode->retain();
-		_pickedNode->autorelease();
+		m_pPickedNode->retain();
+		m_pPickedNode->autorelease();
 	}
 
-	CC3Node* pn =  _pickedNode;
-	CC_SAFE_RELEASE_NULL( _pickedNode );
+	CC3Node* pn =  m_pPickedNode;
+	CC_SAFE_RELEASE_NULL( m_pPickedNode );
 
 	return pn;
 }
@@ -66,9 +66,9 @@ void CC3NodePickingVisitor::init()
 {
 	super::init();
 
-	_pickedNode = NULL;
-	_shouldDecorateNode = false;
-	_tagColorShift = 0;
+	m_pPickedNode = NULL;
+	m_shouldDecorateNode = false;
+	m_tagColorShift = 0;
 }
 
 /** Clears the render surface and the pickedNode property. */
@@ -101,9 +101,9 @@ void CC3NodePickingVisitor::close()
 	surface->readColorContentFrom( CC3ViewportMake(vpTouchPoint.x, vpTouchPoint.y, 1, 1), &pixColor );
 	
 	// Fetch the node whose tags is mapped from the pixel color
-	CC_SAFE_RELEASE( _pickedNode );
-	_pickedNode = getScene()->getNodeTagged( tagFromColor( pixColor ) );
-	CC_SAFE_RETAIN( _pickedNode );
+	CC_SAFE_RELEASE( m_pPickedNode );
+	m_pPickedNode = getScene()->getNodeTagged( tagFromColor( pixColor ) );
+	CC_SAFE_RETAIN( m_pPickedNode );
 
 	//LogTrace(@"%@ picked %@ from color %@ at position %@", self, _pickedNode,
 	//		 NSStringFromCCC4B(pixColor), NSStringFromCC3IntPoint(vpTouchPoint));
@@ -154,7 +154,7 @@ void CC3NodePickingVisitor::paintNode( CC3Node* aNode )
  */
 ccColor4B CC3NodePickingVisitor::colorFromNodeTag( GLuint tag )
 {
-	tag <<= _tagColorShift;
+	tag <<= m_tagColorShift;
 	GLuint mask = 255;
 	GLubyte r = (tag >> 16) & mask;
 	GLubyte g = (tag >> 8) & mask;
@@ -168,7 +168,7 @@ ccColor4B CC3NodePickingVisitor::colorFromNodeTag( GLuint tag )
  */
 GLuint CC3NodePickingVisitor::tagFromColor( const ccColor4B& color )
 {
-	return (((GLuint)color.r << 16) | ((GLuint)color.g << 8) | (GLuint)color.b) >> _tagColorShift;
+	return (((GLuint)color.r << 16) | ((GLuint)color.g << 8) | (GLuint)color.b) >> m_tagColorShift;
 }
 
 std::string CC3NodePickingVisitor::fullDescription()

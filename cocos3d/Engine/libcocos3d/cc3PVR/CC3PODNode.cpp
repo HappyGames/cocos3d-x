@@ -240,7 +240,7 @@ bool CC3PODNodeAnimation::isAnimatingScale()
 
 CC3Vector CC3PODNodeAnimation::getLocationAtFrame( GLuint frameIndex )
 {
-	frameIndex = MIN(frameIndex, _frameCount - 1);
+	frameIndex = MIN(frameIndex, m_frameCount - 1);
 	GLint currFrameOffset = _animatedLocationIndices
 								? _animatedLocationIndices[frameIndex]
 								: (frameIndex * kPODAnimationLocationStride);
@@ -249,7 +249,7 @@ CC3Vector CC3PODNodeAnimation::getLocationAtFrame( GLuint frameIndex )
 
 CC3Quaternion CC3PODNodeAnimation::getQuaternionAtFrame( GLuint frameIndex )
 {
-	frameIndex = MIN(frameIndex, _frameCount - 1);
+	frameIndex = MIN(frameIndex, m_frameCount - 1);
 	GLint currFrameOffset = _animatedQuaternionsIndices
 								? _animatedQuaternionsIndices[frameIndex]
 								: (frameIndex * kPODAnimationQuaternionStride);
@@ -258,7 +258,7 @@ CC3Quaternion CC3PODNodeAnimation::getQuaternionAtFrame( GLuint frameIndex )
 
 CC3Vector CC3PODNodeAnimation::getScaleAtFrame( GLuint frameIndex )
 {
-	frameIndex = MIN(frameIndex, _frameCount - 1);
+	frameIndex = MIN(frameIndex, m_frameCount - 1);
 	GLint currFrameOffset = _animatedScaleIndices
 								? _animatedScaleIndices[frameIndex]
 								: (frameIndex * kPODAnimationScaleStride);

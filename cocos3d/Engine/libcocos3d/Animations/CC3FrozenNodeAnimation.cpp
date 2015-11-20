@@ -41,10 +41,10 @@ void CC3FrozenNodeAnimation::initWithFrameCount( GLuint numFrames )
 {
     super::initWithFrameCount(1);
     {
-        _shouldInterpolate = false;
-        _location = CC3Vector::kCC3VectorNull;
-        _quaternion = CC3Quaternion::kCC3QuaternionNull;
-        _scale = CC3Vector::kCC3VectorNull;
+        m_shouldInterpolate = false;
+        m_location = CC3Vector::kCC3VectorNull;
+        m_quaternion = CC3Quaternion::kCC3QuaternionNull;
+        m_scale = CC3Vector::kCC3VectorNull;
     }
 }
 
@@ -74,39 +74,39 @@ CC3FrozenNodeAnimation* CC3FrozenNodeAnimation::animationFromNodeState( CC3Node*
 
 CC3Vector CC3FrozenNodeAnimation::getScale()
 {
-	return _scale;
+	return m_scale;
 }
 
 CC3Quaternion CC3FrozenNodeAnimation::getQuaternion()
 {
-	return _quaternion;
+	return m_quaternion;
 }
 
 CC3Vector CC3FrozenNodeAnimation::getLocation()
 {
-	return _location;
+	return m_location;
 }
 
 bool CC3FrozenNodeAnimation::isAnimatingLocation()
 {
-	return !_location.isNull(); 
+	return !m_location.isNull(); 
 }
 
 bool CC3FrozenNodeAnimation::isAnimatingQuaternion()
 {
-	return !_quaternion.isNull(); 
+	return !m_quaternion.isNull(); 
 }
 
 bool CC3FrozenNodeAnimation::isAnimatingScale()
 {
-	return !_scale.isNull(); 
+	return !m_scale.isNull(); 
 }
 
 void CC3FrozenNodeAnimation::populateFromNodeState( CC3Node* node )
 {
-	_location = node->getLocation();
-	_quaternion = node->getQuaternion();
-	_scale = node->getScale();
+	m_location = node->getLocation();
+	m_quaternion = node->getQuaternion();
+	m_scale = node->getScale();
 }
 
 void CC3FrozenNodeAnimation::establishFrameAt( float t, CC3NodeAnimationState* animState )

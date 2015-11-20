@@ -58,16 +58,16 @@ public:
 	void						init();
 
 public:
-	GLvoid*						_vertices;
-	GLuint						_vertexCount;
-	GLuint						_allocatedVertexCapacity;
-	GLuint						_vertexStride;
-	GLuint						_bufferID;
-	GLenum						_bufferUsage;
-	CCRange						_dirtyVertexRange;
-	bool						_shouldAllowVertexBuffering : 1;
-	bool						_shouldReleaseRedundantContent : 1;
-	bool						_wasVertexCapacityChanged : 1;		// Future use to track dirty vertex range
+	GLvoid*						m_vertices;
+	GLuint						m_vertexCount;
+	GLuint						m_allocatedVertexCapacity;
+	GLuint						m_vertexStride;
+	GLuint						m_bufferID;
+	GLenum						m_bufferUsage;
+	CCRange						m_dirtyVertexRange;
+	bool						m_shouldAllowVertexBuffering : 1;
+	bool						m_shouldReleaseRedundantContent : 1;
+	bool						m_wasVertexCapacityChanged : 1;		// Future use to track dirty vertex range
 };
 
 /**
@@ -700,21 +700,21 @@ protected:
 	virtual void				bindContent( GLvoid* pointer, GLint vaIdx, CC3NodeDrawingVisitor* visitor );
 
 protected:
-	GLuint						_elementOffset;
-	GLint						_elementSize;
-	GLenum						_elementType;
-	GLuint						_allocatedVertexCapacity;
+	GLuint						m_elementOffset;
+	GLint						m_elementSize;
+	GLenum						m_elementType;
+	GLuint						m_allocatedVertexCapacity;
 
-	GLvoid*						_vertices;
-	GLuint						_vertexCount;
-	GLuint						_bufferID;
-	GLenum						_bufferUsage;
-	GLenum						_semantic;
-	GLuint						_vertexStride : 8;
-	bool						_shouldNormalizeContent : 1;
-	bool						_shouldAllowVertexBuffering : 1;
-	bool						_shouldReleaseRedundantContent : 1;
-	bool						_wasVertexCapacityChanged : 1;		// Future use to track dirty vertex range
+	GLvoid*						m_vertices;
+	GLuint						m_vertexCount;
+	GLuint						m_bufferID;
+	GLenum						m_bufferUsage;
+	GLenum						m_semantic;
+	GLuint						m_vertexStride : 8;
+	bool						m_shouldNormalizeContent : 1;
+	bool						m_shouldAllowVertexBuffering : 1;
+	bool						m_shouldReleaseRedundantContent : 1;
+	bool						m_wasVertexCapacityChanged : 1;		// Future use to track dirty vertex range
 };
 
 NS_COCOS3D_END

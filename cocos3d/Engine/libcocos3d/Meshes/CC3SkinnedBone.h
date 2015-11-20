@@ -120,9 +120,9 @@ public:
 	void						nodeWasDestroyed( CC3Node* node );
 
 protected:
-	CC3SkinMeshNode*			_skinNode;
-	CC3Bone*					_bone;
-	CC3Matrix*					_transformMatrix;
+	CC3SkinMeshNode*			m_pSkinNode;
+	CC3Bone*					m_pBone;
+	CC3Matrix*					m_transformMatrix;
 };
 
 NS_COCOS3D_END

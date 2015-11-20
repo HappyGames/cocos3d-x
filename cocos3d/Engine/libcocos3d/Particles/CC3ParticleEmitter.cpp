@@ -33,177 +33,177 @@ NS_COCOS3D_BEGIN
 
 CC3ParticleEmitter::CC3ParticleEmitter()
 {
-	_particles = NULL;
-	_particleNavigator = NULL;
+	m_particles = NULL;
+	m_particleNavigator = NULL;
 }
 
 CC3ParticleEmitter::~CC3ParticleEmitter()
 {
-	CC_SAFE_RELEASE( _particles ); 
-	CC_SAFE_RELEASE( _particleNavigator );
+	CC_SAFE_RELEASE( m_particles ); 
+	CC_SAFE_RELEASE( m_particleNavigator );
 }
 
 CC3ParticleNavigator* CC3ParticleEmitter::getParticleNavigator()
 {
-	return _particleNavigator; 
+	return m_particleNavigator; 
 }
 
 void CC3ParticleEmitter::setParticleNavigator( CC3ParticleNavigator* aNavigator )
 {
-	if (aNavigator == _particleNavigator) 
+	if (aNavigator == m_particleNavigator) 
 		return;
 
-	if ( _particleNavigator )
-		_particleNavigator->setEmitter( NULL );
+	if ( m_particleNavigator )
+		m_particleNavigator->setEmitter( NULL );
 	
-	CC_SAFE_RELEASE( _particleNavigator );
-	_particleNavigator = aNavigator;
+	CC_SAFE_RELEASE( m_particleNavigator );
+	m_particleNavigator = aNavigator;
 	CC_SAFE_RETAIN( aNavigator );
 	
-	if ( _particleNavigator ) 
-		_particleNavigator->setEmitter( this );
+	if ( m_particleNavigator ) 
+		m_particleNavigator->setEmitter( this );
 }
 
 GLfloat CC3ParticleEmitter::getEmissionDuration()
 {
-	return _emissionDuration;
+	return m_emissionDuration;
 }
 
 void CC3ParticleEmitter::setEmissionDuration( GLfloat emiationDuration )
 {
-	_emissionDuration = emiationDuration;
+	m_emissionDuration = emiationDuration;
 }
 
 GLfloat CC3ParticleEmitter::getElapsedTime()
 {
-	return _elapsedTime;
+	return m_elapsedTime;
 }
 
 bool CC3ParticleEmitter::shouldRemoveOnFinish()
 {
-	return _shouldRemoveOnFinish;
+	return m_shouldRemoveOnFinish;
 }
 
 void CC3ParticleEmitter::setShouldRemoveOnFinish( bool removeOnFinish )
 {
-	_shouldRemoveOnFinish = removeOnFinish;
+	m_shouldRemoveOnFinish = removeOnFinish;
 }
 
 GLuint CC3ParticleEmitter::getMaximumParticleCapacity()
 {
-	return _maximumParticleCapacity;
+	return m_maximumParticleCapacity;
 }
 
 void CC3ParticleEmitter::setMaximumParticleCapacity( GLuint particleCapacity )
 {
-	_maximumParticleCapacity = particleCapacity;
+	m_maximumParticleCapacity = particleCapacity;
 }
 
 GLuint CC3ParticleEmitter::getCurrentParticleCapacity()
 {
-	return _currentParticleCapacity;
+	return m_currentParticleCapacity;
 }
 
 GLuint CC3ParticleEmitter::getParticleCapacityExpansionIncrement()
 {
-	return _particleCapacityExpansionIncrement;
+	return m_particleCapacityExpansionIncrement;
 }
 
 void CC3ParticleEmitter::setParticleCapacityExpansionIncrement( GLuint increment )
 {
-	_particleCapacityExpansionIncrement = increment;
+	m_particleCapacityExpansionIncrement = increment;
 }
 
 bool CC3ParticleEmitter::shouldUpdateParticlesBeforeTransform()
 {
-	return _shouldUpdateParticlesBeforeTransform;
+	return m_shouldUpdateParticlesBeforeTransform;
 }
 
 void CC3ParticleEmitter::setShouldUpdateParticlesBeforeTransform( bool shouldUpdate )
 {
-	_shouldUpdateParticlesBeforeTransform = shouldUpdate;
+	m_shouldUpdateParticlesBeforeTransform = shouldUpdate;
 }
 
 bool CC3ParticleEmitter::shouldUpdateParticlesAfterTransform()
 {
-	return _shouldUpdateParticlesAfterTransform;
+	return m_shouldUpdateParticlesAfterTransform;
 }
 
 void CC3ParticleEmitter::setShouldUpdateParticlesAfterTransform( bool shouldUpdate )
 {
-	_shouldUpdateParticlesAfterTransform = shouldUpdate;
+	m_shouldUpdateParticlesAfterTransform = shouldUpdate;
 }
 
 bool CC3ParticleEmitter::isEmitting()
 {
-	return _isEmitting;
+	return m_isEmitting;
 }
 
 CCArray* CC3ParticleEmitter::getParticles()
 {
-	return _particles;
+	return m_particles;
 }
 
 GLuint CC3ParticleEmitter::getParticleCount()
 {
-	return _particleCount;
+	return m_particleCount;
 }
 
 bool CC3ParticleEmitter::isFull()
 {
-	return (_particleCount == _maximumParticleCapacity); 
+	return (m_particleCount == m_maximumParticleCapacity); 
 }
 
 GLfloat CC3ParticleEmitter::getEmissionInterval()
 {
-	return _emissionInterval; 
+	return m_emissionInterval; 
 }
 
 void CC3ParticleEmitter::setEmissionInterval( GLfloat anInterval )
 {
-	_emissionInterval = MAX(anInterval, 0.0f);		// Force it to non-negative.
+	m_emissionInterval = MAX(anInterval, 0.0f);		// Force it to non-negative.
 }
 
 GLfloat CC3ParticleEmitter::getEmissionRate()
 {
 	// Handle special cases first
-	if (_emissionInterval <= 0.0f) 
+	if (m_emissionInterval <= 0.0f) 
 		return kCC3ParticleInfiniteEmissionRate;
-	if (_emissionInterval == kCC3ParticleInfiniteInterval) 
+	if (m_emissionInterval == kCC3ParticleInfiniteInterval) 
 		return 0.0f;
 
-	return 1.0f / _emissionInterval;
+	return 1.0f / m_emissionInterval;
 }
 
 void CC3ParticleEmitter::setEmissionRate( GLfloat aRatePerSecond )
 {
 	// Handle special cases first
 	if (aRatePerSecond <= 0.0f) 
-		_emissionInterval = kCC3ParticleInfiniteInterval;
+		m_emissionInterval = kCC3ParticleInfiniteInterval;
 	else if (aRatePerSecond == kCC3ParticleInfiniteEmissionRate)
-		_emissionInterval = 0.0f;
+		m_emissionInterval = 0.0f;
     else
-        _emissionInterval = 1.0f / aRatePerSecond;
+        m_emissionInterval = 1.0f / aRatePerSecond;
 }
 
 void CC3ParticleEmitter::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_particles = CCArray::create();		// retained
-	_particles->retain();
-	_particleNavigator = NULL;
-	_maximumParticleCapacity = kCC3ParticlesNoMax;
-	_particleCapacityExpansionIncrement = 100;
-	_particleCount = 0;
-	_emissionDuration = kCC3ParticleInfiniteInterval;
-	_emissionInterval = kCC3ParticleInfiniteInterval;
-	_elapsedTime = 0.0f;
-	_timeSinceEmission = 0.0f;
-	_shouldRemoveOnFinish = false;
-	_isEmitting = false;
-	_wasStarted = false;
-	_shouldUpdateParticlesBeforeTransform = true;
-	_shouldUpdateParticlesAfterTransform = false;
+	m_particles = CCArray::create();		// retained
+	m_particles->retain();
+	m_particleNavigator = NULL;
+	m_maximumParticleCapacity = kCC3ParticlesNoMax;
+	m_particleCapacityExpansionIncrement = 100;
+	m_particleCount = 0;
+	m_emissionDuration = kCC3ParticleInfiniteInterval;
+	m_emissionInterval = kCC3ParticleInfiniteInterval;
+	m_elapsedTime = 0.0f;
+	m_timeSinceEmission = 0.0f;
+	m_shouldRemoveOnFinish = false;
+	m_isEmitting = false;
+	m_wasStarted = false;
+	m_shouldUpdateParticlesBeforeTransform = true;
+	m_shouldUpdateParticlesAfterTransform = false;
 }
 
 /** Particles are not copied. */
@@ -215,13 +215,13 @@ void CC3ParticleEmitter::populateFrom( CC3ParticleEmitter* another )
 	setVertexContentTypes( another->getVertexContentTypes() );					// Use setter to establish a new mesh
 	setParticleNavigator( (CC3ParticleNavigator*)another->getParticleNavigator()->copy()->autorelease() );	// Use setter to retain & link back here
 	
-	_maximumParticleCapacity = another->getMaximumParticleCapacity();
-	_particleCapacityExpansionIncrement = another->getParticleCapacityExpansionIncrement();
-	_emissionInterval = another->getEmissionInterval();
-	_emissionDuration = another->getEmissionDuration();
-	_shouldRemoveOnFinish = another->shouldRemoveOnFinish();
-	_shouldUpdateParticlesBeforeTransform = another->shouldUpdateParticlesBeforeTransform();
-	_shouldUpdateParticlesAfterTransform = another->shouldUpdateParticlesAfterTransform();
+	m_maximumParticleCapacity = another->getMaximumParticleCapacity();
+	m_particleCapacityExpansionIncrement = another->getParticleCapacityExpansionIncrement();
+	m_emissionInterval = another->getEmissionInterval();
+	m_emissionDuration = another->getEmissionDuration();
+	m_shouldRemoveOnFinish = another->shouldRemoveOnFinish();
+	m_shouldUpdateParticlesBeforeTransform = another->shouldUpdateParticlesBeforeTransform();
+	m_shouldUpdateParticlesAfterTransform = another->shouldUpdateParticlesAfterTransform();
 }
 
 CCObject* CC3ParticleEmitter::copyWithZone( CCZone* zone )
@@ -260,7 +260,7 @@ void CC3ParticleEmitter::processUpdateBeforeTransform( CC3NodeUpdatingVisitor* v
 	// If configured to update particles before the node is transformed, do so here.
 	// For each particle, invoke the updateBeforeTransform: method. 
 	// Particles can also be removed during the update process.
-	if (_shouldUpdateParticlesBeforeTransform)
+	if (m_shouldUpdateParticlesBeforeTransform)
 		updateParticlesBeforeTransform( visitor );
 	
 	// If emitting and it's time to quit emitting, do so.
@@ -276,9 +276,9 @@ void CC3ParticleEmitter::processUpdateBeforeTransform( CC3NodeUpdatingVisitor* v
 void CC3ParticleEmitter::updateParticlesBeforeTransform( CC3NodeUpdatingVisitor* visitor )
 {
 	GLuint i = 0;
-	while ( i < _particleCount ) 
+	while ( i < m_particleCount ) 
 	{
-		CC3Particle* p = (CC3Particle*)_particles->objectAtIndex( i );
+		CC3Particle* p = (CC3Particle*)m_particles->objectAtIndex( i );
 		
 		p->updateBeforeTransform( visitor );
 		
@@ -297,10 +297,10 @@ void CC3ParticleEmitter::updateParticlesBeforeTransform( CC3NodeUpdatingVisitor*
 /** Template method that checks if its time to quit emitting. */
 void CC3ParticleEmitter::checkDuration( GLfloat dt )
 {
-	if ( _isEmitting && (_emissionDuration != kCC3ParticleInfiniteInterval) ) 
+	if ( m_isEmitting && (m_emissionDuration != kCC3ParticleInfiniteInterval) ) 
 	{
-		_elapsedTime += dt;
-		if (_elapsedTime >= _emissionDuration) 
+		m_elapsedTime += dt;
+		if (m_elapsedTime >= m_emissionDuration) 
 			pause();
 	}
 }
@@ -311,13 +311,13 @@ void CC3ParticleEmitter::checkDuration( GLfloat dt )
  */
 void CC3ParticleEmitter::checkEmission( GLfloat dt )
 {
-	if ( !_isEmitting ) 
+	if ( !m_isEmitting ) 
 		return;
 
-	_timeSinceEmission += dt;
-	while ( !isFull() && (_timeSinceEmission >= _emissionInterval) ) 
+	m_timeSinceEmission += dt;
+	while ( !isFull() && (m_timeSinceEmission >= m_emissionInterval) ) 
 	{
-		_timeSinceEmission -= _emissionInterval;
+		m_timeSinceEmission -= m_emissionInterval;
 		emitParticle();
 	}
 }
@@ -343,9 +343,9 @@ CC3Particle* CC3ParticleEmitter::emitParticle()
 /** Template method to create a new particle, or reuse an existing expired particle. */
 CC3Particle* CC3ParticleEmitter::acquireParticle()
 {
-	if ( _particleCount < _particles->count() ) 
+	if ( m_particleCount < m_particles->count() ) 
 	{
-		return (CC3Particle*)_particles->objectAtIndex( _particleCount );
+		return (CC3Particle*)m_particles->objectAtIndex( m_particleCount );
 	}
 		
 	return makeParticle();
@@ -374,7 +374,7 @@ bool CC3ParticleEmitter::emitParticle( CC3Particle* aParticle )
 	initializeParticle( aParticle );
 
 	if ( aParticle->isAlive() )
-		_particleNavigator->initializeParticle( aParticle );
+		m_particleNavigator->initializeParticle( aParticle );
 
 	if ( aParticle->isAlive() ) 
 		aParticle->initializeParticle();
@@ -393,12 +393,12 @@ bool CC3ParticleEmitter::ensureParticleCapacityFor( CC3Particle* aParticle )
 		return true;			// Reusing a particle so we're good
 
 	// If we are at current capacity, see if we can expand
-	if ( _particleCount == _currentParticleCapacity ) 
+	if ( m_particleCount == m_currentParticleCapacity ) 
 	{
-		GLuint origCap = _currentParticleCapacity;
-		_currentParticleCapacity = MIN(_currentParticleCapacity + _particleCapacityExpansionIncrement,
-									   _maximumParticleCapacity);
-		return (_currentParticleCapacity > origCap);	// Return if current capacity actually was increased
+		GLuint origCap = m_currentParticleCapacity;
+		m_currentParticleCapacity = MIN(m_currentParticleCapacity + m_particleCapacityExpansionIncrement,
+									   m_maximumParticleCapacity);
+		return (m_currentParticleCapacity > origCap);	// Return if current capacity actually was increased
 	}
 
 	return true;
@@ -414,7 +414,7 @@ void CC3ParticleEmitter::addNewParticle( CC3Particle* aParticle )
 	if ( aParticle->getEmitter() == this ) 
 		return;			// Reusing a particle so we're good
 
-	_particles->insertObject( aParticle, _particleCount );
+	m_particles->insertObject( aParticle, m_particleCount );
 	aParticle->setEmitter( this );
 }
 
@@ -437,7 +437,7 @@ void CC3ParticleEmitter::initializeParticle( CC3Particle* aParticle )
  */
 void CC3ParticleEmitter::acceptParticle( CC3Particle* aParticle )
 {
-	_particleCount++; 
+	m_particleCount++; 
 }
 
 /** Update the particles after the transform, and then update the mesh node.  */
@@ -446,7 +446,7 @@ void CC3ParticleEmitter::processUpdateAfterTransform( CC3NodeUpdatingVisitor* vi
 	// If configured to update particles after the node is transformed, do so here.
 	// For each particle, invoke the updateBeforeTransform: method. 
 	// Particles can also be removed during the update process.
-	if ( _shouldUpdateParticlesAfterTransform )
+	if ( m_shouldUpdateParticlesAfterTransform )
 		updateParticlesAfterTransform( visitor );
 	
 	// If emission has stopped and all the particles have been killed off and the
@@ -467,9 +467,9 @@ void CC3ParticleEmitter::processUpdateAfterTransform( CC3NodeUpdatingVisitor* vi
 void CC3ParticleEmitter::updateParticlesAfterTransform( CC3NodeUpdatingVisitor* visitor )
 {
 	GLuint i = 0;
-	while ( i < _particleCount ) 
+	while ( i < m_particleCount ) 
 	{
-		CC3Particle* p = (CC3Particle*)_particles->objectAtIndex( i );
+		CC3Particle* p = (CC3Particle*)m_particles->objectAtIndex( i );
 		p->updateAfterTransform( visitor );
 		
 		if (p->isAlive())
@@ -488,14 +488,14 @@ void CC3ParticleEmitter::updateParticlesAfterTransform( CC3NodeUpdatingVisitor* 
 /** If transitioning to emitting from not, mark as such and reset timers. */
 void CC3ParticleEmitter::setIsEmitting( bool shouldEmit )
 {
-	if ( !_isEmitting && shouldEmit ) 
+	if ( !m_isEmitting && shouldEmit ) 
 	{
-		_elapsedTime = 0.0;
-		_timeSinceEmission = 0.0;
-		_wasStarted = true;
+		m_elapsedTime = 0.0;
+		m_timeSinceEmission = 0.0;
+		m_wasStarted = true;
 	}
 
-	_isEmitting = shouldEmit;
+	m_isEmitting = shouldEmit;
 }
 
 void CC3ParticleEmitter::play()
@@ -512,24 +512,24 @@ void CC3ParticleEmitter::stop()
 {
 	pause();						// Stop emitting particles...
 	removeAllParticles();			// ...and kill those already emitted.
-	_particles->removeAllObjects();
+	m_particles->removeAllObjects();
 }
 
 bool CC3ParticleEmitter::isActive()
 {
-	return isEmitting() || _particleCount > 0; 
+	return isEmitting() || m_particleCount > 0; 
 }
 
 // Check for wasStarted needed so it doesn't indicate finished before it starts.
 // Otherwise, auto-remove would cause the emitter to be removed immediately.
 bool CC3ParticleEmitter::isFinished()
 {
-	return _wasStarted && !isActive(); 
+	return m_wasStarted && !isActive(); 
 }
 
 CC3Particle* CC3ParticleEmitter::getParticleAt( GLuint aParticleIndex )
 {
-	return (CC3Particle*)_particles->objectAtIndex( aParticleIndex );
+	return (CC3Particle*)m_particles->objectAtIndex( aParticleIndex );
 }
 
 CC3Particle* CC3ParticleEmitter::getParticleWithVertexAt( GLuint vtxIndex )
@@ -551,8 +551,8 @@ CC3Particle* CC3ParticleEmitter::getParticleWithFaceAt( GLuint faceIndex )
 
 void CC3ParticleEmitter::removeParticle( CC3Particle* aParticle )
 {
-	GLuint pIdx = (GLuint)_particles->indexOfObject( aParticle );
-	if ( pIdx < _particleCount )
+	GLuint pIdx = (GLuint)m_particles->indexOfObject( aParticle );
+	if ( pIdx < m_particleCount )
 	{
 		aParticle->setIsAlive( false );
 		finalizeAndRemoveParticle( aParticle, pIdx );
@@ -578,7 +578,7 @@ void CC3ParticleEmitter::finalizeAndRemoveParticle( CC3Particle* aParticle, GLui
  */
 void CC3ParticleEmitter::removeParticle( CC3Particle* aParticle, GLuint anIndex )
 {
-	_particleCount--;
+	m_particleCount--;
 }
 
 void CC3ParticleEmitter::removeAllParticles()
@@ -590,7 +590,7 @@ void CC3ParticleEmitter::removeAllParticles()
 		aParticle->setIsAlive( false );
 		aParticle->finalizeParticle();
 	}
-	_particleCount = 0;
+	m_particleCount = 0;
 }
 
 /** Overridden to test if active as well. If not active, there is nothing to intersect. */

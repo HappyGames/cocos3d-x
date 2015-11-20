@@ -77,8 +77,8 @@ public:
 	virtual void				initializeParticle( CC3Particle* aParticle );
 
 protected:
-	GLfloat						_minParticleLifeSpan;
-	GLfloat						_maxParticleLifeSpan;
+	GLfloat						m_minParticleLifeSpan;
+	GLfloat						m_maxParticleLifeSpan;
 };
 
 /**
@@ -294,12 +294,12 @@ public:
 	virtual void				initializeParticle( CC3Particle* aParticle );
 
 protected:
-	CC3Node*					_nozzle;
-	CC3Matrix*					_nozzleMatrix;
-	CCSize						_nozzleShape;
-	GLfloat						_minParticleSpeed;
-	GLfloat						_maxParticleSpeed;
-	bool						_shouldPrecalculateNozzleTangents : 1;
+	CC3Node*					m_pNozzle;
+	CC3Matrix*					m_nozzleMatrix;
+	CCSize						m_nozzleShape;
+	GLfloat						m_minParticleSpeed;
+	GLfloat						m_maxParticleSpeed;
+	bool						m_shouldPrecalculateNozzleTangents : 1;
 };
 
 NS_COCOS3D_END

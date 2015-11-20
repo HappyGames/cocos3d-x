@@ -33,19 +33,19 @@ NS_COCOS3D_BEGIN
 
 CC3Cache::CC3Cache()
 {
-	_objectsByName = NULL;
-	_typeName = "";
+	m_objectsByName = NULL;
+	m_typeName = "";
 //	_mutex = 0;
 }
 
 CC3Cache::~CC3Cache()
 {
-	CC_SAFE_RELEASE( _objectsByName );
+	CC_SAFE_RELEASE_NULL( m_objectsByName );
 }
 
 CC3Cacheable* CC3Cache::getObjectNamed( const std::string& name )
 {
-	CC3Cacheable* obj = (CC3Cacheable*)_objectsByName->objectForKey( name );
+	CC3Cacheable* obj = (CC3Cacheable*)m_objectsByName->objectForKey( name );
 	return obj;
 }
 //
@@ -56,7 +56,7 @@ void CC3Cache::removeObject( CC3Cacheable* obj )
 
 void CC3Cache::removeObjectNamed( const std::string& name )
 {
-	if ( name.empty() ) 
+	if ( name.empty() || m_objectsByName == NULL ) 
 		return;
 
 	// If this cache is the only thing referencing the object, it will be deallocated immediately,
@@ -66,10 +66,10 @@ void CC3Cache::removeObjectNamed( const std::string& name )
 	// is retained before removing it from the cache, and then autoreleased. In the case of a
 	// weakly-held value, we are careful to retain the NSValue wrapper, not the object itself,
 	// in case this removal is occurring from within the dealloc method of the object itself.
-	CC3Cacheable* obj = (CC3Cacheable*)_objectsByName->objectForKey( name );
+	CC3Cacheable* obj = (CC3Cacheable*)m_objectsByName->objectForKey( name );
 	CC_SAFE_RETAIN( obj );
 	
-	_objectsByName->removeObjectForKey( name );
+	m_objectsByName->removeObjectForKey( name );
 
 	if ( obj )
 		obj->autorelease();		// Let the object go once the loop is done
@@ -77,31 +77,31 @@ void CC3Cache::removeObjectNamed( const std::string& name )
 
 void CC3Cache::setIsWeak( bool weak )
 {
-	_isWeak = weak;
+	m_isWeak = weak;
 }
 
 bool CC3Cache::isWeak()
 {
-	return _isWeak;
+	return m_isWeak;
 }
 
 void CC3Cache::removeAllObjectsOfType( int type )
 {
-	CCArray* names = _objectsByName->allKeys();
+	CCArray* names = m_objectsByName->allKeys();
 	if ( names )
 	{
 		for (unsigned int i = 0; i < names->count(); i++)
 		{
 			const char* key = ((CCString*)names->objectAtIndex(i))->getCString();
-			_objectsByName->removeObjectForKey( key );
+			m_objectsByName->removeObjectForKey( key );
 		}
 	}
 }
 
 void CC3Cache::removeAllObjects()
 {
-	if ( _objectsByName )
-		_objectsByName->removeAllObjects();
+	if ( m_objectsByName )
+		m_objectsByName->removeAllObjects();
 }
 
 void CC3Cache::addObject( CC3Cacheable* obj )
@@ -122,9 +122,9 @@ void CC3Cache::addObject( CC3Cacheable* obj )
 			(unsigned long long)cached, objName.c_str() );
 	}
 
-	_objectsByName->setObject( obj, objName );
+	m_objectsByName->setObject( obj, objName );
 		
-	CC3_TRACE("[rez]Added obj[%s] to the %s cache.", objName.c_str(), _typeName.c_str());
+	CC3_TRACE("[rez]Added obj[%s] to the %s cache.", objName.c_str(), m_typeName.c_str());
 }
 
 CC3Cache* CC3Cache::weakCacheForType( const std::string& typeName )
@@ -148,21 +148,21 @@ CC3Cache* CC3Cache::strongCacheForType( const std::string& typeName )
 void CC3Cache::initAsWeakCache( bool _weak, const std::string& typeName )
 {
 	setIsWeak( _weak );
-	_typeName = typeName;
-	_objectsByName = CCDictionary::create();
+	m_typeName = typeName;
+	m_objectsByName = CCDictionary::create();
     
     // Initialize dict type as string
     CCObject* pObject = new CCObject;
-    _objectsByName->setObject( pObject,  "dummy_cc3_object" );
-    _objectsByName->removeAllObjects();
+    m_objectsByName->setObject( pObject,  "dummy_cc3_object" );
+    m_objectsByName->removeAllObjects();
     CC_SAFE_DELETE( pObject );
     
-	_objectsByName->retain();
+	m_objectsByName->retain();
 }
 
 CCDictionary* CC3Cache::getAllObjects()
 {
-	return _objectsByName;
+	return m_objectsByName;
 }
 
 NS_COCOS3D_END

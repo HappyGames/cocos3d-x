@@ -220,9 +220,9 @@ public:
 	CCObject*					copyWithZone( CCZone* zone );
 
 protected:
-	ccColor4F					_constantColor;
-	GLenum						_textureEnvironmentMode;
-	CC3DOT3RGB					_rgbNormalMap : 4;
+	ccColor4F					m_constantColor;
+	GLenum						m_textureEnvironmentMode;
+	CC3DOT3RGB					m_rgbNormalMap : 4;
 };
 
 
@@ -483,20 +483,20 @@ public:
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 protected:
-	GLenum						_combineRGBFunction;
-	GLenum						_rgbSource0;
-	GLenum						_rgbSource1;
-	GLenum						_rgbSource2;
-	GLenum						_rgbOperand0;
-	GLenum						_rgbOperand1;
-	GLenum						_rgbOperand2;
-	GLenum						_combineAlphaFunction;
-	GLenum						_alphaSource0;
-	GLenum						_alphaSource1;
-	GLenum						_alphaSource2;
-	GLenum						_alphaOperand0;
-	GLenum						_alphaOperand1;
-	GLenum						_alphaOperand2;
+	GLenum						m_combineRGBFunction;
+	GLenum						m_rgbSource0;
+	GLenum						m_rgbSource1;
+	GLenum						m_rgbSource2;
+	GLenum						m_rgbOperand0;
+	GLenum						m_rgbOperand1;
+	GLenum						m_rgbOperand2;
+	GLenum						m_combineAlphaFunction;
+	GLenum						m_alphaSource0;
+	GLenum						m_alphaSource1;
+	GLenum						m_alphaSource2;
+	GLenum						m_alphaOperand0;
+	GLenum						m_alphaOperand1;
+	GLenum						m_alphaOperand2;
 };
 
 /**

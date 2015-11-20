@@ -3231,23 +3231,23 @@ public:
 	CC3FaceIndices				getUncachedIndicesAt( GLuint faceIndex );
 
 protected:
-	CC3Mesh*					_mesh;
-	CC3FaceIndices*				_indices;
-	CC3Vector*					_centers;
-	CC3Vector*					_normals;
-	CC3Plane*					_planes;
-	CC3FaceNeighbours*			_neighbours;
-	bool						_shouldCacheFaces;
-	bool						_indicesAreRetained;
-	bool						_centersAreRetained;
-	bool						_normalsAreRetained;
-	bool						_planesAreRetained;
-	bool						_neighboursAreRetained;
-	bool						_indicesAreDirty;
-	bool						_centersAreDirty;
-	bool						_normalsAreDirty;
-	bool						_planesAreDirty;
-	bool						_neighboursAreDirty;
+	CC3Mesh*					m_pMesh;
+	CC3FaceIndices*				m_indices;
+	CC3Vector*					m_centers;
+	CC3Vector*					m_normals;
+	CC3Plane*					m_planes;
+	CC3FaceNeighbours*			m_neighbours;
+	bool						m_shouldCacheFaces;
+	bool						m_indicesAreRetained;
+	bool						m_centersAreRetained;
+	bool						m_normalsAreRetained;
+	bool						m_planesAreRetained;
+	bool						m_neighboursAreRetained;
+	bool						m_indicesAreDirty;
+	bool						m_centersAreDirty;
+	bool						m_normalsAreDirty;
+	bool						m_planesAreDirty;
+	bool						m_neighboursAreDirty;
 };
 
 

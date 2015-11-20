@@ -38,25 +38,25 @@ void CC3PointParticle::setEmitter( CC3ParticleEmitter* emitter )
 
 bool CC3PointParticle::isAlive()
 {
-	return _isAlive; 
+	return m_isAlive; 
 }
 
 void CC3PointParticle::setIsAlive( bool alive )
 {
-	_isAlive = alive; 
+	m_isAlive = alive; 
 }
 
 GLuint CC3PointParticle::getParticleIndex()
 {
-	return _particleIndex; 
+	return m_particleIndex; 
 }
 
 /** Overridden to update the underlying vertex indices array, if it exists. */
 void CC3PointParticle::setParticleIndex( GLuint anIndex )
 {
-	_particleIndex = anIndex;
-	if ( _emitter ) 
-		((CC3PointParticleEmitter*)_emitter)->setVertexIndex( anIndex, anIndex );	// Ignored if not using indexed drawing
+	m_particleIndex = anIndex;
+	if ( m_pEmitter ) 
+		((CC3PointParticleEmitter*)m_pEmitter)->setVertexIndex( anIndex, anIndex );	// Ignored if not using indexed drawing
 }
 
 GLuint CC3PointParticle::getVertexCount()
@@ -66,7 +66,7 @@ GLuint CC3PointParticle::getVertexCount()
 
 CCRange CC3PointParticle::getVertexRange()
 {
-	return CCRangeMake(_particleIndex, getVertexCount()); 
+	return CCRangeMake(m_particleIndex, getVertexCount()); 
 }
 
 GLuint CC3PointParticle::getVertexIndexCount()
@@ -76,77 +76,77 @@ GLuint CC3PointParticle::getVertexIndexCount()
 
 CCRange CC3PointParticle::getVertexIndexRange()
 {
-	return CCRangeMake(_particleIndex, getVertexIndexCount()); 
+	return CCRangeMake(m_particleIndex, getVertexIndexCount()); 
 }
 
 CC3Vector CC3PointParticle::getLocation()
 {
-	if ( _emitter )
-		return _emitter->getVertexLocationAt( _particleIndex ); 
+	if ( m_pEmitter )
+		return m_pEmitter->getVertexLocationAt( m_particleIndex ); 
 
 	return CC3Vector::kCC3VectorZero;
 }
 
 void CC3PointParticle::setLocation( const CC3Vector& aLocation )
 {
-	if ( _emitter )
-		_emitter->setVertexLocation( aLocation, _particleIndex ); 
+	if ( m_pEmitter )
+		m_pEmitter->setVertexLocation( aLocation, m_particleIndex ); 
 }
 
 CC3Vector CC3PointParticle::getNormal() 
 {
-	if ( _emitter )
-		return _emitter->getVertexNormalAt( _particleIndex ); 
+	if ( m_pEmitter )
+		return m_pEmitter->getVertexNormalAt( m_particleIndex ); 
 
 	return CC3Vector::kCC3VectorZero;
 }
 
 void CC3PointParticle::setNormal( const CC3Vector& aNormal )
 {
-	if ( _emitter )
-		_emitter->setVertexNormal( aNormal, _particleIndex ); 
+	if ( m_pEmitter )
+		m_pEmitter->setVertexNormal( aNormal, m_particleIndex ); 
 }
 
 bool CC3PointParticle::hasNormal()
 {
-	if ( _emitter ) 
-		return _emitter->getMesh()->hasVertexNormals();
+	if ( m_pEmitter ) 
+		return m_pEmitter->getMesh()->hasVertexNormals();
 
 	return false;
 }
 
 ccColor4F CC3PointParticle::getColor4F()
 {
-	return hasColor() ? _emitter->getVertexColor4FAt(_particleIndex) : super::getColor4F(); 
+	return hasColor() ? m_pEmitter->getVertexColor4FAt(m_particleIndex) : super::getColor4F(); 
 }
 
 void CC3PointParticle::setColor4F( const ccColor4F& aColor )
 {
-	if ( _emitter )
-		_emitter->setVertexColor4F( aColor, _particleIndex ); 
+	if ( m_pEmitter )
+		m_pEmitter->setVertexColor4F( aColor, m_particleIndex ); 
 }
 
 ccColor4B CC3PointParticle::getColor4B()
 {
-	return hasColor() ? _emitter->getVertexColor4BAt(_particleIndex) : super::getColor4B(); 
+	return hasColor() ? m_pEmitter->getVertexColor4BAt(m_particleIndex) : super::getColor4B(); 
 }
 
 void CC3PointParticle::setColor4B( const ccColor4B& aColor )
 {
-	if ( _emitter )
-		_emitter->setVertexColor4B( aColor, _particleIndex ); 
+	if ( m_pEmitter )
+		m_pEmitter->setVertexColor4B( aColor, m_particleIndex ); 
 }
 
 GLfloat CC3PointParticle::getSize()
 {
-	CC3PointParticleEmitter* pe = (CC3PointParticleEmitter*)_emitter;
-	return hasSize() ? pe->getParticleSizeAt(_particleIndex) : pe->getParticleSize();
+	CC3PointParticleEmitter* pe = (CC3PointParticleEmitter*)m_pEmitter;
+	return hasSize() ? pe->getParticleSizeAt(m_particleIndex) : pe->getParticleSize();
 }
 
 void CC3PointParticle::setSize( GLfloat aSize )
 {
-	CC3PointParticleEmitter* pe = (CC3PointParticleEmitter*)_emitter;
-	pe->setParticleSize( aSize, _particleIndex ); 
+	CC3PointParticleEmitter* pe = (CC3PointParticleEmitter*)m_pEmitter;
+	pe->setParticleSize( aSize, m_particleIndex ); 
 }
 
 bool CC3PointParticle::hasSize()
@@ -173,7 +173,7 @@ bool CC3PointParticle::init()
 {
 	if ( super::init() ) 
 	{
-		_particleIndex = 0;
+		m_particleIndex = 0;
 		return true;
 	}
 
@@ -183,7 +183,7 @@ bool CC3PointParticle::init()
 void CC3PointParticle::populateFrom( CC3PointParticle* another )
 {
 	super::populateFrom( another );
-	_particleIndex = another->getParticleIndex();
+	m_particleIndex = another->getParticleIndex();
 }
 
 CCObject* CC3PointParticle::copyWithZone( CCZone* zone )

@@ -33,27 +33,27 @@ NS_COCOS3D_BEGIN
 
 CC3NodeVisitor::CC3NodeVisitor()
 {
-	_currentNode = NULL;
-	_pendingRemovals = NULL;
-	_camera = NULL;
-	_startingNode = NULL;
+	m_pCurrentNode = NULL;
+	m_pendingRemovals = NULL;
+	m_pCamera = NULL;
+	m_pStartingNode = NULL;
 }
 
 CC3NodeVisitor::~CC3NodeVisitor()
 {
-	_startingNode = NULL;			// weak reference
-	_currentNode = NULL;			// weak reference
-	CC_SAFE_RELEASE( _camera );
-	CC_SAFE_RELEASE( _pendingRemovals );
+	m_pStartingNode = NULL;			// weak reference
+	m_pCurrentNode = NULL;			// weak reference
+	CC_SAFE_RELEASE( m_pCamera );
+	CC_SAFE_RELEASE( m_pendingRemovals );
 }
 
 void CC3NodeVisitor::init()
 {
-    _currentNode = NULL;
-    _startingNode = NULL;
-    _camera = NULL;
-    _pendingRemovals = NULL;
-    _shouldVisitChildren = true;
+    m_pCurrentNode = NULL;
+    m_pStartingNode = NULL;
+    m_pCamera = NULL;
+    m_pendingRemovals = NULL;
+    m_shouldVisitChildren = true;
 }
 
 CC3NodeVisitor* CC3NodeVisitor::visitor()
@@ -75,35 +75,35 @@ std::string CC3NodeVisitor::fullDescription()
 
 CC3PerformanceStatistics* CC3NodeVisitor::getPerformanceStatistics()
 { 
-	return _startingNode->getPerformanceStatistics(); 
+	return m_pStartingNode->getPerformanceStatistics(); 
 }
 
 CC3Camera* CC3NodeVisitor::getCamera() 
 {
-	if ( !_camera ) 
+	if ( !m_pCamera ) 
 		setCamera( getDefaultCamera() );
 
-	return _camera;
+	return m_pCamera;
 }
 
 void CC3NodeVisitor::setCamera( CC3Camera* camera )
 {
-	if ( camera == _camera )
+	if ( camera == m_pCamera )
 		return;
 
-	CC_SAFE_RELEASE(_camera);
-	_camera = camera;
+	CC_SAFE_RELEASE(m_pCamera);
+	m_pCamera = camera;
 	CC_SAFE_RETAIN(camera);
 }
 
 CC3Camera* CC3NodeVisitor::getDefaultCamera()
 { 
-	return _startingNode->getActiveCamera();
+	return m_pStartingNode->getActiveCamera();
 }
 
 CC3Node* CC3NodeVisitor::getCurrentNode()
 {
-	return _currentNode;
+	return m_pCurrentNode;
 }
 
 bool CC3NodeVisitor::visit( CC3Node* aNode )
@@ -113,23 +113,23 @@ bool CC3NodeVisitor::visit( CC3Node* aNode )
 	if ( !aNode ) 
 		return rslt;					// Must have a node to work on
 	
-	_currentNode = aNode;				// Make the node being processed available. Not retained.
+	m_pCurrentNode = aNode;				// Make the node being processed available. Not retained.
 
-	if ( !_startingNode ) 
+	if ( !m_pStartingNode ) 
 	{									// If this is the first node, start up
-		_startingNode = aNode;			// Not retained
+		m_pStartingNode = aNode;			// Not retained
 		open();							// Open the visitor
 	}
 
 	rslt = process( aNode );			// Process the node and its children recursively
 
-	if ( aNode == _startingNode )       // If we're back to the first node, finish up
+	if ( aNode == m_pStartingNode )       // If we're back to the first node, finish up
 	{		
 		close();						// Close the visitor
-		_startingNode = NULL;			// Not retained
+		m_pStartingNode = NULL;			// Not retained
 	}
 	
-	_currentNode = NULL;				// Done with this node now.
+	m_pCurrentNode = NULL;				// Done with this node now.
 
 	return rslt;
 }
@@ -143,7 +143,7 @@ bool CC3NodeVisitor::process( CC3Node* aNode )
 	processBeforeChildren( aNode );	// Heavy lifting before visiting children
 
 	// Recurse through the child nodes if required
-	if (_shouldVisitChildren) 
+	if (m_shouldVisitChildren) 
 		rslt = processChildrenOf( aNode );
 
 	processAfterChildren( aNode );		// Heavy lifting after visiting children
@@ -176,7 +176,7 @@ void CC3NodeVisitor::processBeforeChildren( CC3Node* aNode )
  */
 bool CC3NodeVisitor::processChildrenOf( CC3Node* aNode )
 {
-	CC3Node* currNode = _currentNode;		// Remember current node
+	CC3Node* currNode = m_pCurrentNode;		// Remember current node
 	
 	CCArray* children = aNode->getChildren();
 
@@ -188,13 +188,13 @@ bool CC3NodeVisitor::processChildrenOf( CC3Node* aNode )
 		{
 			if ( visit( child ) )
 			{
-				_currentNode = currNode;
+				m_pCurrentNode = currNode;
 				return true;
 			}
 		}
 	}
 	
-	_currentNode = currNode;				// Restore current node
+	m_pCurrentNode = currNode;				// Restore current node
 	return false;
 }
 
@@ -240,13 +240,13 @@ void CC3NodeVisitor::close()
 
 void CC3NodeVisitor::requestRemovalOf( CC3Node* aNode )
 {
-	if (!_pendingRemovals) 
+	if (!m_pendingRemovals) 
 	{
-		_pendingRemovals = CCArray::create();
-		_pendingRemovals->retain();
+		m_pendingRemovals = CCArray::create();
+		m_pendingRemovals->retain();
 	}
 
-	_pendingRemovals->addObject( aNode );
+	m_pendingRemovals->addObject( aNode );
 }
 
 CC3Node* CC3NodeVisitor::getStartingNode()
@@ -257,7 +257,7 @@ CC3Node* CC3NodeVisitor::getStartingNode()
 void CC3NodeVisitor::processRemovals()
 {
 	CCObject* pObject;
-	CCARRAY_FOREACH( _pendingRemovals, pObject )
+	CCARRAY_FOREACH( m_pendingRemovals, pObject )
 	{
 		CC3Node* child = (CC3Node*)pObject;
 		if ( child ) 
@@ -266,13 +266,13 @@ void CC3NodeVisitor::processRemovals()
 		}
 	}
 
-	if ( _pendingRemovals )
-		_pendingRemovals->removeAllObjects();
+	if ( m_pendingRemovals )
+		m_pendingRemovals->removeAllObjects();
 }
 
 CC3Scene* CC3NodeVisitor::getScene()
 { 
-	return _startingNode->getScene();
+	return m_pStartingNode->getScene();
 }
 
 CC3MeshNode* CC3NodeVisitor::getCurrentMeshNode()

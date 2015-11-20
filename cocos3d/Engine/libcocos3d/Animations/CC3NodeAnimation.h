@@ -224,8 +224,8 @@ public:
 	virtual CC3Vector			getScaleAtFrame( GLuint frameIndex );
 
 protected:
-	GLuint						_frameCount;
-	bool						_shouldInterpolate : 1;
+	GLuint						m_frameCount;
+	bool						m_shouldInterpolate : 1;
 };
 
 NS_COCOS3D_END

@@ -257,18 +257,18 @@ protected:
 	void						markDirty();
 
 protected:
-	CC3Node*					_node;
-	CC3NodeAnimation*			_animation;
-	float						_animationTime;
-	CC3Vector					_location;
-	CC3Quaternion				_quaternion;
-	CC3Vector					_scale;
-	GLuint						_trackID;
-	GLfloat						_blendingWeight;
-	bool						_isEnabled : 1;
-	bool						_isLocationAnimationEnabled : 1;
-	bool						_isQuaternionAnimationEnabled : 1;
-	bool						_isScaleAnimationEnabled : 1;
+	CC3Node*					m_pNode;
+	CC3NodeAnimation*			m_pAnimation;
+	float						m_fAnimationTime;
+	CC3Vector					m_location;
+	CC3Quaternion				m_quaternion;
+	CC3Vector					m_scale;
+	GLuint						m_trackID;
+	GLfloat						m_fBlendingWeight;
+	bool						m_isEnabled : 1;
+	bool						m_isLocationAnimationEnabled : 1;
+	bool						m_isQuaternionAnimationEnabled : 1;
+	bool						m_isScaleAnimationEnabled : 1;
 };
 
 NS_COCOS3D_END

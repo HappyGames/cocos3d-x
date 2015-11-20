@@ -126,9 +126,9 @@ public:
 	void						removeAllParticles();
 
 protected:
-	CCRange						_dirtyVertexRange;
-	CCRange						_dirtyVertexIndexRange;
-	bool						_wasVertexCapacityChanged;
+	CCRange						m_dirtyVertexRange;
+	CCRange						m_dirtyVertexIndexRange;
+	bool						m_wasVertexCapacityChanged;
 };
 
 NS_COCOS3D_END

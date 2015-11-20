@@ -33,49 +33,49 @@ NS_COCOS3D_BEGIN
 
 CC3MeshNode::CC3MeshNode()
 {	
-	_material = NULL;
-	_mesh = NULL;
-	_shaderContext = NULL;
-	_decalOffsetFactor = 0.f;
-	_decalOffsetUnits = 0.f;
-	_hasRigidSkeleton = false;
+	m_pMaterial = NULL;
+	m_pMesh = NULL;
+	m_pShaderContext = NULL;
+	m_decalOffsetFactor = 0.f;
+	m_decalOffsetUnits = 0.f;
+	m_hasRigidSkeleton = false;
 }
 
 CC3MeshNode::~CC3MeshNode()
 {
-	CC_SAFE_RELEASE( _material );
-	CC_SAFE_RELEASE( _mesh );
-	CC_SAFE_RELEASE( _shaderContext );
+	CC_SAFE_RELEASE( m_pMaterial );
+	CC_SAFE_RELEASE( m_pMesh );
+	CC_SAFE_RELEASE( m_pShaderContext );
 }
 
 void CC3MeshNode::setName( const std::string& aName )
 {
 	super::setName( aName );
 
-	if ( _mesh )
-		_mesh->deriveNameFrom( this );
+	if ( m_pMesh )
+		m_pMesh->deriveNameFrom( this );
 	
-	if ( _material )
-		_material->deriveNameFrom( this );		// Don't lazy init material yet
+	if ( m_pMaterial )
+		m_pMaterial->deriveNameFrom( this );		// Don't lazy init material yet
 }
 
 CC3Mesh* CC3MeshNode::getMesh()
 {
-	return _mesh;
+	return m_pMesh;
 }
 
 // Sets the name of the mesh if needed and marks the bounding volume as dirty.
 void CC3MeshNode::setMesh( CC3Mesh * aMesh )
 {
-	if (aMesh == _mesh) 
+	if (aMesh == m_pMesh) 
 		return;
 	
-	CC_SAFE_RELEASE( _mesh );
+	CC_SAFE_RELEASE( m_pMesh );
 	CC_SAFE_RETAIN( aMesh );
-	_mesh = aMesh;
+	m_pMesh = aMesh;
 	
-	if ( _mesh )
-		_mesh->deriveNameFrom( this );
+	if ( m_pMesh )
+		m_pMesh->deriveNameFrom( this );
 
 	alignMaterialAndMesh();
 	markBoundingVolumeDirty();
@@ -84,10 +84,10 @@ void CC3MeshNode::setMesh( CC3Mesh * aMesh )
 /** If a mesh does not yet exist, create it as a CC3Mesh with interleaved vertices. */
 CC3Mesh* CC3MeshNode::ensureMesh()
 {
-	if ( !_mesh ) 
+	if ( !m_pMesh ) 
 		setMesh( makeMesh() );
 
-	return _mesh;
+	return m_pMesh;
 }
 
 CC3Mesh* CC3MeshNode::makeMesh()
@@ -98,23 +98,23 @@ CC3Mesh* CC3MeshNode::makeMesh()
 /** Lazily init the material */
 CC3Material* CC3MeshNode::getMaterial()
 {
-	if ( !_material ) 
+	if ( !m_pMaterial ) 
 		setMaterial( makeMaterial() );
 
-	return _material;
+	return m_pMaterial;
 }
 
 void CC3MeshNode::setMaterial( CC3Material* aMaterial )
 {
-	if (aMaterial == _material) 
+	if (aMaterial == m_pMaterial) 
 		return;
 
-	CC_SAFE_RELEASE( _material );
+	CC_SAFE_RELEASE( m_pMaterial );
 	CC_SAFE_RETAIN( aMaterial );
-	_material = aMaterial;
+	m_pMaterial = aMaterial;
 
-	if ( _material )
-		_material->deriveNameFrom( this );
+	if ( m_pMaterial )
+		m_pMaterial->deriveNameFrom( this );
 	alignMaterialAndMesh();
 	alignTextureUnits();
 }
@@ -128,16 +128,16 @@ CC3Material* CC3MeshNode::makeMaterial()
 /** Align the material properties to those of the mesh. */
 void CC3MeshNode::alignMaterialAndMesh()
 {
-	if ( _mesh && !_mesh->hasVertexNormals() ) 
+	if ( m_pMesh && !m_pMesh->hasVertexNormals() ) 
 	{
-		if ( _material )
-			_material->setShouldUseLighting( false );	// Only if material exists
+		if ( m_pMaterial )
+			m_pMaterial->setShouldUseLighting( false );	// Only if material exists
 	}
 	
-	if ( _mesh && !_mesh->hasVertexTextureCoordinates() ) 
+	if ( m_pMesh && !m_pMesh->hasVertexTextureCoordinates() ) 
 	{
-		if ( _material )
-			_material->setTexture( NULL );	// Only if material exists
+		if ( m_pMaterial )
+			m_pMaterial->setTexture( NULL );	// Only if material exists
 	}
 }
 
@@ -155,16 +155,16 @@ CC3NodeBoundingVolume* CC3MeshNode::defaultBoundingVolume()
 
 bool CC3MeshNode::shouldDrawInClipSpace()
 {
-	return _shouldDrawInClipSpace; 
+	return m_shouldDrawInClipSpace; 
 }
 
 void CC3MeshNode::setShouldDrawInClipSpace( bool shouldClip )
 {
-	if (shouldClip != _shouldDrawInClipSpace) 
+	if (shouldClip != m_shouldDrawInClipSpace) 
 	{
-		_shouldDrawInClipSpace = shouldClip;
+		m_shouldDrawInClipSpace = shouldClip;
 		
-		if (_shouldDrawInClipSpace) 
+		if (m_shouldDrawInClipSpace) 
 		{
 			populateAsCenteredRectangleWithSize( CCSizeMake(2.0f, 2.0f) );
 			setShouldDisableDepthTest( true );
@@ -179,129 +179,129 @@ void CC3MeshNode::setShouldDrawInClipSpace( bool shouldClip )
 
 bool CC3MeshNode::shouldCullBackFaces()
 {
-	return _shouldCullBackFaces; 
+	return m_shouldCullBackFaces; 
 }
 
 void CC3MeshNode::setShouldCullBackFaces( bool shouldCull )
 {
-	_shouldCullBackFaces = shouldCull;
+	m_shouldCullBackFaces = shouldCull;
 	super::setShouldCullBackFaces( shouldCull );
 }
 
 bool CC3MeshNode::shouldCullFrontFaces()
 {
-	return _shouldCullFrontFaces; 
+	return m_shouldCullFrontFaces; 
 }
 
 void CC3MeshNode::setShouldCullFrontFaces( bool shouldCull )
 {
-	_shouldCullFrontFaces = shouldCull;
+	m_shouldCullFrontFaces = shouldCull;
 	super::setShouldCullFrontFaces( shouldCull );
 }
 
 bool CC3MeshNode::shouldUseClockwiseFrontFaceWinding()
 {
-	return _shouldUseClockwiseFrontFaceWinding; 
+	return m_shouldUseClockwiseFrontFaceWinding; 
 }
 
 void CC3MeshNode::setShouldUseClockwiseFrontFaceWinding( bool shouldWindCW )
 {
-	_shouldUseClockwiseFrontFaceWinding = shouldWindCW;
+	m_shouldUseClockwiseFrontFaceWinding = shouldWindCW;
 	super::setShouldUseClockwiseFrontFaceWinding( shouldWindCW );
 }
 
 bool CC3MeshNode::shouldUseSmoothShading()
 {
-	return _shouldUseSmoothShading; 
+	return m_shouldUseSmoothShading; 
 }
 
 void CC3MeshNode::setShouldUseSmoothShading( bool shouldSmooth )
 {
-	_shouldUseSmoothShading = shouldSmooth;
+	m_shouldUseSmoothShading = shouldSmooth;
 	super::setShouldUseSmoothShading( shouldSmooth );
 }
 
 bool CC3MeshNode::shouldCastShadowsWhenInvisible()
 {
-	return _shouldCastShadowsWhenInvisible; 
+	return m_shouldCastShadowsWhenInvisible; 
 }
 
 void CC3MeshNode::setShouldCastShadowsWhenInvisible( bool shouldCast )
 {
-	_shouldCastShadowsWhenInvisible = shouldCast;
+	m_shouldCastShadowsWhenInvisible = shouldCast;
 	super::setShouldCastShadowsWhenInvisible( shouldCast );
 }
 
 CC3NormalScaling CC3MeshNode::getNormalScalingMethod()
 {
-	return _normalScalingMethod; 
+	return m_normalScalingMethod; 
 }
 
 void CC3MeshNode::setNormalScalingMethod( CC3NormalScaling nsMethod )
 {
-	_normalScalingMethod = nsMethod;
+	m_normalScalingMethod = nsMethod;
 	super::setNormalScalingMethod( nsMethod );
 }
 
 bool CC3MeshNode::shouldDisableDepthMask()
 {
-	return _shouldDisableDepthMask; 
+	return m_shouldDisableDepthMask; 
 }
 
 void CC3MeshNode::setShouldDisableDepthMask( bool shouldDisable )
 {
-	_shouldDisableDepthMask = shouldDisable;
+	m_shouldDisableDepthMask = shouldDisable;
 	super::setShouldDisableDepthMask( shouldDisable );
 }
 
 bool CC3MeshNode::shouldDisableDepthTest()
 {
-	return _shouldDisableDepthTest; 
+	return m_shouldDisableDepthTest; 
 }
 
 void CC3MeshNode::setShouldDisableDepthTest( bool shouldDisable )
 {
-	_shouldDisableDepthTest = shouldDisable;
+	m_shouldDisableDepthTest = shouldDisable;
 	super::setShouldDisableDepthTest( shouldDisable );
 }
 
 GLenum CC3MeshNode::getDepthFunction()
 {
-	return (_depthFunction != GL_NEVER) ? _depthFunction : super::getDepthFunction(); 
+	return (m_depthFunction != GL_NEVER) ? m_depthFunction : super::getDepthFunction(); 
 }
 
 void CC3MeshNode::setDepthFunction( GLenum depthFunc )
 {
-	_depthFunction = depthFunc;
+	m_depthFunction = depthFunc;
 	super::setDepthFunction( depthFunc );
 }
 
 GLfloat CC3MeshNode::getDecalOffsetFactor()
 {
-	return _decalOffsetFactor ? _decalOffsetFactor : super::getDecalOffsetFactor(); 
+	return m_decalOffsetFactor ? m_decalOffsetFactor : super::getDecalOffsetFactor(); 
 }
 
 void CC3MeshNode::setDecalOffsetFactor( GLfloat factor )
 {
-	_decalOffsetFactor = factor;
+	m_decalOffsetFactor = factor;
 	super::setDecalOffsetFactor( factor );
 }
 
 GLfloat CC3MeshNode::getDecalOffsetUnits()
 {
-	return _decalOffsetUnits ? _decalOffsetUnits : super::getDecalOffsetUnits(); 
+	return m_decalOffsetUnits ? m_decalOffsetUnits : super::getDecalOffsetUnits(); 
 }
 
 void CC3MeshNode::setDecalOffsetUnits( GLfloat units )
 {
-	_decalOffsetUnits = units;
+	m_decalOffsetUnits = units;
 	super::setDecalOffsetUnits( units );
 }
 
 
 bool CC3MeshNode::shouldUseLighting()
 {
-	return _material ? _material->shouldUseLighting() : false; 
+	return m_pMaterial ? m_pMaterial->shouldUseLighting() : false; 
 }
 
 void CC3MeshNode::setShouldUseLighting( bool useLighting )
@@ -312,12 +312,12 @@ void CC3MeshNode::setShouldUseLighting( bool useLighting )
 
 bool CC3MeshNode::shouldUseLightProbes()
 {
-	return _shouldUseLightProbes; 
+	return m_shouldUseLightProbes; 
 }
 
 void CC3MeshNode::setShouldUseLightProbes( bool shouldUse )
 {
-	_shouldUseLightProbes = shouldUse;
+	m_shouldUseLightProbes = shouldUse;
 	super::setShouldUseLightProbes( shouldUse );	// pass along to any children
 }
 
@@ -389,8 +389,8 @@ void CC3MeshNode::setReflectivity( GLfloat reflectivity )
 
 CC3Vector4 CC3MeshNode::getGlobalLightPosition()
 {
-	return (_material && _material->hasBumpMap())
-				? getGlobalTransformMatrix()->transformHomogeneousVector( CC3Vector4().fromDirection(_material->getLightDirection()) )
+	return (m_pMaterial && m_pMaterial->hasBumpMap())
+				? getGlobalTransformMatrix()->transformHomogeneousVector( CC3Vector4().fromDirection(m_pMaterial->getLightDirection()) )
 				: super::getGlobalLightPosition();
 }
 
@@ -403,20 +403,20 @@ void CC3MeshNode::setGlobalLightPosition( const CC3Vector4& aPosition )
 
 CC3ShaderContext* CC3MeshNode::getShaderContext()
 {
-	if ( !_shaderContext ) 
-		_shaderContext = new CC3ShaderContext;		// retained - don't use setter
+	if ( !m_pShaderContext ) 
+		m_pShaderContext = new CC3ShaderContext;		// retained - don't use setter
 
-	return _shaderContext;
+	return m_pShaderContext;
 }
 
 // Set shader context if not the same, and pass along to descendants
 void CC3MeshNode::setShaderContext( CC3ShaderContext* shaderContext )
 {
-	if (shaderContext == _shaderContext) 
+	if (shaderContext == m_pShaderContext) 
 		return;
 
-	CC_SAFE_RELEASE( _shaderContext );
-	_shaderContext = shaderContext;
+	CC_SAFE_RELEASE( m_pShaderContext );
+	m_pShaderContext = shaderContext;
 	CC_SAFE_RETAIN( shaderContext );
 
 	super::setShaderContext( shaderContext );	// pass along to any children
@@ -471,10 +471,10 @@ void CC3MeshNode::setColor( const ccColor3B& color )
 {
 	getMaterial()->setColor( color );
 
-	if (_shouldApplyOpacityAndColorToMeshContent) 
+	if (m_shouldApplyOpacityAndColorToMeshContent) 
 	{
-		if ( _mesh )
-			_mesh->setColor( color );	// for meshes with colored vertices
+		if ( m_pMesh )
+			m_pMesh->setColor( color );	// for meshes with colored vertices
 	}
 
 	super::setColor( color );	// pass along to any children
@@ -488,8 +488,8 @@ CCOpacity CC3MeshNode::getOpacity()
 void CC3MeshNode::setOpacity( CCOpacity opacity )
 {
 	getMaterial()->setOpacity( opacity );
-	if (_shouldApplyOpacityAndColorToMeshContent) 
-		_mesh->setOpacity( opacity );	// for meshes with colored vertices
+	if (m_shouldApplyOpacityAndColorToMeshContent) 
+		m_pMesh->setOpacity( opacity );	// for meshes with colored vertices
 
 	super::setOpacity( opacity );	// pass along to any children
 }
@@ -540,45 +540,45 @@ void CC3MeshNode::setShouldDrawLowAlpha( bool shouldDraw )
 
 bool CC3MeshNode::shouldApplyOpacityAndColorToMeshContent()
 {
-	return _shouldApplyOpacityAndColorToMeshContent; 
+	return m_shouldApplyOpacityAndColorToMeshContent; 
 }
 
 void CC3MeshNode::setShouldApplyOpacityAndColorToMeshContent( bool shouldApply )
 {
-	_shouldApplyOpacityAndColorToMeshContent = shouldApply;
+	m_shouldApplyOpacityAndColorToMeshContent = shouldApply;
 	super::setShouldApplyOpacityAndColorToMeshContent( shouldApply );
 }
 
 GLfloat CC3MeshNode::getLineWidth()
 {
-	return _lineWidth; 
+	return m_lineWidth; 
 }
 
 void CC3MeshNode::setLineWidth( GLfloat aLineWidth )
 {
-	_lineWidth = aLineWidth;
+	m_lineWidth = aLineWidth;
 	super::setLineWidth( aLineWidth );
 }
 
 bool CC3MeshNode::shouldSmoothLines()
 {
-	return _shouldSmoothLines; 
+	return m_shouldSmoothLines; 
 }
 
 void CC3MeshNode::setShouldSmoothLines( bool shouldSmooth )
 {
-	_shouldSmoothLines = shouldSmooth;
+	m_shouldSmoothLines = shouldSmooth;
 	super::setShouldSmoothLines( shouldSmooth );
 }
 
 GLenum CC3MeshNode::getLineSmoothingHint()
 {
-	return _lineSmoothingHint; 
+	return m_lineSmoothingHint; 
 }
 
 void CC3MeshNode::setLineSmoothingHint( GLenum aHint )
 {
-	_lineSmoothingHint = aHint;
+	m_lineSmoothingHint = aHint;
 	super::setLineSmoothingHint( aHint );
 }
 
@@ -602,8 +602,8 @@ void CC3MeshNode::addTexture( CC3Texture* aTexture )
 
 void CC3MeshNode::removeAllTextures()
 {
-	if ( _material )
-		_material->removeAllTextures(); 
+	if ( m_pMaterial )
+		m_pMaterial->removeAllTextures(); 
 }
 
 void CC3MeshNode::setTexture( CC3Texture* aTexture, GLuint texUnit )
@@ -614,89 +614,89 @@ void CC3MeshNode::setTexture( CC3Texture* aTexture, GLuint texUnit )
 
 bool CC3MeshNode::expectsVerticallyFlippedTextures()
 {
-	return _mesh->expectsVerticallyFlippedTextures(); 
+	return m_pMesh->expectsVerticallyFlippedTextures(); 
 }
 
 void CC3MeshNode::setExpectsVerticallyFlippedTextures( bool expectsFlipped )
 {
-	_mesh->setExpectsVerticallyFlippedTextures( expectsFlipped );
+	m_pMesh->setExpectsVerticallyFlippedTextures( expectsFlipped );
 	super::setExpectsVerticallyFlippedTextures( expectsFlipped );
 }
 
 bool CC3MeshNode::expectsVerticallyFlippedTextureInTextureUnit( GLuint texUnit )
 {
-	if ( _mesh )
-		return _mesh->expectsVerticallyFlippedTextureInTextureUnit( texUnit );
+	if ( m_pMesh )
+		return m_pMesh->expectsVerticallyFlippedTextureInTextureUnit( texUnit );
 
 	return false;
 }
 
 void CC3MeshNode::expectsVerticallyFlippedTexture( bool expectsFlipped, GLuint texUnit )
 {
-	_mesh->setExpectsVerticallyFlippedTexture( expectsFlipped, texUnit );
+	m_pMesh->setExpectsVerticallyFlippedTexture( expectsFlipped, texUnit );
 }
 
 void CC3MeshNode::flipVerticallyTextureUnit( GLuint texUnit )
 {
-	_mesh->flipVerticallyTextureUnit( texUnit ); 
+	m_pMesh->flipVerticallyTextureUnit( texUnit ); 
 }
 
 void CC3MeshNode::flipTexturesVertically()
 {
-	_mesh->flipTexturesVertically();
+	m_pMesh->flipTexturesVertically();
 	super::flipTexturesVertically();
 }
 
 void CC3MeshNode::flipHorizontallyTextureUnit( GLuint texUnit )
 {
-	_mesh->flipHorizontallyTextureUnit( texUnit ); 
+	m_pMesh->flipHorizontallyTextureUnit( texUnit ); 
 }
 
 void CC3MeshNode::flipTexturesHorizontally()
 {
-	_mesh->flipTexturesHorizontally();
+	m_pMesh->flipTexturesHorizontally();
 	super::flipTexturesHorizontally();
 }
 
 void CC3MeshNode::repeatTexture( ccTex2F repeatFactor, GLuint texUnit )
 {
-	_mesh->repeatTexture( repeatFactor, texUnit );
+	m_pMesh->repeatTexture( repeatFactor, texUnit );
 }
 
 void CC3MeshNode::repeatTexture( ccTex2F repeatFactor )
 {
-	_mesh->repeatTexture( repeatFactor ); 
+	m_pMesh->repeatTexture( repeatFactor ); 
 }
 
 CCRect CC3MeshNode::getTextureRectangle()
 {
-	return _mesh ? _mesh->getTextureRectangle() : kCC3UnitTextureRectangle;
+	return m_pMesh ? m_pMesh->getTextureRectangle() : kCC3UnitTextureRectangle;
 }
 
 void CC3MeshNode::setTextureRectangle( const CCRect& aRect )
 {
-	_mesh->setTextureRectangle( aRect );  
+	m_pMesh->setTextureRectangle( aRect );  
 }
 
 CCRect CC3MeshNode::getTextureRectangleForTextureUnit( GLuint texUnit )
 {
-	return _mesh ? _mesh->getTextureRectangleForTextureUnit(texUnit) : kCC3UnitTextureRectangle;
+	return m_pMesh ? m_pMesh->getTextureRectangleForTextureUnit(texUnit) : kCC3UnitTextureRectangle;
 }
 
 void CC3MeshNode::setTextureRectangle( const CCRect& aRect, GLuint texUnit )
 {
-	_mesh->setTextureRectangle( aRect, texUnit );
+	m_pMesh->setTextureRectangle( aRect, texUnit );
 }
 
 
 bool CC3MeshNode::hasTextureAlpha()
 {
-	return _material ? _material->hasTextureAlpha() : false; 
+	return m_pMaterial ? m_pMaterial->hasTextureAlpha() : false; 
 }
 
 bool CC3MeshNode::hasTexturePremultipliedAlpha()
 {
-	return _material ? _material->hasTexturePremultipliedAlpha() : false; 
+	return m_pMaterial ? m_pMaterial->hasTexturePremultipliedAlpha() : false; 
 }
 
 bool CC3MeshNode::hasPremultipliedAlpha()
@@ -706,32 +706,32 @@ bool CC3MeshNode::hasPremultipliedAlpha()
 
 bool CC3MeshNode::shouldApplyOpacityToColor()
 {
-	return _material ? _material->shouldApplyOpacityToColor() : false; 
+	return m_pMaterial ? m_pMaterial->shouldApplyOpacityToColor() : false; 
 }
 
 void CC3MeshNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_mesh = NULL;
-	_material = NULL;
-	_shaderContext = NULL;
-	_renderStreamGroupMarker = "";
-	_shouldUseLightProbes = false;
-	_shouldUseSmoothShading = true;
-	_shouldCullBackFaces = true;
-	_shouldCullFrontFaces = false;
-	_shouldUseClockwiseFrontFaceWinding = false;
-	_shouldDisableDepthMask = false;
-	_shouldDisableDepthTest = false;
-	_shouldCastShadowsWhenInvisible = false;
-	_depthFunction = GL_LEQUAL;
-	_normalScalingMethod = kCC3NormalScalingAutomatic;
-	_lineWidth = 1.0f;
-	_shouldSmoothLines = false;
-	_lineSmoothingHint = GL_DONT_CARE;
-	_shouldApplyOpacityAndColorToMeshContent = false;
-	_shouldDrawInClipSpace = false;
-	_hasRigidSkeleton = false;
+	m_pMesh = NULL;
+	m_pMaterial = NULL;
+	m_pShaderContext = NULL;
+	m_renderStreamGroupMarker = "";
+	m_shouldUseLightProbes = false;
+	m_shouldUseSmoothShading = true;
+	m_shouldCullBackFaces = true;
+	m_shouldCullFrontFaces = false;
+	m_shouldUseClockwiseFrontFaceWinding = false;
+	m_shouldDisableDepthMask = false;
+	m_shouldDisableDepthTest = false;
+	m_shouldCastShadowsWhenInvisible = false;
+	m_depthFunction = GL_LEQUAL;
+	m_normalScalingMethod = kCC3NormalScalingAutomatic;
+	m_lineWidth = 1.0f;
+	m_shouldSmoothLines = false;
+	m_lineSmoothingHint = GL_DONT_CARE;
+	m_shouldApplyOpacityAndColorToMeshContent = false;
+	m_shouldDrawInClipSpace = false;
+	m_hasRigidSkeleton = false;
 }
 
 void CC3MeshNode::populateFrom( CC3MeshNode* another )
@@ -739,29 +739,29 @@ void CC3MeshNode::populateFrom( CC3MeshNode* another )
 	super::populateFrom( another );
 	
 	// Don't use setters, to avoid side effects, including to bounding volume and tex coords.
-	CC_SAFE_RELEASE( _mesh );
-	_mesh = another->getMesh();
-	CC_SAFE_RETAIN( _mesh );					// retained - Mesh shared between original and copy
+	CC_SAFE_RELEASE( m_pMesh );
+	m_pMesh = another->getMesh();
+	CC_SAFE_RETAIN( m_pMesh );					// retained - Mesh shared between original and copy
 
-	CC_SAFE_RELEASE( _material );
-	_material = (CC3Material*)another->getMaterial()->copy();					// retained
+	CC_SAFE_RELEASE( m_pMaterial );
+	m_pMaterial = (CC3Material*)another->getMaterial()->copy();					// retained
 	
-	CC_SAFE_RELEASE( _shaderContext );
-	_shaderContext = (CC3ShaderContext*)another->getShaderContext()->copy();	// retained
+	CC_SAFE_RELEASE( m_pShaderContext );
+	m_pShaderContext = (CC3ShaderContext*)another->getShaderContext()->copy();	// retained
 	
-	_shouldUseSmoothShading = another->shouldUseSmoothShading();
-	_shouldCullBackFaces = another->shouldCullBackFaces();
-	_shouldCullFrontFaces = another->shouldCullFrontFaces();
-	_shouldUseClockwiseFrontFaceWinding = another->shouldUseClockwiseFrontFaceWinding();
-	_shouldDisableDepthMask = another->shouldDisableDepthMask();
-	_shouldDisableDepthTest = another->shouldDisableDepthTest();
-	_shouldCastShadowsWhenInvisible = another->shouldCastShadowsWhenInvisible();
-	_depthFunction = another->getDepthFunction();
-	_normalScalingMethod = another->getNormalScalingMethod();
-	_lineWidth = another->getLineWidth();
-	_shouldSmoothLines = another->shouldSmoothLines();
-	_lineSmoothingHint = another->getLineSmoothingHint();
-	_shouldApplyOpacityAndColorToMeshContent = another->shouldApplyOpacityAndColorToMeshContent();
+	m_shouldUseSmoothShading = another->shouldUseSmoothShading();
+	m_shouldCullBackFaces = another->shouldCullBackFaces();
+	m_shouldCullFrontFaces = another->shouldCullFrontFaces();
+	m_shouldUseClockwiseFrontFaceWinding = another->shouldUseClockwiseFrontFaceWinding();
+	m_shouldDisableDepthMask = another->shouldDisableDepthMask();
+	m_shouldDisableDepthTest = another->shouldDisableDepthTest();
+	m_shouldCastShadowsWhenInvisible = another->shouldCastShadowsWhenInvisible();
+	m_depthFunction = another->getDepthFunction();
+	m_normalScalingMethod = another->getNormalScalingMethod();
+	m_lineWidth = another->getLineWidth();
+	m_shouldSmoothLines = another->shouldSmoothLines();
+	m_lineSmoothingHint = another->getLineSmoothingHint();
+	m_shouldApplyOpacityAndColorToMeshContent = another->shouldApplyOpacityAndColorToMeshContent();
 }
 
 CCObject* CC3MeshNode::copyWithZone( CCZone* zone )
@@ -777,192 +777,192 @@ CCObject* CC3MeshNode::copyWithZone( CCZone* zone )
 void CC3MeshNode::createGLBuffers()
 {
 	//LogTrace(@"%@ creating GL server buffers", self);
-	if ( _mesh )
-		_mesh->createGLBuffers();
+	if ( m_pMesh )
+		m_pMesh->createGLBuffers();
 	
 	super::createGLBuffers();
 }
 
 void CC3MeshNode::deleteGLBuffers()
 {
-	if ( _mesh )
-		_mesh->deleteGLBuffers();
+	if ( m_pMesh )
+		m_pMesh->deleteGLBuffers();
 	
 	super::deleteGLBuffers();
 }
 
 bool CC3MeshNode::isUsingGLBuffers()
 {
-	if ( _mesh )
-		return _mesh->isUsingGLBuffers(); 
+	if ( m_pMesh )
+		return m_pMesh->isUsingGLBuffers(); 
 
 	return false;
 }
 
 void CC3MeshNode::releaseRedundantContent()
 {
-	if ( _mesh )
-		_mesh->releaseRedundantContent();
+	if ( m_pMesh )
+		m_pMesh->releaseRedundantContent();
 
 	super::releaseRedundantContent();
 }
 
 void CC3MeshNode::retainVertexContent()
 {
-	if ( _mesh )
-		_mesh->retainVertexContent();
+	if ( m_pMesh )
+		m_pMesh->retainVertexContent();
 
 	super::retainVertexContent();
 }
 
 void CC3MeshNode::retainVertexLocations()
 {
-	if ( _mesh )
-		_mesh->retainVertexLocations();
+	if ( m_pMesh )
+		m_pMesh->retainVertexLocations();
 	
 	super::retainVertexLocations();
 }
 
 void CC3MeshNode::retainVertexNormals()
 {
-	if ( _mesh )
-		_mesh->retainVertexNormals();
+	if ( m_pMesh )
+		m_pMesh->retainVertexNormals();
 	
 	super::retainVertexNormals();
 }
 
 void CC3MeshNode::retainVertexTangents()
 {
-	if ( _mesh )
-		_mesh->retainVertexTangents();
+	if ( m_pMesh )
+		m_pMesh->retainVertexTangents();
 	
 	super::retainVertexTangents();
 }
 
 void CC3MeshNode::retainVertexBitangents()
 {
-	if ( _mesh )
-		_mesh->retainVertexBitangents();
+	if ( m_pMesh )
+		m_pMesh->retainVertexBitangents();
 	
 	super::retainVertexBitangents();
 }
 
 void CC3MeshNode::retainVertexColors()
 {
-	if ( _mesh )
-		_mesh->retainVertexColors();
+	if ( m_pMesh )
+		m_pMesh->retainVertexColors();
 	
 	super::retainVertexColors();
 }
 
 void CC3MeshNode::retainVertexBoneIndices()
 {
-	if ( _mesh )
-		_mesh->retainVertexBoneIndices();
+	if ( m_pMesh )
+		m_pMesh->retainVertexBoneIndices();
 	
 	super::retainVertexBoneIndices();
 }
 
 void CC3MeshNode::retainVertexBoneWeights()
 {
-	if ( _mesh )
-		_mesh->retainVertexBoneWeights();
+	if ( m_pMesh )
+		m_pMesh->retainVertexBoneWeights();
 	
 	super::retainVertexBoneWeights();
 }
 
 void CC3MeshNode::retainVertexTextureCoordinates()
 {
-	if ( _mesh )
-		_mesh->retainVertexTextureCoordinates();
+	if ( m_pMesh )
+		m_pMesh->retainVertexTextureCoordinates();
 	
 	super::retainVertexTextureCoordinates();
 }
 
 void CC3MeshNode::retainVertexIndices()
 {
-	if ( _mesh )
-		_mesh->retainVertexIndices();
+	if ( m_pMesh )
+		m_pMesh->retainVertexIndices();
 	
 	super::retainVertexIndices();
 }
 
 void CC3MeshNode::doNotBufferVertexContent()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexContent();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexContent();
 	
 	super::doNotBufferVertexContent();
 }
 
 void CC3MeshNode::doNotBufferVertexLocations()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexLocations();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexLocations();
 	
 	super::doNotBufferVertexLocations();
 }
 
 void CC3MeshNode::doNotBufferVertexNormals()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexNormals();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexNormals();
 	
 	super::doNotBufferVertexNormals();
 }
 
 void CC3MeshNode::doNotBufferVertexTangents()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexTangents();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexTangents();
 	
 	super::doNotBufferVertexTangents();
 }
 
 void CC3MeshNode::doNotBufferVertexBitangents()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexBitangents();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexBitangents();
 	
 	super::doNotBufferVertexBitangents();
 }
 
 void CC3MeshNode::doNotBufferVertexColors()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexColors();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexColors();
 	
 	super::doNotBufferVertexColors();
 }
 
 void CC3MeshNode::doNotBufferVertexBoneIndices()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexBoneIndices();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexBoneIndices();
 	
 	super::doNotBufferVertexBoneIndices();
 }
 
 void CC3MeshNode::doNotBufferVertexBoneWeights()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexBoneWeights();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexBoneWeights();
 	
 	super::doNotBufferVertexBoneWeights();
 }
 
 void CC3MeshNode::doNotBufferVertexTextureCoordinates()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexTextureCoordinates();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexTextureCoordinates();
 	
 	super::doNotBufferVertexTextureCoordinates();
 }
 
 void CC3MeshNode::doNotBufferVertexIndices()
 {
-	if ( _mesh )
-		_mesh->doNotBufferVertexIndices();
+	if ( m_pMesh )
+		m_pMesh->doNotBufferVertexIndices();
 	
 	super::doNotBufferVertexIndices();
 }
@@ -1010,20 +1010,20 @@ void CC3MeshNode::configureFaceCulling( CC3NodeDrawingVisitor* visitor )
 	CC3OpenGL* gl = visitor->getGL();
 
 	// Enable culling if either back or front should be culled.
-	gl->enableCullFace(_shouldCullBackFaces || _shouldCullFrontFaces);
+	gl->enableCullFace(m_shouldCullBackFaces || m_shouldCullFrontFaces);
 
 	// Set whether back, front or both should be culled.
 	// If neither should be culled, handled by capability so leave it as back culling.
-	gl->setCullFace( _shouldCullBackFaces
-						? (_shouldCullFrontFaces ? GL_FRONT_AND_BACK : GL_BACK)
-						: (_shouldCullFrontFaces ? GL_FRONT : GL_BACK) );
+	gl->setCullFace( m_shouldCullBackFaces
+						? (m_shouldCullFrontFaces ? GL_FRONT_AND_BACK : GL_BACK)
+						: (m_shouldCullFrontFaces ? GL_FRONT : GL_BACK) );
 
 	// If back faces are not being culled, then enable two-sided lighting,
 	// so that the lighting of the back faces uses negated normals.
-	gl->enableTwoSidedLighting( !_shouldCullBackFaces );
+	gl->enableTwoSidedLighting( !m_shouldCullBackFaces );
 	
 	// Set the front face winding
-	gl->setFrontFace( _shouldUseClockwiseFrontFaceWinding ? GL_CW : GL_CCW );
+	gl->setFrontFace( m_shouldUseClockwiseFrontFaceWinding ? GL_CW : GL_CCW );
 }
 
 /**
@@ -1063,10 +1063,10 @@ void CC3MeshNode::configureColoring( CC3NodeDrawingVisitor* visitor )
 	CC3OpenGL* gl = visitor->getGL();
 
 	// Set the smoothing model
-	gl->setShadeModel( _shouldUseSmoothShading ? GL_SMOOTH : GL_FLAT );
+	gl->setShadeModel( m_shouldUseSmoothShading ? GL_SMOOTH : GL_FLAT );
 
 	// If per-vertex coloring is being used, attach it to the material
-	gl->enableColorMaterial( visitor->shouldDecorateNode() && _mesh && _mesh->hasVertexColors() );
+	gl->enableColorMaterial( visitor->shouldDecorateNode() && m_pMesh && m_pMesh->hasVertexColors() );
 }
 
 /**
@@ -1077,9 +1077,9 @@ void CC3MeshNode::configureColoring( CC3NodeDrawingVisitor* visitor )
 void CC3MeshNode::configureDepthTesting( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
-	gl->enableDepthTest( !_shouldDisableDepthTest );
-	gl->setDepthMask( !_shouldDisableDepthMask );
-	gl->setDepthFunc( _depthFunction );
+	gl->enableDepthTest( !m_shouldDisableDepthTest );
+	gl->setDepthMask( !m_shouldDisableDepthMask );
+	gl->setDepthFunc( m_depthFunction );
 }
 
 /**
@@ -1090,18 +1090,18 @@ void CC3MeshNode::configureDepthTesting( CC3NodeDrawingVisitor* visitor )
 void CC3MeshNode::configureDecalParameters( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
-	bool hasDecalOffset = _decalOffsetFactor || _decalOffsetUnits;
+	bool hasDecalOffset = m_decalOffsetFactor || m_decalOffsetUnits;
 	gl->enablePolygonOffset( hasDecalOffset );
-	gl->setPolygonOffsetFactor( _decalOffsetFactor, _decalOffsetUnits );
+	gl->setPolygonOffsetFactor( m_decalOffsetFactor, m_decalOffsetUnits );
 }
 
 /** Template method to configure line drawing properties. */
 void CC3MeshNode::configureLineProperties( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
-	gl->setLineWidth( _lineWidth );
-	gl->enableLineSmoothing( _shouldSmoothLines );
-	gl->setLineSmoothingHint( _lineSmoothingHint );
+	gl->setLineWidth( m_lineWidth );
+	gl->enableLineSmoothing( m_shouldSmoothLines );
+	gl->setLineSmoothingHint( m_lineSmoothingHint );
 }
 
 
@@ -1115,19 +1115,19 @@ void CC3MeshNode::updateLightPosition()
 /** Template method to draw the mesh to the GL engine. */
 void CC3MeshNode::drawMeshWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( _mesh )
-		_mesh->drawWithVisitor( visitor ); 
+	if ( m_pMesh )
+		m_pMesh->drawWithVisitor( visitor ); 
 }
 
 CC3VertexContent CC3MeshNode::getVertexContentTypes() 
 { 
-	return _mesh ? _mesh->getVertexContentTypes() : kCC3VertexContentNone; 
+	return m_pMesh ? m_pMesh->getVertexContentTypes() : kCC3VertexContentNone; 
 }
 
 void CC3MeshNode::setVertexContentTypes( CC3VertexContent vtxContentTypes )
 {
 	ensureMesh();
-	_mesh->setVertexContentTypes( vtxContentTypes );
+	m_pMesh->setVertexContentTypes( vtxContentTypes );
 	alignMaterialAndMesh();
 }
 
@@ -1138,114 +1138,114 @@ CC3Vector CC3MeshNode::getCenterOfGeometry()
 
 CC3Vector CC3MeshNode::getLocalContentCenterOfGeometry()
 {
-	return _mesh ? _mesh->getCenterOfGeometry() : CC3Vector::kCC3VectorZero;
+	return m_pMesh ? m_pMesh->getCenterOfGeometry() : CC3Vector::kCC3VectorZero;
 }
 
 CC3Box CC3MeshNode::getLocalContentBoundingBox()
 {
-	return _mesh
-			? CC3BoxAddUniformPadding(_mesh->getBoundingBox(), m_fBoundingVolumePadding)
+	return m_pMesh
+			? CC3BoxAddUniformPadding(m_pMesh->getBoundingBox(), m_fBoundingVolumePadding)
 			: CC3Box::kCC3BoxNull;
 }
 
 void CC3MeshNode::moveMeshOriginTo( const CC3Vector& aLocation )
 {
-	_mesh->moveMeshOriginTo( aLocation );
+	m_pMesh->moveMeshOriginTo( aLocation );
 	markBoundingVolumeDirty();
 }
 
 void CC3MeshNode::moveMeshOriginToCenterOfGeometry()
 {
-	_mesh->moveMeshOriginToCenterOfGeometry();
+	m_pMesh->moveMeshOriginToCenterOfGeometry();
 	markBoundingVolumeDirty();
 }
 
 GLuint CC3MeshNode::getVertexCount()
 {
-	return _mesh ? _mesh->getVertexCount() : 0;
+	return m_pMesh ? m_pMesh->getVertexCount() : 0;
 }
 
 void CC3MeshNode::setVertexCount( GLuint vCount )
 {
-	_mesh->setVertexCount( vCount );  
+	m_pMesh->setVertexCount( vCount );  
 }
 
 GLuint CC3MeshNode::getVertexIndexCount()
 {
-	return _mesh ? _mesh->getVertexIndexCount() : 0; 
+	return m_pMesh ? m_pMesh->getVertexIndexCount() : 0; 
 }
 
 void CC3MeshNode::setVertexIndexCount( GLuint vCount )
 {
-	_mesh->setVertexIndexCount( vCount );  
+	m_pMesh->setVertexIndexCount( vCount );  
 }
 
 CC3Vector CC3MeshNode::getVertexLocationAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexLocationAt(index) : CC3Vector::kCC3VectorZero;
+	return m_pMesh ? m_pMesh->getVertexLocationAt(index) : CC3Vector::kCC3VectorZero;
 }
 
 void CC3MeshNode::setVertexLocation( const CC3Vector& aLocation, GLuint index )
 {
-	_mesh->setVertexLocation( aLocation, index );
+	m_pMesh->setVertexLocation( aLocation, index );
 	markBoundingVolumeDirty();
 }
 
 CC3Vector4 CC3MeshNode::getVertexHomogeneousLocationAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexHomogeneousLocationAt(index) : CC3Vector4::kCC3Vector4ZeroLocation;
+	return m_pMesh ? m_pMesh->getVertexHomogeneousLocationAt(index) : CC3Vector4::kCC3Vector4ZeroLocation;
 }
 
 void CC3MeshNode::setVertexHomogeneousLocation( const CC3Vector4& aLocation, GLuint index )
 {
-	_mesh->setVertexHomogeneousLocation( aLocation, index );
+	m_pMesh->setVertexHomogeneousLocation( aLocation, index );
 	markBoundingVolumeDirty();
 }
 
 CC3Vector CC3MeshNode::getVertexNormalAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexNormalAt(index) : CC3Vector::kCC3VectorUnitZPositive;
+	return m_pMesh ? m_pMesh->getVertexNormalAt(index) : CC3Vector::kCC3VectorUnitZPositive;
 }
 
 void CC3MeshNode::setVertexNormal( const CC3Vector& aNormal, GLuint index )
 {
-	_mesh->setVertexNormal( aNormal, index );
+	m_pMesh->setVertexNormal( aNormal, index );
 }
 
 void CC3MeshNode::flipNormals()
 {
-	_mesh->flipNormals();
+	m_pMesh->flipNormals();
 	super::flipNormals();
 }
 
 CC3Vector CC3MeshNode::getVertexTangentAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexTangentAt(index) : CC3Vector::kCC3VectorUnitXPositive;
+	return m_pMesh ? m_pMesh->getVertexTangentAt(index) : CC3Vector::kCC3VectorUnitXPositive;
 }
 
 void CC3MeshNode::setVertexTangent( const CC3Vector& aTangent, GLuint index )
 {
-	_mesh->setVertexTangent( aTangent, index );
+	m_pMesh->setVertexTangent( aTangent, index );
 }
 
 CC3Vector CC3MeshNode::getVertexBitangentAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexBitangentAt(index) : CC3Vector::kCC3VectorUnitYPositive;
+	return m_pMesh ? m_pMesh->getVertexBitangentAt(index) : CC3Vector::kCC3VectorUnitYPositive;
 }
 
 void CC3MeshNode::setVertexBitangent( const CC3Vector& aTangent, GLuint index )
 {
-	_mesh->setVertexBitangent( aTangent, index );
+	m_pMesh->setVertexBitangent( aTangent, index );
 }
 
 GLenum CC3MeshNode::getVertexColorType()
 {
-	return _mesh ? _mesh->getVertexColorType() : GL_FALSE; 
+	return m_pMesh ? m_pMesh->getVertexColorType() : GL_FALSE; 
 }
 
 ccColor4F CC3MeshNode::getVertexColor4FAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexColor4FAt(index) : kCCC4FBlackTransparent;
+	return m_pMesh ? m_pMesh->getVertexColor4FAt(index) : kCCC4FBlackTransparent;
 }
 
 void CC3MeshNode::setVertexColor4F( const ccColor4F& aColor, GLuint index )
@@ -1253,12 +1253,12 @@ void CC3MeshNode::setVertexColor4F( const ccColor4F& aColor, GLuint index )
 	ccColor4F color = aColor;
 	if ( shouldApplyOpacityToColor() ) 
 		color = CCC4FBlendAlpha( color );
-	_mesh->setVertexColor4F( color, index );
+	m_pMesh->setVertexColor4F( color, index );
 }
 
 ccColor4B CC3MeshNode::getVertexColor4BAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexColor4BAt(index) : ccc4(  0, 0, 0, 0  );
+	return m_pMesh ? m_pMesh->getVertexColor4BAt(index) : ccc4(  0, 0, 0, 0  );
 }
 
 void CC3MeshNode::setVertexColor4B( const ccColor4B& aColor, GLuint index )
@@ -1267,63 +1267,63 @@ void CC3MeshNode::setVertexColor4B( const ccColor4B& aColor, GLuint index )
 	if ( shouldApplyOpacityToColor() ) 
 		color = CCC4BBlendAlpha(aColor);
 
-	_mesh->setVertexColor4B( color, index );
+	m_pMesh->setVertexColor4B( color, index );
 }
 
 GLuint CC3MeshNode::getVertexBoneCount()
 {
-	return _mesh ? _mesh->getVertexBoneCount() : 0; 
+	return m_pMesh ? m_pMesh->getVertexBoneCount() : 0; 
 }
 
 GLfloat CC3MeshNode::getVertexWeightForBoneInfluence( GLuint influenceIndex, GLuint vtxIndex )
 {
-	return _mesh ? _mesh->getVertexWeightForBoneInfluence( influenceIndex, vtxIndex ) : 0.0f;
+	return m_pMesh ? m_pMesh->getVertexWeightForBoneInfluence( influenceIndex, vtxIndex ) : 0.0f;
 }
 
 GLfloat* CC3MeshNode::getVertexBoneWeightsAt( GLuint vtxIndex )
 {
-	return _mesh ? _mesh->getVertexBoneWeightsAt(vtxIndex) : NULL; 
+	return m_pMesh ? m_pMesh->getVertexBoneWeightsAt(vtxIndex) : NULL; 
 }
 
 void CC3MeshNode::setVertexBoneWeights( GLfloat* weights, GLuint vtxIndex )
 {
-	_mesh->setVertexBoneWeights( weights, vtxIndex );
+	m_pMesh->setVertexBoneWeights( weights, vtxIndex );
 }
 
 GLuint CC3MeshNode::getVertexBoneIndexForBoneInfluence( GLuint influenceIndex, GLuint vtxIndex )
 {
-	return _mesh ? _mesh->getVertexBoneIndexForBoneInfluence( influenceIndex, vtxIndex ) : 0;
+	return m_pMesh ? m_pMesh->getVertexBoneIndexForBoneInfluence( influenceIndex, vtxIndex ) : 0;
 }
 
 void CC3MeshNode::setVertexBoneIndex( GLuint boneIndex, GLuint influenceIndex, GLuint vtxIndex )
 {
-	_mesh->setVertexBoneIndex( boneIndex, influenceIndex, vtxIndex );
+	m_pMesh->setVertexBoneIndex( boneIndex, influenceIndex, vtxIndex );
 }
 
 GLvoid* CC3MeshNode::getVertexBoneIndicesAt( GLuint vtxIndex )
 {
-	return _mesh ? _mesh->getVertexBoneIndicesAt(vtxIndex) : NULL;
+	return m_pMesh ? m_pMesh->getVertexBoneIndicesAt(vtxIndex) : NULL;
 }
 
 void CC3MeshNode::setVertexBoneIndices( GLvoid* boneIndices, GLuint vtxIndex )
 {
-	_mesh->setVertexBoneIndices( boneIndices, vtxIndex );
+	m_pMesh->setVertexBoneIndices( boneIndices, vtxIndex );
 }
 
 GLenum CC3MeshNode::getVertexBoneIndexType()
 {
-	return _mesh->getVertexBoneIndexType(); 
+	return m_pMesh->getVertexBoneIndexType(); 
 }
 
 ccTex2F CC3MeshNode::getVertexTexCoord2FForTextureUnit( GLuint texUnit, GLuint index )
 {
-	return _mesh ? _mesh->getVertexTexCoord2FForTextureUnit(texUnit, index) : tex2( 0.0f, 0.0f );
+	return m_pMesh ? m_pMesh->getVertexTexCoord2FForTextureUnit(texUnit, index) : tex2( 0.0f, 0.0f );
 }
 
 void CC3MeshNode::setVertexTexCoord2F( ccTex2F aTex2F, GLuint texUnit, GLuint index )
 {
-	if ( _mesh )
-		_mesh->setVertexTexCoord2F( aTex2F, texUnit, index );
+	if ( m_pMesh )
+		m_pMesh->setVertexTexCoord2F( aTex2F, texUnit, index );
 }
 
 ccTex2F CC3MeshNode::getVertexTexCoord2FAt( GLuint index )
@@ -1338,61 +1338,61 @@ void CC3MeshNode::setVertexTexCoord2F(ccTex2F aTex2F, GLuint index )
 
 GLuint CC3MeshNode::getVertexIndexAt( GLuint index )
 {
-	return _mesh ? _mesh->getVertexIndexAt(index) : 0; 
+	return m_pMesh ? m_pMesh->getVertexIndexAt(index) : 0; 
 }
 
 void CC3MeshNode::setVertexIndex( GLuint vertexIndex, GLuint index )
 {
-	if ( _mesh )
-		_mesh->setVertexIndex( vertexIndex, index );
+	if ( m_pMesh )
+		m_pMesh->setVertexIndex( vertexIndex, index );
 }
 
 void CC3MeshNode::updateVertexLocationsGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexLocationsGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexLocationsGLBuffer(); 
 }
 
 void CC3MeshNode::updateVertexNormalsGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexNormalsGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexNormalsGLBuffer(); 
 }
 
 void CC3MeshNode::updateVertexTangentsGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexTangentsGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexTangentsGLBuffer(); 
 }
 
 void CC3MeshNode::updateVertexBitangentsGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexBitangentsGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexBitangentsGLBuffer(); 
 }
 
 void CC3MeshNode::updateVertexColorsGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexColorsGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexColorsGLBuffer(); 
 }
 
 void CC3MeshNode::updateVertexBoneWeightsGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexBoneWeightsGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexBoneWeightsGLBuffer(); 
 }
 
 void CC3MeshNode::updateVertexBoneIndicesGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexBoneIndicesGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexBoneIndicesGLBuffer(); 
 }
 
 void CC3MeshNode::updateVertexTextureCoordinatesGLBufferForTextureUnit( GLuint texUnit )
 {
-	if ( _mesh )
-		_mesh->updateVertexTextureCoordinatesGLBufferForTextureUnit( texUnit );
+	if ( m_pMesh )
+		m_pMesh->updateVertexTextureCoordinatesGLBufferForTextureUnit( texUnit );
 }
 
 void CC3MeshNode::updateVertexTextureCoordinatesGLBuffer()
@@ -1402,27 +1402,27 @@ void CC3MeshNode::updateVertexTextureCoordinatesGLBuffer()
 
 void CC3MeshNode::updateGLBuffers()
 {
-	if ( _mesh )
-		_mesh->updateGLBuffers(); 
+	if ( m_pMesh )
+		m_pMesh->updateGLBuffers(); 
 }
 
 void CC3MeshNode::updateVertexIndicesGLBuffer()
 {
-	if ( _mesh )
-		_mesh->updateVertexIndicesGLBuffer(); 
+	if ( m_pMesh )
+		m_pMesh->updateVertexIndicesGLBuffer(); 
 }
 
 
 bool CC3MeshNode::shouldCacheFaces()
 {
-	return _mesh ? _mesh->shouldCacheFaces() : false; 
+	return m_pMesh ? m_pMesh->shouldCacheFaces() : false; 
 }
 
 
 GLuint CC3MeshNode::getFaceCountFromVertexIndexCount( GLuint vc )
 {
-	if (_mesh) 
-		return _mesh->getFaceCountFromVertexIndexCount( vc );
+	if (m_pMesh) 
+		return m_pMesh->getFaceCountFromVertexIndexCount( vc );
 	
 	CCAssert(false, "CC3MeshNode has no mesh and cannot convert vertex count to face count.");
 	return 0;
@@ -1430,8 +1430,8 @@ GLuint CC3MeshNode::getFaceCountFromVertexIndexCount( GLuint vc )
 
 GLuint CC3MeshNode::getVertexIndexCountFromFaceCount( GLuint fc )
 {
-	if (_mesh) 
-		return _mesh->getVertexIndexCountFromFaceCount(fc);
+	if (m_pMesh) 
+		return m_pMesh->getVertexIndexCountFromFaceCount(fc);
 
 	CCAssert(false, "CC3MeshNode has no mesh and cannot convert face count to vertex count.");
 	return 0;
@@ -1440,15 +1440,15 @@ GLuint CC3MeshNode::getVertexIndexCountFromFaceCount( GLuint fc )
 
 GLuint CC3MeshNode::findFirst( GLuint maxHitCount, CC3MeshIntersection* intersectons, CC3Ray aRay, bool acceptBackFaces, bool acceptBehind )
 {
-	if ( !_mesh ) 
+	if ( !m_pMesh ) 
 		return 0;
 
-	return _mesh->findFirst( maxHitCount, intersectons, aRay, acceptBackFaces, acceptBehind );
+	return m_pMesh->findFirst( maxHitCount, intersectons, aRay, acceptBackFaces, acceptBehind );
 }
 
 GLuint CC3MeshNode::findFirstGlobal( GLuint maxHitCount, CC3MeshIntersection* intersections, CC3Ray aRay, bool acceptBackFaces, bool acceptBehind )
 {
-	if ( !_mesh ) 
+	if ( !m_pMesh ) 
 		return 0;
 
 	// Convert the array to local coordinates and find intersections.
@@ -1468,8 +1468,8 @@ GLuint CC3MeshNode::findFirstGlobal( GLuint maxHitCount, CC3MeshIntersection* in
 
 void CC3MeshNode::setVertexWeight( GLfloat aWeight, GLuint vertexUnit, GLuint index )
 {
-	if ( _mesh )
-		_mesh->setVertexWeight( aWeight, vertexUnit, index );
+	if ( m_pMesh )
+		m_pMesh->setVertexWeight( aWeight, vertexUnit, index );
 }
 
 /// CC3Node method
@@ -1568,10 +1568,10 @@ void CC3MeshNode::prewarmForShadowVolumes()
 
 CC3NormalScaling CC3MeshNode::getEffectiveNormalScalingMethod()
 {
-	if ( !(_mesh && _mesh->hasVertexNormals()) ) 
+	if ( !(m_pMesh && m_pMesh->hasVertexNormals()) ) 
 		return kCC3NormalScalingNone;
 
-	switch (_normalScalingMethod) 
+	switch (m_normalScalingMethod) 
 	{
 	case kCC3NormalScalingNormalize: 
 		return kCC3NormalScalingNormalize;
@@ -1591,12 +1591,12 @@ CC3NormalScaling CC3MeshNode::getEffectiveNormalScalingMethod()
 
 unsigned int CC3MeshNode::getDrawingMode()
 {
-	return _mesh ? _mesh->getDrawingMode() : GL_TRIANGLES;
+	return m_pMesh ? m_pMesh->getDrawingMode() : GL_TRIANGLES;
 }
 
 void CC3MeshNode::setDrawingMode( GLenum drawingMode )
 {
-	_mesh->setDrawingMode( drawingMode );
+	m_pMesh->setDrawingMode( drawingMode );
 }
 
 bool CC3MeshNode::isDrawingPointSprites()
@@ -1606,8 +1606,8 @@ bool CC3MeshNode::isDrawingPointSprites()
 
 void CC3MeshNode::setShouldCacheFaces( bool cacheFaces )
 {
-	if ( _mesh )
-		_mesh->setShouldCacheFaces( cacheFaces );
+	if ( m_pMesh )
+		m_pMesh->setShouldCacheFaces( cacheFaces );
 
 	super::setShouldCacheFaces(cacheFaces);
 }
@@ -1626,7 +1626,7 @@ CC3Mesh* CC3MeshNode::prepareParametricMesh()
 			kCC3VertexContentTextureCoordinates) );
 	}
 
-	return _mesh;
+	return m_pMesh;
 }
 
 void CC3MeshNode::alignTextureUnits()
@@ -1638,43 +1638,43 @@ void CC3MeshNode::alignTextureUnits()
 
 void CC3MeshNode::alignTextureUnit( GLuint texUnit )
 {
-	if ( _mesh )
-		_mesh->alignTextureUnit( texUnit, getTextureForTextureUnit(texUnit) );
+	if ( m_pMesh )
+		m_pMesh->alignTextureUnit( texUnit, getTextureForTextureUnit(texUnit) );
 }
 
 CC3Plane CC3MeshNode::getFacePlaneAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFacePlaneAt(faceIndex) : CC3Plane( 0.0f, 0.0f, 0.0f, 0.0f );
+	return m_pMesh ? m_pMesh->getFacePlaneAt(faceIndex) : CC3Plane( 0.0f, 0.0f, 0.0f, 0.0f );
 }
 
 GLuint CC3MeshNode::getFaceCount()
 {
-	return _mesh ? _mesh->getFaceCount() : 0; 
+	return m_pMesh ? m_pMesh->getFaceCount() : 0; 
 }
 
 CC3Face CC3MeshNode::getFaceAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceAt(faceIndex) : CC3Face::kCC3FaceZero;
+	return m_pMesh ? m_pMesh->getFaceAt(faceIndex) : CC3Face::kCC3FaceZero;
 }
 
 CC3Face CC3MeshNode::getFaceFromIndices( const CC3FaceIndices& faceIndices )
 {
-	return _mesh ? _mesh->getFaceFromIndices( faceIndices ) : CC3Face::kCC3FaceZero;
+	return m_pMesh ? m_pMesh->getFaceFromIndices( faceIndices ) : CC3Face::kCC3FaceZero;
 }
 
 CC3FaceIndices CC3MeshNode::getFaceIndicesAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceIndicesAt( faceIndex ) : kCC3FaceIndicesZero;
+	return m_pMesh ? m_pMesh->getFaceIndicesAt( faceIndex ) : kCC3FaceIndicesZero;
 }
 
 CC3Vector CC3MeshNode::getFaceCenterAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceCenterAt(faceIndex) : CC3Vector::kCC3VectorZero;
+	return m_pMesh ? m_pMesh->getFaceCenterAt(faceIndex) : CC3Vector::kCC3VectorZero;
 }
 
 CC3Vector CC3MeshNode::getFaceNormalAt( GLuint faceIndex )
 {
-	return _mesh ? _mesh->getFaceNormalAt( faceIndex ) : CC3Vector::kCC3VectorZero;
+	return m_pMesh ? m_pMesh->getFaceNormalAt( faceIndex ) : CC3Vector::kCC3VectorZero;
 }
 
 CC3FaceNeighbours CC3MeshNode::getFaceNeighboursAt( GLuint faceIndex )
@@ -1683,22 +1683,22 @@ CC3FaceNeighbours CC3MeshNode::getFaceNeighboursAt( GLuint faceIndex )
 	neighbours.edges[0] = 0;
 	neighbours.edges[1] = 0;
 	neighbours.edges[2] = 0;
-	return _mesh ? _mesh->getFaceNeighboursAt(faceIndex) : neighbours;
+	return m_pMesh ? m_pMesh->getFaceNeighboursAt(faceIndex) : neighbours;
 }
 
 CC3Texture* CC3MeshNode::getTextureForTextureUnit( GLuint texUnit )
 {
-	return _material ? _material->getTextureForTextureUnit( texUnit ) : NULL; 
+	return m_pMaterial ? m_pMaterial->getTextureForTextureUnit( texUnit ) : NULL; 
 }
 
 CC3Texture* CC3MeshNode::getTexture()
 {
-	return _material ? _material->getTexture() : NULL;
+	return m_pMaterial ? m_pMaterial->getTexture() : NULL;
 }
 
 GLuint CC3MeshNode::getTextureCount()
 {
-	return _material ? _material->getTextureCount() : 0;
+	return m_pMaterial ? m_pMaterial->getTextureCount() : 0;
 }
 
 

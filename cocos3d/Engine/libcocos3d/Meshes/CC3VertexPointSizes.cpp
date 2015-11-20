@@ -59,8 +59,8 @@ void CC3VertexPointSizes::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_elementType = GL_FLOAT;
-		_elementSize = 1;
+		m_elementType = GL_FLOAT;
+		m_elementSize = 1;
 	}
 }
 

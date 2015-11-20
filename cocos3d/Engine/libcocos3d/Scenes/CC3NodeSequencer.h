@@ -322,8 +322,8 @@ public:
 	void						init();
 
 protected:
-	CC3NodeEvaluator*			_evaluator;
-	bool						_allowSequenceUpdates : 1;
+	CC3NodeEvaluator*			m_pEvaluator;
+	bool						m_allowSequenceUpdates : 1;
 };
 
 /**
@@ -406,7 +406,7 @@ public:
 	virtual void				setShouldUseOnlyForwardDistance( bool onlyForward );
 
 protected:
-	CCArray*					_sequencers;
+	CCArray*					m_sequencers;
 };
 
 
@@ -463,7 +463,7 @@ public:
 	virtual void				visitNodesWithNodeVisitor( CC3NodeVisitor* aNodeVisitor );
 
 protected:
-	CCArray*					_nodes;
+	CCArray*					m_nodes;
 };
 
 /**
@@ -530,7 +530,7 @@ public:
 	virtual void				identifyMisplacedNodesWithVisitor( CC3NodeSequencerVisitor* visitor );
 
 protected:
-    bool						_shouldUseOnlyForwardDistance;
+    bool						m_shouldUseOnlyForwardDistance;
 };
 
 /**
@@ -649,8 +649,8 @@ public:
 	void						init();
 
 protected:
-	CC3Scene*					_scene;
-	CCArray*					_misplacedNodes;
+	CC3Scene*					m_pScene;
+	CCArray*					m_misplacedNodes;
 };
 
 

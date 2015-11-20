@@ -33,14 +33,14 @@ NS_COCOS3D_BEGIN
 
 CC3SkinSection::CC3SkinSection()
 {
-	_node = NULL;				// weak reference
-	_skinnedBones = NULL;
+	m_pNode = NULL;				// weak reference
+	m_skinnedBones = NULL;
 }
 
 CC3SkinSection::~CC3SkinSection()
 {
-	_node = NULL;
-	CC_SAFE_RELEASE( _skinnedBones );
+	m_pNode = NULL;
+	CC_SAFE_RELEASE( m_skinnedBones );
 }
 
 bool CC3SkinSection::hasSkeleton()
@@ -50,7 +50,7 @@ bool CC3SkinSection::hasSkeleton()
 
 GLuint CC3SkinSection::getBoneCount()
 {
-	return (GLuint)_skinnedBones->count(); 
+	return (GLuint)m_skinnedBones->count(); 
 }
 
 CCArray* CC3SkinSection::getBones()
@@ -58,7 +58,7 @@ CCArray* CC3SkinSection::getBones()
 	CCArray* bones = CCArray::create();
 
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _skinnedBones, pObj )
+	CCARRAY_FOREACH( m_skinnedBones, pObj )
 	{
 		CC3SkinnedBone* sb = (CC3SkinnedBone*)pObj;
 		if ( sb )
@@ -70,55 +70,55 @@ CCArray* CC3SkinSection::getBones()
 
 CC3Bone* CC3SkinSection::getBoneAt( GLuint boneIdx )
 {
-	return ((CC3SkinnedBone*)(_skinnedBones->objectAtIndex(boneIdx)))->getBone();
+	return ((CC3SkinnedBone*)(m_skinnedBones->objectAtIndex(boneIdx)))->getBone();
 }
 
 int CC3SkinSection::getVertexStart()
 {
-	return _vertexStart;
+	return m_vertexStart;
 }
 
 void CC3SkinSection::setVertexStart( GLint vertexStart )
 {
-    _vertexStart = vertexStart;
+    m_vertexStart = vertexStart;
 }
 
 int CC3SkinSection::getVertexCount()
 {
-	return _vertexCount;
+	return m_vertexCount;
 }
 
 void CC3SkinSection::setVertexCount( GLint vertexCount )
 {
-    _vertexCount = vertexCount;
+    m_vertexCount = vertexCount;
 }
 
 void CC3SkinSection::addBone( CC3Bone* aBone )
 {
-	_skinnedBones->addObject( CC3SkinnedBone::skinnedBoneWithSkin( _node, aBone ) );
+	m_skinnedBones->addObject( CC3SkinnedBone::skinnedBoneWithSkin( m_pNode, aBone ) );
 }
 
 bool CC3SkinSection::hasRigidSkeleton()
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _skinnedBones, pObj )
+	CCARRAY_FOREACH( m_skinnedBones, pObj )
 	{
 		CC3SkinnedBone* sb = (CC3SkinnedBone*)pObj;
 		if ( !sb->getBone()->getSkeletalTransformMatrix()->isRigid() )
 			return false;
 	}
 	
-	return (_skinnedBones->count() > 0);	// YES if all bones returned YES, but NO if no bones.
+	return (m_skinnedBones->count() > 0);	// YES if all bones returned YES, but NO if no bones.
 }
 
 bool CC3SkinSection::containsVertexIndex( GLint aVertexIndex )
 {
-	return (aVertexIndex >= _vertexStart) && (aVertexIndex < _vertexStart + _vertexCount);
+	return (aVertexIndex >= m_vertexStart) && (aVertexIndex < m_vertexStart + m_vertexCount);
 }
 
 CC3Vector CC3SkinSection::getDeformedVertexLocationAt( GLuint vtxIdx )
 {
-	CC3Mesh* skinMesh = _node->getMesh();
+	CC3Mesh* skinMesh = m_pNode->getMesh();
 	
 	// The locations of this vertex before and after deformation.
 	// The latter is to be calculated and returned by this method.
@@ -133,7 +133,7 @@ CC3Vector CC3SkinSection::getDeformedVertexLocationAt( GLuint vtxIdx )
 		// Get a bone and its weighting for this vertex.
 		GLfloat vtxWt = skinMesh->getVertexWeightForBoneInfluence( vuIdx, vtxIdx );
 		GLuint vtxBoneIdx = skinMesh->getVertexBoneIndexForBoneInfluence( vuIdx, vtxIdx );
-		CC3SkinnedBone* skinnedBone = ((CC3SkinnedBone*)(_skinnedBones->objectAtIndex(vtxBoneIdx)));
+		CC3SkinnedBone* skinnedBone = ((CC3SkinnedBone*)(m_skinnedBones->objectAtIndex(vtxBoneIdx)));
 		
 		// Use the bone to deform the vertex, apply the weighting for this bone,
 		// and add to the summed location.
@@ -159,11 +159,11 @@ void CC3SkinSection::init()
 
 void CC3SkinSection::initForNode( CC3SkinMeshNode* aNode )
 {
-	_node = aNode;							// weak reference
-	_skinnedBones = CCArray::create();		// retained
-	_skinnedBones->retain();
-	_vertexStart = 0;
-	_vertexCount = 0;
+	m_pNode = aNode;							// weak reference
+	m_skinnedBones = CCArray::create();		// retained
+	m_skinnedBones->retain();
+	m_vertexStart = 0;
+	m_vertexCount = 0;
 }
 
 CC3SkinSection* CC3SkinSection::skinSectionForNode( CC3SkinMeshNode* aNode )
@@ -180,7 +180,7 @@ CC3SkinSection* CC3SkinSection::skinSectionForNode( CC3SkinMeshNode* aNode )
 void CC3SkinSection::reattachBonesFrom( CC3Node* aNode )
 {
 	CCArray* oldBones = getBones();
-	_skinnedBones->removeAllObjects();
+	m_skinnedBones->removeAllObjects();
 
 	CCObject* pObj = NULL;
 	CCARRAY_FOREACH( oldBones, pObj )
@@ -192,11 +192,11 @@ void CC3SkinSection::reattachBonesFrom( CC3Node* aNode )
 
 void CC3SkinSection::populateFrom( CC3SkinSection* another )
 {
-	_vertexStart = another->getVertexStart();
-	_vertexCount = another->getVertexCount();
+	m_vertexStart = another->getVertexStart();
+	m_vertexCount = another->getVertexCount();
 
 	// Each bone is retained but not copied, and will be swapped for copied bones via reattachBonesFrom:
-	_skinnedBones->removeAllObjects();
+	m_skinnedBones->removeAllObjects();
 	CCArray* otherBones = another->getBones();
 
 	CCObject* pObj = NULL;
@@ -229,12 +229,12 @@ void CC3SkinSection::drawVerticesOfMesh( CC3Mesh* mesh, CC3NodeDrawingVisitor* v
 {
 	visitor->setCurrentSkinSection( this );
 	if ( mesh != NULL )
-		mesh->drawVerticesFrom( _vertexStart, _vertexCount, visitor );
+		mesh->drawVerticesFrom( m_vertexStart, m_vertexCount, visitor );
 }
 
 CC3Matrix* CC3SkinSection::getTransformMatrixForBoneAt( GLuint boneIdx )
 {
-	return ((CC3SkinnedBone*)(_skinnedBones->objectAtIndex(boneIdx)))->getTransformMatrix();
+	return ((CC3SkinnedBone*)(m_skinnedBones->objectAtIndex(boneIdx)))->getTransformMatrix();
 }
 
 NS_COCOS3D_END

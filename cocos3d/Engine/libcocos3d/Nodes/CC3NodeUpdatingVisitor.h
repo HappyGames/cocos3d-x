@@ -59,7 +59,7 @@ public:
 	std::string					fullDescription();
 
 protected:
-	float						_deltaTime;
+	float						m_fDeltaTime;
 };
 
 NS_COCOS3D_END

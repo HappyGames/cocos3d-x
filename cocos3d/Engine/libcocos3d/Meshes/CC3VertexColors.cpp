@@ -51,13 +51,13 @@ CC3VertexColors* CC3VertexColors::vertexArrayWithName( const std::string& aName 
 
 void CC3VertexColors::setElementType( GLenum elementType )
 {
-	_elementType = elementType;
-	setShouldNormalizeContent( (_elementType != GL_FLOAT) );
+	m_elementType = elementType;
+	setShouldNormalizeContent( (m_elementType != GL_FLOAT) );
 }
 
 ccColor4F CC3VertexColors::getColor4FAt( GLuint index )
 {
-	switch (_elementType) 
+	switch (m_elementType) 
 	{
 		case GL_FIXED:
 		case GL_UNSIGNED_BYTE:
@@ -70,7 +70,7 @@ ccColor4F CC3VertexColors::getColor4FAt( GLuint index )
 
 void CC3VertexColors::setColor4F( const ccColor4F& aColor, GLuint index )
 {
-	switch (_elementType) {
+	switch (m_elementType) {
 		case GL_FIXED:
 		case GL_UNSIGNED_BYTE:
 			*(ccColor4B*)getAddressOfElement(index) = CCC4BFromCCC4F(aColor);
@@ -83,7 +83,7 @@ void CC3VertexColors::setColor4F( const ccColor4F& aColor, GLuint index )
 
 ccColor4B CC3VertexColors::getColor4BAt( GLuint index )
 {
-	switch (_elementType) {
+	switch (m_elementType) {
 		case GL_FLOAT:
 			return CCC4BFromCCC4F(*(ccColor4F*)getAddressOfElement(index));
 		case GL_FIXED:
@@ -95,7 +95,7 @@ ccColor4B CC3VertexColors::getColor4BAt( GLuint index )
 
 void CC3VertexColors::setColor4B( const ccColor4B& aColor, GLuint index )
 {
-	switch (_elementType) {
+	switch (m_elementType) {
 		case GL_FLOAT:
 			*(ccColor4F*)getAddressOfElement(index) = CCC4FFromCCC4B(aColor);
 			break;
@@ -173,7 +173,7 @@ void CC3VertexColors::initWithTag( GLuint aTag, const std::string& aName )
 	super::initWithTag( aTag, aName );
 	{
 		setElementType( GL_UNSIGNED_BYTE );	// Use setter, so shouldNormalizeContent also set
-		_elementSize = 4;
+		m_elementSize = 4;
 	}
 }
 

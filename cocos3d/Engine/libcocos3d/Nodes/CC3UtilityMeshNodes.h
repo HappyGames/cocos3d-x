@@ -119,7 +119,7 @@ public:
 
 
 protected:
-	CC3Vector					_lineVertices[2];
+	CC3Vector					m_lineVertices[2];
 };
 
 /**
@@ -230,7 +230,7 @@ public:
 	void						initWithTag( GLuint aTag, const std::string& aName );
 
 protected:
-	bool						_shouldAlwaysMeasureParentBoundingBox : 1;
+	bool						m_shouldAlwaysMeasureParentBoundingBox : 1;
 };
 
 /**
@@ -444,7 +444,7 @@ public:
 	static CC3WireframeBoundingBoxNode*	nodeWithName( const std::string& aName );
 
 protected:
-	bool						_shouldAlwaysMeasureParentBoundingBox : 1;
+	bool						m_shouldAlwaysMeasureParentBoundingBox : 1;
 };
 
 /**
@@ -593,7 +593,7 @@ public:
 	static CC3DirectionMarkerNode* nodeWithName( const std::string& aName );
 	
 protected:
-	CC3Vector					_markerDirection;
+	CC3Vector					m_markerDirection;
 };
 
 /**
@@ -745,11 +745,11 @@ public:
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 protected:
-	GLenum						_attenuationMode;
-	GLenum						_performanceHint;
-	GLfloat						_density;
-	GLfloat						_startDistance;
-	GLfloat						_endDistance;
+	GLenum						m_attenuationMode;
+	GLenum						m_performanceHint;
+	GLfloat						m_density;
+	GLfloat						m_startDistance;
+	GLfloat						m_endDistance;
 };
 
 NS_COCOS3D_END

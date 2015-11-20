@@ -52,18 +52,18 @@ static inline CCSize ccNodeScaledSize( CCNode* aNode )
 
 Joystick::Joystick()
 {
-	_thumbNode = NULL;
-	_isTracking = false;
+	m_pThumbNode = NULL;
+	m_isTracking = false;
 }
 
 CCPoint Joystick::getVelocity()
 {
-	return _velocity;
+	return m_velocity;
 }
 
 AngularPoint Joystick::getAngularVelocity()
 {
-	return _angularVelocity;
+	return m_angularVelocity;
 }
 
 void Joystick::initWithThumb( CCNode* aNode, const CCSize& size )
@@ -72,19 +72,19 @@ void Joystick::initWithThumb( CCNode* aNode, const CCSize& size )
 	if ( super::init() ) 
 	{
 		initializeEvents();
-		_isTracking = false;
-		_velocity = CCPointZero;
-		_angularVelocity = AngularPointZero;
+		m_isTracking = false;
+		m_velocity = CCPointZero;
+		m_angularVelocity = AngularPointZero;
 		ignoreAnchorPointForPosition( false );
 		setAnchorPoint( ccp(0.5f, 0.5f) );
 
 		// Add thumb node as a child and position it at the center
 		// Must do following in this order: add thumb / set size / get anchor point
-		_thumbNode = aNode;
-		_thumbNode->setAnchorPoint( ccp(0.5f, 0.5f) );
-		addChild( _thumbNode, 1 );
+		m_pThumbNode = aNode;
+		m_pThumbNode->setAnchorPoint( ccp(0.5f, 0.5f) );
+		addChild( m_pThumbNode, 1 );
 		setContentSize( size );	
-		_thumbNode->setPosition( getAnchorPointInPoints() );
+		m_pThumbNode->setPosition( getAnchorPointInPoints() );
 	}
 }
 
@@ -128,8 +128,8 @@ Joystick* Joystick::joystickWithThumb( CCNode* thumbNode, CCNode* backgroundNode
 void Joystick::setContentSize( const CCSize& newSize )
 {
 	super::setContentSize( newSize );
-	_travelLimit = ccpMult(ccpSub(ccpFromSize(getContentSize()),
-								  ccpFromSize(ccNodeScaledSize(_thumbNode))), 0.5);
+	m_travelLimit = ccpMult(ccpSub(ccpFromSize(getContentSize()),
+								  ccpFromSize(ccNodeScaledSize(m_pThumbNode))), 0.5);
 }
 
 void Joystick::onEnter()
@@ -157,33 +157,33 @@ bool Joystick::ccTouchBegan( CCTouch* touch, CCEvent* event )
 
 void Joystick::ccTouchEnded( CCTouch* touch, CCEvent* event )
 {
-	CCAssert(_isTracking, "Touch ended that was never begun");
+	CCAssert(m_isTracking, "Touch ended that was never begun");
 	resetVelocity();
 }
 
 void Joystick::ccTouchCancelled( CCTouch* touch, CCEvent* event )
 {
-	CCAssert(_isTracking, "Touch cancelled that was never begun");
+	CCAssert(m_isTracking, "Touch cancelled that was never begun");
 	resetVelocity();
 }
 
 void Joystick::ccTouchMoved( CCTouch* touch, CCEvent* event )
 {
-	CCAssert(_isTracking, "Touch moved that was never begun");
+	CCAssert(m_isTracking, "Touch moved that was never begun");
 	trackVelocity( convertTouchToNodeSpace( touch ) );
 }
 
 bool Joystick::processTouchDownAt( const CCPoint& localPoint )
 {
-	if(_isTracking) 
+	if(m_isTracking) 
 		return false;
 	
 	CCSize cs = getContentSize();
 	CCRect nodeBounds = CCRectMake(0, 0, cs.width, cs.height);
 	if ( nodeBounds.containsPoint( localPoint ) )
 	{
-		_isTracking = true;
-		_thumbNode->stopAllActions();
+		m_isTracking = true;
+		m_pThumbNode->stopAllActions();
 		trackVelocity( localPoint );
 		return true;
 	}
@@ -198,36 +198,36 @@ void Joystick::trackVelocity( const CCPoint& nodeTouchPoint )
 	CCPoint relPoint = ccpSub(nodeTouchPoint, ankPt);
 	
 	// Determine the raw unconstrained velocity vector
-	CCPoint rawVelocity = CCPointMake(relPoint.x / _travelLimit.x,
-									  relPoint.y / _travelLimit.y);
+	CCPoint rawVelocity = CCPointMake(relPoint.x / m_travelLimit.x,
+									  relPoint.y / m_travelLimit.y);
 
 	// If necessary, normalize the velocity vector relative to the travel limits
 	float rawVelLen = ccpLength(rawVelocity);
-	_velocity = (rawVelLen <= 1.0) ? rawVelocity : ccpMult(rawVelocity, 1.0f/rawVelLen);
+	m_velocity = (rawVelLen <= 1.0) ? rawVelocity : ccpMult(rawVelocity, 1.0f/rawVelLen);
 
 	// Calculate the vector in angular coordinates
 	// ccpToAngle returns counterclockwise positive relative to X-axis.
 	// We want clockwise positive relative to the Y-axis.
-	float angle = 90.0f - CC_RADIANS_TO_DEGREES(ccpToAngle(_velocity));
+	float angle = 90.0f - CC_RADIANS_TO_DEGREES(ccpToAngle(m_velocity));
 	if ( angle > 180.0f ) 
 		angle -= 360.0f;
 
-	_angularVelocity.radius = ccpLength(_velocity);
-	_angularVelocity.heading = angle;
+	m_angularVelocity.radius = ccpLength(m_velocity);
+	m_angularVelocity.heading = angle;
 	
 	// Update the thumb's position, clamping it within the contentSize of the Joystick
-	if ( _thumbNode )
-		_thumbNode->setPosition( ccpAdd(ccpCompMult(_velocity, _travelLimit), ankPt) );
+	if ( m_pThumbNode )
+		m_pThumbNode->setPosition( ccpAdd(ccpCompMult(m_velocity, m_travelLimit), ankPt) );
 }
 
 void Joystick::resetVelocity()
 {
-	_isTracking = false;
-	_velocity = CCPointZero;
-	_angularVelocity = AngularPointZero;
+	m_isTracking = false;
+	m_velocity = CCPointZero;
+	m_angularVelocity = AngularPointZero;
 
-	if ( _thumbNode )
-		_thumbNode->runAction( CCActionEaseElasticOut::create( CCActionMoveTo::create( kThumbSpringBackDuration, getAnchorPointInPoints() ) ) );
+	if ( m_pThumbNode )
+		m_pThumbNode->runAction( CCActionEaseElasticOut::create( CCActionMoveTo::create( kThumbSpringBackDuration, getAnchorPointInPoints() ) ) );
 }
 
 NS_COCOS3D_END

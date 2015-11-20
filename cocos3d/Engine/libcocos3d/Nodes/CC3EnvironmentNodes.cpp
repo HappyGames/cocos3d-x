@@ -33,12 +33,12 @@ NS_COCOS3D_BEGIN
 
 CC3EnvironmentNode::CC3EnvironmentNode()
 {
-	_texture = NULL;
+	m_pTexture = NULL;
 }
 
 CC3EnvironmentNode::~CC3EnvironmentNode()
 {
-	CC_SAFE_RELEASE( _texture );
+	CC_SAFE_RELEASE( m_pTexture );
 }
 
 bool CC3EnvironmentNode::isLightProbe()
@@ -49,7 +49,7 @@ bool CC3EnvironmentNode::isLightProbe()
 void CC3EnvironmentNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_texture = NULL;
+	m_pTexture = NULL;
 }
 
 void CC3EnvironmentNode::initWithName( const std::string& name, CC3Texture* texture )
@@ -89,14 +89,14 @@ CC3EnvironmentNode* CC3EnvironmentNode::nodeWithTexture( CC3Texture* texture )
 
 CC3Texture* CC3EnvironmentNode::getTexture()
 {
-	return _texture;
+	return m_pTexture;
 }
 
 void CC3EnvironmentNode::setTexture( CC3Texture* texture )
 {
-	CC_SAFE_RELEASE( _texture );
+	CC_SAFE_RELEASE( m_pTexture );
 	CC_SAFE_RETAIN( texture );
-	_texture = texture;
+	m_pTexture = texture;
 }
 
 bool CC3LightProbe::isLightProbe()
@@ -106,19 +106,19 @@ bool CC3LightProbe::isLightProbe()
 
 ccColor4F CC3LightProbe::getDiffuseColor()
 {
-	return _diffuseColor; 
+	return m_diffuseColor; 
 }
 
 void CC3LightProbe::setDiffuseColor( const ccColor4F& aColor )
 {
-	_diffuseColor = aColor;
+	m_diffuseColor = aColor;
 	super::setDiffuseColor(aColor);	// pass along to any descendant
 }
 
 void CC3LightProbe::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_diffuseColor = kCCC4FWhite;
+	m_diffuseColor = kCCC4FWhite;
 }
 
 CC3LightProbe* CC3LightProbe::nodeWithTexture( CC3Texture* texture )

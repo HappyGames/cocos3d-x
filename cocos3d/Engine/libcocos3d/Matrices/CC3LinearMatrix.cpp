@@ -46,63 +46,63 @@ CC3LinearMatrix* CC3LinearMatrix::matrix()
 
 void CC3LinearMatrix::implPopulateZero() 
 { 
-	CC3Matrix3x3PopulateZero(&_contents); 
+	CC3Matrix3x3PopulateZero(&m_contents); 
 }
 
 void CC3LinearMatrix::implPopulateIdentity() 
 { 
-	CC3Matrix3x3PopulateIdentity(&_contents); 
+	CC3Matrix3x3PopulateIdentity(&m_contents); 
 }
 
 // Double-dispatch to the other matrix
 void CC3LinearMatrix::implPopulateFrom(CC3Matrix* aMatrix )
 { 
-	aMatrix->populateCC3Matrix3x3( &_contents ); 
+	aMatrix->populateCC3Matrix3x3( &m_contents ); 
 }
 
 void CC3LinearMatrix::implPopulateFromCC3Matrix3x3( CC3Matrix3x3* mtx )
 { 
-	CC3Matrix3x3PopulateFrom3x3(&_contents, mtx); 
+	CC3Matrix3x3PopulateFrom3x3(&m_contents, mtx); 
 }
 
 void CC3LinearMatrix::populateCC3Matrix3x3( CC3Matrix3x3* mtx )
 { 
-	CC3Matrix3x3PopulateFrom3x3(mtx, &_contents); 
+	CC3Matrix3x3PopulateFrom3x3(mtx, &m_contents); 
 }
 
 void CC3LinearMatrix::implPopulateFromCC3Matrix4x3( CC3Matrix4x3* mtx )
 { 
-	CC3Matrix3x3PopulateFrom4x3(&_contents, mtx); 
+	CC3Matrix3x3PopulateFrom4x3(&m_contents, mtx); 
 }
 
 void CC3LinearMatrix::populateCC3Matrix4x3( CC3Matrix4x3* mtx )
 { 
-	CC3Matrix4x3PopulateFrom3x3(mtx, &_contents); 
+	CC3Matrix4x3PopulateFrom3x3(mtx, &m_contents); 
 }
 
 void CC3LinearMatrix::implPopulateFromCC3Matrix4x4( CC3Matrix4x4* mtx )
 { 
-	CC3Matrix3x3PopulateFrom4x4(&_contents, mtx); 
+	CC3Matrix3x3PopulateFrom4x4(&m_contents, mtx); 
 }
 
 void CC3LinearMatrix::populateCC3Matrix4x4( CC3Matrix4x4* mtx )
 { 
-	CC3Matrix4x4PopulateFrom3x3(mtx, &_contents); 
+	CC3Matrix4x4PopulateFrom3x3(mtx, &m_contents); 
 }
 
 void CC3LinearMatrix::implPopulateFromRotation( const CC3Vector& aRotation )
 {
-	CC3Matrix3x3PopulateFromRotationYXZ(&_contents, aRotation);
+	CC3Matrix3x3PopulateFromRotationYXZ(&m_contents, aRotation);
 }
 
 void CC3LinearMatrix::implPopulateFromQuaternion( const CC3Quaternion& aQuaternion )
 {
-	CC3Matrix3x3PopulateFromQuaternion(&_contents, aQuaternion);
+	CC3Matrix3x3PopulateFromQuaternion(&m_contents, aQuaternion);
 }
 
 void CC3LinearMatrix::implPopulateFromScale( const CC3Vector& aScale )
 { 
-	CC3Matrix3x3PopulateFromScale(&_contents, aScale); 
+	CC3Matrix3x3PopulateFromScale(&m_contents, aScale); 
 }
 
 // Linear matrix unaffected by translation
@@ -113,32 +113,32 @@ void CC3LinearMatrix::implPopulateFromTranslation( const CC3Vector& aTranslation
 
 void CC3LinearMatrix::implPopulateToPointTowards( const CC3Vector& fwdDirection, const CC3Vector& upDirection )
 {
-	CC3Matrix3x3PopulateToPointTowards(&_contents, fwdDirection, upDirection);
+	CC3Matrix3x3PopulateToPointTowards(&m_contents, fwdDirection, upDirection);
 }
 
 CC3Vector CC3LinearMatrix::extractRotation() 
 { 
-	return CC3Matrix3x3ExtractRotationYXZ(&_contents); 
+	return CC3Matrix3x3ExtractRotationYXZ(&m_contents); 
 }
 
 CC3Quaternion CC3LinearMatrix::extractQuaternion() 
 { 
-	return CC3Matrix3x3ExtractQuaternion(&_contents); 
+	return CC3Matrix3x3ExtractQuaternion(&m_contents); 
 }
 
 CC3Vector CC3LinearMatrix::extractForwardDirection() 
 {
-	return CC3Matrix3x3ExtractForwardDirection(&_contents); 
+	return CC3Matrix3x3ExtractForwardDirection(&m_contents); 
 }
 
 CC3Vector CC3LinearMatrix::extractUpDirection() 
 { 
-	return CC3Matrix3x3ExtractUpDirection(&_contents); 
+	return CC3Matrix3x3ExtractUpDirection(&m_contents); 
 }
 
 CC3Vector CC3LinearMatrix::extractRightDirection() 
 { 
-	return CC3Matrix3x3ExtractRightDirection(&_contents); 
+	return CC3Matrix3x3ExtractRightDirection(&m_contents); 
 }
 
 CC3Vector CC3LinearMatrix::extractTranslation() 
@@ -148,22 +148,22 @@ CC3Vector CC3LinearMatrix::extractTranslation()
 
 void CC3LinearMatrix::implRotateBy( const CC3Vector& aRotation )
 {
-	CC3Matrix3x3RotateYXZBy(&_contents, aRotation); 
+	CC3Matrix3x3RotateYXZBy(&m_contents, aRotation); 
 }
 
 void CC3LinearMatrix::implRotateByQuaternion( const CC3Quaternion& aQuaternion )
 {
-	CC3Matrix3x3RotateByQuaternion(&_contents, aQuaternion);
+	CC3Matrix3x3RotateByQuaternion(&m_contents, aQuaternion);
 }
 
 void CC3LinearMatrix::orthonormalizeRotationStartingWith( unsigned int startColNum )
 {
-	CC3Matrix3x3Orthonormalize(&_contents, startColNum);
+	CC3Matrix3x3Orthonormalize(&m_contents, startColNum);
 }
 
 void CC3LinearMatrix::implScaleBy( const CC3Vector& aScale )
 { 
-	CC3Matrix3x3ScaleBy(&_contents, aScale); 
+	CC3Matrix3x3ScaleBy(&m_contents, aScale); 
 }
 
 // Linear matrix unaffected by translation
@@ -172,25 +172,25 @@ void CC3LinearMatrix::implTranslateBy( const CC3Vector& aTranslation )
 
 void CC3LinearMatrix::implMultiplyBy( CC3Matrix* aMatrix )
 {
-	aMatrix->multiplyIntoCC3Matrix3x3( &_contents );
+	aMatrix->multiplyIntoCC3Matrix3x3( &m_contents );
 }
 
 void CC3LinearMatrix::multiplyIntoCC3Matrix3x3( CC3Matrix3x3* mtx )
 {
 	if (m_isIdentity) return;
 	CC3Matrix3x3 mRslt;
-	CC3Matrix3x3Multiply(&mRslt, mtx, &_contents);
+	CC3Matrix3x3Multiply(&mRslt, mtx, &m_contents);
 	CC3Matrix3x3PopulateFrom3x3(mtx, &mRslt);
 }
 
 void CC3LinearMatrix::multiplyByCC3Matrix3x3( CC3Matrix3x3* mtx )
 {
 	if (m_isIdentity) {
-		CC3Matrix3x3PopulateFrom3x3(&_contents, mtx);
+		CC3Matrix3x3PopulateFrom3x3(&m_contents, mtx);
 	} else {
 		CC3Matrix3x3 mRslt;
-		CC3Matrix3x3Multiply(&mRslt, &_contents, mtx);
-		CC3Matrix3x3PopulateFrom3x3(&_contents, &mRslt);
+		CC3Matrix3x3Multiply(&mRslt, &m_contents, mtx);
+		CC3Matrix3x3PopulateFrom3x3(&m_contents, &mRslt);
 	}
 }
 
@@ -198,7 +198,7 @@ void CC3LinearMatrix::multiplyIntoCC3Matrix4x3( CC3Matrix4x3* mtx )
 {
 	if (m_isIdentity) return;
 	CC3Matrix4x3 mRslt, mMine;
-	CC3Matrix4x3PopulateFrom3x3(&mMine, &_contents);
+	CC3Matrix4x3PopulateFrom3x3(&mMine, &m_contents);
 	CC3Matrix4x3Multiply(&mRslt, mtx, &mMine);
 	CC3Matrix4x3PopulateFrom4x3(mtx, &mRslt);
 }
@@ -206,12 +206,12 @@ void CC3LinearMatrix::multiplyIntoCC3Matrix4x3( CC3Matrix4x3* mtx )
 void CC3LinearMatrix::multiplyByCC3Matrix4x3( CC3Matrix4x3* mtx )
 {
 	if (m_isIdentity) {
-		CC3Matrix3x3PopulateFrom4x3(&_contents, mtx);
+		CC3Matrix3x3PopulateFrom4x3(&m_contents, mtx);
 	} else {
 		CC3Matrix4x3 mRslt, mMine;
-		CC3Matrix4x3PopulateFrom3x3(&mMine, &_contents);
+		CC3Matrix4x3PopulateFrom3x3(&mMine, &m_contents);
 		CC3Matrix4x3Multiply(&mRslt, &mMine, mtx);
-		CC3Matrix3x3PopulateFrom4x3(&_contents, &mRslt);
+		CC3Matrix3x3PopulateFrom4x3(&m_contents, &mRslt);
 	}
 }
 
@@ -219,7 +219,7 @@ void CC3LinearMatrix::multiplyIntoCC3Matrix4x4( CC3Matrix4x4* mtx )
 {
 	if (m_isIdentity) return;
 	CC3Matrix4x4 mRslt, mMine;
-	CC3Matrix4x4PopulateFrom3x3(&mMine, &_contents);
+	CC3Matrix4x4PopulateFrom3x3(&mMine, &m_contents);
 	CC3Matrix4x4Multiply(&mRslt, mtx, &mMine);
 	CC3Matrix4x4PopulateFrom4x4(mtx, &mRslt);
 }
@@ -227,36 +227,36 @@ void CC3LinearMatrix::multiplyIntoCC3Matrix4x4( CC3Matrix4x4* mtx )
 void CC3LinearMatrix::multiplyByCC3Matrix4x4( CC3Matrix4x4* mtx )
 {
 	if (m_isIdentity) {
-		CC3Matrix3x3PopulateFrom4x4(&_contents, mtx);
+		CC3Matrix3x3PopulateFrom4x4(&m_contents, mtx);
 	} else {
 		CC3Matrix4x4 mRslt, mMine;
-		CC3Matrix4x4PopulateFrom3x3(&mMine, &_contents);
+		CC3Matrix4x4PopulateFrom3x3(&mMine, &m_contents);
 		CC3Matrix4x4Multiply(&mRslt, &mMine, mtx);
-		CC3Matrix3x3PopulateFrom4x4(&_contents, &mRslt);
+		CC3Matrix3x3PopulateFrom4x4(&m_contents, &mRslt);
 	}
 }
 
 void CC3LinearMatrix::implLeftMultiplyBy( CC3Matrix* aMatrix )
 {
-	aMatrix->leftMultiplyIntoCC3Matrix3x3( &_contents );
+	aMatrix->leftMultiplyIntoCC3Matrix3x3( &m_contents );
 }
 
 void CC3LinearMatrix::leftMultiplyIntoCC3Matrix3x3( CC3Matrix3x3* mtx )
 {
 	if (m_isIdentity) return;
 	CC3Matrix3x3 mRslt;
-	CC3Matrix3x3Multiply(&mRslt, &_contents, mtx);
+	CC3Matrix3x3Multiply(&mRslt, &m_contents, mtx);
 	CC3Matrix3x3PopulateFrom3x3(mtx, &mRslt);
 }
 
 void CC3LinearMatrix::leftMultiplyByCC3Matrix3x3( CC3Matrix3x3* mtx )
 {
 	if (m_isIdentity) {
-		CC3Matrix3x3PopulateFrom3x3(&_contents, mtx);
+		CC3Matrix3x3PopulateFrom3x3(&m_contents, mtx);
 	} else {
 		CC3Matrix3x3 mRslt;
-		CC3Matrix3x3Multiply(&mRslt, mtx, &_contents);
-		CC3Matrix3x3PopulateFrom3x3(&_contents, &mRslt);
+		CC3Matrix3x3Multiply(&mRslt, mtx, &m_contents);
+		CC3Matrix3x3PopulateFrom3x3(&m_contents, &mRslt);
 	}
 }
 
@@ -264,7 +264,7 @@ void CC3LinearMatrix::leftMultiplyIntoCC3Matrix4x3( CC3Matrix4x3* mtx )
 {
 	if (m_isIdentity) return;
 	CC3Matrix4x3 mRslt, mMine;
-	CC3Matrix4x3PopulateFrom3x3(&mMine, &_contents);
+	CC3Matrix4x3PopulateFrom3x3(&mMine, &m_contents);
 	CC3Matrix4x3Multiply(&mRslt, &mMine, mtx);
 	CC3Matrix4x3PopulateFrom4x3(mtx, &mRslt);
 }
@@ -272,12 +272,12 @@ void CC3LinearMatrix::leftMultiplyIntoCC3Matrix4x3( CC3Matrix4x3* mtx )
 void CC3LinearMatrix::leftMultiplyByCC3Matrix4x3( CC3Matrix4x3* mtx )
 {
 	if (m_isIdentity) {
-		CC3Matrix3x3PopulateFrom4x3(&_contents, mtx);
+		CC3Matrix3x3PopulateFrom4x3(&m_contents, mtx);
 	} else {
 		CC3Matrix4x3 mRslt, mMine;
-		CC3Matrix4x3PopulateFrom3x3(&mMine, &_contents);
+		CC3Matrix4x3PopulateFrom3x3(&mMine, &m_contents);
 		CC3Matrix4x3Multiply(&mRslt, mtx, &mMine);
-		CC3Matrix3x3PopulateFrom4x3(&_contents, &mRslt);
+		CC3Matrix3x3PopulateFrom4x3(&m_contents, &mRslt);
 	}
 }
 
@@ -285,7 +285,7 @@ void CC3LinearMatrix::leftMultiplyIntoCC3Matrix4x4( CC3Matrix4x4* mtx )
 {
 	if (m_isIdentity) return;
 	CC3Matrix4x4 mRslt, mMine;
-	CC3Matrix4x4PopulateFrom3x3(&mMine, &_contents);
+	CC3Matrix4x4PopulateFrom3x3(&mMine, &m_contents);
 	CC3Matrix4x4Multiply(&mRslt, &mMine, mtx);
 	CC3Matrix4x4PopulateFrom4x4(mtx, &mRslt);
 }
@@ -293,12 +293,12 @@ void CC3LinearMatrix::leftMultiplyIntoCC3Matrix4x4( CC3Matrix4x4* mtx )
 void CC3LinearMatrix::leftMultiplyByCC3Matrix4x4( CC3Matrix4x4* mtx )
 {
 	if (m_isIdentity) {
-		CC3Matrix3x3PopulateFrom4x4(&_contents, mtx);
+		CC3Matrix3x3PopulateFrom4x4(&m_contents, mtx);
 	} else {
 		CC3Matrix4x4 mRslt, mMine;
-		CC3Matrix4x4PopulateFrom3x3(&mMine, &_contents);
+		CC3Matrix4x4PopulateFrom3x3(&mMine, &m_contents);
 		CC3Matrix4x4Multiply(&mRslt, mtx, &mMine);
-		CC3Matrix3x3PopulateFrom4x4(&_contents, &mRslt);
+		CC3Matrix3x3PopulateFrom4x4(&m_contents, &mRslt);
 	}
 }
 
@@ -306,14 +306,14 @@ void CC3LinearMatrix::leftMultiplyByCC3Matrix4x4( CC3Matrix4x4* mtx )
 CC3Vector CC3LinearMatrix::transformLocation( const CC3Vector& aLocation )
 {
 	if (m_isIdentity) return aLocation;
-	return CC3Matrix3x3TransformCC3Vector(&_contents, aLocation);
+	return CC3Matrix3x3TransformCC3Vector(&m_contents, aLocation);
 }
 
 // Short-circuit if this is an identity matrix
 CC3Vector CC3LinearMatrix::transformDirection( const CC3Vector& aDirection )
 {
 	if (m_isIdentity) return aDirection;
-	return CC3Matrix3x3TransformCC3Vector(&_contents, aDirection);
+	return CC3Matrix3x3TransformCC3Vector(&m_contents, aDirection);
 }
 
 // Short-circuit if this is an identity matrix
@@ -323,9 +323,9 @@ CC3Vector4 CC3LinearMatrix::transformHomogeneousVector( const CC3Vector4& v )
 		return v;
 	
 	CC3Vector4 vOut;
-	vOut.x = (_contents.c1r1 * v.x) + (_contents.c2r1 * v.y) + (_contents.c3r1 * v.z);
-	vOut.y = (_contents.c1r2 * v.x) + (_contents.c2r2 * v.y) + (_contents.c3r2 * v.z);
-	vOut.z = (_contents.c1r3 * v.x) + (_contents.c2r3 * v.y) + (_contents.c3r3 * v.z);
+	vOut.x = (m_contents.c1r1 * v.x) + (m_contents.c2r1 * v.y) + (m_contents.c3r1 * v.z);
+	vOut.y = (m_contents.c1r2 * v.x) + (m_contents.c2r2 * v.y) + (m_contents.c3r2 * v.z);
+	vOut.z = (m_contents.c1r3 * v.x) + (m_contents.c2r3 * v.y) + (m_contents.c3r3 * v.z);
 	vOut.w = v.w;
 	return vOut;
 }
@@ -334,14 +334,14 @@ CC3Vector4 CC3LinearMatrix::transformHomogeneousVector( const CC3Vector4& v )
 void CC3LinearMatrix::transpose() 
 {
 	if (m_isIdentity) return;
-	CC3Matrix3x3Transpose(&_contents);
+	CC3Matrix3x3Transpose(&m_contents);
 }
 
 // Short-circuit if this is an identity matrix
 bool CC3LinearMatrix::invertAdjoint() 
 {
 	if (m_isIdentity) return true;
-	return CC3Matrix3x3InvertAdjoint(&_contents);
+	return CC3Matrix3x3InvertAdjoint(&m_contents);
 }
 
 // Short-circuit if this is an identity matrix
@@ -349,7 +349,7 @@ bool CC3LinearMatrix::invertAdjoint()
 void CC3LinearMatrix::invertRigid() 
 {
 	if (m_isIdentity) return;
-	CC3Matrix3x3Transpose(&_contents);
+	CC3Matrix3x3Transpose(&m_contents);
 }
 
 NS_COCOS3D_END

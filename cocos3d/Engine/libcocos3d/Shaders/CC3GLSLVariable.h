@@ -820,9 +820,9 @@ public:
 	virtual void				populateFromGL();
 
 protected:
-	size_t						_varLen;
-	GLvoid*						_varValue;
-	GLvoid*						_glVarValue;
+	size_t						m_varLen;
+	GLvoid*						m_varValue;
+	GLvoid*						m_glVarValue;
 };
 
 /**
@@ -870,8 +870,8 @@ public:
 	virtual void				setGLValue();
 
 protected:
-	CC3GLSLUniform*				_programUniform;
-	CC3GLSLUniform*				_pureColorProgramUniform;
+	CC3GLSLUniform*				m_pProgramUniform;
+	CC3GLSLUniform*				m_pPureColorProgramUniform;
 };
 
 NS_COCOS3D_END

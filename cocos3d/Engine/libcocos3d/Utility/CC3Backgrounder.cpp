@@ -46,14 +46,14 @@ CC3Backgrounder::~CC3Backgrounder()
 
 long CC3Backgrounder::getQueuePriority()
 {
-	return _queuePriority; 
+	return m_queuePriority; 
 }
 
 void CC3Backgrounder::setQueuePriority( long queuePriority )
 {
-	if (queuePriority == _queuePriority) 
+	if (queuePriority == m_queuePriority) 
 		return;
-	_queuePriority = queuePriority;
+	m_queuePriority = queuePriority;
 	updateTaskQueuePriority();
 }
 
@@ -84,7 +84,7 @@ void CC3Backgrounder::updateTaskQueuePriority()
 
 void CC3Backgrounder::runBlock( bgBlock block )
 {
-	if (_shouldRunTasksOnRequestingThread) 
+	if (m_shouldRunTasksOnRequestingThread) 
 	{
 		runBlockNow( block );
 	} else {
@@ -94,7 +94,7 @@ void CC3Backgrounder::runBlock( bgBlock block )
 
 void CC3Backgrounder::runBlock( bgBlock block, float seconds )
 {
-	if (_shouldRunTasksOnRequestingThread) {
+	if (m_shouldRunTasksOnRequestingThread) {
 		// [NSThread.currentThread runBlock: block after: seconds];
 	} else {
 		// dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)),

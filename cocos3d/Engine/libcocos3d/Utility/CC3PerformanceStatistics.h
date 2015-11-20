@@ -231,17 +231,17 @@ public:
 	virtual CCObject*			copyWithZone( CCZone* zone );
 
 protected:
-	GLuint						_updatesHandled;
-	float						_accumulatedUpdateTime;
-	GLuint						_nodesUpdated;
-	GLuint						_nodesTransformed;
+	GLuint						m_updatesHandled;
+	float						m_accumulatedUpdateTime;
+	GLuint						m_nodesUpdated;
+	GLuint						m_nodesTransformed;
 	
-	GLuint						_framesHandled;
-	float						_accumulatedFrameTime;
-	GLuint						_nodesVisitedForDrawing;
-	GLuint						_nodesDrawn;
-	GLuint						_drawingCallsMade;
-	GLuint						_facesPresented;
+	GLuint						m_framesHandled;
+	float						m_accumulatedFrameTime;
+	GLuint						m_nodesVisitedForDrawing;
+	GLuint						m_nodesDrawn;
+	GLuint						m_drawingCallsMade;
+	GLuint						m_facesPresented;
 };
 
 // Number of buckets in each of the histograms
@@ -294,8 +294,8 @@ public:
 	virtual	CCObject*			copyWithZone( CCZone* zone );
 
 protected:
-	GLint						_updateRateHistogram[kCC3RateHistogramSize];
-	GLint						_frameRateHistogram[kCC3RateHistogramSize];
+	GLint						m_updateRateHistogram[kCC3RateHistogramSize];
+	GLint						m_frameRateHistogram[kCC3RateHistogramSize];
 };
 
 NS_COCOS3D_END

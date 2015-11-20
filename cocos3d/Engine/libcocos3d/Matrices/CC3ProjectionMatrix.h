@@ -108,7 +108,7 @@ protected:
 	virtual void			implLeftMultiplyBy( CC3Matrix* aMatrix );
 
 protected:
-	CC3Matrix4x4			_contents;
+	CC3Matrix4x4			m_contents;
 };
 
 NS_COCOS3D_END

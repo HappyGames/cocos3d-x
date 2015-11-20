@@ -195,10 +195,10 @@ public:
 	void						drawMeshWithVisitor( CC3NodeDrawingVisitor* visitor );
 	
 protected:
-	CCArray*					_skinSections;
-	CC3Matrix*					_skeletalTransformMatrix;
-	CC3Matrix*					_skeletalTransformMatrixInverted;
-	CC3DeformedFaceArray*		_deformedFaces;
+	CCArray*					m_skinSections;
+	CC3Matrix*					m_pSkeletalTransformMatrix;
+	CC3Matrix*					m_pSkeletalTransformMatrixInverted;
+	CC3DeformedFaceArray*		m_deformedFaces;
 };
 
 NS_COCOS3D_END

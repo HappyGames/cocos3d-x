@@ -42,7 +42,7 @@ CC3VertexBoneIndices* CC3VertexBoneIndices::vertexArray()
 
 GLuint CC3VertexBoneIndices::getBoneIndexForBoneInfluence( GLuint influenceIndex, GLuint vtxIndex )
 {
-	if (_elementType == GL_UNSIGNED_BYTE) 
+	if (m_elementType == GL_UNSIGNED_BYTE) 
 	{
 		GLubyte* boneIndices = (GLubyte*)getAddressOfElement(vtxIndex);
 		return boneIndices[influenceIndex];
@@ -56,7 +56,7 @@ GLuint CC3VertexBoneIndices::getBoneIndexForBoneInfluence( GLuint influenceIndex
 
 void CC3VertexBoneIndices::setBoneIndex( GLuint boneIndex, GLuint influenceIndex, GLuint vtxIndex )
 {
-	if (_elementType == GL_UNSIGNED_BYTE) 
+	if (m_elementType == GL_UNSIGNED_BYTE) 
 	{
 		GLubyte* boneIndices = (GLubyte*)getAddressOfElement(vtxIndex);
 		boneIndices[influenceIndex] = boneIndex;
@@ -74,7 +74,7 @@ GLvoid* CC3VertexBoneIndices::getBoneIndicesAt( GLuint vtxIndex )
 void CC3VertexBoneIndices::setBoneIndices( GLvoid* boneIndices, GLuint vtxIndex )
 {
 	GLint numMtx = getElementSize();
-	if (_elementType == GL_UNSIGNED_BYTE) 
+	if (m_elementType == GL_UNSIGNED_BYTE) 
 	{
 		GLubyte* vtxBoneIndices = (GLubyte*)getAddressOfElement(vtxIndex);
 		for (int i = 0; i < numMtx; i++) vtxBoneIndices[i] = ((GLubyte*)boneIndices)[i];
@@ -93,8 +93,8 @@ void CC3VertexBoneIndices::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_elementType = GL_UNSIGNED_BYTE;
-		_elementSize = 0;
+		m_elementType = GL_UNSIGNED_BYTE;
+		m_elementSize = 0;
 	}
 }
 

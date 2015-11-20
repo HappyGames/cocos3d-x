@@ -33,51 +33,51 @@ NS_COCOS3D_BEGIN
 
 CC3SkinnedBone::CC3SkinnedBone()
 {
-	_skinNode = NULL;
-	_bone = NULL;
-	_transformMatrix = NULL;
+	m_pSkinNode = NULL;
+	m_pBone = NULL;
+	m_transformMatrix = NULL;
 }
 
 CC3SkinnedBone::~CC3SkinnedBone()
 {
-	if ( _skinNode )
+	if ( m_pSkinNode )
 	{
-		_skinNode->removeTransformListener( this );
-		_skinNode = NULL;								// weak reference
+		m_pSkinNode->removeTransformListener( this );
+		m_pSkinNode = NULL;								// weak reference
 	}
 
-	if ( _bone )
+	if ( m_pBone )
 	{
-		_bone->removeTransformListener( this );
-		_bone = NULL;									// weak reference
+		m_pBone->removeTransformListener( this );
+		m_pBone = NULL;									// weak reference
 	}
 
-	CC_SAFE_RELEASE( _transformMatrix );
+	CC_SAFE_RELEASE( m_transformMatrix );
 }
 
 CC3Bone* CC3SkinnedBone::getBone()
 {
-	return _bone;
+	return m_pBone;
 }
 
 
 void CC3SkinnedBone::markTransformDirty()
 {
-	if ( _transformMatrix )
-		_transformMatrix->setIsDirty( true );
+	if ( m_transformMatrix )
+		m_transformMatrix->setIsDirty( true );
 }
 
 CC3Matrix* CC3SkinnedBone::getTransformMatrix()
 {
-	if ( _transformMatrix->isDirty() ) 
+	if ( m_transformMatrix->isDirty() ) 
 	{
-		_transformMatrix->populateFrom( _skinNode->getSkeletalTransformMatrixInverted() );
-		_transformMatrix->multiplyBy( _bone->getSkeletalTransformMatrix() );
-		_transformMatrix->multiplyBy( _bone->getRestPoseSkeletalTransformMatrixInverted() );
-		_transformMatrix->multiplyBy( _skinNode->getSkeletalTransformMatrix() );
-		_transformMatrix->setIsDirty( false );
+		m_transformMatrix->populateFrom( m_pSkinNode->getSkeletalTransformMatrixInverted() );
+		m_transformMatrix->multiplyBy( m_pBone->getSkeletalTransformMatrix() );
+		m_transformMatrix->multiplyBy( m_pBone->getRestPoseSkeletalTransformMatrixInverted() );
+		m_transformMatrix->multiplyBy( m_pSkinNode->getSkeletalTransformMatrix() );
+		m_transformMatrix->setIsDirty( false );
 	}
-	return _transformMatrix;
+	return m_transformMatrix;
 }
 
 // This will raise an assertion without a skin node or bone.
@@ -91,14 +91,14 @@ void CC3SkinnedBone::initWithSkin( CC3SkinMeshNode* aNode, CC3Bone* aBone )
 	CCAssert(aNode, "CC3SkinnedBone must be initialized with a skin node.");
 	CCAssert(aBone, "CC3SkinnedBone must be initialized with a bone.");
 
-	_skinNode = aNode;							// weak reference
-	_skinNode->addTransformListener( this );
+	m_pSkinNode = aNode;							// weak reference
+	m_pSkinNode->addTransformListener( this );
 
-	_bone = aBone;								// weak reference
-	_bone->addTransformListener( this );
+	m_pBone = aBone;								// weak reference
+	m_pBone->addTransformListener( this );
 
-	_transformMatrix = CC3AffineMatrix::matrix();	// retained
-	_transformMatrix->retain();
+	m_transformMatrix = CC3AffineMatrix::matrix();	// retained
+	m_transformMatrix->retain();
 	markTransformDirty();
 }
 
@@ -119,8 +119,8 @@ CC3SkinnedBone* CC3SkinnedBone::skinnedBoneWithSkin( CC3SkinMeshNode* aNode, CC3
 void CC3SkinnedBone::nodeWasTransformed( CC3Node* aNode )
 {
 	markTransformDirty();
-	if (aNode == _bone)
-		_skinNode->boneWasTransformed( _bone );
+	if (aNode == m_pBone)
+		m_pSkinNode->boneWasTransformed( m_pBone );
 }
 
 /**
@@ -129,11 +129,11 @@ void CC3SkinnedBone::nodeWasTransformed( CC3Node* aNode )
  */
 void CC3SkinnedBone::nodeWasDestroyed( CC3Node* aNode )
 {
-	if (aNode == _skinNode) 
-		_skinNode = NULL;	// weak reference
+	if (aNode == m_pSkinNode) 
+		m_pSkinNode = NULL;	// weak reference
 	
-	if (aNode == _bone) 
-		_bone = NULL;		// weak reference
+	if (aNode == m_pBone) 
+		m_pBone = NULL;		// weak reference
 }
 
 NS_COCOS3D_END

@@ -33,110 +33,110 @@ NS_COCOS3D_BEGIN
 
 void CC3PerformanceStatistics::addUpdateTime( float deltaTime )
 {
-	_updatesHandled++;
-	_accumulatedUpdateTime += deltaTime;
+	m_updatesHandled++;
+	m_accumulatedUpdateTime += deltaTime;
 }
 
 void CC3PerformanceStatistics::addNodesUpdated( GLuint nodeCount )
 {
-	_nodesUpdated += nodeCount; 
+	m_nodesUpdated += nodeCount; 
 }
 
 void CC3PerformanceStatistics::incrementNodesUpdated() 
 {
-	_nodesUpdated++; 
+	m_nodesUpdated++; 
 }
 
 void CC3PerformanceStatistics::addNodesTransformed( GLuint nodeCount )
 {
-	_nodesTransformed += nodeCount; 
+	m_nodesTransformed += nodeCount; 
 }
 
 void CC3PerformanceStatistics::incrementNodesTransformed()
 {
-	_nodesTransformed++; 
+	m_nodesTransformed++; 
 }
 
 void CC3PerformanceStatistics::addFrameTime( float deltaTime )
 {
-	_framesHandled++;
-	_accumulatedFrameTime += deltaTime;
+	m_framesHandled++;
+	m_accumulatedFrameTime += deltaTime;
 }
 
 void CC3PerformanceStatistics::addNodesVisitedForDrawing( GLuint nodeCount )
 {
-	_nodesVisitedForDrawing += nodeCount; 
+	m_nodesVisitedForDrawing += nodeCount; 
 }
 
 void CC3PerformanceStatistics::incrementNodesVisitedForDrawing()
 {
-	_nodesVisitedForDrawing++; 
+	m_nodesVisitedForDrawing++; 
 }
 
 void CC3PerformanceStatistics::addNodesDrawn( GLuint nodeCount )
 {
-	_nodesDrawn += nodeCount; 
+	m_nodesDrawn += nodeCount; 
 }
 
 void CC3PerformanceStatistics::incrementNodesDrawn()
 {
-	_nodesDrawn++; 
+	m_nodesDrawn++; 
 }
 
 void CC3PerformanceStatistics::addDrawingCallsMade( GLuint callCount )
 {
-	_drawingCallsMade += callCount; 
+	m_drawingCallsMade += callCount; 
 }
 
 void CC3PerformanceStatistics::addFacesPresented( GLuint faceCount )
 {
-	_facesPresented += faceCount; 
+	m_facesPresented += faceCount; 
 }
 
 void CC3PerformanceStatistics::addSingleCallFacesPresented( GLuint faceCount )
 {
-	_drawingCallsMade++;
-	_facesPresented += faceCount;
+	m_drawingCallsMade++;
+	m_facesPresented += faceCount;
 }
 
 GLfloat CC3PerformanceStatistics::getUpdateRate()
 {
-	return _accumulatedUpdateTime ? ((GLfloat)_updatesHandled / _accumulatedUpdateTime) : 0.0f;
+	return m_accumulatedUpdateTime ? ((GLfloat)m_updatesHandled / m_accumulatedUpdateTime) : 0.0f;
 }
 
 GLfloat CC3PerformanceStatistics::getAverageNodesUpdatedPerUpdate()
 {
-	return _framesHandled ? ((GLfloat)_nodesUpdated / (GLfloat)_updatesHandled) : 0.0f;
+	return m_framesHandled ? ((GLfloat)m_nodesUpdated / (GLfloat)m_updatesHandled) : 0.0f;
 }
 
 GLfloat CC3PerformanceStatistics::getAverageNodesTransformedPerUpdate()
 {
-	return _framesHandled ? ((GLfloat)_nodesTransformed / (GLfloat)_updatesHandled) : 0.0f;
+	return m_framesHandled ? ((GLfloat)m_nodesTransformed / (GLfloat)m_updatesHandled) : 0.0f;
 }
 
 GLfloat CC3PerformanceStatistics::getFrameRate()
 {
-	return (_accumulatedFrameTime != 0.0f) ? ((GLfloat)_framesHandled / _accumulatedFrameTime) : 0.0f;
+	return (m_accumulatedFrameTime != 0.0f) ? ((GLfloat)m_framesHandled / m_accumulatedFrameTime) : 0.0f;
 }
 
 GLfloat CC3PerformanceStatistics::getAverageNodesDrawnPerFrame()
 {
-	return _framesHandled ? ((GLfloat)_nodesDrawn / (GLfloat)_framesHandled) : 0.0f;
+	return m_framesHandled ? ((GLfloat)m_nodesDrawn / (GLfloat)m_framesHandled) : 0.0f;
 }
 
 GLfloat CC3PerformanceStatistics::getAverageNodesVisitedForDrawingPerFrame()
 {
-	return _framesHandled ? ((GLfloat)_nodesVisitedForDrawing / (GLfloat)_framesHandled) : 0.0f;
+	return m_framesHandled ? ((GLfloat)m_nodesVisitedForDrawing / (GLfloat)m_framesHandled) : 0.0f;
 }
 
 GLfloat CC3PerformanceStatistics::getAverageDrawingCallsMadePerFrame()
 {
-	return _framesHandled ? ((GLfloat)_drawingCallsMade / (GLfloat)_framesHandled) : 0.0f;
+	return m_framesHandled ? ((GLfloat)m_drawingCallsMade / (GLfloat)m_framesHandled) : 0.0f;
 }
 
 GLfloat CC3PerformanceStatistics::getAverageFacesPresentedPerFrame()
 {
-	return _framesHandled ? ((GLfloat)_facesPresented / (GLfloat)_framesHandled) : 0.0f;
+	return m_framesHandled ? ((GLfloat)m_facesPresented / (GLfloat)m_framesHandled) : 0.0f;
 }
 
 void CC3PerformanceStatistics::init()
@@ -155,32 +155,32 @@ CC3PerformanceStatistics* CC3PerformanceStatistics::statistics()
 
 void CC3PerformanceStatistics::reset()
 {
-	_updatesHandled = 0;
-	_accumulatedUpdateTime = 0;
-	_nodesUpdated = 0;
-	_nodesTransformed = 0;
+	m_updatesHandled = 0;
+	m_accumulatedUpdateTime = 0;
+	m_nodesUpdated = 0;
+	m_nodesTransformed = 0;
 	
-	_framesHandled = 0;
-	_accumulatedFrameTime = 0.0;
-	_nodesVisitedForDrawing = 0;
-	_nodesDrawn = 0;
-	_drawingCallsMade = 0;
-	_facesPresented = 0;
+	m_framesHandled = 0;
+	m_accumulatedFrameTime = 0.0;
+	m_nodesVisitedForDrawing = 0;
+	m_nodesDrawn = 0;
+	m_drawingCallsMade = 0;
+	m_facesPresented = 0;
 }
 
 void CC3PerformanceStatistics::populateFrom( CC3PerformanceStatistics* another )
 {
-	_updatesHandled = another->getUpdatesHandled();
-	_accumulatedUpdateTime = another->getAccumulatedUpdateTime();
-	_nodesUpdated = another->getNodesUpdated();
-	_nodesTransformed = another->getNodesTransformed();
+	m_updatesHandled = another->getUpdatesHandled();
+	m_accumulatedUpdateTime = another->getAccumulatedUpdateTime();
+	m_nodesUpdated = another->getNodesUpdated();
+	m_nodesTransformed = another->getNodesTransformed();
 	
-	_framesHandled = another->getFramesHandled();
-	_accumulatedFrameTime = another->getAccumulatedFrameTime();
-	_nodesVisitedForDrawing = another->getNodesVisitedForDrawing();
-	_nodesDrawn = another->getNodesDrawn();
-	_drawingCallsMade = another->getDrawingCallsMade();
-	_facesPresented = another->getFacesPresented();
+	m_framesHandled = another->getFramesHandled();
+	m_accumulatedFrameTime = another->getAccumulatedFrameTime();
+	m_nodesVisitedForDrawing = another->getNodesVisitedForDrawing();
+	m_nodesDrawn = another->getNodesDrawn();
+	m_drawingCallsMade = another->getDrawingCallsMade();
+	m_facesPresented = another->getFacesPresented();
 }
 
 CCObject* CC3PerformanceStatistics::copyWithZone( CCZone* zone )
@@ -200,62 +200,62 @@ std::string CC3PerformanceStatistics::fullDescription()
 
 GLuint CC3PerformanceStatistics::getFacesPresented()
 {
-	return _facesPresented;
+	return m_facesPresented;
 }
 
 GLuint CC3PerformanceStatistics::getDrawingCallsMade()
 {
-	return _drawingCallsMade;
+	return m_drawingCallsMade;
 }
 
 GLuint CC3PerformanceStatistics::getNodesDrawn()
 {
-	return _nodesDrawn;
+	return m_nodesDrawn;
 }
 
 GLuint CC3PerformanceStatistics::getNodesVisitedForDrawing()
 {
-	return _nodesVisitedForDrawing;
+	return m_nodesVisitedForDrawing;
 }
 
 GLfloat CC3PerformanceStatistics::getAccumulatedFrameTime()
 {
-	return _accumulatedFrameTime;
+	return m_accumulatedFrameTime;
 }
 
 GLuint CC3PerformanceStatistics::getFramesHandled()
 {
-	return _framesHandled;
+	return m_framesHandled;
 }
 
 GLuint CC3PerformanceStatistics::getNodesTransformed()
 {
-	return _nodesTransformed;
+	return m_nodesTransformed;
 }
 
 GLuint CC3PerformanceStatistics::getNodesUpdated()
 {
-	return _nodesUpdated;
+	return m_nodesUpdated;
 }
 
 GLfloat CC3PerformanceStatistics::getAccumulatedUpdateTime()
 {
-	return _accumulatedUpdateTime;
+	return m_accumulatedUpdateTime;
 }
 
 GLuint CC3PerformanceStatistics::getUpdatesHandled()
 {
-	return _updatesHandled;
+	return m_updatesHandled;
 }
 
 GLint* CC3PerformanceStatisticsHistogram::getUpdateRateHistogram()
 {
-	return _updateRateHistogram; 
+	return m_updateRateHistogram; 
 }
 	   
 GLint* CC3PerformanceStatisticsHistogram::getFrameRateHistogram()
 {
-	return _frameRateHistogram; 
+	return m_frameRateHistogram; 
 }
 	   
 GLint CC3PerformanceStatisticsHistogram::getIndexOfInterval( float deltaTime )
@@ -266,27 +266,27 @@ GLint CC3PerformanceStatisticsHistogram::getIndexOfInterval( float deltaTime )
 void CC3PerformanceStatisticsHistogram::addUpdateTime( float deltaTime )
 {
 	super::addUpdateTime( deltaTime );
-	_updateRateHistogram[getIndexOfInterval(deltaTime)]++;
+	m_updateRateHistogram[getIndexOfInterval(deltaTime)]++;
 }
 
 void CC3PerformanceStatisticsHistogram::addFrameTime( float deltaTime )
 {
 	super::addFrameTime( deltaTime );
-	_frameRateHistogram[getIndexOfInterval(deltaTime)]++;
+	m_frameRateHistogram[getIndexOfInterval(deltaTime)]++;
 }
 
 void CC3PerformanceStatisticsHistogram::reset()
 {
 	super::reset();
-	memset(_frameRateHistogram, 0, kCC3RateHistogramSize * sizeof(_frameRateHistogram[0]));
-	memset(_updateRateHistogram, 0, kCC3RateHistogramSize * sizeof(_updateRateHistogram[0]));
+	memset(m_frameRateHistogram, 0, kCC3RateHistogramSize * sizeof(m_frameRateHistogram[0]));
+	memset(m_updateRateHistogram, 0, kCC3RateHistogramSize * sizeof(m_updateRateHistogram[0]));
 }
 
 void CC3PerformanceStatisticsHistogram::populateFrom( CC3PerformanceStatisticsHistogram* another )
 {
 	super::populateFrom( another );
-	memcpy(_frameRateHistogram, another->getFrameRateHistogram(), kCC3RateHistogramSize * sizeof(_frameRateHistogram[0]));
-	memcpy(_updateRateHistogram, another->getUpdateRateHistogram(), kCC3RateHistogramSize * sizeof(_updateRateHistogram[0]));
+	memcpy(m_frameRateHistogram, another->getFrameRateHistogram(), kCC3RateHistogramSize * sizeof(m_frameRateHistogram[0]));
+	memcpy(m_updateRateHistogram, another->getUpdateRateHistogram(), kCC3RateHistogramSize * sizeof(m_updateRateHistogram[0]));
 }
 
 CCObject* CC3PerformanceStatisticsHistogram::copyWithZone( CCZone* zone )

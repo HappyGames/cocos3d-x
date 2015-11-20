@@ -35,35 +35,35 @@ NS_COCOS3D_BEGIN
 
 CC3ModelSampleFactory::CC3ModelSampleFactory()
 {
-	_teapotVertexLocations = NULL;
-	_teapotVertexNormals = NULL;
-	_teapotVertexIndices = NULL;
-	_teapotVertexTextureCoordinates = NULL;
-	_teapotVertexColors = NULL;
-	_texturedTeapotMesh = NULL;
-	_multicoloredTeapotMesh  = NULL;
-	_unicoloredTeapotMesh = NULL;
+	m_teapotVertexLocations = NULL;
+	m_teapotVertexNormals = NULL;
+	m_teapotVertexIndices = NULL;
+	m_teapotVertexTextureCoordinates = NULL;
+	m_teapotVertexColors = NULL;
+	m_pTexturedTeapotMesh = NULL;
+	m_pMulticoloredTeapotMesh  = NULL;
+	m_pUnicoloredTeapotMesh = NULL;
 }
 
 CC3ModelSampleFactory::~CC3ModelSampleFactory()
 {
-	CC_SAFE_RELEASE( _teapotVertexLocations );
-	CC_SAFE_RELEASE( _teapotVertexNormals );
-	CC_SAFE_RELEASE( _teapotVertexIndices );
-	CC_SAFE_RELEASE( _teapotVertexTextureCoordinates );
-	CC_SAFE_RELEASE( _teapotVertexColors );
-	CC_SAFE_RELEASE( _texturedTeapotMesh );
-	CC_SAFE_RELEASE( _multicoloredTeapotMesh );
-	CC_SAFE_RELEASE( _unicoloredTeapotMesh );
+	CC_SAFE_RELEASE( m_teapotVertexLocations );
+	CC_SAFE_RELEASE( m_teapotVertexNormals );
+	CC_SAFE_RELEASE( m_teapotVertexIndices );
+	CC_SAFE_RELEASE( m_teapotVertexTextureCoordinates );
+	CC_SAFE_RELEASE( m_teapotVertexColors );
+	CC_SAFE_RELEASE( m_pTexturedTeapotMesh );
+	CC_SAFE_RELEASE( m_pMulticoloredTeapotMesh );
+	CC_SAFE_RELEASE( m_pUnicoloredTeapotMesh );
 }
 
 CC3Mesh* CC3ModelSampleFactory::makeTeapotMeshNamed( const std::string& aName )
 {
 	CC3Mesh* mesh = CC3Mesh::meshWithName( aName );
 	mesh->setShouldInterleaveVertices( false );
-	mesh->setVertexLocations( _teapotVertexLocations );
-	mesh->setVertexNormals( _teapotVertexNormals );
-	mesh->setVertexIndices( _teapotVertexIndices );
+	mesh->setVertexLocations( m_teapotVertexLocations );
+	mesh->setVertexNormals( m_teapotVertexNormals );
+	mesh->setVertexIndices( m_teapotVertexIndices );
 	return mesh;
 }
 
@@ -95,28 +95,28 @@ CC3MeshNode* CC3ModelSampleFactory::makeTexturableTeapotNamed( const std::string
 void CC3ModelSampleFactory::initTeapotVertexArrays()
 {	
 	// Vertex locations come from the teapot.h header file
-	_teapotVertexLocations = CC3VertexLocations::vertexArrayWithName( "TeapotVertices" );
-	_teapotVertexLocations->retain();
-	_teapotVertexLocations->setVertexCount( num_teapot_vertices );
-	_teapotVertexLocations->setVertices( teapot_vertices );
+	m_teapotVertexLocations = CC3VertexLocations::vertexArrayWithName( "TeapotVertices" );
+	m_teapotVertexLocations->retain();
+	m_teapotVertexLocations->setVertexCount( num_teapot_vertices );
+	m_teapotVertexLocations->setVertices( teapot_vertices );
 	
 	// Vertex normals come from the teapot.h header file
-	_teapotVertexNormals = CC3VertexNormals::vertexArrayWithName( "TeapotNormals" );
-	_teapotVertexNormals->retain();
-	_teapotVertexNormals->setVertexCount( num_teapot_normals );
-	_teapotVertexNormals->setVertices( teapot_normals );
+	m_teapotVertexNormals = CC3VertexNormals::vertexArrayWithName( "TeapotNormals" );
+	m_teapotVertexNormals->retain();
+	m_teapotVertexNormals->setVertexCount( num_teapot_normals );
+	m_teapotVertexNormals->setVertices( teapot_normals );
 	
 	// Vertex indices populated from the run-length array in the teapot.h header file
-	_teapotVertexIndices = CC3VertexIndices::vertexArrayWithName( "TeapotIndicies" );
-	_teapotVertexIndices->retain();
-	_teapotVertexIndices->populateFromRunLengthArray( (GLushort*)new_teapot_indicies, num_teapot_indices );
-	_teapotVertexIndices->setDrawingMode( GL_TRIANGLE_STRIP );
+	m_teapotVertexIndices = CC3VertexIndices::vertexArrayWithName( "TeapotIndicies" );
+	m_teapotVertexIndices->retain();
+	m_teapotVertexIndices->populateFromRunLengthArray( (GLushort*)new_teapot_indicies, num_teapot_indices );
+	m_teapotVertexIndices->setDrawingMode( GL_TRIANGLE_STRIP );
 	
 	// Scan vertex location array to find the min & max of each vertex dimension.
 	// This can be used below to create both simple color gradient and texture wraps for the mesh.
 	CC3Vector vl, vlMin, vlMax, vlRange;
-	CC3Vector* vLocs = (CC3Vector*)_teapotVertexLocations->getVertices();
-	GLuint vCount = _teapotVertexLocations->getVertexCount();
+	CC3Vector* vLocs = (CC3Vector*)m_teapotVertexLocations->getVertices();
+	GLuint vCount = m_teapotVertexLocations->getVertexCount();
 	vl = vLocs[0];
 	vlMin = vl;
 	vlMax = vl;
@@ -134,10 +134,10 @@ void CC3ModelSampleFactory::initTeapotVertexArrays()
 	// Create a color array to assign colors to each vertex in a simple gradient pattern.
 	// This would never happen in practice. Normally, the color array would be applied
 	// and extracted as part of the creation of a mesh in a visual editor.
-	_teapotVertexColors = CC3VertexColors::vertexArrayWithName( "TeapotColors" );
-	_teapotVertexColors->retain();
-	_teapotVertexColors->setAllocatedVertexCapacity( vCount );
-	ccColor4B* vCols = (ccColor4B*)_teapotVertexColors->getVertices();
+	m_teapotVertexColors = CC3VertexColors::vertexArrayWithName( "TeapotColors" );
+	m_teapotVertexColors->retain();
+	m_teapotVertexColors->setAllocatedVertexCapacity( vCount );
+	ccColor4B* vCols = (ccColor4B*)m_teapotVertexColors->getVertices();
 	for (GLuint i=0; i < vCount; i++) 
 	{
 		vCols[i].r = (GLubyte)(255 * (vLocs[i].x - vlMin.x) / vlRange.x);
@@ -148,15 +148,15 @@ void CC3ModelSampleFactory::initTeapotVertexArrays()
 
 	// To allow the color of the individual vertices to be changed at a later time, the vertex
 	// colors are retained in memory by setting the shouldReleaseRedundantContent property to NO.
-	_teapotVertexColors->setShouldReleaseRedundantContent( false );
+	m_teapotVertexColors->setShouldReleaseRedundantContent( false );
 	
 	// Progamatically create a texture array to map an arbitrary texture to the mesh vertices
 	// in the X-Y plane. This would never happen in practice. Normally, the texture array would
 	// be painted and extracted as part of the creation of a mesh in a 3D visual editor.
-	_teapotVertexTextureCoordinates = CC3VertexTextureCoordinates::vertexArrayWithName( "TeapotTexture" );
-	_teapotVertexTextureCoordinates->retain();
-	_teapotVertexTextureCoordinates->setAllocatedVertexCapacity( vCount );
-	ccTex2F* vTexCoord = (ccTex2F*)_teapotVertexTextureCoordinates->getVertices();
+	m_teapotVertexTextureCoordinates = CC3VertexTextureCoordinates::vertexArrayWithName( "TeapotTexture" );
+	m_teapotVertexTextureCoordinates->retain();
+	m_teapotVertexTextureCoordinates->setAllocatedVertexCapacity( vCount );
+	ccTex2F* vTexCoord = (ccTex2F*)m_teapotVertexTextureCoordinates->getVertices();
 	for (GLuint i=0; i < vCount; i++) 
 	{
 		vTexCoord[i].u = (vLocs[i].x - vlMin.x) / vlRange.x;
@@ -165,7 +165,7 @@ void CC3ModelSampleFactory::initTeapotVertexArrays()
 
 	// To allow textures of differing sizes to be assigned to this mesh, the texture coordinates
 	// are retained in memory by setting the shouldReleaseRedundantContent property to NO.
-	_teapotVertexTextureCoordinates->setShouldReleaseRedundantContent( false );
+	m_teapotVertexTextureCoordinates->setShouldReleaseRedundantContent( false );
 }
 
 // Initialize several teapot meshes that can be reused in many teapots.
@@ -175,19 +175,19 @@ void CC3ModelSampleFactory::initTeapotMeshes()
 	initTeapotVertexArrays();
 	
 	// Mesh to support a teapot with single-colored material
-	_unicoloredTeapotMesh = makeTeapotMeshNamed( "UnicoloredTeapot" );
-	_unicoloredTeapotMesh->retain();
+	m_pUnicoloredTeapotMesh = makeTeapotMeshNamed( "UnicoloredTeapot" );
+	m_pUnicoloredTeapotMesh->retain();
 	
 	// Mesh to support a teapot with separately colored vertices
-	_multicoloredTeapotMesh = makeTeapotMeshNamed( "MulticolorTeapot" );
-	_multicoloredTeapotMesh->retain();
+	m_pMulticoloredTeapotMesh = makeTeapotMeshNamed( "MulticolorTeapot" );
+	m_pMulticoloredTeapotMesh->retain();
 
-	_multicoloredTeapotMesh->setVertexColors( _teapotVertexColors );
+	m_pMulticoloredTeapotMesh->setVertexColors( m_teapotVertexColors );
 	
 	// Mesh to support a teapot with a textured surface
-	_texturedTeapotMesh = makeTeapotMeshNamed( "TexturedTeapot" );
-	_texturedTeapotMesh->retain();
-	_texturedTeapotMesh->setVertexTextureCoordinates( _teapotVertexTextureCoordinates );
+	m_pTexturedTeapotMesh = makeTeapotMeshNamed( "TexturedTeapot" );
+	m_pTexturedTeapotMesh->retain();
+	m_pTexturedTeapotMesh->setVertexTextureCoordinates( m_teapotVertexTextureCoordinates );
 }
 
 void CC3ModelSampleFactory::init()
@@ -217,17 +217,17 @@ void CC3ModelSampleFactory::deleteFactory()
 
 CC3Mesh* CC3ModelSampleFactory::getMulticoloredTeapotMesh()
 {
-	return _multicoloredTeapotMesh;
+	return m_pMulticoloredTeapotMesh;
 }
 
 CC3Mesh* CC3ModelSampleFactory::getTexturedTeapotMesh()
 {
-	return _texturedTeapotMesh;
+	return m_pTexturedTeapotMesh;
 }
 
 CC3Mesh* CC3ModelSampleFactory::getUnicoloredTeapotMesh()
 {
-	return _unicoloredTeapotMesh;
+	return m_pUnicoloredTeapotMesh;
 }
 
 NS_COCOS3D_END

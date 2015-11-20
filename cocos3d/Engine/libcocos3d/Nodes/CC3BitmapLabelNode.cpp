@@ -33,8 +33,8 @@ NS_COCOS3D_BEGIN
 
 CC3BitmapFontConfiguration::CC3BitmapFontConfiguration()
 {
-	_characterSet.clear();
-	_atlasName = "";
+	m_characterSet.clear();
+	m_atlasName = "";
 }
 
 CC3BitmapFontConfiguration::~CC3BitmapFontConfiguration()
@@ -46,45 +46,45 @@ CC3BitmapFontConfiguration::~CC3BitmapFontConfiguration()
 void CC3BitmapFontConfiguration::purgeCharDefDictionary()
 {
 	CC3BitmapCharDefHashElement *current, *tmp;
-	HASH_ITER(hh, _charDefDictionary, current, tmp) 
+	HASH_ITER(hh, m_charDefDictionary, current, tmp) 
 	{
-		HASH_DEL(_charDefDictionary, current);
+		HASH_DEL(m_charDefDictionary, current);
 		CC_SAFE_FREE(current);
 	}
 }
 
 std::string CC3BitmapFontConfiguration::getAtlasName()
 {
-	return _atlasName;
+	return m_atlasName;
 }
 
 int CC3BitmapFontConfiguration::getCommonHeight()
 {
-	return _commonHeight;
+	return m_commonHeight;
 }
 
 float CC3BitmapFontConfiguration::getFontSize()
 {
-	return _fontSize;
+	return m_fontSize;
 }
 
 unsigned int CC3BitmapFontConfiguration::getBaseline()
 {
-	return _baseline;
+	return m_baseline;
 }
 
 CCSize CC3BitmapFontConfiguration::getTextureSize()
 {
-	return _textureSize;
+	return m_textureSize;
 }
 
 void CC3BitmapFontConfiguration::purgeKerningDictionary()
 {
 	CC3KerningHashElement *current;
-	while(_kerningDictionary) 
+	while(m_kerningDictionary) 
 	{
-		current = _kerningDictionary;
-		HASH_DEL(_kerningDictionary, current);
+		current = m_kerningDictionary;
+		HASH_DEL(m_kerningDictionary, current);
 		CC_SAFE_FREE(current);
 	}
 }
@@ -93,17 +93,17 @@ CC3BitmapCharDef* CC3BitmapFontConfiguration::getCharacterSpecFor( unsigned char
 {
 	CC3BitmapCharDefHashElement *element = NULL;
 	GLuint key = (GLuint)c;
-	HASH_FIND_INT(_charDefDictionary , &key, element);
+	HASH_FIND_INT(m_charDefDictionary , &key, element);
 	return element ? &(element->charDef) : NULL;
 }
 
 int CC3BitmapFontConfiguration::getKerningBetween( unsigned char firstChar, unsigned char secondChar )
 {
-	if(_kerningDictionary) 
+	if(m_kerningDictionary) 
 	{
 		unsigned int key = (firstChar << 16) | (secondChar & 0xffff);
 		CC3KerningHashElement* element = NULL;
-		HASH_FIND_INT(_kerningDictionary, &key, element);
+		HASH_FIND_INT(m_kerningDictionary, &key, element);
 		if(element) 
 			return element->amount;
 	}
@@ -112,8 +112,8 @@ int CC3BitmapFontConfiguration::getKerningBetween( unsigned char firstChar, unsi
 
 bool CC3BitmapFontConfiguration::initFromFontFile( const std::string& fontFile )
 {
-	_kerningDictionary = NULL;
-	_charDefDictionary = NULL;
+	m_kerningDictionary = NULL;
+	m_charDefDictionary = NULL;
 	std::string validChars = parseConfigFile( fontFile );
 	if( validChars.empty() ) 
 		return false;
@@ -161,9 +161,9 @@ void CC3BitmapFontConfiguration::clearFontConfigurations()
 std::string CC3BitmapFontConfiguration::description()
 {
 	return CC3String::stringWithFormat( (char*)"CC3BitmapFontConfiguration with glphys: %d, kernings:%d, image = %s",
-			HASH_COUNT(_charDefDictionary),
-			HASH_COUNT(_kerningDictionary),
-			_atlasName.c_str() );
+			HASH_COUNT(m_charDefDictionary),
+			HASH_COUNT(m_kerningDictionary),
+			m_atlasName.c_str() );
 }
 
 /** Parses the configuration file, line by line. */
@@ -252,7 +252,7 @@ void CC3BitmapFontConfiguration::parseCharacterDefinition( const std::string& li
 	element->charDef.xAdvance = atoi(propertyValue.c_str());
 	
 	element->key = element->charDef.charCode;
-	HASH_ADD_INT(_charDefDictionary, key, element);
+	HASH_ADD_INT(m_charDefDictionary, key, element);
 	
 	validChars += CC3String::stringWithFormat( (char*)"%C", element->charDef.charCode );
 }
@@ -285,7 +285,7 @@ void CC3BitmapFontConfiguration::parseKerningEntry( const std::string& line )
 	CC3KerningHashElement *element = (CC3KerningHashElement*)calloc(sizeof(CC3KerningHashElement), 1);
 	element->key = (first<<16) | (second&0xffff);
 	element->amount = amount;
-	HASH_ADD_INT(_kerningDictionary, key, element);
+	HASH_ADD_INT(m_kerningDictionary, key, element);
 }
 
 /** Parses the info line. */
@@ -307,7 +307,7 @@ void CC3BitmapFontConfiguration::parseInfoArguments( const std::string& line )
 	
 	propertyValue = values[propertyCursor++];				// Font size
 	propertyValue = propertyValue.substr( 0, propertyValue.find_first_of( " " ) );
-	_fontSize = (float)atof( propertyValue.c_str() );
+	m_fontSize = (float)atof( propertyValue.c_str() );
 	
 	propertyCursor++;								// Bold flag (ignore)
 	propertyCursor++;								// Italic (ignore)
@@ -324,17 +324,17 @@ void CC3BitmapFontConfiguration::parseInfoArguments( const std::string& line )
 	int paddingCuror = 0;
 	
 	propertyValue = paddingValues[paddingCuror++];		// Padding top
-	_padding.top = CC3String::toInteger( propertyValue );
+	m_padding.top = CC3String::toInteger( propertyValue );
 	
 	propertyValue = paddingValues[paddingCuror++];		// Padding right
-	_padding.right = CC3String::toInteger( propertyValue );
+	m_padding.right = CC3String::toInteger( propertyValue );
 	
 	propertyValue = paddingValues[paddingCuror++];		// Padding bottom
-	_padding.bottom = CC3String::toInteger( propertyValue );
+	m_padding.bottom = CC3String::toInteger( propertyValue );
 	
 	propertyValue = paddingValues[paddingCuror++];		// Padding left
 	propertyValue = propertyValue.substr( 0, propertyValue.find_first_of( " " ) );
-	_padding.left = CC3String::toInteger( propertyValue );
+	m_padding.left = CC3String::toInteger( propertyValue );
 	
 	propertyCursor++;								// Spacing (ignore)
 }
@@ -355,22 +355,22 @@ void CC3BitmapFontConfiguration::parseCommonArguments( const std::string& line )
 	
 	propertyValue = values[propertyCursor++];				// Line height
 	propertyValue = propertyValue.substr( 0, propertyValue.find_first_of( " " ) );
-	_commonHeight = atoi(propertyValue.c_str());
+	m_commonHeight = atoi(propertyValue.c_str());
 	
 	propertyValue = values[propertyCursor++];				// Baseline
 	propertyValue = propertyValue.substr( 0, propertyValue.find_first_of( " " ) );
-	_baseline = atoi(propertyValue.c_str());
+	m_baseline = atoi(propertyValue.c_str());
 	
 	propertyValue = values[propertyCursor++];				// Width scale
 	propertyValue = propertyValue.substr( 0, propertyValue.find_first_of( " " ) );
-	_textureSize.width = (float)atof(propertyValue.c_str());
+	m_textureSize.width = (float)atof(propertyValue.c_str());
 	
 	propertyValue = values[propertyCursor++];				// Height scale
 	propertyValue = propertyValue.substr( 0, propertyValue.find_first_of( " " ) );
-	_textureSize.height = (float)atof(propertyValue.c_str());
+	m_textureSize.height = (float)atof(propertyValue.c_str());
 
-	CCAssert(_textureSize.width <= CCConfiguration::sharedConfiguration()->getMaxTextureSize() &&
-			  _textureSize.height <= CCConfiguration::sharedConfiguration()->getMaxTextureSize(),
+	CCAssert(m_textureSize.width <= CCConfiguration::sharedConfiguration()->getMaxTextureSize() &&
+			  m_textureSize.height <= CCConfiguration::sharedConfiguration()->getMaxTextureSize(),
 			  "Font texture can't be larger than supported");
 	
 	propertyValue = values[propertyCursor++];				// Pages sanity check
@@ -406,19 +406,19 @@ void CC3BitmapFontConfiguration::parseImageFileName( const std::string& line, co
     
 	// Supports subdirectories
 	std::string dir = CC3String::getDirectory( fontFile );
-	_atlasName = dir + propertyValue;	// retained
+	m_atlasName = dir + propertyValue;	// retained
 }
 
 CC3BitmapLabelNode::CC3BitmapLabelNode()
 {
-	_labelString = "";
-	_fontFileName = "";
-	_fontConfig = NULL;
+	m_labelString = "";
+	m_fontFileName = "";
+	m_fontConfig = NULL;
 }
 
 CC3BitmapLabelNode::~CC3BitmapLabelNode()
 {
-	CC_SAFE_RELEASE( _fontConfig );
+	CC_SAFE_RELEASE( m_fontConfig );
 }
 
 void CC3BitmapLabelNode::populateAsBitmapFontLabelFromString( const std::string& lblString, const std::string& fontFileName, GLfloat lineHeight,
@@ -443,126 +443,126 @@ void CC3BitmapLabelNode::populateAsBitmapFontLabelFromString( const std::string&
 
 GLfloat CC3BitmapLabelNode::getLineHeight()
 {
-	return _lineHeight ? _lineHeight : (_fontConfig ? _fontConfig->getCommonHeight() : 0.f); 
+	return m_lineHeight ? m_lineHeight : (m_fontConfig ? m_fontConfig->getCommonHeight() : 0.f); 
 }
 
 void CC3BitmapLabelNode::setLineHeight( GLfloat lineHt )
 {
-	if (lineHt != _lineHeight) 
+	if (lineHt != m_lineHeight) 
 	{
-		_lineHeight = lineHt;
+		m_lineHeight = lineHt;
 		populateLabelMesh();
 	}
 }
 
 std::string CC3BitmapLabelNode::getLabelString()
 {
-	return _labelString; 
+	return m_labelString; 
 }
 
 void CC3BitmapLabelNode::setLabelString( const std::string& aString )
 {
-	if ( aString == _labelString ) 
+	if ( aString == m_labelString ) 
 		return;
 	
-	_labelString = aString;
+	m_labelString = aString;
 	populateLabelMesh();
 }
 
 std::string CC3BitmapLabelNode::getFontFileName()
 {
-	return _fontFileName; 
+	return m_fontFileName; 
 }
 
 void CC3BitmapLabelNode::setFontFileName( const std::string& aFileName )
 {
-	if ( aFileName == _fontFileName ) 
+	if ( aFileName == m_fontFileName ) 
 		return;
 
-	_fontFileName = aFileName;
+	m_fontFileName = aFileName;
 
-	CC_SAFE_RELEASE( _fontConfig );
-	_fontConfig = CC3BitmapFontConfiguration::configurationFromFontFile( _fontFileName );
-	_fontConfig->retain();
+	CC_SAFE_RELEASE( m_fontConfig );
+	m_fontConfig = CC3BitmapFontConfiguration::configurationFromFontFile( m_fontFileName );
+	m_fontConfig->retain();
 	
 	populateLabelMesh();
 }
 
 CCTextAlignment CC3BitmapLabelNode::getTextAlignment()
 {
-	return _textAlignment; 
+	return m_textAlignment; 
 }
 
 void CC3BitmapLabelNode::setTextAlignment( CCTextAlignment alignment )
 {
-	if (alignment == _textAlignment) 
+	if (alignment == m_textAlignment) 
 		return;
 
-	_textAlignment = alignment;
+	m_textAlignment = alignment;
 	populateLabelMesh();
 }
 
 CCPoint CC3BitmapLabelNode::getRelativeOrigin()
 {
-	return _relativeOrigin; 
+	return m_relativeOrigin; 
 }
 
 void CC3BitmapLabelNode::setRelativeOrigin( const CCPoint& relOrigin )
 {
-	if ( relOrigin.equals(_relativeOrigin) ) 
+	if ( relOrigin.equals(m_relativeOrigin) ) 
 		return;
 	
-	_relativeOrigin = relOrigin;
+	m_relativeOrigin = relOrigin;
 	populateLabelMesh();
 }
 
 CC3Tessellation CC3BitmapLabelNode::getTessellation()
 {
-	return _tessellation; 
+	return m_tessellation; 
 }
 
 void CC3BitmapLabelNode::setTessellation( const CC3Tessellation& aGrid )
 {
-	if ( (aGrid.x == _tessellation.x) && (aGrid.y == _tessellation.y) )
+	if ( (aGrid.x == m_tessellation.x) && (aGrid.y == m_tessellation.y) )
 		return;
 
-	_tessellation = aGrid;
+	m_tessellation = aGrid;
 	populateLabelMesh();
 }
 
 GLfloat CC3BitmapLabelNode::getFontSize()
 {
-	return _fontConfig ? _fontConfig->getFontSize() : 0; 
+	return m_fontConfig ? m_fontConfig->getFontSize() : 0; 
 }
 
 GLfloat CC3BitmapLabelNode::getBaseline()
 {
-	if ( !_fontConfig ) 
+	if ( !m_fontConfig ) 
 		return 0.0f;
 
-	return 1.0f - (GLfloat)_fontConfig->getBaseline() / (GLfloat)_fontConfig->getCommonHeight();
+	return 1.0f - (GLfloat)m_fontConfig->getBaseline() / (GLfloat)m_fontConfig->getCommonHeight();
 }
 
 void CC3BitmapLabelNode::populateLabelMesh()
 {
-	if ( !(!_fontFileName.empty() && !_labelString.empty()) ) 
+	if ( !(!m_fontFileName.empty() && !m_labelString.empty()) ) 
 		return;
 
 	// If using GL buffers, delete them now, because the population mechanism triggers updates
 	// to existing buffers with the new vertex count (which will not match the buffers).
 	bool isUsingGLBuffers = false;
-	if ( _mesh )
+	if ( m_pMesh )
 	{
-		_mesh->isUsingGLBuffers();
-		_mesh->deleteGLBuffers();
+		m_pMesh->isUsingGLBuffers();
+		m_pMesh->deleteGLBuffers();
 	}
 	
 	populateAsBitmapFontLabelFromString( getLabelString(), getFontFileName(), getLineHeight(), 
 		getTextAlignment(), getRelativeOrigin(), getTessellation() );
 	
 	// If using GL buffers, recreate them now.
-	if (isUsingGLBuffers && _mesh) 
-		_mesh->createGLBuffers();
+	if (isUsingGLBuffers && m_pMesh) 
+		m_pMesh->createGLBuffers();
 
 	markBoundingVolumeDirty();
 }
@@ -571,22 +571,22 @@ void CC3BitmapLabelNode::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	setLabelString( "hello, world" );		// Fail-safe to display if nothing set
-	_fontFileName = "";
-	_fontConfig = NULL;
-	_lineHeight = 0;
-	_textAlignment = kCCTextAlignmentLeft;
-	_relativeOrigin = ccp(0,0);
-	_tessellation = CC3TessellationMake(1,1);
+	m_fontFileName = "";
+	m_fontConfig = NULL;
+	m_lineHeight = 0;
+	m_textAlignment = kCCTextAlignmentLeft;
+	m_relativeOrigin = ccp(0,0);
+	m_tessellation = CC3TessellationMake(1,1);
 }
 
 void CC3BitmapLabelNode::populateFrom( CC3BitmapLabelNode* another )
 {
 	super::populateFrom( another );
 
-	_relativeOrigin = another->getRelativeOrigin();
-	_textAlignment = another->getTextAlignment();
-	_tessellation = another->getTessellation();
-	_lineHeight = another->getLineHeight();
+	m_relativeOrigin = another->getRelativeOrigin();
+	m_textAlignment = another->getTextAlignment();
+	m_tessellation = another->getTessellation();
+	m_lineHeight = another->getLineHeight();
 	setFontFileName( another->getFontFileName() );
 	setLabelString( another->getLabelString() );		// Will trigger repopulation
 }

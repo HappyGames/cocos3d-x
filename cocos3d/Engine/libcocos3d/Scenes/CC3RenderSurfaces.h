@@ -305,11 +305,11 @@ protected:
 	void						ensureGLRenderbuffer();
 
 protected:
-	GLuint						_rbID;
-	CC3IntSize					_size;
-	GLenum						_format;
-	GLuint						_samples;
-	bool						_isManagingGL : 1;
+	GLuint						m_renderBufferId;
+	CC3IntSize					m_size;
+	GLenum						m_format;
+	GLuint						m_samples;
+	bool						m_isManagingGL : 1;
 };
 
 /**
@@ -451,10 +451,10 @@ public:
 	virtual bool				init();
 	
 protected:
-	CCObject*					_texObj;
-	GLenum						_face;
-	GLint						_mipmapLevel;
-	bool						_shouldUseStrongReferenceToTexture : 1;
+	CCObject*					m_pTexObj;
+	GLenum						m_face;
+	GLint						m_mipmapLevel;
+	bool						m_shouldUseStrongReferenceToTexture : 1;
 };
 
 
@@ -818,10 +818,10 @@ public:
 
 
 protected:
-	CC3RenderSurface*			_baseSurface;
-	CC3IntSize					_size;
-	CC3IntPoint					_origin;
-	bool						_isFullCoverage : 1;
+	CC3RenderSurface*			m_pBaseSurface;
+	CC3IntSize					m_size;
+	CC3IntPoint					m_origin;
+	bool						m_isFullCoverage : 1;
 };
 
 /**
@@ -1322,15 +1322,15 @@ public:
 	void						initWithTag( GLuint tag, const std::string& name );
 
 protected:
-	GLuint						_fbID;
-	CC3IntSize					_size;
-	CC3FramebufferAttachment*	_colorAttachment;
-	CC3FramebufferAttachment*	_depthAttachment;
-	CC3FramebufferAttachment*	_stencilAttachment;
-	bool						_isOnScreen : 1;
-	bool						_isManagingGL : 1;
-	bool						_shouldBindGLAttachments : 1;
-	bool						_glLabelWasSet : 1;
+	GLuint						m_frameBufferId;
+	CC3IntSize					m_size;
+	CC3FramebufferAttachment*	m_colorAttachment;
+	CC3FramebufferAttachment*	m_depthAttachment;
+	CC3FramebufferAttachment*	m_stencilAttachment;
+	bool						m_isOnScreen : 1;
+	bool						m_isManagingGL : 1;
+	bool						m_shouldBindGLAttachments : 1;
+	bool						m_glLabelWasSet : 1;
 };
 
 /** 
@@ -1577,10 +1577,10 @@ public:
 	ccColor4B					getFaceColor();
 
 protected:
-	CC3GLFramebuffer*			_renderSurface;
-	GLfloat						_numberOfFacesPerSnapshot;
-	GLfloat						_faceCount;
-	GLenum						_currentFace;
+	CC3GLFramebuffer*			m_pRenderSurface;
+	GLfloat						m_numberOfFacesPerSnapshot;
+	GLfloat						m_faceCount;
+	GLenum						m_currentFace;
 };
 
 /**
@@ -1663,8 +1663,8 @@ public:
 	virtual	bool				init();
 
 protected:
-	CCArray*					_resizeableSurfaces;
-	CC3IntSize					_size;
+	CCArray*					m_resizeableSurfaces;
+	CC3IntSize					m_size;
 };
 
 /**
@@ -1723,8 +1723,8 @@ public:
 	void						setPickingSurface( CC3RenderSurface* aSurface );
 
 protected:
-	CC3SurfaceSection*			_viewSurface;
-	CC3RenderSurface*			_pickingSurface;
+	CC3SurfaceSection*			m_viewSurface;
+	CC3RenderSurface*			m_pickingSurface;
 };
 
 /**
@@ -1897,8 +1897,8 @@ public:
 	void						setSize( const CC3IntSize& size );
 
 protected:
-	CC3GLFramebuffer*			_viewSurface;
-	CC3GLFramebuffer*			_multisampleSurface;
+	CC3GLFramebuffer*			m_pViewSurface;
+	CC3GLFramebuffer*			m_pMultisampleSurface;
 };
 
 /** 

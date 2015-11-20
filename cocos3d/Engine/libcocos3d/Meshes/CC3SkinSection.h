@@ -231,10 +231,10 @@ public:
 	CCObject*					copyWithZone( CCZone* zone );
 
 protected:
-	CC3SkinMeshNode*			_node;
-	CCArray*					_skinnedBones;
-	GLint						_vertexStart;
-	GLint						_vertexCount;
+	CC3SkinMeshNode*			m_pNode;
+	CCArray*					m_skinnedBones;
+	GLint						m_vertexStart;
+	GLint						m_vertexCount;
 };
 
 NS_COCOS3D_END

@@ -33,23 +33,23 @@ NS_COCOS3D_BEGIN
 
 CC3DeformedFaceArray::CC3DeformedFaceArray()
 {
-	_node = NULL;
+	m_pNode = NULL;
 }
 
 CC3DeformedFaceArray::~CC3DeformedFaceArray()
 {
-	_node = NULL;
+	m_pNode = NULL;
 	deallocateDeformedVertexLocations();
 }
 
 CC3SkinMeshNode* CC3DeformedFaceArray::getNode()
 {
-	return _node;
+	return m_pNode;
 }
 
 void CC3DeformedFaceArray::setNode( CC3SkinMeshNode* aNode )
 {
-	_node = aNode;								// weak reference
+	m_pNode = aNode;								// weak reference
 	setMesh( aNode->getMesh() );
 	deallocateDeformedVertexLocations();
 }
@@ -57,7 +57,7 @@ void CC3DeformedFaceArray::setNode( CC3SkinMeshNode* aNode )
 void CC3DeformedFaceArray::setShouldCacheFaces( bool shouldCache )
 {
 	super::setShouldCacheFaces( shouldCache );
-	if ( !_shouldCacheFaces ) 
+	if ( !m_shouldCacheFaces ) 
 		deallocateDeformedVertexLocations();
 }
 
@@ -71,13 +71,13 @@ void CC3DeformedFaceArray::clearDeformableCaches()
 
 GLuint CC3DeformedFaceArray::getVertexCount()
 {
-	return _mesh ? _mesh->getVertexCount() : 0;
+	return m_pMesh ? m_pMesh->getVertexCount() : 0;
 }
 
 CC3Face CC3DeformedFaceArray::getFaceAt( GLuint faceIndex )
 {
-	CC3FaceIndices faceIndices = _node->getFaceIndicesAt( faceIndex );
-	if (_shouldCacheFaces) 
+	CC3FaceIndices faceIndices = m_pNode->getFaceIndicesAt( faceIndex );
+	if (m_shouldCacheFaces) 
 	{
 		CC3Vector* vtxLocs = getDeformedVertexLocations();
 		return CC3Face(vtxLocs[faceIndices.vertices[0]],
@@ -86,7 +86,7 @@ CC3Face CC3DeformedFaceArray::getFaceAt( GLuint faceIndex )
 	} 
 	else 
 	{
-		CC3SkinSection* ss = _node->getSkinSectionForFaceIndex( faceIndex );
+		CC3SkinSection* ss = m_pNode->getSkinSectionForFaceIndex( faceIndex );
 		return CC3Face(ss->getDeformedVertexLocationAt( faceIndices.vertices[0] ),
 						   ss->getDeformedVertexLocationAt( faceIndices.vertices[1] ),
 						   ss->getDeformedVertexLocationAt( faceIndices.vertices[2] ));
@@ -97,10 +97,10 @@ void CC3DeformedFaceArray::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_node = NULL;
-		_deformedVertexLocations = NULL;
-		_deformedVertexLocationsAreRetained = false;
-		_deformedVertexLocationsAreDirty = true;
+		m_pNode = NULL;
+		m_deformedVertexLocations = NULL;
+		m_deformedVertexLocationsAreRetained = false;
+		m_deformedVertexLocationsAreDirty = true;
 	}
 }
 
@@ -110,18 +110,18 @@ void CC3DeformedFaceArray::populateFrom( CC3DeformedFaceArray* another )
 {
 	super::populateFrom( another );
 	
-	_node = another->getNode();		// weak reference
+	m_pNode = another->getNode();		// weak reference
 	
 	// If deformed vertex locations should be retained, allocate memory and copy the data over.
 	deallocateDeformedVertexLocations();
-	if (another->_deformedVertexLocationsAreRetained) 
+	if (another->m_deformedVertexLocationsAreRetained) 
 	{
 		allocateDeformedVertexLocations();
-		memcpy(_deformedVertexLocations, another->getDeformedVertexLocations(), (getVertexCount() * sizeof(CC3Vector)));
+		memcpy(m_deformedVertexLocations, another->getDeformedVertexLocations(), (getVertexCount() * sizeof(CC3Vector)));
 	} else {
-		_deformedVertexLocations = another->getDeformedVertexLocations();
+		m_deformedVertexLocations = another->getDeformedVertexLocations();
 	}
-	_deformedVertexLocationsAreDirty = another->_deformedVertexLocationsAreDirty;
+	m_deformedVertexLocationsAreDirty = another->m_deformedVertexLocationsAreDirty;
 }
 
 CCObject* CC3DeformedFaceArray::copyWithZone( CCZone* zone )
@@ -135,24 +135,24 @@ CCObject* CC3DeformedFaceArray::copyWithZone( CCZone* zone )
 
 CC3Vector* CC3DeformedFaceArray::getDeformedVertexLocations()
 {
-	if (_deformedVertexLocationsAreDirty || !_deformedVertexLocations)
+	if (m_deformedVertexLocationsAreDirty || !m_deformedVertexLocations)
 		populateDeformedVertexLocations();
 
-	return _deformedVertexLocations;
+	return m_deformedVertexLocations;
 }
 
 void CC3DeformedFaceArray::setDeformedVertexLocations( CC3Vector* vtxLocs )
 {
 	deallocateDeformedVertexLocations();			// Safely disposes existing vertices
-	_deformedVertexLocations = vtxLocs;
+	m_deformedVertexLocations = vtxLocs;
 }
 
 CC3Vector CC3DeformedFaceArray::getDeformedVertexLocationAt( GLuint vertexIndex, GLuint faceIndex )
 {
-	if (_shouldCacheFaces) 
+	if (m_shouldCacheFaces) 
 		return getDeformedVertexLocations()[vertexIndex];
 
-	return _node->getSkinSectionForFaceIndex(faceIndex)->getDeformedVertexLocationAt( vertexIndex );
+	return m_pNode->getSkinSectionForFaceIndex(faceIndex)->getDeformedVertexLocationAt( vertexIndex );
 }
 
 CC3Vector* CC3DeformedFaceArray::allocateDeformedVertexLocations()
@@ -161,20 +161,20 @@ CC3Vector* CC3DeformedFaceArray::allocateDeformedVertexLocations()
 	GLuint vtxCount = getVertexCount();
 	if (vtxCount) 
 	{
-		_deformedVertexLocations = (CC3Vector*)calloc(vtxCount, sizeof(CC3Vector));
-		_deformedVertexLocationsAreRetained = true;
+		m_deformedVertexLocations = (CC3Vector*)calloc(vtxCount, sizeof(CC3Vector));
+		m_deformedVertexLocationsAreRetained = true;
 		CC3_TRACE("CC3DeformedFaceArray allocated space for %d deformed vertex locations", vtxCount);
 	}
-	return _deformedVertexLocations;
+	return m_deformedVertexLocations;
 }
 
 void CC3DeformedFaceArray::deallocateDeformedVertexLocations()
 {
-	if (_deformedVertexLocationsAreRetained && _deformedVertexLocations) 
+	if (m_deformedVertexLocationsAreRetained && m_deformedVertexLocations) 
 	{
-		free(_deformedVertexLocations);
-		_deformedVertexLocations = NULL;
-		_deformedVertexLocationsAreRetained = false;
+		free(m_deformedVertexLocations);
+		m_deformedVertexLocations = NULL;
+		m_deformedVertexLocationsAreRetained = false;
 		CC3_TRACE("CC3DeformedFaceArray deallocated %d previously allocated deformed vertex locations", getVertexCount());
 	}
 }
@@ -182,19 +182,19 @@ void CC3DeformedFaceArray::deallocateDeformedVertexLocations()
 void CC3DeformedFaceArray::populateDeformedVertexLocations()
 {
 	CC3_TRACE("CC3DeformedFaceArray populating %d deformed vertex locations", getVertexCount());
-	if ( !_deformedVertexLocations )
+	if ( !m_deformedVertexLocations )
 		allocateDeformedVertexLocations();
 	
 	// Mark all the location vectors in the cached array as unset, so we can keep
 	// track of which vertices have been set, as we iterate through the mesh vertices.
 	GLuint vtxCount = getVertexCount();
 	for (GLuint vtxIdx = 0; vtxIdx < vtxCount; vtxIdx++)
-		_deformedVertexLocations[vtxIdx] = CC3Vector::kCC3VectorNull;
+		m_deformedVertexLocations[vtxIdx] = CC3Vector::kCC3VectorNull;
 
 	// Determine whether the mesh is indexed.
 	// If it is, we iterate through the indexes.
 	// If it isn't, we iterate through the vertices.
-	GLuint vtxIdxCount = _mesh->getVertexIndexCount();
+	GLuint vtxIdxCount = m_pMesh->getVertexIndexCount();
 	bool meshIsIndexed = (vtxIdxCount > 0);
 	if (!meshIsIndexed) 
 		vtxIdxCount = vtxCount;
@@ -205,36 +205,36 @@ void CC3DeformedFaceArray::populateDeformedVertexLocations()
 	// and only change when needed.
 	
 	// Get the skin section of the first vertex
-	CC3SkinSection* ss = _node->getSkinSectionForVertexIndexAt(0);
+	CC3SkinSection* ss = m_pNode->getSkinSectionForVertexIndexAt(0);
 	for (GLuint vtxIdxPos = 0; vtxIdxPos < vtxIdxCount; vtxIdxPos++) 
 	{
 		// Make sure the current skin section deforms this vertex, otherwise get the correct one
 		if ( !ss->containsVertexIndex(vtxIdxPos) )
 		{
-			ss = _node->getSkinSectionForVertexIndexAt( vtxIdxPos );
+			ss = m_pNode->getSkinSectionForVertexIndexAt( vtxIdxPos );
 			//LogTrace(@"Selecting %@ for vertex at %i", ss, vtxIdxPos);
 		}
 		
 		// Get the actual vertex index. If the mesh is indexed, we look it up, from the vertex
 		// index position. If the mesh is not indexed, then it IS the vertex index position.
-		GLuint vtxIdx = meshIsIndexed ? _mesh->getVertexIndexAt(vtxIdxPos) : vtxIdxPos;
+		GLuint vtxIdx = meshIsIndexed ? m_pMesh->getVertexIndexAt(vtxIdxPos) : vtxIdxPos;
 		
 		// If the cached vertex location has not yet been set, use the skin section to
 		// deform the vertex location at the current index, and set it into the cache array.
-		if ( _deformedVertexLocations[vtxIdx].isNull() )
+		if ( m_deformedVertexLocations[vtxIdx].isNull() )
 		{
-			_deformedVertexLocations[vtxIdx] = ss->getDeformedVertexLocationAt( vtxIdx );
+			m_deformedVertexLocations[vtxIdx] = ss->getDeformedVertexLocationAt( vtxIdx );
 			
 // 			LogTrace(@"Setting deformed vertex %i to %@", vtxIdx,
 // 						  NSStringFromCC3Vector(_deformedVertexLocations[vtxIdx]));
 		}
 	}
-	_deformedVertexLocationsAreDirty = false;
+	m_deformedVertexLocationsAreDirty = false;
 }
 
 void CC3DeformedFaceArray::markDeformedVertexLocationsDirty()
 {
-	_deformedVertexLocationsAreDirty = true; 
+	m_deformedVertexLocationsAreDirty = true; 
 }
 
 CC3DeformedFaceArray* CC3DeformedFaceArray::faceArrayWithName( const std::string& aName )

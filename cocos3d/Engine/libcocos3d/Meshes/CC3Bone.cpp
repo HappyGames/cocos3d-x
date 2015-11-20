@@ -33,14 +33,14 @@ NS_COCOS3D_BEGIN
 
 CC3Bone::CC3Bone()
 {
-	_skeletalTransformMatrix = NULL;
-	_restPoseSkeletalTransformMatrixInverted = NULL;
+	m_skeletalTransformMatrix = NULL;
+	m_restPoseSkeletalTransformMatrixInverted = NULL;
 }
 
 CC3Bone::~CC3Bone()
 {
-	CC_SAFE_RELEASE( _skeletalTransformMatrix );
-	CC_SAFE_RELEASE( _restPoseSkeletalTransformMatrixInverted );
+	CC_SAFE_RELEASE( m_skeletalTransformMatrix );
+	CC_SAFE_RELEASE( m_restPoseSkeletalTransformMatrixInverted );
 }
 
 bool CC3Bone::hasSoftBodyContent()
@@ -59,10 +59,10 @@ void CC3Bone::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 	{
-		_skeletalTransformMatrix = CC3AffineMatrix::matrix();					// retained
-		_skeletalTransformMatrix->retain();
-		_restPoseSkeletalTransformMatrixInverted = CC3AffineMatrix::matrix();	// retained
-		_restPoseSkeletalTransformMatrixInverted->retain();
+		m_skeletalTransformMatrix = CC3AffineMatrix::matrix();					// retained
+		m_skeletalTransformMatrix->retain();
+		m_restPoseSkeletalTransformMatrixInverted = CC3AffineMatrix::matrix();	// retained
+		m_restPoseSkeletalTransformMatrixInverted->retain();
 	}
 }
 
@@ -71,7 +71,7 @@ void CC3Bone::populateFrom( CC3Bone* another )
 	super::populateFrom( another );
 	
 	// The skeletal transform matrix is not copied
-	_restPoseSkeletalTransformMatrixInverted->populateFrom( another->getRestPoseSkeletalTransformMatrixInverted() );
+	m_restPoseSkeletalTransformMatrixInverted->populateFrom( another->getRestPoseSkeletalTransformMatrixInverted() );
 }
 
 CCObject* CC3Bone::copyWithZone( CCZone* zone )
@@ -88,23 +88,24 @@ CCObject* CC3Bone::copyWithZone( CCZone* zone )
 void CC3Bone::markTransformDirty()
 {
 	super::markTransformDirty();
-	_skeletalTransformMatrix->setIsDirty( true );
+	m_skeletalTransformMatrix->setIsDirty( true );
 }
 
 CC3Matrix* CC3Bone::getSkeletalTransformMatrix()
 {
-	if (_skeletalTransformMatrix->isDirty()) 
+	if (m_skeletalTransformMatrix->isDirty()) 
 	{
-		_skeletalTransformMatrix->populateFrom( getGlobalTransformMatrix() );
-		_skeletalTransformMatrix->leftMultiplyBy( getSoftBodyNode()->getGlobalTransformMatrixInverted() );
-		_skeletalTransformMatrix->setIsDirty( false );
+		m_skeletalTransformMatrix->populateFrom( getGlobalTransformMatrix() );
+		m_skeletalTransformMatrix->leftMultiplyBy( getSoftBodyNode()->getGlobalTransformMatrixInverted() );
+		m_skeletalTransformMatrix->setIsDirty( false );
 	}
-	return _skeletalTransformMatrix;
+
+	return m_skeletalTransformMatrix;
 }
 
 CC3Matrix* CC3Bone::getRestPoseSkeletalTransformMatrixInverted()
 {
-	return _restPoseSkeletalTransformMatrixInverted;
+	return m_restPoseSkeletalTransformMatrixInverted;
 }
 
 void CC3Bone::bindRestPose()
@@ -116,8 +117,8 @@ void CC3Bone::bindRestPose()
 /** Inverts the transform matrix and caches it as the inverted rest pose matrix. */
 void CC3Bone::cacheRestPoseMatrix()
 {
-	_restPoseSkeletalTransformMatrixInverted->populateFrom( getSkeletalTransformMatrix() );
-	_restPoseSkeletalTransformMatrixInverted->invert();
+	m_restPoseSkeletalTransformMatrixInverted->populateFrom( getSkeletalTransformMatrix() );
+	m_restPoseSkeletalTransformMatrixInverted->invert();
 }
 
 CC3Bone* CC3Bone::create()

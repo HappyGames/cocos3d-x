@@ -311,9 +311,9 @@ public:
 	static CC3MeshParticleEmitter*	nodeWithName( const std::string& aName );
 
 protected:
-	CC3Mesh*					_particleTemplateMesh;
-	bool						_isParticleTransformDirty : 1;
-	bool						_shouldTransformUnseenParticles : 1;
+	CC3Mesh*					m_pParticleTemplateMesh;
+	bool						m_isParticleTransformDirty : 1;
+	bool						m_shouldTransformUnseenParticles : 1;
 };
 
 NS_COCOS3D_END

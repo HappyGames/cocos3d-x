@@ -33,26 +33,26 @@ NS_COCOS3D_BEGIN
 
 CC3NodeDrawingVisitor::CC3NodeDrawingVisitor()
 {
-	_drawingSequencer = NULL;				// weak reference
-	_currentSkinSection = NULL;				// weak reference
-	_gl = NULL;								// weak reference
-	_surfaceManager = NULL;
-	_renderSurface = NULL;
-	_boneMatricesGlobal = NULL;
-	_boneMatricesEyeSpace = NULL;
-	_boneMatricesModelSpace = NULL;
+	m_drawingSequencer = NULL;				// weak reference
+	m_currentSkinSection = NULL;				// weak reference
+	m_pGL = NULL;								// weak reference
+	m_surfaceManager = NULL;
+	m_renderSurface = NULL;
+	m_boneMatricesGlobal = NULL;
+	m_boneMatricesEyeSpace = NULL;
+	m_boneMatricesModelSpace = NULL;
 }
 
 CC3NodeDrawingVisitor::~CC3NodeDrawingVisitor()
 {
-	_drawingSequencer = NULL;				// weak reference
-	_currentSkinSection = NULL;				// weak reference
-	_gl = NULL;								// weak reference
-	CC_SAFE_RELEASE(_surfaceManager);
-	CC_SAFE_RELEASE(_renderSurface);
-	CC_SAFE_RELEASE(_boneMatricesGlobal);
-	CC_SAFE_RELEASE(_boneMatricesEyeSpace);
-	CC_SAFE_RELEASE(_boneMatricesModelSpace);
+	m_drawingSequencer = NULL;				// weak reference
+	m_currentSkinSection = NULL;				// weak reference
+	m_pGL = NULL;								// weak reference
+	CC_SAFE_RELEASE(m_surfaceManager);
+	CC_SAFE_RELEASE(m_renderSurface);
+	CC_SAFE_RELEASE(m_boneMatricesGlobal);
+	CC_SAFE_RELEASE(m_boneMatricesEyeSpace);
+	CC_SAFE_RELEASE(m_boneMatricesModelSpace);
 }
 
 CC3NodeDrawingVisitor* CC3NodeDrawingVisitor::visitor()
@@ -66,24 +66,24 @@ CC3NodeDrawingVisitor* CC3NodeDrawingVisitor::visitor()
 
 CC3OpenGL* CC3NodeDrawingVisitor::getGL()
 {
-	if (!_gl) 
-		_gl = CC3OpenGL::sharedGL();
+	if (!m_pGL) 
+		m_pGL = CC3OpenGL::sharedGL();
 
-	return _gl;
+	return m_pGL;
 }
 
 void CC3NodeDrawingVisitor::clearGL()
 { 
-	_gl = NULL; 
+	m_pGL = NULL; 
 }		// weak reference
 
 GLuint CC3NodeDrawingVisitor::getCurrent2DTextureUnit()
 {
-	switch (_textureBindingMode) {
+	switch (m_textureBindingMode) {
 		case kCC3TextureBindingModeLightProbe:
-			return _currentLightProbeTextureUnit;
+			return m_currentLightProbeTextureUnit;
 		case kCC3TextureBindingModeModel:
-			return _current2DTextureUnit;
+			return m_current2DTextureUnit;
 	}
 
 	return 0;
@@ -91,23 +91,23 @@ GLuint CC3NodeDrawingVisitor::getCurrent2DTextureUnit()
 
 void CC3NodeDrawingVisitor::increment2DTextureUnit()
 {
-	switch (_textureBindingMode) {
+	switch (m_textureBindingMode) {
 		case kCC3TextureBindingModeLightProbe:
-			_currentLightProbeTextureUnit++;
+			m_currentLightProbeTextureUnit++;
 			break;
 		case kCC3TextureBindingModeModel:
-			_current2DTextureUnit++;
+			m_current2DTextureUnit++;
 			break;
 	}
 }
 
 GLuint CC3NodeDrawingVisitor::getCurrentCubeTextureUnit()
 {
-	switch (_textureBindingMode) {
+	switch (m_textureBindingMode) {
 		case kCC3TextureBindingModeLightProbe:
-			return _currentLightProbeTextureUnit;
+			return m_currentLightProbeTextureUnit;
 		case kCC3TextureBindingModeModel:
-			return _currentCubeTextureUnit;
+			return m_currentCubeTextureUnit;
 	}
 
 	return 0;
@@ -115,12 +115,12 @@ GLuint CC3NodeDrawingVisitor::getCurrentCubeTextureUnit()
 
 void CC3NodeDrawingVisitor::incrementCubeTextureUnit()
 {
-	switch (_textureBindingMode) {
+	switch (m_textureBindingMode) {
 		case kCC3TextureBindingModeLightProbe:
-			_currentLightProbeTextureUnit++;
+			m_currentLightProbeTextureUnit++;
 			break;
 		case kCC3TextureBindingModeModel:
-			_currentCubeTextureUnit++;
+			m_currentCubeTextureUnit++;
 			break;
 	}
 }
@@ -130,10 +130,10 @@ void CC3NodeDrawingVisitor::alignCameraViewport()
 	// If the viewport of the camera has not been set directly, align it to the surface shape.
 	// Invoked during setter. Don't use getter, to avoid infinite recursion when camera is NULL.
 
-	if ( _camera && _renderSurface )
+	if ( m_pCamera && m_renderSurface )
 	{
-		if ( CC3ViewportIsZero(_camera->getViewport()) ) 
-			_camera->setViewport( _renderSurface->getViewport() );
+		if ( CC3ViewportIsZero(m_pCamera->getViewport()) ) 
+			m_pCamera->setViewport( m_renderSurface->getViewport() );
 	}
 }
 
@@ -153,7 +153,7 @@ void CC3NodeDrawingVisitor::processBeforeChildren( CC3Node* aNode )
 	if ( shouldDrawNode( aNode ) )
 		aNode->transformAndDrawWithVisitor( this );
 
-	_currentSkinSection = NULL;
+	m_currentSkinSection = NULL;
 }
 
 bool CC3NodeDrawingVisitor::shouldDrawNode( CC3Node* aNode )
@@ -177,19 +177,19 @@ bool CC3NodeDrawingVisitor::isNodeVisibleForDrawing( CC3Node* aNode )
 
 bool CC3NodeDrawingVisitor::processChildrenOf( CC3Node* aNode )
 {
-	if ( !_drawingSequencer ) 
+	if ( !m_drawingSequencer ) 
 		return super::processChildrenOf( aNode );
 
 	// Remember current node and whether children should be visited
-	CC3Node* currNode = _currentNode;
-	bool currSVC = _shouldVisitChildren;
+	CC3Node* currNode = m_pCurrentNode;
+	bool currSVC = m_shouldVisitChildren;
 	
-	_shouldVisitChildren = false;	// Don't delve into node hierarchy if using sequencer
-	_drawingSequencer->visitNodesWithNodeVisitor( this );
+	m_shouldVisitChildren = false;	// Don't delve into node hierarchy if using sequencer
+	m_drawingSequencer->visitNodesWithNodeVisitor( this );
 	
 	// Restore current node and whether children should be visited
-	_shouldVisitChildren = currSVC;
-	_currentNode = currNode;
+	m_shouldVisitChildren = currSVC;
+	m_pCurrentNode = currNode;
 	
 	return false;
 }
@@ -220,14 +220,14 @@ void CC3NodeDrawingVisitor::activateRenderSurface()
 /** If this visitor was started on a CC3Scene node, set up for drawing an entire scene. */
 void CC3NodeDrawingVisitor::openScene()
 {
-	if ( !_startingNode->isScene() )
+	if ( !m_pStartingNode->isScene() )
 		return;
 
 	CC3Scene* scene = getScene();
 	if ( scene )
 	{
-		_deltaTime = scene->getDeltaFrameTime();
-		_drawingSequencer = scene->getDrawingSequencer();
+		m_fDeltaTime = scene->getDeltaFrameTime();
+		m_drawingSequencer = scene->getDrawingSequencer();
 	}
 }
 
@@ -251,7 +251,7 @@ void CC3NodeDrawingVisitor::openCamera()
 void CC3NodeDrawingVisitor::close()
 {
 	closeCamera();
-	_drawingSequencer = NULL;
+	m_drawingSequencer = NULL;
 	super::close();
 }
 
@@ -282,10 +282,10 @@ void CC3NodeDrawingVisitor::resetTextureUnits()
 	// Under OGLES 2.0 & OGL, the required texture units are determined by the shader uniforms.
 	// Under OGLES 1.1, they are determined by the number of textures attached to the mesh node.
 	CC3ShaderProgram* sp = getCurrentShaderProgram();
-	_current2DTextureUnit = 0;
-	_currentCubeTextureUnit = sp ? sp->getTextureCubeStart() : getTextureCount();
-	_currentLightProbeTextureUnit = sp ? sp->getTextureLightProbeStart() : getTextureCount();
-	_textureBindingMode = kCC3TextureBindingModeModel;
+	m_current2DTextureUnit = 0;
+	m_currentCubeTextureUnit = sp ? sp->getTextureCubeStart() : getTextureCount();
+	m_currentLightProbeTextureUnit = sp ? sp->getTextureLightProbeStart() : getTextureCount();
+	m_textureBindingMode = kCC3TextureBindingModeModel;
 }
 
 void CC3NodeDrawingVisitor::bindEnvironmentalTextures()
@@ -299,13 +299,13 @@ void CC3NodeDrawingVisitor::bindLightProbeTextures()
 	if ( !getCurrentNode()->shouldUseLightProbes() ) 
 		return;
 
-	_textureBindingMode = kCC3TextureBindingModeLightProbe;
+	m_textureBindingMode = kCC3TextureBindingModeLightProbe;
 	
 	GLuint tuCnt = getCurrentShaderProgram()->getTextureLightProbeCount();
 	for (GLuint tuIdx = 0; tuIdx < tuCnt; tuIdx++)
 		getLightProbeAt( tuIdx )->getTexture()->drawWithVisitor( this );
 	
-	_textureBindingMode = kCC3TextureBindingModeModel;
+	m_textureBindingMode = kCC3TextureBindingModeModel;
 }
 
 void CC3NodeDrawingVisitor::disableUnusedTextureUnits()
@@ -319,17 +319,17 @@ void CC3NodeDrawingVisitor::disableUnusedTextureUnits()
 	
 	// Disable remaining unused 2D textures
 	tuMax = sp ? (sp->getTexture2DStart() + sp->getTexture2DCount()) : getTextureCount();
-	for (GLuint tuIdx = _current2DTextureUnit; tuIdx < tuMax; tuIdx++)
+	for (GLuint tuIdx = m_current2DTextureUnit; tuIdx < tuMax; tuIdx++)
 		gl->disableTexturingAt( tuIdx );
 	
 	// Disable remaining unused cube textures
 	tuMax = (sp ? (sp->getTextureCubeStart() + sp->getTextureCubeCount()) : tuMax);
-	for (GLuint tuIdx = _currentCubeTextureUnit; tuIdx < tuMax; tuIdx++)
+	for (GLuint tuIdx = m_currentCubeTextureUnit; tuIdx < tuMax; tuIdx++)
 		gl->disableTexturingAt( tuIdx );
 	
 	// Disable remaining light probe textures
 	tuMax = (sp ? (sp->getTextureLightProbeStart() + sp->getTextureLightProbeCount()) : tuMax);
-	for (GLuint tuIdx = _currentLightProbeTextureUnit; tuIdx < tuMax; tuIdx++)
+	for (GLuint tuIdx = m_currentLightProbeTextureUnit; tuIdx < tuMax; tuIdx++)
 		gl->disableTexturingAt( tuIdx );
 	
 	// Ensure remaining system texture units are disabled
@@ -338,29 +338,29 @@ void CC3NodeDrawingVisitor::disableUnusedTextureUnits()
 
 CC3SceneDrawingSurfaceManager* CC3NodeDrawingVisitor::getSurfaceManager()
 {
-	return _surfaceManager; 
+	return m_surfaceManager; 
 }
 
 void CC3NodeDrawingVisitor::setSurfaceManager( CC3SceneDrawingSurfaceManager* surfaceManager )
 {
-	if (surfaceManager == _surfaceManager) 
+	if (surfaceManager == m_surfaceManager) 
 		return;
 
-	CC_SAFE_RELEASE(_surfaceManager);
-	_surfaceManager = surfaceManager;
+	CC_SAFE_RELEASE(m_surfaceManager);
+	m_surfaceManager = surfaceManager;
 	CC_SAFE_RETAIN(surfaceManager);
 	setRenderSurface( NULL );
 }
 
 CC3RenderSurface* CC3NodeDrawingVisitor::getRenderSurface()
 {
-	if ( !_renderSurface ) 
+	if ( !m_renderSurface ) 
 		setRenderSurface( getDefaultRenderSurface() );
 	
-	CCAssert(_renderSurface, "%CC3NodeDrawingVisitor could not determine a default rendering surface."
+	CCAssert(m_renderSurface, "%CC3NodeDrawingVisitor could not determine a default rendering surface."
 			  " Prior to rendering, set the renderSurface property or surfaceManager property.");
 	
-	return _renderSurface;
+	return m_renderSurface;
 }
 
 CC3RenderSurface* CC3NodeDrawingVisitor::getDefaultRenderSurface()
@@ -370,11 +370,11 @@ CC3RenderSurface* CC3NodeDrawingVisitor::getDefaultRenderSurface()
 
 void CC3NodeDrawingVisitor::setRenderSurface( CC3RenderSurface* renderSurface )
 {
-	if ( renderSurface == _renderSurface ) 
+	if ( renderSurface == m_renderSurface ) 
 		return;
 
-	CC_SAFE_RELEASE( _renderSurface );
-	_renderSurface = renderSurface;
+	CC_SAFE_RELEASE( m_renderSurface );
+	m_renderSurface = renderSurface;
 	CC_SAFE_RETAIN( renderSurface );
 	alignCameraViewport();
 }
@@ -415,12 +415,12 @@ CC3ShaderProgram* CC3NodeDrawingVisitor::getCurrentShaderProgram()
 
 ccColor4F CC3NodeDrawingVisitor::getCurrentColor()
 {
-	return _currentColor;
+	return m_currentColor;
 }
 
 void CC3NodeDrawingVisitor::setCurrentColor( const ccColor4F& color )
 {
-	_currentColor = color;
+	m_currentColor = color;
 }
 
 ccColor4B CC3NodeDrawingVisitor::getCurrentColor4B()
@@ -435,12 +435,12 @@ void CC3NodeDrawingVisitor::setCurrentColor4B( const ccColor4B& color4B )
 
 CC3SkinSection* CC3NodeDrawingVisitor::getCurrentSkinSection()
 { 
-	return _currentSkinSection; 
+	return m_currentSkinSection; 
 }
 
 void CC3NodeDrawingVisitor::setCurrentSkinSection( CC3SkinSection* currentSkinSection )
 {
-	_currentSkinSection = currentSkinSection;
+	m_currentSkinSection = currentSkinSection;
 	resetBoneMatrices();
 }
 
@@ -456,51 +456,51 @@ CC3Vector CC3NodeDrawingVisitor::transformGlobalLocationToModelSpace( const CC3V
 
 const CC3Matrix4x4* CC3NodeDrawingVisitor::getProjMatrix()
 { 
-	return &_projMatrix;
+	return &m_projMatrix;
 }
 
 const CC3Matrix4x3* CC3NodeDrawingVisitor::getViewMatrix()
 {
-	return &_viewMatrix; 
+	return &m_viewMatrix; 
 }
 
 const CC3Matrix4x3* CC3NodeDrawingVisitor::getModelMatrix()
 {
-	return &_modelMatrix; 
+	return &m_modelMatrix; 
 }
 
 const CC3Matrix4x3* CC3NodeDrawingVisitor::getModelViewMatrix() 
 {
-	if (_isMVMtxDirty) 
+	if (m_isMVMtxDirty) 
 	{
-		CC3Matrix4x3Multiply(&_modelViewMatrix, &_viewMatrix, &_modelMatrix);
-		_isMVMtxDirty = false;
+		CC3Matrix4x3Multiply(&m_modelViewMatrix, &m_viewMatrix, &m_modelMatrix);
+		m_isMVMtxDirty = false;
 	}
-	return &_modelViewMatrix;
+	return &m_modelViewMatrix;
 }
 
 const CC3Matrix4x4* CC3NodeDrawingVisitor::getViewProjMatrix()
 {
-	if (_isVPMtxDirty) 
+	if (m_isVPMtxDirty) 
 	{
 		CC3Matrix4x4 v4x4;
-		CC3Matrix4x4PopulateFrom4x3(&v4x4, &_viewMatrix);
-		CC3Matrix4x4Multiply(&_viewProjMatrix, &_projMatrix, &v4x4);
-		_isVPMtxDirty = false;
+		CC3Matrix4x4PopulateFrom4x3(&v4x4, &m_viewMatrix);
+		CC3Matrix4x4Multiply(&m_viewProjMatrix, &m_projMatrix, &v4x4);
+		m_isVPMtxDirty = false;
 	}
-	return &_viewProjMatrix;
+	return &m_viewProjMatrix;
 }
 
 const CC3Matrix4x4* CC3NodeDrawingVisitor::getModelViewProjMatrix()
 {
-	if (_isMVPMtxDirty) 
+	if (m_isMVPMtxDirty) 
 	{
 		CC3Matrix4x4 m4x4;
 		CC3Matrix4x4PopulateFrom4x3(&m4x4, getModelViewMatrix());
-		CC3Matrix4x4Multiply(&_modelViewProjMatrix, &_projMatrix, &m4x4);
-		_isMVPMtxDirty = false;
+		CC3Matrix4x4Multiply(&m_modelViewProjMatrix, &m_projMatrix, &m4x4);
+		m_isMVPMtxDirty = false;
 	}
-	return &_modelViewProjMatrix;
+	return &m_modelViewProjMatrix;
 }
 //
 //const GLKMatrix4* CC3NodeDrawingVisitor::getLayerTransformMatrix()
@@ -510,42 +510,42 @@ const CC3Matrix4x4* CC3NodeDrawingVisitor::getModelViewProjMatrix()
 
 void CC3NodeDrawingVisitor::populateProjMatrixFrom( CC3Matrix* projMtx )
 {
-	if ( !projMtx || _currentNode->shouldDrawInClipSpace())
-		CC3Matrix4x4PopulateIdentity( &_projMatrix );
+	if ( !projMtx || m_pCurrentNode->shouldDrawInClipSpace())
+		CC3Matrix4x4PopulateIdentity( &m_projMatrix );
 	else
-		projMtx->populateCC3Matrix4x4( &_projMatrix );
+		projMtx->populateCC3Matrix4x4( &m_projMatrix );
 
-	_isVPMtxDirty = true;
-	_isMVPMtxDirty = true;
+	m_isVPMtxDirty = true;
+	m_isMVPMtxDirty = true;
 
 	// For fixed rendering pipeline, also load onto the matrix stack
-	getGL()->loadProjectionMatrix( &_projMatrix );
+	getGL()->loadProjectionMatrix( &m_projMatrix );
 }
 
 void CC3NodeDrawingVisitor::populateViewMatrixFrom( CC3Matrix* viewMtx )
 {
-	if ( !viewMtx || _currentNode->shouldDrawInClipSpace())
-		CC3Matrix4x3PopulateIdentity(&_viewMatrix);
+	if ( !viewMtx || m_pCurrentNode->shouldDrawInClipSpace())
+		CC3Matrix4x3PopulateIdentity(&m_viewMatrix);
 	else
-		viewMtx->populateCC3Matrix4x3( &_viewMatrix );
+		viewMtx->populateCC3Matrix4x3( &m_viewMatrix );
 	
-	_isVPMtxDirty = true;
-	_isMVMtxDirty = true;
-	_isMVPMtxDirty = true;
+	m_isVPMtxDirty = true;
+	m_isMVMtxDirty = true;
+	m_isMVPMtxDirty = true;
 	
 	// For fixed rendering pipeline, also load onto the matrix stack
-	getGL()->loadModelviewMatrix( &_viewMatrix );
+	getGL()->loadModelviewMatrix( &m_viewMatrix );
 }
 
 void CC3NodeDrawingVisitor::populateModelMatrixFrom( CC3Matrix* modelMtx )
 {
 	if (modelMtx)
-		modelMtx->populateCC3Matrix4x3( &_modelMatrix );
+		modelMtx->populateCC3Matrix4x3( &m_modelMatrix );
 	else
-		CC3Matrix4x3PopulateIdentity(&_modelMatrix);
+		CC3Matrix4x3PopulateIdentity(&m_modelMatrix);
 	
-	_isMVMtxDirty = true;
-	_isMVPMtxDirty = true;
+	m_isMVMtxDirty = true;
+	m_isMVPMtxDirty = true;
 	
 	// For fixed rendering pipeline, also load onto the matrix stack
 	getGL()->loadModelviewMatrix( getModelViewMatrix() );
@@ -558,20 +558,20 @@ void CC3NodeDrawingVisitor::populateModelMatrixFrom( CC3Matrix* modelMtx )
 
 const CC3Matrix4x3* CC3NodeDrawingVisitor::getGlobalBoneMatrixAt( GLuint index )
 {
-	ensureBoneMatrices( _boneMatricesGlobal, getModelMatrix() );
-	return (const CC3Matrix4x3*)_boneMatricesGlobal->getElementAt( index );
+	ensureBoneMatrices( m_boneMatricesGlobal, getModelMatrix() );
+	return (const CC3Matrix4x3*)m_boneMatricesGlobal->getElementAt( index );
 }
 
 const CC3Matrix4x3* CC3NodeDrawingVisitor::getEyeSpaceBoneMatrixAt( GLuint index )
 {
-	ensureBoneMatrices( _boneMatricesEyeSpace, getModelViewMatrix() );
-	return (const CC3Matrix4x3*)_boneMatricesEyeSpace->getElementAt( index );
+	ensureBoneMatrices( m_boneMatricesEyeSpace, getModelViewMatrix() );
+	return (const CC3Matrix4x3*)m_boneMatricesEyeSpace->getElementAt( index );
 }
 
 const CC3Matrix4x3* CC3NodeDrawingVisitor::getModelSpaceBoneMatrixAt( GLuint index )
 {
-	ensureBoneMatrices( _boneMatricesModelSpace, NULL );
-	return (const CC3Matrix4x3*)_boneMatricesModelSpace->getElementAt( index );
+	ensureBoneMatrices( m_boneMatricesModelSpace, NULL );
+	return (const CC3Matrix4x3*)m_boneMatricesModelSpace->getElementAt( index );
 }
 
 /**
@@ -613,37 +613,37 @@ void CC3NodeDrawingVisitor::ensureBoneMatrices( CC3DataArray* boneMatrices, cons
 /** Resets the bone matrices so they will be populated when requested for the current skin section. */
 void CC3NodeDrawingVisitor::resetBoneMatrices()
 {
-	_boneMatricesGlobal->setIsReady( false );
-	_boneMatricesEyeSpace->setIsReady( false );
-	_boneMatricesModelSpace->setIsReady( false );
+	m_boneMatricesGlobal->setIsReady( false );
+	m_boneMatricesEyeSpace->setIsReady( false );
+	m_boneMatricesModelSpace->setIsReady( false );
 }
 
 void CC3NodeDrawingVisitor::init()
 {
 	super::init();
-	_gl = NULL;
-	_surfaceManager = NULL;
-	_renderSurface = NULL;
-	_drawingSequencer = NULL;
-	_currentSkinSection = NULL;
-	_boneMatricesGlobal = CC3DataArray::dataArrayWithElementSize( sizeof(CC3Matrix4x3) );	// retained
-	_boneMatricesGlobal->retain();
-	_boneMatricesEyeSpace = CC3DataArray::dataArrayWithElementSize( sizeof(CC3Matrix4x3) );;	// retained
-	_boneMatricesEyeSpace->retain();
-	_boneMatricesModelSpace = CC3DataArray::dataArrayWithElementSize( sizeof(CC3Matrix4x3) );;	// retained
-	_boneMatricesModelSpace->retain();
+	m_pGL = NULL;
+	m_surfaceManager = NULL;
+	m_renderSurface = NULL;
+	m_drawingSequencer = NULL;
+	m_currentSkinSection = NULL;
+	m_boneMatricesGlobal = CC3DataArray::dataArrayWithElementSize( sizeof(CC3Matrix4x3) );	// retained
+	m_boneMatricesGlobal->retain();
+	m_boneMatricesEyeSpace = CC3DataArray::dataArrayWithElementSize( sizeof(CC3Matrix4x3) );;	// retained
+	m_boneMatricesEyeSpace->retain();
+	m_boneMatricesModelSpace = CC3DataArray::dataArrayWithElementSize( sizeof(CC3Matrix4x3) );;	// retained
+	m_boneMatricesModelSpace->retain();
 	
-	CC3Matrix4x3PopulateIdentity( &_modelMatrix );
-	CC3Matrix4x3PopulateIdentity( &_viewMatrix );
-	CC3Matrix4x4PopulateIdentity( &_projMatrix );
+	CC3Matrix4x3PopulateIdentity( &m_modelMatrix );
+	CC3Matrix4x3PopulateIdentity( &m_viewMatrix );
+	CC3Matrix4x4PopulateIdentity( &m_projMatrix );
 
-	_isVPMtxDirty = true;
-	_isMVMtxDirty = true;
-	_isMVPMtxDirty = true;
-	_shouldDecorateNode = true;
-	_isDrawingEnvironmentMap = false;
-	_currentCubeTextureUnit = 0;
-	_current2DTextureUnit = 0;
+	m_isVPMtxDirty = true;
+	m_isMVMtxDirty = true;
+	m_isMVPMtxDirty = true;
+	m_shouldDecorateNode = true;
+	m_isDrawingEnvironmentMap = false;
+	m_currentCubeTextureUnit = 0;
+	m_current2DTextureUnit = 0;
 }
 
 std::string CC3NodeDrawingVisitor::fullDescription()
@@ -655,32 +655,32 @@ std::string CC3NodeDrawingVisitor::fullDescription()
 
 float CC3NodeDrawingVisitor::getDeltaTime()
 {
-	return _deltaTime;
+	return m_fDeltaTime;
 }
 
 void CC3NodeDrawingVisitor::setDeltaTime( float dt )
 {
-	_deltaTime = dt;
+	m_fDeltaTime = dt;
 }
 
 bool CC3NodeDrawingVisitor::shouldDecorateNode()
 {
-	return _shouldDecorateNode;
+	return m_shouldDecorateNode;
 }
 
 void CC3NodeDrawingVisitor::setShouldDecorateNode( bool shouldDecorate )
 {
-	_shouldDecorateNode = shouldDecorate;
+	m_shouldDecorateNode = shouldDecorate;
 }
 
 bool CC3NodeDrawingVisitor::isDrawingEnvironmentMap()
 {
-	return _isDrawingEnvironmentMap;
+	return m_isDrawingEnvironmentMap;
 }
 
 void CC3NodeDrawingVisitor::setIsDrawingEnvironmentMap( bool bDraw )
 {
-	_isDrawingEnvironmentMap = bDraw;
+	m_isDrawingEnvironmentMap = bDraw;
 }
 
 NS_COCOS3D_END

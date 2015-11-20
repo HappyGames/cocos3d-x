@@ -33,12 +33,12 @@ NS_COCOS3D_BEGIN
 
 CC3Particle::CC3Particle()
 {
-	_emitter = NULL;
+	m_pEmitter = NULL;
 }
 
 CC3Particle::~CC3Particle()
 {
-	_emitter = NULL;			// weak reference
+	m_pEmitter = NULL;			// weak reference
 }
 
 // Alloc iVar in subclases to consolidate storage
@@ -71,7 +71,7 @@ CC3Vector CC3Particle::getGlobalLocation()
 
 ccColor4F CC3Particle::getColor4F() 
 {
-	return _emitter->getDiffuseColor(); 
+	return m_pEmitter->getDiffuseColor(); 
 }
 
 void CC3Particle::setColor4F( const ccColor4F& aColor )
@@ -89,7 +89,7 @@ void CC3Particle::setColor4B( const ccColor4B& aColor )
 
 bool CC3Particle::hasColor()
 {
-	return _emitter->getMesh()->hasVertexColors(); 
+	return m_pEmitter->getMesh()->hasVertexColors(); 
 }
 
 void CC3Particle::remove()
@@ -184,7 +184,7 @@ void CC3Particle::finalizeParticle()
 
 bool CC3Particle::init()
 {
-	_emitter = NULL;
+	m_pEmitter = NULL;
 	setIsAlive( false );
 
 	return true;
@@ -225,12 +225,12 @@ void CC3Particle::updateAfterTransform( CC3NodeUpdatingVisitor* visitor )
 
 void CC3Particle::setEmitter( CC3ParticleEmitter* emitter )
 {
-	_emitter = emitter;
+	m_pEmitter = emitter;
 }
 
 CC3ParticleEmitter* CC3Particle::getEmitter()
 {
-	return _emitter;
+	return m_pEmitter;
 }
 
 NS_COCOS3D_END

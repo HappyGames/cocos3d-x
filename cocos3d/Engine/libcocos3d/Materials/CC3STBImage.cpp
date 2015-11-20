@@ -47,25 +47,25 @@ CC3STBImage::~CC3STBImage()
 
 void CC3STBImage::deleteImageData()
 {
-	stbi_image_free(_imageData);
-	_imageData = NULL;
+	stbi_image_free(m_imageData);
+	m_imageData = NULL;
 }
 
 GLubyte* CC3STBImage::extractImageData()
 {
-	GLubyte* imgData = _imageData;
-	_imageData = NULL;
+	GLubyte* imgData = m_imageData;
+	m_imageData = NULL;
 	return imgData;
 }
 
 CC3IntSize CC3STBImage::getSize()
 {
-	return _size;
+	return m_size;
 }
 
 GLenum CC3STBImage::getPixelFormat()
 {
-	switch (_componentCount) {
+	switch (m_componentCount) {
 		case 4:		return GL_RGBA;
 		case 3:		return GL_RGB;
 		case 2:		return GL_LUMINANCE_ALPHA;
@@ -87,11 +87,11 @@ bool CC3STBImage::loadFromFile( const char* filePath )
 	// directory or the Cocos3D bundle resource directory.
 	std::string absFilePath = CCFileUtils::sharedFileUtils()->fullPathForFilename( filePath );
 
-	_imageData = stbi_load(absFilePath.c_str(),
-						   (int*)&_size.width,
-						   (int*)&_size.height,
-						   (int*)&_componentCount, 0);
-	if (!_imageData) 
+	m_imageData = stbi_load(absFilePath.c_str(),
+						   (int*)&m_size.width,
+						   (int*)&m_size.height,
+						   (int*)&m_componentCount, 0);
+	if (!m_imageData) 
 	{
 		CCLOGERROR("Could not load image file %s using STBI library", absFilePath.c_str() );
 		return false;
@@ -102,9 +102,9 @@ bool CC3STBImage::loadFromFile( const char* filePath )
 
 void CC3STBImage::init()
 {
-	_imageData = NULL;
-	_size = kCC3IntSizeZero;
-	_componentCount = 0;
+	m_imageData = NULL;
+	m_size = kCC3IntSizeZero;
+	m_componentCount = 0;
 }
 
 bool CC3STBImage::initFromFile( const char* aFilePath )

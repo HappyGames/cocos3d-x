@@ -138,7 +138,7 @@ public:
 	static CCNodeAdornmentBase* adornmentWithActionDuration( float aDuration );
 
 protected:
-	float						_actionDuration;
+	float						m_fActionDuration;
 };
 
 /** The default duration of the fade-in and fade-out actions of the CCNodeAdornmentOverlayFader */

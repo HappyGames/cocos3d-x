@@ -128,7 +128,7 @@ public:
 	virtual void					setSemanticDelegate( CC3ShaderSemanticsDelegate* pDelegate );
 
 protected:
-	CC3ShaderSemanticsDelegate*		_semanticDelegate;
+	CC3ShaderSemanticsDelegate*		m_pSemanticDelegate;
 };
 
 NS_COCOS3D_END

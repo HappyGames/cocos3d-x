@@ -180,10 +180,10 @@ public:
 
 
 protected:
-	GLenum						_drawingMode;
-	GLuint						_stripCount;
-	GLuint*						_stripLengths;
-	bool						_stripLengthsAreRetained : 1;
+	GLenum						m_drawingMode;
+	GLuint						m_stripCount;
+	GLuint*						m_stripLengths;
+	bool						m_stripLengthsAreRetained : 1;
 };
 
 NS_COCOS3D_END

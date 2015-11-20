@@ -33,7 +33,7 @@ NS_COCOS3D_BEGIN
 
 CC3Billboard::CC3Billboard()
 {
-	_billboard = NULL;
+	m_pBillboard = NULL;
 	setBillboard( NULL );
 }
 
@@ -49,29 +49,29 @@ bool CC3Billboard::isBillboard()
 
 CCNode* CC3Billboard::getBillboard()
 {
-	return _billboard;
+	return m_pBillboard;
 }
 
 void CC3Billboard::setBillboard( CCNode* aCCNode )
 {
-	if (aCCNode == _billboard) 
+	if (aCCNode == m_pBillboard) 
 		return;							// Don't do anything if it's the same 2D billboard...
 										// ...otherwise it will be detached from scheduler.
 	// Old 2D billboard
-	if ( _billboard )
+	if ( m_pBillboard )
 	{
-		_billboard->onExit();			// Turn off running state and pause activity.
-		_billboard->cleanup();			// Detach billboard from scheduler and actions.
-		_billboard->release();
+		m_pBillboard->onExit();			// Turn off running state and pause activity.
+		m_pBillboard->cleanup();			// Detach billboard from scheduler and actions.
+		m_pBillboard->release();
 	}
 
 	// New 2D billboard
-	_billboard = aCCNode;
+	m_pBillboard = aCCNode;
 
-	if ( _billboard )
+	if ( m_pBillboard )
 	{
-		_billboard->retain();
-		_billboard->setVisible( isVisible() );
+		m_pBillboard->retain();
+		m_pBillboard->setVisible( isVisible() );
 	}
 	
 	// Retrieve the blend function from the 2D node and align this 3D node's material with it.
@@ -88,54 +88,54 @@ void CC3Billboard::setBillboard( CCNode* aCCNode )
 
 CCPoint CC3Billboard::getOffsetPosition()
 {
-	return _offsetPosition;
+	return m_offsetPosition;
 }
 
 GLfloat CC3Billboard::getUnityScaleDistance()
 {
-	return _unityScaleDistance;
+	return m_fUnityScaleDistance;
 }
 
 CCPoint CC3Billboard::getMaximumBillboardScale()
 {
-	return _maximumBillboardScale;
+	return m_maximumBillboardScale;
 }
 
 CCPoint CC3Billboard::getMinimumBillboardScale()
 {
-	return _minimumBillboardScale;
+	return m_minimumBillboardScale;
 }
 
 void CC3Billboard::setShouldDrawAs2DOverlay( bool drawAsOverlay )
 {
-	_shouldDrawAs2DOverlay = drawAsOverlay;
+	m_shouldDrawAs2DOverlay = drawAsOverlay;
 	normalizeBillboardScaleToDevice();
 }
 
 bool CC3Billboard::shouldDrawAs2DOverlay()
 {
-	return _shouldDrawAs2DOverlay;
+	return m_shouldDrawAs2DOverlay;
 }
 
 bool CC3Billboard::shouldNormalizeScaleToDevice()
 {
-	return _shouldNormalizeScaleToDevice;
+	return m_shouldNormalizeScaleToDevice;
 }
 
 void CC3Billboard::setShouldNormalizeScaleToDevice( bool normalizeToDevice )
 {
-	_shouldNormalizeScaleToDevice = normalizeToDevice;
+	m_shouldNormalizeScaleToDevice = normalizeToDevice;
 	normalizeBillboardScaleToDevice();
 }
 
 bool CC3Billboard::shouldAlwaysMeasureBillboardBoundingRect()
 {
-	return _shouldAlwaysMeasureBillboardBoundingRect;
+	return m_shouldAlwaysMeasureBillboardBoundingRect;
 }
 
 bool CC3Billboard::shouldMaximizeBillboardBoundingRect()
 {
-	return _shouldAlwaysMeasureBillboardBoundingRect;
+	return m_shouldAlwaysMeasureBillboardBoundingRect;
 }
 
 /**
@@ -144,35 +144,35 @@ bool CC3Billboard::shouldMaximizeBillboardBoundingRect()
  */
 void CC3Billboard::normalizeBillboardScaleToDevice()
 {
-	if (!_shouldDrawAs2DOverlay && _shouldNormalizeScaleToDevice)
+	if (!m_shouldDrawAs2DOverlay && m_shouldNormalizeScaleToDevice)
 	{
-		if ( _billboard )
-			_billboard->setScale( /*_billboard->getBillboard3DContentScaleFactor()*/1.f );
+		if ( m_pBillboard )
+			m_pBillboard->setScale( /*_billboard->getBillboard3DContentScaleFactor()*/1.f );
 	}
 }
 
 /** Returns whether the bounding rectangle needs to be measured on each update pass. */
 bool CC3Billboard::hasDynamicBoundingRect()
 {
-	return (_shouldDrawAs2DOverlay
-			|| _shouldAlwaysMeasureBillboardBoundingRect
-			|| _shouldMaximizeBillboardBoundingRect);
+	return (m_shouldDrawAs2DOverlay
+			|| m_shouldAlwaysMeasureBillboardBoundingRect
+			|| m_shouldMaximizeBillboardBoundingRect);
 }
 
 CCRect CC3Billboard::getBillboardBoundingRect()
 {
-	if (_billboard && (hasDynamicBoundingRect() || _billboardBoundingRect.equals(CCRectZero))) 
+	if (m_pBillboard && (hasDynamicBoundingRect() || m_billboardBoundingRect.equals(CCRectZero))) 
 	{	
 		CCRect currRect = measureBillboardBoundingRect();
 		
-		if (_shouldMaximizeBillboardBoundingRect && !_billboardBoundingRect.equals(CCRectZero))
-			setBillboardBoundingRect( CCRectUnion(_billboardBoundingRect, currRect) );
+		if (m_shouldMaximizeBillboardBoundingRect && !m_billboardBoundingRect.equals(CCRectZero))
+			setBillboardBoundingRect( CCRectUnion(m_billboardBoundingRect, currRect) );
 		else
 			setBillboardBoundingRect( currRect );
 		
 		//LogTrace(@"%@ billboard bounding rect updated to %@", [self class], NSStringFromCGRect(_billboardBoundingRect));
 	}
-	return _billboardBoundingRect;
+	return m_billboardBoundingRect;
 }
 
 /**
@@ -181,9 +181,9 @@ CCRect CC3Billboard::getBillboardBoundingRect()
  */
 CCRect CC3Billboard::measureBillboardBoundingRect()
 {
-	return _shouldDrawAs2DOverlay
-		? getBoundingBoxInPixels( _billboard )
-		: measureBoundingBoxInPixels( _billboard );
+	return m_shouldDrawAs2DOverlay
+		? getBoundingBoxInPixels( m_pBillboard )
+		: measureBoundingBoxInPixels( m_pBillboard );
 
 	return CCRectZero;
 }
@@ -191,7 +191,7 @@ CCRect CC3Billboard::measureBillboardBoundingRect()
 /** If the bounding mesh exists, update it from the new bounding rect. */
 void CC3Billboard::setBillboardBoundingRect( const CCRect& aRect )
 {
-	_billboardBoundingRect = aRect;
+	m_billboardBoundingRect = aRect;
 	updateBoundingMesh();
 }
 
@@ -202,12 +202,12 @@ void CC3Billboard::resetBillboardBoundingRect()
 
 bool CC3Billboard::shouldUpdateUnseenBillboard()
 {
-	return _shouldUpdateUnseenBillboard;
+	return m_shouldUpdateUnseenBillboard;
 }
 
 void CC3Billboard::setShouldUpdateUnseenBillboard( bool update )
 {
-	_shouldUpdateUnseenBillboard = update;
+	m_shouldUpdateUnseenBillboard = update;
 }
 
 /** Calculate bounding box from bounding rect of 2D node. */
@@ -221,13 +221,13 @@ CC3Box CC3Billboard::getLocalContentBoundingBox()
 void CC3Billboard::setVisible( bool isVisible )
 {
 	super::setVisible( isVisible );
-	_billboard->setVisible( isVisible );
+	m_pBillboard->setVisible( isVisible );
 }
 
 /** Only touchable if drawing in 3D. */
 bool CC3Billboard::isTouchable()
 {
-	return (!_shouldDrawAs2DOverlay) && super::isTouchable(); 
+	return (!m_shouldDrawAs2DOverlay) && super::isTouchable(); 
 }
 
 /** Overridden to ignore lighting, since Cocos2D nodes have no normals. */
@@ -240,9 +240,9 @@ void CC3Billboard::setMaterial( CC3Material* aMaterial )
 /** Returns color of billboard if it has a color, otherwise falls back to superclass implementation. */
 CCColorRef CC3Billboard::getColor()
 {
-	if ( _billboard )
+	if ( m_pBillboard )
 	{
-		CCSprite* pSprt = dynamic_cast<CCSprite*>( _billboard );
+		CCSprite* pSprt = dynamic_cast<CCSprite*>( m_pBillboard );
 		if ( pSprt )
 			return pSprt->getColor();
 	}
@@ -253,9 +253,9 @@ CCColorRef CC3Billboard::getColor()
 /** Also sets color of billboard if it can be set. */
 void CC3Billboard::setColor( CCColorRef color )
 {
-	if ( _billboard )
+	if ( m_pBillboard )
 	{
-		CCSprite* pSprt = dynamic_cast<CCSprite*>( _billboard );
+		CCSprite* pSprt = dynamic_cast<CCSprite*>( m_pBillboard );
 		if ( pSprt )
 			pSprt->setColor( color );
 	}
@@ -283,18 +283,18 @@ void CC3Billboard::initWithTag( GLuint aTag, const std::string& aName )
 	{
 		setColor( CCColorRefFromCCC4F(kCCC4FWhite) );
 		setBillboard( NULL );
-		_billboardBoundingRect = CCRectZero;
-		_offsetPosition = CCPointZero;
-		_minimumBillboardScale = CCPointZero;
-		_maximumBillboardScale = CCPointZero;
-		_unityScaleDistance = 0.0;
-		_shouldNormalizeScaleToDevice = true;
-		_shouldDrawAs2DOverlay = false;
-		_shouldAlwaysMeasureBillboardBoundingRect = false;
-		_shouldMaximizeBillboardBoundingRect = false;
-		_textureUnitIndex = 0;
-		_shouldUpdateUnseenBillboard = true;
-		_billboardIsPaused = false;
+		m_billboardBoundingRect = CCRectZero;
+		m_offsetPosition = CCPointZero;
+		m_minimumBillboardScale = CCPointZero;
+		m_maximumBillboardScale = CCPointZero;
+		m_fUnityScaleDistance = 0.0;
+		m_shouldNormalizeScaleToDevice = true;
+		m_shouldDrawAs2DOverlay = false;
+		m_shouldAlwaysMeasureBillboardBoundingRect = false;
+		m_shouldMaximizeBillboardBoundingRect = false;
+		m_textureUnitIndex = 0;
+		m_shouldUpdateUnseenBillboard = true;
+		m_billboardIsPaused = false;
 	}
 }
 
@@ -351,15 +351,15 @@ void CC3Billboard::populateFrom( CC3Billboard* another )
 	CCNode* bb = another->getBillboard();
 	/// setBillboard( (CCNode*)bb->copy()->autorelease() );
 	
-	_billboardBoundingRect = another->getBillboardBoundingRect();
-	_offsetPosition = another->getOffsetPosition();
-	_unityScaleDistance = another->getUnityScaleDistance();
-	_minimumBillboardScale = another->getMinimumBillboardScale();
-	_maximumBillboardScale = another->getMaximumBillboardScale();
-	_shouldNormalizeScaleToDevice = another->shouldNormalizeScaleToDevice();
-	_shouldDrawAs2DOverlay = another->shouldDrawAs2DOverlay();
-	_shouldAlwaysMeasureBillboardBoundingRect = another->shouldAlwaysMeasureBillboardBoundingRect();
-	_shouldMaximizeBillboardBoundingRect = another->shouldMaximizeBillboardBoundingRect();
+	m_billboardBoundingRect = another->getBillboardBoundingRect();
+	m_offsetPosition = another->getOffsetPosition();
+	m_fUnityScaleDistance = another->getUnityScaleDistance();
+	m_minimumBillboardScale = another->getMinimumBillboardScale();
+	m_maximumBillboardScale = another->getMaximumBillboardScale();
+	m_shouldNormalizeScaleToDevice = another->shouldNormalizeScaleToDevice();
+	m_shouldDrawAs2DOverlay = another->shouldDrawAs2DOverlay();
+	m_shouldAlwaysMeasureBillboardBoundingRect = another->shouldAlwaysMeasureBillboardBoundingRect();
+	m_shouldMaximizeBillboardBoundingRect = another->shouldMaximizeBillboardBoundingRect();
 }
 
 CCObject* CC3Billboard::copyWithZone( CCZone* zone )
@@ -377,7 +377,7 @@ CCObject* CC3Billboard::copyWithZone( CCZone* zone )
 /** Ensure that the bounding rectangle mesh has been created. */
 void CC3Billboard::ensureBoundingMesh()
 {
-	if ( !_mesh ) 
+	if ( !m_pMesh ) 
 		populateAsBoundingRectangle(); 
 }
 
@@ -417,23 +417,23 @@ void CC3Billboard::populateAsBoundingRectangle()
 void CC3Billboard::start2DBillboard()
 {
 	// _billboard->paused = NO;
-	if ( _billboard )
-		_billboard->onEnter();
+	if ( m_pBillboard )
+		m_pBillboard->onEnter();
 }
 
 /** Stops the 2D billboard. */
 void CC3Billboard::stop2DBillboard()
 {
 	//_billboard.paused = YES;
-	if ( _billboard )
-		_billboard->onExit();
+	if ( m_pBillboard )
+		m_pBillboard->onExit();
 }
 
 void CC3Billboard::alignToCamera( CC3Camera* camera )
 {
-	if (camera && _billboard) 
+	if (camera && m_pBillboard) 
 	{
-		if (_shouldDrawAs2DOverlay)
+		if (m_shouldDrawAs2DOverlay)
 			align2DToCamera( camera );
 		else
 			align3DToCamera( camera );
@@ -452,14 +452,14 @@ void CC3Billboard::align2DToCamera( CC3Camera* camera )
 	// into 2D and then set the billboard to that position
 	camera->projectNode( this );
 	CCPoint pPos = getProjectedPosition();
-	_billboard->setPosition( ccpAdd(pPos, _offsetPosition) );
+	m_pBillboard->setPosition( ccpAdd(pPos, m_offsetPosition) );
 	
 	CCPoint newBBScale;
 	// If only one non-zero scale is allowed (min == max), ensure that the billboard is set to that scale
-	if (!_minimumBillboardScale.equals(CCPointZero)
-		&& _maximumBillboardScale.equals(_minimumBillboardScale)) 
+	if (!m_minimumBillboardScale.equals(CCPointZero)
+		&& m_maximumBillboardScale.equals(m_minimumBillboardScale)) 
 	{
-		newBBScale = _minimumBillboardScale;
+		newBBScale = m_minimumBillboardScale;
 		//LogTrace(@"Projecting billboard %@ to %@ with fixed scaling %@", self,
 		//		 NSStringFromCGPoint(pPos), NSStringFromCGPoint(newBBScale));
 	} 
@@ -476,11 +476,11 @@ void CC3Billboard::align2DToCamera( CC3Camera* camera )
 		newBBScale.y = distScale;
 		
 		// Ensure result is within any defined min and max scales
-		newBBScale.x = MAX(newBBScale.x, _minimumBillboardScale.x);
-		newBBScale.y = MAX(newBBScale.y, _minimumBillboardScale.y);
+		newBBScale.x = MAX(newBBScale.x, m_minimumBillboardScale.x);
+		newBBScale.y = MAX(newBBScale.y, m_minimumBillboardScale.y);
 		
-		newBBScale.x = (_maximumBillboardScale.x != 0.0) ? MIN(newBBScale.x, _maximumBillboardScale.x) : newBBScale.x;
-		newBBScale.y = (_maximumBillboardScale.y != 0.0) ? MIN(newBBScale.y, _maximumBillboardScale.y) : newBBScale.y;
+		newBBScale.x = (m_maximumBillboardScale.x != 0.0) ? MIN(newBBScale.x, m_maximumBillboardScale.x) : newBBScale.x;
+		newBBScale.y = (m_maximumBillboardScale.y != 0.0) ? MIN(newBBScale.y, m_maximumBillboardScale.y) : newBBScale.y;
 		
 		// Factor in the scale of this CC3Billboard node.
 		CC3Vector myScale = getScale();
@@ -492,14 +492,14 @@ void CC3Billboard::align2DToCamera( CC3Camera* camera )
 	
 	// If consistency across devices is desired, adjust size of 2D billboard so that
 	// it appears the same size relative to 3D artifacts across all device resolutions
-	if (_shouldNormalizeScaleToDevice) 
+	if (m_shouldNormalizeScaleToDevice) 
 		newBBScale = ccpMult(newBBScale, deviceScaleFactor());
 	
 	// Set the new scale only if it has changed. 
-	if (_billboard->getScaleX() != newBBScale.x) 
-		_billboard->setScaleX( newBBScale.x );
-	if (_billboard->getScaleY() != newBBScale.y) 
-		_billboard->setScaleY( newBBScale.y );
+	if (m_pBillboard->getScaleX() != newBBScale.x) 
+		m_pBillboard->setScaleX( newBBScale.x );
+	if (m_pBillboard->getScaleY() != newBBScale.y) 
+		m_pBillboard->setScaleY( newBBScale.y );
 }
 
 /**
@@ -510,42 +510,42 @@ void CC3Billboard::align2DToCamera( CC3Camera* camera )
 void CC3Billboard::align3DToCamera( CC3Camera* camera )
 {
 	// Don't waste time if no min or max scale has been set.
-	if (_minimumBillboardScale.equals(CCPointZero) &&
-		_maximumBillboardScale.equals(CCPointZero)) 
+	if (m_minimumBillboardScale.equals(CCPointZero) &&
+		m_maximumBillboardScale.equals(CCPointZero)) 
 		return;
 
 	GLfloat camNear = camera->getNearClippingDistance();
 	GLfloat unityDist = MAX(getUnityScaleDistance(), camNear);
 	GLfloat camDist = MAX(getGlobalLocation().distance(camera->getGlobalLocation()), camNear);
 
-	CCPoint newBBScale = ccp(_billboard->getScaleX(), _billboard->getScaleY());
+	CCPoint newBBScale = ccp(m_pBillboard->getScaleX(), m_pBillboard->getScaleY());
 
-	if (_minimumBillboardScale.x > 0.0) {
-		GLfloat minScaleDistX = unityDist / _minimumBillboardScale.x;
+	if (m_minimumBillboardScale.x > 0.0) {
+		GLfloat minScaleDistX = unityDist / m_minimumBillboardScale.x;
 		newBBScale.x = (camDist > minScaleDistX) ? (camDist / minScaleDistX) : 1.0f;
 	}
 	
-	if (_minimumBillboardScale.y > 0.0) {
-		GLfloat minScaleDistY = unityDist / _minimumBillboardScale.y;
+	if (m_minimumBillboardScale.y > 0.0) {
+		GLfloat minScaleDistY = unityDist / m_minimumBillboardScale.y;
 		newBBScale.y = (camDist > minScaleDistY) ? (camDist / minScaleDistY) : 1.0f;
 	}
 	
-	if (_maximumBillboardScale.x > 0.0) {
-		GLfloat maxScaleDistX = unityDist / _maximumBillboardScale.x;
+	if (m_maximumBillboardScale.x > 0.0) {
+		GLfloat maxScaleDistX = unityDist / m_maximumBillboardScale.x;
 		newBBScale.x = (camDist < maxScaleDistX) ? (camDist / maxScaleDistX) : 1.0f;
 	}
 	
-	if (_maximumBillboardScale.y > 0.0) {
-		GLfloat maxScaleDistY = unityDist / _maximumBillboardScale.y;
+	if (m_maximumBillboardScale.y > 0.0) {
+		GLfloat maxScaleDistY = unityDist / m_maximumBillboardScale.y;
 		newBBScale.y = (camDist < maxScaleDistY) ? (camDist / maxScaleDistY) : 1.0f;
 	}
 	
 	// Set the new scale only if it has changed. 
-	if (_billboard->getScaleX() != newBBScale.x) 
-		_billboard->setScaleX( newBBScale.x );
+	if (m_pBillboard->getScaleX() != newBBScale.x) 
+		m_pBillboard->setScaleX( newBBScale.x );
 
-	if (_billboard->getScaleY() != newBBScale.y) 
-		_billboard->setScaleY( newBBScale.y );
+	if (m_pBillboard->getScaleY() != newBBScale.y) 
+		m_pBillboard->setScaleY( newBBScale.y );
 }
 
 #define kCC3DeviceScaleFactorBase 480.0f
@@ -582,7 +582,7 @@ CC3NodeBoundingVolume* CC3Billboard::defaultBoundingVolume()
 /** Overridden to return YES only if this billboard should draw in 3D. */
 bool CC3Billboard::hasLocalContent()
 {
-	return !_shouldDrawAs2DOverlay; 
+	return !m_shouldDrawAs2DOverlay; 
 }
 
 /** 
@@ -593,17 +593,17 @@ bool CC3Billboard::doesIntersectFrustum( CC3Frustum* aFrustum )
 {
 	bool doesIntersect = super::doesIntersectFrustum( aFrustum );
 
-	if (_billboard && !_shouldUpdateUnseenBillboard) 
+	if (m_pBillboard && !m_shouldUpdateUnseenBillboard) 
 	{
-		if (doesIntersect && _billboardIsPaused) 
+		if (doesIntersect && m_billboardIsPaused) 
 		{
-			CCDirector::sharedDirector()->getScheduler()->resumeTarget( _billboard );
-			_billboardIsPaused = false;
+			CCDirector::sharedDirector()->getScheduler()->resumeTarget( m_pBillboard );
+			m_billboardIsPaused = false;
 		} 
-		else if (!doesIntersect && !_billboardIsPaused) 
+		else if (!doesIntersect && !m_billboardIsPaused) 
 		{
-			CCDirector::sharedDirector()->getScheduler()->pauseTarget( _billboard );
-			_billboardIsPaused = true;
+			CCDirector::sharedDirector()->getScheduler()->pauseTarget( m_pBillboard );
+			m_billboardIsPaused = true;
 		}
 	}
 
@@ -613,7 +613,7 @@ bool CC3Billboard::doesIntersectFrustum( CC3Frustum* aFrustum )
 /** Only intersect frustum when drawing in 3D mode. */
 bool CC3Billboard::doesIntersectBoundingVolume( CC3BoundingVolume* otherBoundingVolume )
 {
-	return (!_shouldDrawAs2DOverlay) && super::doesIntersectBoundingVolume(otherBoundingVolume);
+	return (!m_shouldDrawAs2DOverlay) && super::doesIntersectBoundingVolume(otherBoundingVolume);
 }
 
 /**
@@ -627,7 +627,7 @@ void CC3Billboard::applyMaterialWithVisitor( CC3NodeDrawingVisitor* visitor )
 	{
 		CC3OpenGL* gl = visitor->getGL();
 		gl->alignFor2DDrawingWithVisitor( visitor );
-		gl->setDepthMask( !_shouldDisableDepthMask );
+		gl->setDepthMask( !m_shouldDisableDepthMask );
 	}
 }
 
@@ -648,8 +648,8 @@ void CC3Billboard::drawMeshWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	if ( visitor->shouldDecorateNode() )
 	{
-		if ( _billboard )
-			_billboard->visit();
+		if ( m_pBillboard )
+			m_pBillboard->visit();
 	} 
 	else 
 	{
@@ -675,17 +675,17 @@ void CC3Billboard::cleanupDrawingParameters( CC3NodeDrawingVisitor* visitor )
 /** If the bounding mesh exists, update its vertices to match the bounding box of the 2D node. */
 void CC3Billboard::updateBoundingMesh()
 {
-	if (_mesh) 
+	if (m_pMesh) 
 	{
 		CCRect bRect = getBillboardBoundingRect();
 		GLfloat xMin = bRect.getMinX();
 		GLfloat xMax = bRect.getMaxX();
 		GLfloat yMin = bRect.getMinX();
 		GLfloat yMax = bRect.getMaxY();
-		_mesh->setVertexLocation( cc3v(xMax, yMax, 0.0), 0 );
-		_mesh->setVertexLocation( cc3v(xMin, yMax, 0.0), 1 );
-		_mesh->setVertexLocation( cc3v(xMax, yMin, 0.0), 2 );
-		_mesh->setVertexLocation( cc3v(xMin, yMin, 0.0), 3 );
+		m_pMesh->setVertexLocation( cc3v(xMax, yMax, 0.0), 0 );
+		m_pMesh->setVertexLocation( cc3v(xMin, yMax, 0.0), 1 );
+		m_pMesh->setVertexLocation( cc3v(xMax, yMin, 0.0), 2 );
+		m_pMesh->setVertexLocation( cc3v(xMin, yMin, 0.0), 3 );
 	}
 }
 
@@ -748,7 +748,7 @@ void CC3Billboard::setShouldDrawLocalContentWireframeBox( bool shouldDraw )
 
 void CC3Billboard::addShadowVolumesForLight( CC3Light* aLight )
 {
-	if (!_mesh) 
+	if (!m_pMesh) 
 		populateAsBoundingRectangle();
 
 	super::addShadowVolumesForLight( aLight );
@@ -813,7 +813,7 @@ CC3BillboardBoundingBoxArea* CC3BillboardBoundingBoxArea::boundingVolume()
 CC3Plane* CC3BillboardBoundingBoxArea::getPlanes()
 {
 	updateIfNeeded();
-	return _planes;
+	return m_planes;
 }
 
 GLuint CC3BillboardBoundingBoxArea::getPlaneCount()
@@ -824,7 +824,7 @@ GLuint CC3BillboardBoundingBoxArea::getPlaneCount()
 CC3Vector* CC3BillboardBoundingBoxArea::getVertices()
 {
 	updateIfNeeded();
-	return _vertices;
+	return m_vertices;
 }
 
 GLuint CC3BillboardBoundingBoxArea::getVertexCount()
@@ -838,7 +838,7 @@ GLuint CC3BillboardBoundingBoxArea::getVertexCount()
  */
 CCRect CC3BillboardBoundingBoxArea::getBillboardBoundingRect()
 {
-	CCRect bRect = ((CC3Billboard*)_node)->getBillboardBoundingRect();
+	CCRect bRect = ((CC3Billboard*)m_pNode)->getBillboardBoundingRect();
 	//LogTrace(@"%@ bounding rect: %@", _node, NSStringFromCGRect(bRect));
 	return bRect.equals(CCRectZero) ? CCRectZero : bRect;
 }
@@ -854,10 +854,10 @@ void CC3BillboardBoundingBoxArea::transformVolume()
 	CCPoint bbMax = ccp(br.getMaxX(), br.getMaxY());
 	
 	// Construct all 4 corner vertices of the local bounding box and transform each to global coordinates
-	_vertices[0] = _node->getGlobalTransformMatrix()->transformLocation( cc3v(bbMin.x, bbMin.y, 0.0) );
-	_vertices[1] = _node->getGlobalTransformMatrix()->transformLocation( cc3v(bbMin.x, bbMax.y, 0.0) );
-	_vertices[2] = _node->getGlobalTransformMatrix()->transformLocation( cc3v(bbMax.x, bbMin.y, 0.0) );
-	_vertices[3] = _node->getGlobalTransformMatrix()->transformLocation( cc3v(bbMax.x, bbMax.y, 0.0) );
+	m_vertices[0] = m_pNode->getGlobalTransformMatrix()->transformLocation( cc3v(bbMin.x, bbMin.y, 0.0) );
+	m_vertices[1] = m_pNode->getGlobalTransformMatrix()->transformLocation( cc3v(bbMin.x, bbMax.y, 0.0) );
+	m_vertices[2] = m_pNode->getGlobalTransformMatrix()->transformLocation( cc3v(bbMax.x, bbMin.y, 0.0) );
+	m_vertices[3] = m_pNode->getGlobalTransformMatrix()->transformLocation( cc3v(bbMax.x, bbMax.y, 0.0) );
 	
 	/*LogTrace(@"%@ bounding volume transformed %@ MinMax(%@, %@) to (%@, %@, %@, %@)", _node,
 			 NSStringFromCGRect(br),
@@ -874,38 +874,38 @@ void CC3BillboardBoundingBoxArea::transformVolume()
 void CC3BillboardBoundingBoxArea::buildPlanes()
 {
 	CC3Vector normal;
-	CC3Matrix* tMtx = _node->getGlobalTransformMatrix();
-	CC3Vector bbMin = _vertices[0];
-	CC3Vector bbMax = _vertices[3];
+	CC3Matrix* tMtx = m_pNode->getGlobalTransformMatrix();
+	CC3Vector bbMin = m_vertices[0];
+	CC3Vector bbMax = m_vertices[3];
 	
 	// Front plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitZPositive).normalize();
-    _planes[0] = CC3Plane::plane(normal, bbMax);
+    m_planes[0] = CC3Plane::plane(normal, bbMax);
 	
 	// Back plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitZNegative).normalize();
-	_planes[1] = CC3Plane::plane(normal, bbMin);
+	m_planes[1] = CC3Plane::plane(normal, bbMin);
 	
 	// Right plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitXPositive).normalize();
-	_planes[2] = CC3Plane::plane(normal, bbMax);
+	m_planes[2] = CC3Plane::plane(normal, bbMax);
 	
 	// Left plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitXNegative).normalize();
-	_planes[3] = CC3Plane::plane(normal, bbMin);
+	m_planes[3] = CC3Plane::plane(normal, bbMin);
 	
 	// Top plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitYPositive).normalize();
-	_planes[4] = CC3Plane::plane(normal, bbMax);
+	m_planes[4] = CC3Plane::plane(normal, bbMax);
 	
 	// Bottom plane
 	normal = tMtx->transformDirection(CC3Vector::kCC3VectorUnitYNegative).normalize();
-	_planes[5] = CC3Plane::plane(normal, bbMin);
+	m_planes[5] = CC3Plane::plane(normal, bbMin);
 }
 
 CC3Vector CC3BillboardBoundingBoxArea::getLocationOfRayIntesection( const CC3Ray& localRay )
 {
-	if (_shouldIgnoreRayIntersection) 
+	if (m_shouldIgnoreRayIntersection) 
 		return CC3Vector::kCC3VectorNull;
 
 	// Get the location where the ray intersects the plane of the billboard,
@@ -941,7 +941,7 @@ CCOpacity CC3BillboardBoundingBoxArea::getDisplayNodeOpacity()
 /** Get the mesh from the rectangular bounding mesh of the billboard node, which is used for node picking. */
 void CC3BillboardBoundingBoxArea::populateDisplayNode()
 {
-	CC3Billboard* bbNode = (CC3Billboard*)_node;
+	CC3Billboard* bbNode = (CC3Billboard*)m_pNode;
 	bbNode->ensureBoundingMesh();
 	CC3BoundingVolumeDisplayNode* dn = displayNode();
 	dn->setMesh( bbNode->getMesh() );
@@ -960,15 +960,15 @@ CC3NodeDescriptor* CC3NodeDescriptor::nodeWithName( const std::string& aName, CC
 void CC3ParticleSystemBillboard::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_particleSizeAttenuation = kCC3AttenuationNone;
-	_shouldDisableDepthMask = true;
+	m_particleSizeAttenuation = kCC3AttenuationNone;
+	m_shouldDisableDepthMask = true;
 }
 
 void CC3ParticleSystemBillboard::populateFrom( CC3ParticleSystemBillboard* another )
 {
 	super::populateFrom( another );
 	
-	_particleSizeAttenuation = another->getParticleSizeAttenuation();
+	m_particleSizeAttenuation = another->getParticleSizeAttenuation();
 }
 
 CCObject* CC3ParticleSystemBillboard::copyWithZone( CCZone* zone )
@@ -983,12 +983,12 @@ CCObject* CC3ParticleSystemBillboard::copyWithZone( CCZone* zone )
 
 void CC3ParticleSystemBillboard::setParticleSizeAttenuation( const CC3AttenuationCoefficients& attenuation )
 {
-	_particleSizeAttenuation = attenuation;
+	m_particleSizeAttenuation = attenuation;
 }
 
 CC3AttenuationCoefficients CC3ParticleSystemBillboard::getParticleSizeAttenuation()
 {
-	return _particleSizeAttenuation;
+	return m_particleSizeAttenuation;
 }
 
 bool CC3ParticleSystemBillboard::shouldTransformUnseenParticles()
@@ -1007,9 +1007,9 @@ void CC3ParticleSystemBillboard::setShouldTransformUnseenParticles( bool shouldT
  */
 void CC3ParticleSystemBillboard::updateBeforeTransform( CC3NodeUpdatingVisitor* visitor )
 {
-	if ( _billboard ) 
+	if ( m_pBillboard ) 
 	{
-		CCParticleSystem* ps = (CCParticleSystem*)_billboard;
+		CCParticleSystem* ps = (CCParticleSystem*)m_pBillboard;
 		if ( ps->isAutoRemoveOnFinish() && !ps->isActive() && ps->getParticleCount() == 0 )
 		{
 			CC3_TRACE("[bbd]2D particle system exhausted. Removing");
@@ -1022,7 +1022,7 @@ void CC3ParticleSystemBillboard::updateBeforeTransform( CC3NodeUpdatingVisitor* 
 void CC3ParticleSystemBillboard::configureDrawingParameters( CC3NodeDrawingVisitor* visitor )
 {
 	super::configureDrawingParameters( visitor );
-	visitor->getGL()->setPointSizeAttenuation( _particleSizeAttenuation );
+	visitor->getGL()->setPointSizeAttenuation( m_particleSizeAttenuation );
 }
 
 CC3ParticleSystemBillboard* CC3ParticleSystemBillboard::nodeWithName( const std::string& aName, CCNode* a2DNode )

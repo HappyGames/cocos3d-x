@@ -80,14 +80,14 @@ void CC3PVRTexture::bindTextureContent( CC3PVRTextureContent* texContent, GLenum
 	
 	deleteGLTexture();		// Delete any existing texture in the GL engine
 	
-	_textureID = texContent->getTextureID();
-	_size = texContent->getSize();
-	_hasMipmap = texContent->hasMipmap();
-	_hasPremultipliedAlpha = texContent->hasPremultipliedAlpha();
+	m_textureID = texContent->getTextureID();
+	m_size = texContent->getSize();
+	m_hasMipmap = texContent->hasMipmap();
+	m_hasPremultipliedAlpha = texContent->hasPremultipliedAlpha();
 	_isTextureCube = texContent->isTextureCube();
-	_coverage = CCSizeMake(1.0f, 1.0f);				// PVR textures are always POT
-	_pixelFormat = texContent->getPixelFormat();
-	_pixelType = texContent->getPixelType();
+	m_coverage = CCSizeMake(1.0f, 1.0f);				// PVR textures are always POT
+	m_pixelFormat = texContent->getPixelFormat();
+	m_pixelType = texContent->getPixelType();
 	
 	//LogTrace(@"Bound PVR texture ID %u", _textureID);
 	

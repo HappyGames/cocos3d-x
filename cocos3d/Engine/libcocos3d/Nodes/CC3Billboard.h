@@ -669,19 +669,19 @@ public:
 	CCRect						getBoundingBoxInPixels( CCNode* pNode );
 
 protected:
-	CCNode*						_billboard;
-	CCRect						_billboardBoundingRect;
-	CCPoint						_offsetPosition;
-	GLfloat						_unityScaleDistance;
-	CCPoint						_minimumBillboardScale;
-	CCPoint						_maximumBillboardScale;
-	GLuint						_textureUnitIndex;
-	bool						_shouldNormalizeScaleToDevice : 1;
-	bool						_shouldDrawAs2DOverlay : 1;
-	bool						_shouldAlwaysMeasureBillboardBoundingRect : 1;
-	bool						_shouldMaximizeBillboardBoundingRect : 1;
-	bool						_shouldUpdateUnseenBillboard : 1;
-	bool						_billboardIsPaused : 1;
+	CCNode*						m_pBillboard;
+	CCRect						m_billboardBoundingRect;
+	CCPoint						m_offsetPosition;
+	GLfloat						m_fUnityScaleDistance;
+	CCPoint						m_minimumBillboardScale;
+	CCPoint						m_maximumBillboardScale;
+	GLuint						m_textureUnitIndex;
+	bool						m_shouldNormalizeScaleToDevice : 1;
+	bool						m_shouldDrawAs2DOverlay : 1;
+	bool						m_shouldAlwaysMeasureBillboardBoundingRect : 1;
+	bool						m_shouldMaximizeBillboardBoundingRect : 1;
+	bool						m_shouldUpdateUnseenBillboard : 1;
+	bool						m_billboardIsPaused : 1;
 };
 
 /**
@@ -712,8 +712,8 @@ public:
 	void						populateDisplayNode();
 
 protected:
-	CC3Vector					_vertices[4];
-	CC3Plane					_planes[6];
+	CC3Vector					m_vertices[4];
+	CC3Plane					m_planes[6];
 };
 
 /**
@@ -781,7 +781,7 @@ public:
 	static CC3ParticleSystemBillboard* nodeWithName( const std::string& aName, CCNode* a2DNode );
 
 protected:
-	CC3AttenuationCoefficients	_particleSizeAttenuation;
+	CC3AttenuationCoefficients	m_particleSizeAttenuation;
 };
 
 /**

@@ -33,16 +33,16 @@ NS_COCOS3D_BEGIN
 
 CC3Light::CC3Light()
 {
-	_cameraShadowVolume = NULL;
-	_shadowCastingVolume = NULL;
-	_stencilledShadowPainter = NULL;
-	_shadows = NULL;
+	m_cameraShadowVolume = NULL;
+	m_shadowCastingVolume = NULL;
+	m_stencilledShadowPainter = NULL;
+	m_shadows = NULL;
 }
 
 CC3Light::~CC3Light()
 {
 	cleanupShadows(); // Includes releasing the shadows array, camera shadow volume & shadow painter
-	returnLightIndex( _lightIndex );
+	returnLightIndex( m_lightIndex );
 }
 
 bool CC3Light::isLight()
@@ -52,7 +52,7 @@ bool CC3Light::isLight()
 
 GLuint CC3Light::getLightIndex()
 {
-	return _lightIndex;
+	return m_lightIndex;
 }
 
 // Overridden to take into consideration the isDirectionalOnly property
@@ -72,12 +72,12 @@ bool CC3Light::shouldReverseForwardDirection()
 // Clamp to valid range.
 void CC3Light::setSpotExponent( GLfloat spotExp )
 {
-	_spotExponent = CLAMP(spotExp, 0.0f, 128.0f); 
+	m_spotExponent = CLAMP(spotExp, 0.0f, 128.0f); 
 }
 
 void CC3Light::setAmbientColor( const ccColor4F& aColor )
 {
-	_ambientColor = aColor;
+	m_ambientColor = aColor;
 
 	if ( getScene() )
 		getScene()->updateRelativeLightIntensities();
@@ -85,7 +85,7 @@ void CC3Light::setAmbientColor( const ccColor4F& aColor )
 
 void CC3Light::setDiffuseColor( const ccColor4F& aColor )
 {
-	_diffuseColor = aColor;
+	m_diffuseColor = aColor;
 
 	if ( getScene() )
 		getScene()->updateRelativeLightIntensities();
@@ -93,7 +93,7 @@ void CC3Light::setDiffuseColor( const ccColor4F& aColor )
 
 void CC3Light::setSpecularColor( const ccColor4F& aColor )
 {
-	_specularColor = aColor;
+	m_specularColor = aColor;
 
 	if ( getScene() )
 		getScene()->updateRelativeLightIntensities();
@@ -101,62 +101,62 @@ void CC3Light::setSpecularColor( const ccColor4F& aColor )
 
 ccColor4F CC3Light::getSpecularColor()
 {
-	return _specularColor;
+	return m_specularColor;
 }
 
 ccColor4F CC3Light::getDiffuseColor()
 {
-	return _diffuseColor;
+	return m_diffuseColor;
 }
 
 ccColor4F CC3Light::getAmbientColor()
 {
-	return _ambientColor;
+	return m_ambientColor;
 }
 
 float CC3Light::getSpotExponent()
 {
-	return _spotExponent;
+	return m_spotExponent;
 }
 
 float CC3Light::getSpotCutoffAngle()
 {
-	return _spotCutoffAngle;
+	return m_spotCutoffAngle;
 }
 
 void CC3Light::setSpotCutoffAngle( GLfloat spotCutoffAngle )
 {
-	_spotCutoffAngle = spotCutoffAngle;
+	m_spotCutoffAngle = spotCutoffAngle;
 }
 
 CC3AttenuationCoefficients CC3Light::getAttenuation()
 {
-	return _attenuation;
+	return m_attenuation;
 }
 
 void CC3Light::setAttenuation( const CC3AttenuationCoefficients& coefficients )
 {
-	_attenuation = coefficients;
+	m_attenuation = coefficients;
 }
 
 bool CC3Light::shouldCopyLightIndex()
 {
-	return _shouldCopyLightIndex;
+	return m_shouldCopyLightIndex;
 }
 
 void CC3Light::setShouldCopyLightIndex( bool copyLightIndex )
 {
-	_shouldCopyLightIndex = copyLightIndex;
+	m_shouldCopyLightIndex = copyLightIndex;
 }
 
 GLfloat CC3Light::getShadowIntensityFactor()
 {
-	return _shadowIntensityFactor;
+	return m_shadowIntensityFactor;
 }
 
 void CC3Light::setShadowIntensityFactor( GLfloat shdwIntFactor )
 {
-	_shadowIntensityFactor = shdwIntFactor;
+	m_shadowIntensityFactor = shdwIntFactor;
 
 	if ( getScene() )
 		getScene()->updateRelativeLightIntensities();
@@ -173,7 +173,7 @@ void CC3Light::setVisible( bool isVisible )
 /** Returns diffuse color. */
 CCColorRef CC3Light::getColor()
 {
-	return CCColorRefFromCCC4F(_diffuseColor); 
+	return CCColorRefFromCCC4F(m_diffuseColor); 
 }
 
 // Set both diffuse and ambient colors, retaining the alpha of each
@@ -181,13 +181,13 @@ void CC3Light::setColor( const CCColorRef& color )
 {
 	ccColor4F c4f = CCC4FFromCCColorRef(color);
 	
-	_ambientColor.r = c4f.r;
-	_ambientColor.g = c4f.g;
-	_ambientColor.b = c4f.b;
+	m_ambientColor.r = c4f.r;
+	m_ambientColor.g = c4f.g;
+	m_ambientColor.b = c4f.b;
 	
-	_diffuseColor.r = c4f.r;
-	_diffuseColor.g = c4f.g;
-	_diffuseColor.b = c4f.b;
+	m_diffuseColor.r = c4f.r;
+	m_diffuseColor.g = c4f.g;
+	m_diffuseColor.b = c4f.b;
 
 	super::setColor( color );
 }
@@ -195,16 +195,16 @@ void CC3Light::setColor( const CCColorRef& color )
 /** Returns diffuse alpha. */
 CCOpacity CC3Light::getOpacity()
 {
-	return CCOpacityFromGLfloat(_diffuseColor.a); 
+	return CCOpacityFromGLfloat(m_diffuseColor.a); 
 }
 
 /** Set opacity of all colors, retaining the colors of each. */
 void CC3Light::setOpacity( CCOpacity opacity )
 {
 	GLfloat alpha = GLfloatFromCCOpacity(opacity);
-	_ambientColor.a = alpha;
-	_diffuseColor.a = alpha;
-	_specularColor.a = alpha;
+	m_ambientColor.a = alpha;
+	m_diffuseColor.a = alpha;
+	m_specularColor.a = alpha;
 
 	super::setOpacity( opacity );
 }
@@ -216,21 +216,21 @@ void CC3Light::initWithTag( GLuint aTag, const std::string& aName, GLuint ltIndx
 		if (ltIndx == kCC3MaxGLuint) 
 			return;		// All the lights have been used already.
 			
-		_lightIndex = ltIndx;
-		_shadows = NULL;
-		_shadowCastingVolume = NULL;
-		_cameraShadowVolume = NULL;
-		_stencilledShadowPainter = NULL;
-		_ambientColor = kCC3DefaultLightColorAmbient;
-		_diffuseColor = kCC3DefaultLightColorDiffuse;
-		_specularColor = kCC3DefaultLightColorSpecular;
-		_spotExponent = 0;
-		_spotCutoffAngle = kCC3SpotCutoffNone;
-		_attenuation = kCC3DefaultLightAttenuationCoefficients;
-		_shadowIntensityFactor = 1.0f;
-		_isDirectionalOnly = true;
-		_shouldCopyLightIndex = false;
-		_shouldCastShadowsWhenInvisible = false;
+		m_lightIndex = ltIndx;
+		m_shadows = NULL;
+		m_shadowCastingVolume = NULL;
+		m_cameraShadowVolume = NULL;
+		m_stencilledShadowPainter = NULL;
+		m_ambientColor = kCC3DefaultLightColorAmbient;
+		m_diffuseColor = kCC3DefaultLightColorDiffuse;
+		m_specularColor = kCC3DefaultLightColorSpecular;
+		m_spotExponent = 0;
+		m_spotCutoffAngle = kCC3SpotCutoffNone;
+		m_attenuation = kCC3DefaultLightAttenuationCoefficients;
+		m_shadowIntensityFactor = 1.0f;
+		m_isDirectionalOnly = true;
+		m_shouldCopyLightIndex = false;
+		m_shouldCastShadowsWhenInvisible = false;
 	}
 }
 
@@ -325,16 +325,16 @@ void CC3Light::populateFrom( CC3Light* another )
 	// Shadows are not copied, because each shadow connects
 	// one-and-only-one shadow casting node to one-and-only-one light.
 	
-	_ambientColor = another->getAmbientColor();
-	_diffuseColor = another->getDiffuseColor();
-	_specularColor = another->getSpecularColor();
-	_spotExponent = another->getSpotExponent();
-	_spotCutoffAngle = another->getSpotCutoffAngle();
-	_attenuation = another->getAttenuation();
-	_shadowIntensityFactor = another->getShadowIntensityFactor();
-	_isDirectionalOnly = another->isDirectionalOnly();
-	_shouldCopyLightIndex = another->shouldCopyLightIndex();
-	_shouldCastShadowsWhenInvisible = another->shouldCastShadowsWhenInvisible();
+	m_ambientColor = another->getAmbientColor();
+	m_diffuseColor = another->getDiffuseColor();
+	m_specularColor = another->getSpecularColor();
+	m_spotExponent = another->getSpotExponent();
+	m_spotCutoffAngle = another->getSpotCutoffAngle();
+	m_attenuation = another->getAttenuation();
+	m_shadowIntensityFactor = another->getShadowIntensityFactor();
+	m_isDirectionalOnly = another->isDirectionalOnly();
+	m_shouldCopyLightIndex = another->shouldCopyLightIndex();
+	m_shouldCastShadowsWhenInvisible = another->shouldCastShadowsWhenInvisible();
 }
 
 CCObject* CC3Light::copyWithZone( CCZone* zone )
@@ -367,11 +367,11 @@ void CC3Light::markTransformDirty()
 {
 	super::markTransformDirty();
 
-	if ( _shadowCastingVolume )
-		_shadowCastingVolume->markDirty();
+	if ( m_shadowCastingVolume )
+		m_shadowCastingVolume->markDirty();
 
-	if ( _cameraShadowVolume )
-		_cameraShadowVolume->markDirty();
+	if ( m_cameraShadowVolume )
+		m_cameraShadowVolume->markDirty();
 }
 
 void CC3Light::turnOnWithVisitor( CC3NodeDrawingVisitor* visitor )
@@ -381,19 +381,19 @@ void CC3Light::turnOnWithVisitor( CC3NodeDrawingVisitor* visitor )
 	{
 		// MARK_TRACE_HERE
 		//CCLOG( "Turning on CC3Light" );
-		gl->enableLight( true, _lightIndex );
+		gl->enableLight( true, m_lightIndex );
 		applyPositionWithVisitor( visitor );
 		applyDirectionWithVisitor( visitor );
 		applyAttenuationWithVisitor( visitor );
 		applyColorWithVisitor( visitor );
 	} else {
-		gl->enableLight( false, _lightIndex );
+		gl->enableLight( false, m_lightIndex );
 	}
 }
 
 void CC3Light::turnOffWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	visitor->getGL()->enableLight( false, _lightIndex );
+	visitor->getGL()->enableLight( false, m_lightIndex );
 }
 
 /**
@@ -402,7 +402,7 @@ void CC3Light::turnOffWithVisitor( CC3NodeDrawingVisitor* visitor )
  */	
 void CC3Light::applyPositionWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	visitor->getGL()->setLightPosition( getGlobalHomogeneousPosition(), _lightIndex );
+	visitor->getGL()->setLightPosition( getGlobalHomogeneousPosition(), m_lightIndex );
 }
 
 /**
@@ -415,13 +415,13 @@ void CC3Light::applyPositionWithVisitor( CC3NodeDrawingVisitor* visitor )
 void CC3Light::applyDirectionWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
-	if (_spotCutoffAngle <= 90.0f) 
+	if (m_spotCutoffAngle <= 90.0f) 
 	{
-		gl->setSpotlightDirection( getGlobalForwardDirection(), _lightIndex );
-		gl->setSpotlightCutoffAngle( _spotCutoffAngle, _lightIndex );
-		gl->setSpotlightFadeExponent( _spotExponent, _lightIndex );
+		gl->setSpotlightDirection( getGlobalForwardDirection(), m_lightIndex );
+		gl->setSpotlightCutoffAngle( m_spotCutoffAngle, m_lightIndex );
+		gl->setSpotlightFadeExponent( m_spotExponent, m_lightIndex );
 	} else {
-		gl->setSpotlightCutoffAngle( kCC3SpotCutoffNone, _lightIndex );
+		gl->setSpotlightCutoffAngle( kCC3SpotCutoffNone, m_lightIndex );
 	}
 }
 
@@ -431,8 +431,8 @@ void CC3Light::applyDirectionWithVisitor( CC3NodeDrawingVisitor* visitor )
  */
 void CC3Light::applyAttenuationWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if ( !_isDirectionalOnly ) 
-		visitor->getGL()->setLightAttenuation( _attenuation, _lightIndex );
+	if ( !m_isDirectionalOnly ) 
+		visitor->getGL()->setLightAttenuation( m_attenuation, m_lightIndex );
 }
 
 /**
@@ -443,19 +443,19 @@ void CC3Light::applyAttenuationWithVisitor( CC3NodeDrawingVisitor* visitor )
 void CC3Light::applyColorWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	CC3OpenGL* gl = visitor->getGL();
-	gl->setLightAmbientColor( _ambientColor, _lightIndex );
-	gl->setLightDiffuseColor( _diffuseColor, _lightIndex );
-	gl->setLightSpecularColor( _specularColor, _lightIndex );
+	gl->setLightAmbientColor( m_ambientColor, m_lightIndex );
+	gl->setLightDiffuseColor( m_diffuseColor, m_lightIndex );
+	gl->setLightSpecularColor( m_specularColor, m_lightIndex );
 }
 
 bool CC3Light::shouldCastShadowsWhenInvisible()
 {
-	return _shouldCastShadowsWhenInvisible; 
+	return m_shouldCastShadowsWhenInvisible; 
 }
 
 void CC3Light::setShouldCastShadowsWhenInvisible( bool shouldCast )
 {
-	_shouldCastShadowsWhenInvisible = shouldCast;
+	m_shouldCastShadowsWhenInvisible = shouldCast;
 	super::setShouldCastShadowsWhenInvisible( shouldCast );
 }
 
@@ -477,12 +477,12 @@ void CC3Light::addShadowNow( CC3ShadowVolumeMeshNode* aShadowNode )
 {
 	CCAssert(aShadowNode, "Shadow cannot be nil");		// Don't add if shadow is nil
 	
-	if ( !_shadows ) 
+	if ( !m_shadows ) 
 	{
-		_shadows = CCArray::create();			// retained
-		_shadows->retain();
+		m_shadows = CCArray::create();			// retained
+		m_shadows->retain();
 	}
-	_shadows->addObject( aShadowNode );
+	m_shadows->addObject( aShadowNode );
 
 	aShadowNode->setLight( this );
 	addTransformListener( aShadowNode );	// Update the shadow when this light moves.
@@ -516,10 +516,10 @@ void CC3Light::removeShadow( CC3ShadowVolumeMeshNode* aShadowNode )
 #pragma _NOTE_TODO( "removeShadow( CC3ShadowProtocol* aShadowNode )" )
 	//_shadows->removeObject( aShadowNode );
 	aShadowNode->setLight( NULL );					// So it can't call back here if I'm gone
-	if (_shadows && _shadows->count() == 0) 
+	if (m_shadows && m_shadows->count() == 0) 
 	{
-		_shadows->release();
-		_shadows = NULL;
+		m_shadows->release();
+		m_shadows = NULL;
 		checkShadowCastingVolume();		// Remove the shadow casting volume
 		checkCameraShadowVolume();			// Remove the camera shadow volume
 		checkStencilledShadowPainter();	// Remove the stencilled shadow painter
@@ -530,13 +530,13 @@ void CC3Light::removeShadow( CC3ShadowVolumeMeshNode* aShadowNode )
 
 bool CC3Light::hasShadows()
 {
-	return _shadows && _shadows->count() > 0; 
+	return m_shadows && m_shadows->count() > 0; 
 }
 
 void CC3Light::updateShadows()
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( _shadows, pObj )
+	CCARRAY_FOREACH( m_shadows, pObj )
 	{
 		CC3ShadowVolumeMeshNode* sv = (CC3ShadowVolumeMeshNode*)pObj;
 		sv->updateShadow();
@@ -545,23 +545,23 @@ void CC3Light::updateShadows()
 
 CC3ShadowCastingVolume* CC3Light::getShadowCastingVolume()
 {
-	return _shadowCastingVolume; 
+	return m_shadowCastingVolume; 
 }
 
 /** Detaches old as camera listener, attaches new as camera listener, and attaches light. */
 void CC3Light::setShadowCastingVolume( CC3ShadowCastingVolume* scVolume )
 {
-	if (scVolume == _shadowCastingVolume) 
+	if (scVolume == m_shadowCastingVolume) 
 		return;
 
 	CC3Camera* cam = getActiveCamera();
-	cam->removeTransformListener( _shadowCastingVolume );
-	CC_SAFE_RELEASE( _shadowCastingVolume );
+	cam->removeTransformListener( m_shadowCastingVolume );
+	CC_SAFE_RELEASE( m_shadowCastingVolume );
 	
-	_shadowCastingVolume = scVolume;
-	_shadowCastingVolume->retain();
-	_shadowCastingVolume->setLight( this );
-	cam->addTransformListener( _shadowCastingVolume );
+	m_shadowCastingVolume = scVolume;
+	m_shadowCastingVolume->retain();
+	m_shadowCastingVolume->setLight( this );
+	cam->addTransformListener( m_shadowCastingVolume );
 }
 
 /**
@@ -576,7 +576,7 @@ void CC3Light::setShadowCastingVolume( CC3ShadowCastingVolume* scVolume )
 void CC3Light::checkShadowCastingVolume()
 {
 	if (hasShadows()) {
-		if (!_shadowCastingVolume) 
+		if (!m_shadowCastingVolume) 
 			setShadowCastingVolume( CC3ShadowCastingVolume::boundingVolume() );
 	} else {
 		setShadowCastingVolume( NULL );
@@ -585,23 +585,23 @@ void CC3Light::checkShadowCastingVolume()
 
 CC3CameraShadowVolume* CC3Light::getCameraShadowVolume()
 {
-	return _cameraShadowVolume; 
+	return m_cameraShadowVolume; 
 }
 
 /** Detaches old as camera listener, attaches new as camera listener, and attaches light. */
 void CC3Light::setCameraShadowVolume( CC3CameraShadowVolume* csVolume )
 {
-	if (csVolume == _cameraShadowVolume) 
+	if (csVolume == m_cameraShadowVolume) 
 		return;
 		
 	CC3Camera* cam = getActiveCamera();
-	cam->removeTransformListener( _cameraShadowVolume );
-	CC_SAFE_RELEASE( _cameraShadowVolume );
+	cam->removeTransformListener( m_cameraShadowVolume );
+	CC_SAFE_RELEASE( m_cameraShadowVolume );
 	
-	_cameraShadowVolume = csVolume;
-	_cameraShadowVolume->retain();
-	_cameraShadowVolume->setLight( this );
-	cam->addTransformListener( _cameraShadowVolume );
+	m_cameraShadowVolume = csVolume;
+	m_cameraShadowVolume->retain();
+	m_cameraShadowVolume->setLight( this );
+	cam->addTransformListener( m_cameraShadowVolume );
 }
 
 /**
@@ -615,7 +615,7 @@ void CC3Light::setCameraShadowVolume( CC3CameraShadowVolume* csVolume )
 void CC3Light::checkCameraShadowVolume()
 {
 	if (hasShadows()) {
-		if (!_cameraShadowVolume) 
+		if (!m_cameraShadowVolume) 
 			setCameraShadowVolume( CC3CameraShadowVolume::boundingVolume() );
 	} else {
 		setCameraShadowVolume( NULL );
@@ -632,7 +632,7 @@ void CC3Light::checkStencilledShadowPainter()
 {
 	if (hasShadows()) 
 	{
-		if (!_stencilledShadowPainter)
+		if (!m_stencilledShadowPainter)
 			setStencilledShadowPainter( CC3StencilledShadowPainterNode::nodeWithName( "Shadow painter", kCCC4FBlack ) );
 	} else {
 		setStencilledShadowPainter( NULL );
@@ -641,29 +641,29 @@ void CC3Light::checkStencilledShadowPainter()
 
 CC3StencilledShadowPainterNode* CC3Light::getStencilledShadowPainter()
 {
-	return _stencilledShadowPainter; 
+	return m_stencilledShadowPainter; 
 }
 
 void CC3Light::setStencilledShadowPainter( CC3StencilledShadowPainterNode* sspNode )
 {
-	if (sspNode == _stencilledShadowPainter) 
+	if (sspNode == m_stencilledShadowPainter) 
 		return;
 	
-	CC_SAFE_RELEASE( _stencilledShadowPainter );
+	CC_SAFE_RELEASE( m_stencilledShadowPainter );
 	CC_SAFE_RETAIN( sspNode );
-	_stencilledShadowPainter = sspNode;
+	m_stencilledShadowPainter = sspNode;
 
 	getScene()->updateRelativeLightIntensities();	//  Must be done after the ivar is set.
 }
 
 void CC3Light::updateRelativeIntensityFrom( const ccColor4F& totalLight )
 {
-	if (_stencilledShadowPainter) 
+	if (m_stencilledShadowPainter) 
 	{
 		GLfloat dIntensity = CCC4FIntensity(getDiffuseColor());
 		GLfloat totIntensity = CCC4FIntensity(totalLight);
-		GLfloat shadowIntensity =  (dIntensity / totIntensity) * _shadowIntensityFactor;
-		_stencilledShadowPainter->setOpacity( CCOpacityFromGLfloat(shadowIntensity) );
+		GLfloat shadowIntensity =  (dIntensity / totIntensity) * m_shadowIntensityFactor;
+		m_stencilledShadowPainter->setOpacity( CCOpacityFromGLfloat(shadowIntensity) );
 		/*LogTrace(@"%@ updated shadow intensity to %.3f from light illumination %@ against total illumination %@ and shadow intensity factor %.3f",
 					  self, (float)_stencilledShadowPainter.opacity,
 					  NSStringFromCCC4F(self.diffuseColor), NSStringFromCCC4F(self.scene.totalIllumination), _shadowIntensityFactor);*/
@@ -673,14 +673,14 @@ void CC3Light::updateRelativeIntensityFrom( const ccColor4F& totalLight )
 // TODO - combine with other shadow techniques - how to make polymorphic?
 void CC3Light::drawShadowsWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	if (_shadows && (isVisible() || shouldCastShadowsWhenInvisible()) ) 
+	if (m_shadows && (isVisible() || shouldCastShadowsWhenInvisible()) ) 
 	{
 		// MARK_TRACE_HERE
 		//CCLOG("CC3Light drawing %d shadows", _shadows->count());
 		configureStencilParameters( visitor );
 		
 		CCObject* pObj = NULL;
-		CCARRAY_FOREACH( _shadows, pObj )
+		CCARRAY_FOREACH( m_shadows, pObj )
 		{
 			CC3ShadowVolumeMeshNode* sv = (CC3ShadowVolumeMeshNode*)pObj;
 			sv->drawToStencilWithVisitor( visitor );
@@ -722,7 +722,7 @@ void CC3Light::paintStenciledShadowsWithVisitor( CC3NodeDrawingVisitor* visitor 
 	
 	// Paint the shadow to the screen. Only areas that have been marked as being
 	// in the stencil buffer as being in the shadow of this light will be shaded.
-	visitor->visit( _stencilledShadowPainter );
+	visitor->visit( m_stencilledShadowPainter );
 }
 
 /** Turns stenciling back off. */
@@ -737,9 +737,9 @@ void CC3Light::cleanupStencilParameters( CC3NodeDrawingVisitor* visitor )
  */
 void CC3Light::cleanupShadows()
 {
-	if ( _shadows )
+	if ( m_shadows )
 	{
-		CCArray* myShadows = (CCArray*)_shadows->copy();
+		CCArray* myShadows = (CCArray*)m_shadows->copy();
 
 		CCObject* pObj = NULL;
 		CCARRAY_FOREACH( myShadows, pObj )
@@ -834,22 +834,22 @@ CC3Light* CC3Light::nodeWithName( const std::string& name )
 
 void CC3Light::setIsDirectionalOnly( bool directionalOnly )
 {
-	_isDirectionalOnly = directionalOnly;
+	m_isDirectionalOnly = directionalOnly;
 }
 
 bool CC3Light::isDirectionalOnly()
 {
-	return _isDirectionalOnly;
+	return m_isDirectionalOnly;
 }
 
 CC3LightCameraBridgeVolume::CC3LightCameraBridgeVolume()
 {
-	_light = NULL;
+	m_pLight = NULL;
 }
 
 CC3LightCameraBridgeVolume::~CC3LightCameraBridgeVolume()
 {
-	_light = NULL;
+	m_pLight = NULL;
 }
 
 // Included to satisfy compiler because property appears in interface for documentation purposes
@@ -860,12 +860,12 @@ GLuint CC3LightCameraBridgeVolume::getVertexCount()
 
 CC3Light* CC3LightCameraBridgeVolume::getLight()
 {
-	return _light; 
+	return m_pLight; 
 }
 
 void CC3LightCameraBridgeVolume::setLight( CC3Light* aLight )
 {
-	_light = aLight;			// weak reference
+	m_pLight = aLight;			// weak reference
 	markDirty();
 }
 
@@ -877,14 +877,14 @@ void CC3LightCameraBridgeVolume::setLight( CC3Light* aLight )
  */
 CC3Vector CC3LightCameraBridgeVolume::getLightPosition()
 {
-	return _light->getGlobalHomogeneousPosition().cc3Vector(); 
+	return m_pLight->getGlobalHomogeneousPosition().cc3Vector(); 
 }
 
 void CC3LightCameraBridgeVolume::populateFrom( CC3LightCameraBridgeVolume* another )
 {
 	super::populateFrom( another );
 	
-	_light = another->getLight();		// weak reference
+	m_pLight = another->getLight();		// weak reference
 }
 
 CCObject* CC3LightCameraBridgeVolume::copyWithZone( CCZone* pZone )
@@ -919,7 +919,7 @@ void CC3LightCameraBridgeVolume::nodeWasDestroyed( CC3Node* aNode )
  */
 bool CC3LightCameraBridgeVolume::isLightInFrontOfPlane( const CC3Plane& aPlane )
 {
-	return aPlane.isInFront( _light->getGlobalHomogeneousPosition() );
+	return aPlane.isInFront( m_pLight->getGlobalHomogeneousPosition() );
 }
 
 /** Overridden to include the homogeneous location of the light into the vertex test. */
@@ -930,8 +930,8 @@ bool CC3LightCameraBridgeVolume::areAllVerticesInFrontOf( const CC3Plane& plane 
 
 CC3ShadowCastingVolume::CC3ShadowCastingVolume()
 {
-	_vertexCount = 0; 
-	_planeCount = 0;
+	m_vertexCount = 0; 
+	m_planeCount = 0;
 }
 
 CC3ShadowCastingVolume* CC3ShadowCastingVolume::boundingVolume()
@@ -946,25 +946,25 @@ CC3ShadowCastingVolume* CC3ShadowCastingVolume::boundingVolume()
 CC3Plane* CC3ShadowCastingVolume::getPlanes()
 {
 	updateIfNeeded();
-	return _planes;
+	return m_planes;
 }
 
 GLuint CC3ShadowCastingVolume::getPlaneCount()
 {
 	updateIfNeeded();
-	return _planeCount;
+	return m_planeCount;
 }
 
 CC3Vector* CC3ShadowCastingVolume::getVertices()
 {
 	updateIfNeeded();
-	return _vertices;
+	return m_vertices;
 }
 
 GLuint CC3ShadowCastingVolume::getVertexCount()
 {
 	updateIfNeeded();
-	return _vertexCount;
+	return m_vertexCount;
 }
 
 /**
@@ -973,17 +973,17 @@ GLuint CC3ShadowCastingVolume::getVertexCount()
  */
 void CC3ShadowCastingVolume::addUniqueVertex( const CC3Vector& aLocation )
 {
-	for (GLuint vtxIdx = 0; vtxIdx < _vertexCount; vtxIdx++)
-		if ( aLocation.equals( _vertices[vtxIdx] ) ) 
+	for (GLuint vtxIdx = 0; vtxIdx < m_vertexCount; vtxIdx++)
+		if ( aLocation.equals( m_vertices[vtxIdx] ) ) 
 			return;
 
-	_vertices[_vertexCount++] = aLocation;
+	m_vertices[m_vertexCount++] = aLocation;
 }
 
 /** Adds the specified plane to the planes array, and increments the planeCount property. */
 void CC3ShadowCastingVolume::addPlane( const CC3Plane& aPlane )
 {
-	_planes[_planeCount++] = aPlane; 
+	m_planes[m_planeCount++] = aPlane; 
 }
 
 //-(NSString*) fullDescription {
@@ -1000,7 +1000,7 @@ void CC3ShadowCastingVolume::checkPlaneEdge( const CC3Plane& edgePlane, const CC
 {
 	if ( isLightInFrontOfPlane( edgePlane ) ) 
 	{
-		CC3Vector v3 = _light->isDirectionalOnly()
+		CC3Vector v3 = m_pLight->isDirectionalOnly()
 							? v2.add( getLightPosition() ) 
 							: getLightPosition();
 		addPlane( CC3Plane::planeFromLocations(v1, v2, v3) );
@@ -1031,10 +1031,10 @@ void CC3ShadowCastingVolume::checkPlane( const CC3Plane& aPlane, const CC3Plane&
 
 void CC3ShadowCastingVolume::buildPlanes()
 {	
-	_planeCount = 0;
-	_vertexCount = 0;
+	m_planeCount = 0;
+	m_vertexCount = 0;
 	
-    CC3Frustum* cf = _light->getActiveCamera()->getFrustum();
+    CC3Frustum* cf = m_pLight->getActiveCamera()->getFrustum();
 	
 	checkPlane( cf->getLeftPlane(),
 			cf->getFarPlane(), cf->getFarBottomLeft(),
@@ -1072,7 +1072,7 @@ void CC3ShadowCastingVolume::buildPlanes()
 			cf->getLeftPlane(), cf->getFarTopLeft(),
 			cf->getBottomPlane(), cf->getFarBottomLeft() );
 
-	if ( !_light->isDirectionalOnly() ) 
+	if ( !m_pLight->isDirectionalOnly() ) 
 		addUniqueVertex( getLightPosition() );
 }
 
@@ -1122,7 +1122,7 @@ CC3Vector CC3CameraShadowVolume::getBottomRight()
 CC3Plane* CC3CameraShadowVolume::getPlanes()
 {
 	updateIfNeeded();
-	return _planes;
+	return m_planes;
 }
 
 GLuint CC3CameraShadowVolume::getPlaneCount()
@@ -1133,14 +1133,14 @@ GLuint CC3CameraShadowVolume::getPlaneCount()
 CC3Vector* CC3CameraShadowVolume::getVertices()
 {
 	updateIfNeeded();
-	return _vertices;
+	return m_vertices;
 }
 
 GLuint CC3CameraShadowVolume::getVertexCount()
 {
 	updateIfNeeded();
 
-	return _light->isDirectionalOnly() ? 4 : 5;
+	return m_pLight->isDirectionalOnly() ? 4 : 5;
 }
 
 CC3Plane CC3CameraShadowVolume::getTopPlane()
@@ -1176,12 +1176,12 @@ CC3Plane CC3CameraShadowVolume::getFarPlane()
 /** Updates the vertices from the camera frustum. */
 void CC3CameraShadowVolume::buildVolume()
 {
-    CC3Frustum* cf = _light->getActiveCamera()->getFrustum();
-	_vertices[kCC3TopLeftIdx] = cf->getNearTopLeft();
-	_vertices[kCC3TopRgtIdx] = cf->getNearTopRight();
-	_vertices[kCC3BtmLeftIdx] = cf->getNearBottomLeft();
-	_vertices[kCC3BtmRgtIdx] = cf->getNearBottomRight();
-	_vertices[kCC3LightIdx] = getLightPosition();
+    CC3Frustum* cf = m_pLight->getActiveCamera()->getFrustum();
+	m_vertices[kCC3TopLeftIdx] = cf->getNearTopLeft();
+	m_vertices[kCC3TopRgtIdx] = cf->getNearTopRight();
+	m_vertices[kCC3BtmLeftIdx] = cf->getNearBottomLeft();
+	m_vertices[kCC3BtmRgtIdx] = cf->getNearBottomRight();
+	m_vertices[kCC3LightIdx] = getLightPosition();
 }
 
 /**
@@ -1201,15 +1201,15 @@ void CC3CameraShadowVolume::buildPlanes()
 	// Get the 3D position that corresponds to either a location or a direction
 	CC3Vector lightPos = getLightPosition();
 	CC3Vector lightDir;
-	CC3Vector tl = _vertices[kCC3TopLeftIdx];
-	CC3Vector tr = _vertices[kCC3TopRgtIdx];
-	CC3Vector bl = _vertices[kCC3BtmLeftIdx];
-	CC3Vector br = _vertices[kCC3BtmRgtIdx];
+	CC3Vector tl = m_vertices[kCC3TopLeftIdx];
+	CC3Vector tr = m_vertices[kCC3TopRgtIdx];
+	CC3Vector bl = m_vertices[kCC3BtmLeftIdx];
+	CC3Vector br = m_vertices[kCC3BtmRgtIdx];
 	
 	// The near plane does not depend on the light position
-	_planes[kCC3NearIdx] = CC3Plane::planeFromLocations(bl, br, tr);
+	m_planes[kCC3NearIdx] = CC3Plane::planeFromLocations(bl, br, tr);
 	
-	if (_light->isDirectionalOnly()) 
+	if (m_pLight->isDirectionalOnly()) 
 	{	
 		// The light is infinitely far away. The light position is actually a direction to it.
 		// Opposite sides are parallel and pointing in the direction of the light source.
@@ -1217,18 +1217,18 @@ void CC3CameraShadowVolume::buildPlanes()
 		// plane by adding the light direction to one of the locations on the edge. 
 		lightDir = lightPos;
 		
-		_planes[kCC3LeftIdx] = CC3Plane::planeFromLocations(bl, tl, tl.add( lightDir ));
-		_planes[kCC3RgtIdx] = CC3Plane::planeFromLocations(tr, br, br.add( lightDir ));
+		m_planes[kCC3LeftIdx] = CC3Plane::planeFromLocations(bl, tl, tl.add( lightDir ));
+		m_planes[kCC3RgtIdx] = CC3Plane::planeFromLocations(tr, br, br.add( lightDir ));
 		
-		_planes[kCC3TopIdx] = CC3Plane::planeFromLocations(tl, tr, tr.add( lightDir ));
-		_planes[kCC3BotmIdx] = CC3Plane::planeFromLocations(br, bl, bl.add( lightDir ));
+		m_planes[kCC3TopIdx] = CC3Plane::planeFromLocations(tl, tr, tr.add( lightDir ));
+		m_planes[kCC3BotmIdx] = CC3Plane::planeFromLocations(br, bl, bl.add( lightDir ));
 		
 		// The far plane is parallel to the near plane, but the normal points in
 		// the opposite direction. Locate the far plane at the light position,
 		// and then move it out an infinite distance, in the same direction.
-        _planes[kCC3FarIdx] = CC3Plane::negate( _planes[kCC3NearIdx] );
-		_planes[kCC3FarIdx].d = -lightPos.dot( _planes[kCC3FarIdx].getNormal() );
-		_planes[kCC3FarIdx].d = SIGN(_planes[kCC3FarIdx].d) * FLOAT_INFINITY;
+        m_planes[kCC3FarIdx] = CC3Plane::negate( m_planes[kCC3NearIdx] );
+		m_planes[kCC3FarIdx].d = -lightPos.dot( m_planes[kCC3FarIdx].getNormal() );
+		m_planes[kCC3FarIdx].d = SIGN(m_planes[kCC3FarIdx].d) * FLOAT_INFINITY;
 
 	} else {
 		
@@ -1236,16 +1236,16 @@ void CC3CameraShadowVolume::buildPlanes()
 		// The direction is taken from the center of the near clipping rectangle.
 		lightDir = lightPos.difference( tl.average( br ) );
 		
-		_planes[kCC3LeftIdx] = CC3Plane::planeFromLocations(bl, tl, lightPos);
-		_planes[kCC3RgtIdx] = CC3Plane::planeFromLocations(tr, br, lightPos);
+		m_planes[kCC3LeftIdx] = CC3Plane::planeFromLocations(bl, tl, lightPos);
+		m_planes[kCC3RgtIdx] = CC3Plane::planeFromLocations(tr, br, lightPos);
 		
-		_planes[kCC3TopIdx] = CC3Plane::planeFromLocations(tl, tr, lightPos);
-		_planes[kCC3BotmIdx] = CC3Plane::planeFromLocations(br, bl, lightPos);
+		m_planes[kCC3TopIdx] = CC3Plane::planeFromLocations(tl, tr, lightPos);
+		m_planes[kCC3BotmIdx] = CC3Plane::planeFromLocations(br, bl, lightPos);
 		
 		// The far plane is parallel to the near plane, but the normal points in
 		// the opposite direction. Locate the far plane at the light position.
-        _planes[kCC3FarIdx] = CC3Plane::negate( _planes[kCC3NearIdx] );
-		_planes[kCC3FarIdx].d = -lightPos.dot( _planes[kCC3FarIdx].getNormal() );
+        m_planes[kCC3FarIdx] = CC3Plane::negate( m_planes[kCC3NearIdx] );
+		m_planes[kCC3FarIdx].d = -lightPos.dot( m_planes[kCC3FarIdx].getNormal() );
 
 	}
 	
@@ -1258,12 +1258,12 @@ void CC3CameraShadowVolume::buildPlanes()
 	BOOL isBehindCamera = (camDir.dot( lightDir ) < 0);
 	
 	if ( isBehindCamera ) {
-        _planes[kCC3LeftIdx] = CC3Plane::negate(_planes[kCC3LeftIdx]);
-		_planes[kCC3RgtIdx] = CC3Plane::negate(_planes[kCC3RgtIdx]);
-		_planes[kCC3TopIdx] = CC3Plane::negate(_planes[kCC3TopIdx]);
-		_planes[kCC3BotmIdx] = CC3Plane::negate(_planes[kCC3BotmIdx]);
-		_planes[kCC3NearIdx] = CC3Plane::negate(_planes[kCC3NearIdx]);
-		_planes[kCC3FarIdx] = CC3Plane::negate(_planes[kCC3FarIdx]);
+        m_planes[kCC3LeftIdx] = CC3Plane::negate(m_planes[kCC3LeftIdx]);
+		m_planes[kCC3RgtIdx] = CC3Plane::negate(m_planes[kCC3RgtIdx]);
+		m_planes[kCC3TopIdx] = CC3Plane::negate(m_planes[kCC3TopIdx]);
+		m_planes[kCC3BotmIdx] = CC3Plane::negate(m_planes[kCC3BotmIdx]);
+		m_planes[kCC3NearIdx] = CC3Plane::negate(m_planes[kCC3NearIdx]);
+		m_planes[kCC3FarIdx] = CC3Plane::negate(m_planes[kCC3FarIdx]);
 	}
 	
 	//LogTrace(@"Built %@ from %@ light %@ the camera",

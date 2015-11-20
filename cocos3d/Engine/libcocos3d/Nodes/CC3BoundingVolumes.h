@@ -441,10 +441,10 @@ private:
 	virtual void				appendVerticesTo( std::string& desc );
 
 protected:
-	bool						_isDirty : 1;
-	bool						_shouldIgnoreRayIntersection : 1;
-	bool						_shouldLogIntersections : 1;
-	bool						_shouldLogIntersectionMisses : 1;
+	bool						m_isDirty : 1;
+	bool						m_shouldIgnoreRayIntersection : 1;
+	bool						m_shouldLogIntersections : 1;
+	bool						m_shouldLogIntersectionMisses : 1;
 };
 
 /**
@@ -687,13 +687,13 @@ public:
 	virtual CC3Vector			getGlobalLocationOfGlobalRayIntesection( const CC3Ray& aRay );
 
 protected:
-	CC3Node*					_node;
-	CC3Vector					_centerOfGeometry;
-	CC3Vector					_globalCenterOfGeometry;
-	bool						_shouldBuildFromMesh : 1;
-	bool						_shouldMaximize : 1;
-	bool						_isTransformDirty : 1;
-	bool						_shouldDraw : 1;
+	CC3Node*					m_pNode;
+	CC3Vector					m_centerOfGeometry;
+	CC3Vector					m_globalCenterOfGeometry;
+	bool						m_shouldBuildFromMesh : 1;
+	bool						m_shouldMaximize : 1;
+	bool						m_isTransformDirty : 1;
+	bool						m_shouldDraw : 1;
 };
 
 /**
@@ -949,8 +949,8 @@ public:
 	virtual bool				init();
 	
 protected:
-	GLfloat						_radius;
-	GLfloat						_globalRadius;
+	GLfloat						m_radius;
+	GLfloat						m_globalRadius;
 };
 
 /**
@@ -1066,9 +1066,9 @@ public:
 	void						initCubeWithSideLength( GLuint sideLength, GLenum colorFormat, GLenum colorType, CC3FramebufferAttachment* depthAttachment );
 
 protected:
-	CC3Box						_boundingBox;
-	CC3Vector					_vertices[8];
-	CC3Plane					_planes[6];
+	CC3Box						m_boundingBox;
+	CC3Vector					m_vertices[8];
+	CC3Plane					m_planes[6];
 };
 
 /**
@@ -1234,7 +1234,7 @@ public:
 	void						setShouldDraw( bool shouldDraw );
 
 protected:
-	CCArray*					_boundingVolumes;
+	CCArray*					m_boundingVolumes;
 };
 
 /**
@@ -1337,8 +1337,8 @@ public:
 	bool						doesIntersectBounds( const CCRect& bounds );
 
 protected:
-	CC3NodeSphericalBoundingVolume* _sphericalBoundingVolume;
-	CC3NodeBoxBoundingVolume*	_boxBoundingVolume;
+	CC3NodeSphericalBoundingVolume* m_sphericalBoundingVolume;
+	CC3NodeBoxBoundingVolume*	m_boxBoundingVolume;
 };
 
 /**

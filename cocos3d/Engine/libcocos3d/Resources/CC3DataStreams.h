@@ -154,10 +154,10 @@ public:
 
 
 protected:
-	CCData*						_data;
-	CCRange						_readRange;
-	bool						_wasReadBeyondEOF : 1;
-	bool						_isBigEndian : 1;
+	CCData*						m_pData;
+	CCRange						m_readRange;
+	bool						m_wasReadBeyondEOF : 1;
+	bool						m_isBigEndian : 1;
 };
 
 NS_COCOS3D_END

@@ -332,7 +332,7 @@ protected:
 	*/
 	std::string					m_sName;
 
-	void*						_userData;
+	void*						m_userData;
 };
 
 NS_COCOS3D_END

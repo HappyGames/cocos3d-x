@@ -47,13 +47,13 @@ bool isDeviceOrientationPortrait( CC3UIInterfaceOrientation orientation )
 
 CC3Camera::CC3Camera()
 {
-	_frustum = NULL;
-	_fieldOfViewAspectOrientation = CC3UIInterfaceOrientationUndifined;
+	m_frustum = NULL;
+	m_fieldOfViewAspectOrientation = CC3UIInterfaceOrientationUndifined;
 }
 
 CC3Camera::~CC3Camera()
 {
-	CC_SAFE_RELEASE( _frustum );
+	CC_SAFE_RELEASE( m_frustum );
 }
 
 bool CC3Camera::isCamera()
@@ -69,53 +69,53 @@ bool CC3Camera::shouldReverseForwardDirection()
 
 bool CC3Camera::shouldClipToViewport()
 {
-	return _shouldClipToViewport;
+	return m_shouldClipToViewport;
 }
 
 void CC3Camera::setShouldClipToViewport( bool shouldClip )
 {
-	_shouldClipToViewport = shouldClip;
+	m_shouldClipToViewport = shouldClip;
 }
 
 CC3Frustum* CC3Camera::getFrustum()
 {
 	buildProjection();
-	return _frustum;
+	return m_frustum;
 }
 
 /** Establish backpointer from frustum. */
 void CC3Camera::setFrustum( CC3Frustum* frustum )
 {
-	if (frustum == _frustum) 
+	if (frustum == m_frustum) 
 		return;
 	
-	CC_SAFE_RELEASE( _frustum );
-	_frustum = frustum;
+	CC_SAFE_RELEASE( m_frustum );
+	m_frustum = frustum;
 	CC_SAFE_RETAIN( frustum );
 
-	if ( _frustum )
-		_frustum->setCamera( this );
+	if ( m_frustum )
+		m_frustum->setCamera( this );
 }
 
 CC3Matrix* CC3Camera::getProjectionMatrix()
 {
 	buildProjection();
-	return _hasInfiniteDepthOfField
-				? _frustum->getInfiniteProjectionMatrix()
-				: _frustum->getFiniteProjectionMatrix();
+	return m_hasInfiniteDepthOfField
+				? m_frustum->getInfiniteProjectionMatrix()
+				: m_frustum->getFiniteProjectionMatrix();
 }
 
 GLfloat CC3Camera::getFieldOfView()
 {
-	return _fieldOfView; 
+	return m_fieldOfView; 
 }
 
 void CC3Camera::setFieldOfView( GLfloat anAngle )
 {
-	if (anAngle == _fieldOfView) 
+	if (anAngle == m_fieldOfView) 
 		return;
 
-	_fieldOfView = anAngle;
+	m_fieldOfView = anAngle;
 
 	markProjectionDirty();
 }
@@ -127,71 +127,71 @@ GLfloat CC3Camera::getEffectiveFieldOfView()
 
 CC3FieldOfViewOrientation CC3Camera::getFieldOfViewOrientation()
 {
-	return _fieldOfViewOrientation; 
+	return m_fieldOfViewOrientation; 
 }
 
 void CC3Camera::setFieldOfViewOrientation( CC3FieldOfViewOrientation fieldOfViewOrientation )
 {
-	if (fieldOfViewOrientation == _fieldOfViewOrientation) 
+	if (fieldOfViewOrientation == m_fieldOfViewOrientation) 
 		return;
 
-	_fieldOfViewOrientation = fieldOfViewOrientation;
+	m_fieldOfViewOrientation = fieldOfViewOrientation;
 	markProjectionDirty();
 }
 
 CC3UIInterfaceOrientation CC3Camera::getFieldOfViewAspectOrientation()
 {
-	return _fieldOfViewAspectOrientation; 
+	return m_fieldOfViewAspectOrientation; 
 }
 
 void CC3Camera::setFieldOfViewAspectOrientation( CC3UIInterfaceOrientation fieldOfViewAspectOrientation )
 {
-	if ( fieldOfViewAspectOrientation == _fieldOfViewAspectOrientation ) 
+	if ( fieldOfViewAspectOrientation == m_fieldOfViewAspectOrientation ) 
 		return;
 
-	_fieldOfViewAspectOrientation = fieldOfViewAspectOrientation;
+	m_fieldOfViewAspectOrientation = fieldOfViewAspectOrientation;
 	markProjectionDirty();
 }
 
 GLfloat CC3Camera::getNearClippingDistance()
 {
-	return _nearClippingDistance; 
+	return m_nearClippingDistance; 
 }
 
 void CC3Camera::setNearClippingDistance( GLfloat aDistance )
 {
-	if (aDistance == _nearClippingDistance) 
+	if (aDistance == m_nearClippingDistance) 
 		return;
 
-	_nearClippingDistance = aDistance;
+	m_nearClippingDistance = aDistance;
 	markProjectionDirty();
 }
 
 GLfloat CC3Camera::getFarClippingDistance()
 {
-	return _farClippingDistance; 
+	return m_farClippingDistance; 
 }
 
 void CC3Camera::setFarClippingDistance( GLfloat aDistance )
 {
-	if (aDistance == _farClippingDistance) 
+	if (aDistance == m_farClippingDistance) 
 		return;
 
-	_farClippingDistance = aDistance;
+	m_farClippingDistance = aDistance;
 	markProjectionDirty();
 }
 
 CC3Viewport CC3Camera::getViewport()
 {
-	return _viewport; 
+	return m_viewport; 
 }
 
 void CC3Camera::setViewport( const CC3Viewport& viewport )
 {
-	if (CC3ViewportsAreEqual(viewport, _viewport)) 
+	if (CC3ViewportsAreEqual(viewport, m_viewport)) 
 		return;
 
-	_viewport = viewport;
+	m_viewport = viewport;
 	markProjectionDirty();
 }
 
@@ -207,22 +207,22 @@ void CC3Camera::setScale( const CC3Vector& aScale )
 
 bool CC3Camera::hasInfiniteDepthOfField()
 {
-	return _hasInfiniteDepthOfField;
+	return m_hasInfiniteDepthOfField;
 }
 
 void CC3Camera::setHasInfiniteDepthOfField( bool infinite )
 {
-	_hasInfiniteDepthOfField = infinite;
+	m_hasInfiniteDepthOfField = infinite;
 }
 
 bool CC3Camera::isUsingParallelProjection()
 { 
-	return _frustum->isUsingParallelProjection(); 
+	return m_frustum->isUsingParallelProjection(); 
 }
 
 void CC3Camera::setIsUsingParallelProjection( bool shouldUseParallelProjection )
 {
-	_frustum->setIsUsingParallelProjection( shouldUseParallelProjection );
+	m_frustum->setIsUsingParallelProjection( shouldUseParallelProjection );
 	markProjectionDirty();
 }
 
@@ -231,16 +231,16 @@ void CC3Camera::initWithTag( GLuint aTag, const std::string& aName )
 	super::initWithTag( aTag, aName );
 	{
 		setFrustum( CC3Frustum::frustum() );		// use setter for backpointer
-		_isProjectionDirty = true;
-		_fieldOfView = kCC3DefaultFieldOfView;
-		_fieldOfViewOrientation = CC3FieldOfViewOrientationDiagonal;
-		_fieldOfViewAspectOrientation = CC3UIInterfaceOrientationLandscapeLeft;
-		_nearClippingDistance = kCC3DefaultNearClippingDistance;
-		_farClippingDistance = kCC3DefaultFarClippingDistance;
-		_viewport = CC3ViewportMake(0, 0, 0, 0);
-		_shouldClipToViewport = false;
-		_hasInfiniteDepthOfField = false;
-		_isOpen = false;
+		m_isProjectionDirty = true;
+		m_fieldOfView = kCC3DefaultFieldOfView;
+		m_fieldOfViewOrientation = CC3FieldOfViewOrientationDiagonal;
+		m_fieldOfViewAspectOrientation = CC3UIInterfaceOrientationLandscapeLeft;
+		m_nearClippingDistance = kCC3DefaultNearClippingDistance;
+		m_farClippingDistance = kCC3DefaultFarClippingDistance;
+		m_viewport = CC3ViewportMake(0, 0, 0, 0);
+		m_shouldClipToViewport = false;
+		m_hasInfiniteDepthOfField = false;
+		m_isOpen = false;
 	}
 }
 
@@ -248,15 +248,15 @@ void CC3Camera::populateFrom( CC3Camera* another )
 {
 	super::populateFrom( another );
 
-	setFrustum( (CC3Frustum*)another->_frustum->copy()->autorelease() ) ;
+	setFrustum( (CC3Frustum*)another->m_frustum->copy()->autorelease() ) ;
 
-	_fieldOfView = another->getFieldOfView();
-	_fieldOfViewOrientation = another->getFieldOfViewOrientation();
-	_fieldOfViewAspectOrientation = another->getFieldOfViewAspectOrientation();
-	_nearClippingDistance = another->getNearClippingDistance();
-	_farClippingDistance = another->getFarClippingDistance();
-	_isProjectionDirty = another->_isProjectionDirty;
-	_isOpen = another->isOpen();
+	m_fieldOfView = another->getFieldOfView();
+	m_fieldOfViewOrientation = another->getFieldOfViewOrientation();
+	m_fieldOfViewAspectOrientation = another->getFieldOfViewAspectOrientation();
+	m_nearClippingDistance = another->getNearClippingDistance();
+	m_farClippingDistance = another->getFarClippingDistance();
+	m_isProjectionDirty = another->m_isProjectionDirty;
+	m_isOpen = another->isOpen();
 }
 
 CCObject* CC3Camera::copyWithZone( CCZone* zone )
@@ -270,7 +270,7 @@ CCObject* CC3Camera::copyWithZone( CCZone* zone )
 
 bool CC3Camera::isOpen()
 {
-	return _isOpen;
+	return m_isOpen;
 }
 
 std::string CC3Camera::fullDescription()
@@ -284,12 +284,12 @@ std::string CC3Camera::fullDescription()
 void CC3Camera::markTransformDirty()
 {
 	super::markTransformDirty();
-	_frustum->markDirty();
+	m_frustum->markDirty();
 }
 
 void CC3Camera::markProjectionDirty()
 {
-	_isProjectionDirty = true; 
+	m_isProjectionDirty = true; 
 }
 
 /**
@@ -333,15 +333,15 @@ CC3Matrix* CC3Camera::getViewMatrix()
  */
 void CC3Camera::buildProjection()
 {
-	if ( !_isProjectionDirty ) 
+	if ( !m_isProjectionDirty ) 
 		return;
 	
-	CCAssert( _viewport.h > 0 && _viewport.w > 0, "%CC3Camera does not have a valid viewport" );
+	CCAssert( m_viewport.h > 0 && m_viewport.w > 0, "%CC3Camera does not have a valid viewport" );
 	
 	CCPoint fovAspect = getOrientedFieldOfViewAspect();
-	_frustum->populateRight( _nearClippingDistance * fovAspect.x, _nearClippingDistance * fovAspect.y, _nearClippingDistance, _farClippingDistance );
+	m_frustum->populateRight( m_nearClippingDistance * fovAspect.x, m_nearClippingDistance * fovAspect.y, m_nearClippingDistance, m_farClippingDistance );
 	
-	_isProjectionDirty = false;
+	m_isProjectionDirty = false;
 	
 	notifyTransformListeners();	// Notify the transform listeners that the projection has changed
 }
@@ -357,10 +357,10 @@ void CC3Camera::buildProjection()
 CCPoint CC3Camera::getOrientedFieldOfViewAspect()
 {
 	GLfloat halfFOV = getEffectiveFieldOfView() / 2.0f;
-	GLfloat aspect = ((GLfloat) _viewport.w / (GLfloat) _viewport.h);
+	GLfloat aspect = ((GLfloat) m_viewport.w / (GLfloat) m_viewport.h);
 	GLfloat right, top, diag, orientationCorrection;
 
-	switch (_fieldOfViewOrientation) 
+	switch (m_fieldOfViewOrientation) 
 	{
 		case CC3FieldOfViewOrientationVertical:
 			top = tanf(CC3DegToRad(halfFOV));
@@ -385,8 +385,8 @@ CCPoint CC3Camera::getOrientedFieldOfViewAspect()
 
 	// If the aspect doesn't match the intended orientation,
 	// bring them in alignment by scaling by the orientation correction.
-	if ((isDeviceOrientationLandscape(_fieldOfViewAspectOrientation) && (aspect < 1.0f)) ||
-		(isDeviceOrientationPortrait(_fieldOfViewAspectOrientation ) && (aspect > 1.0f))) 
+	if ((isDeviceOrientationLandscape(m_fieldOfViewAspectOrientation) && (aspect < 1.0f)) ||
+		(isDeviceOrientationPortrait(m_fieldOfViewAspectOrientation ) && (aspect > 1.0f))) 
 	{
 		right *= orientationCorrection;
 		top *= orientationCorrection;
@@ -398,7 +398,7 @@ CCPoint CC3Camera::getOrientedFieldOfViewAspect()
 void CC3Camera::openWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	//LogTrace(@"%@ opening with %@", self, visitor);
-	_isOpen = true;
+	m_isOpen = true;
 	openProjectionWithVisitor( visitor );
 	openViewWithVisitor( visitor );
 }
@@ -406,7 +406,7 @@ void CC3Camera::openWithVisitor( CC3NodeDrawingVisitor* visitor )
 void CC3Camera::closeWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	//LogTrace(@"%@ closing with %@", self, visitor);
-	_isOpen = false;
+	m_isOpen = false;
 	closeViewWithVisitor( visitor );
 	closeProjectionWithVisitor( visitor );
 }
@@ -715,11 +715,11 @@ CCSize CC3Camera::getFovRatios()
 	{
 	case CC3UIInterfaceOrientationLandscapeLeft:
 	case CC3UIInterfaceOrientationLandscapeRight:
-		return CCSizeMake(_frustum->getTop() / _frustum->getNear(), _frustum->getRight() / _frustum->getNear());
+		return CCSizeMake(m_frustum->getTop() / m_frustum->getNear(), m_frustum->getRight() / m_frustum->getNear());
 	case CC3UIInterfaceOrientationPortrait:
 	case CC3UIInterfaceOrientationPortraitUpsideDown:
 	default:
-		return CCSizeMake(_frustum->getRight() / _frustum->getNear(), _frustum->getTop() / _frustum->getNear());
+		return CCSizeMake(m_frustum->getRight() / m_frustum->getNear(), m_frustum->getTop() / m_frustum->getNear());
 	}
 }
 
@@ -749,12 +749,12 @@ CC3Vector CC3Camera::getProjectLocation( const CC3Vector& a3DLocation )
 	// Normalize the vector so that each component is between 0 and 1 by calculating ( v = (v + 1) / 2 ).
 	projectedLoc = projectedLoc.average( CC3Vector::kCC3VectorUnitCube );
 	
-	CCAssert(_viewport.h > 0 && _viewport.w > 0, "%CC3Camera does not have a valid viewport");
+	CCAssert(m_viewport.h > 0 && m_viewport.w > 0, "%CC3Camera does not have a valid viewport");
 	
 	// Map the X & Y components of the projected location (now between 0 and 1) to display coordinates.
 	GLfloat g2p = 1.0f / CCDirector::sharedDirector()->getContentScaleFactor();
-	projectedLoc.x *= ((GLfloat)_viewport.w * g2p);
-	projectedLoc.y *= ((GLfloat)_viewport.h * g2p);
+	projectedLoc.x *= ((GLfloat)m_viewport.w * g2p);
+	projectedLoc.y *= ((GLfloat)m_viewport.h * g2p);
 	
 	// Using the vector from the camera to the 3D location, determine whether or not the
 	// 3D location is in front of the camera by using the dot-product of that vector and
@@ -800,7 +800,7 @@ CC3Ray CC3Camera::unprojectPoint( const CCPoint& cc2Point )
 	// on the viewport to its position on the near clipping rectangle. The Z-coordinate is
 	// negative because the camera points down the negative Z axis in its local coordinates.
 	buildProjection();
-	CC3Vector pointLocNear = cc3v(_frustum->getRight() * xp, _frustum->getTop() * yp, -_frustum->getNear());
+	CC3Vector pointLocNear = cc3v(m_frustum->getRight() * xp, m_frustum->getTop() * yp, -m_frustum->getNear());
 
 	CC3Ray ray;
 	if ( isUsingParallelProjection() )
@@ -868,95 +868,95 @@ CC3Camera* CC3Camera::nodeWithName( const std::string& name )
 
 CC3Frustum::CC3Frustum()
 {
-	_finiteProjectionMatrix = NULL;
-	_infiniteProjectionMatrix = NULL;
+	m_finiteProjectionMatrix = NULL;
+	m_infiniteProjectionMatrix = NULL;
 
-	_camera = NULL;
-	_top = _bottom = _left = _right = _near = _far = 0.0f;
-	_finiteProjectionMatrix = CC3ProjectionMatrix::matrix();
-	_finiteProjectionMatrix->retain();
+	m_camera = NULL;
+	m_top = m_bottom = m_left = m_right = m_near = m_far = 0.0f;
+	m_finiteProjectionMatrix = CC3ProjectionMatrix::matrix();
+	m_finiteProjectionMatrix->retain();
 
-	_infiniteProjectionMatrix = NULL;
-	_isUsingParallelProjection = false;
+	m_infiniteProjectionMatrix = NULL;
+	m_isUsingParallelProjection = false;
 }
 
 CC3Frustum::~CC3Frustum()
 {
-	_camera = NULL;			// weak reference
-	CC_SAFE_RELEASE( _finiteProjectionMatrix );
-	CC_SAFE_RELEASE(_infiniteProjectionMatrix );
+	m_camera = NULL;			// weak reference
+	CC_SAFE_RELEASE( m_finiteProjectionMatrix );
+	CC_SAFE_RELEASE(m_infiniteProjectionMatrix );
 }
 
 GLfloat CC3Frustum::getTop()
 {
-	return _top;
+	return m_top;
 }
 
 void CC3Frustum::setTop( GLfloat aValue )
 {
-	_top = aValue;
+	m_top = aValue;
 	markProjectionDirty();
 }
 
 GLfloat CC3Frustum::getBottom()
 {
-	return _bottom;
+	return m_bottom;
 }
 
 void CC3Frustum::setBottom( GLfloat aValue )
 {
-	_bottom = aValue;
+	m_bottom = aValue;
 	markProjectionDirty();
 }
 
 GLfloat CC3Frustum::getLeft()
 {
-	return _left;
+	return m_left;
 }
 
 void CC3Frustum::setLeft( GLfloat aValue )
 {
-	_left = aValue;
+	m_left = aValue;
 	markProjectionDirty();
 }
 
 GLfloat CC3Frustum::getRight()
 {
-	return _right;
+	return m_right;
 }
 
 void CC3Frustum::setRight( GLfloat aValue )
 {
-	_right = aValue;
+	m_right = aValue;
 	markProjectionDirty();
 }
 
 GLfloat CC3Frustum::getNear()
 {
-	return _near;
+	return m_near;
 }
 
 void CC3Frustum::setNear( GLfloat aValue )
 {
-	_near = aValue;
+	m_near = aValue;
 	markProjectionDirty();
 }
 
 GLfloat CC3Frustum::getFar()
 {
-	return _far;
+	return m_far;
 }
 
 void CC3Frustum::setFar( GLfloat aValue )
 {
-	_far = aValue;
+	m_far = aValue;
 	markProjectionDirty();
 }
 
 CC3Plane* CC3Frustum::getPlanes()
 {
 	updateIfNeeded();
-	return _planes;
+	return m_planes;
 }
 
 GLuint CC3Frustum::getPlaneCount()
@@ -967,7 +967,7 @@ GLuint CC3Frustum::getPlaneCount()
 CC3Vector* CC3Frustum::getVertices()
 {
 	updateIfNeeded();
-	return _vertices;
+	return m_vertices;
 }
 
 GLuint CC3Frustum::getVertexCount()
@@ -1047,22 +1047,22 @@ CC3Vector CC3Frustum::getFarBottomRight()
 
 CC3Camera* CC3Frustum::getCamera()
 {
-	return _camera;
+	return m_camera;
 }
 
 void CC3Frustum::setCamera( CC3Camera* camera )
 {
-	_camera = camera;
+	m_camera = camera;
 }
 
 bool CC3Frustum::isUsingParallelProjection()
 {
-	return _isUsingParallelProjection;
+	return m_isUsingParallelProjection;
 }
 
 void CC3Frustum::setIsUsingParallelProjection( bool isUse )
 {
-	_isUsingParallelProjection = isUse;
+	m_isUsingParallelProjection = isUse;
 }
 
 bool CC3Frustum::init()
@@ -1084,7 +1084,7 @@ void CC3Frustum::populateFrom( CC3Frustum* another )
 {
 	super::populateFrom( another );
 
-	_isUsingParallelProjection = another->isUsingParallelProjection();
+	m_isUsingParallelProjection = another->isUsingParallelProjection();
 	populateRight( another->getRight(), another->getTop(), another->getNear(), another->getFar() );
 }
 
@@ -1099,12 +1099,12 @@ CCObject* CC3Frustum::copyWithZone( CCZone* pZone )
 
 void CC3Frustum::populateRight( GLfloat right, GLfloat top, GLfloat fnear, GLfloat ffar )
 {
-	_right = right;
-	_left = -right;
-	_top = top;
-	_bottom = -top;
-	_near = fnear;
-	_far = ffar;
+	m_right = right;
+	m_left = -right;
+	m_top = top;
+	m_bottom = -top;
+	m_near = fnear;
+	m_far = ffar;
 	
 	markProjectionDirty();
 	
@@ -1138,50 +1138,50 @@ std::string CC3Frustum::fullDescription()
 
 void CC3Frustum::markProjectionDirty()
 {
-	if ( _finiteProjectionMatrix )
-		_finiteProjectionMatrix->setIsDirty( true );
+	if ( m_finiteProjectionMatrix )
+		m_finiteProjectionMatrix->setIsDirty( true );
 
-	if ( _infiniteProjectionMatrix )
-		_infiniteProjectionMatrix->setIsDirty( true );
+	if ( m_infiniteProjectionMatrix )
+		m_infiniteProjectionMatrix->setIsDirty( true );
 
 	markDirty();
 }
 
 CC3Matrix* CC3Frustum::getFiniteProjectionMatrix()
 {
-	if ( _finiteProjectionMatrix->isDirty() ) 
+	if ( m_finiteProjectionMatrix->isDirty() ) 
 	{
-		if (_isUsingParallelProjection)
-			_finiteProjectionMatrix->populateOrthoFromFrustumLeft(_left, _right, _top, _bottom, _near, _far );
+		if (m_isUsingParallelProjection)
+			m_finiteProjectionMatrix->populateOrthoFromFrustumLeft(m_left, m_right, m_top, m_bottom, m_near, m_far );
 		else
-			_finiteProjectionMatrix->populateFromFrustumLeft( _left, _right, _top, _bottom, _near, _far );
+			m_finiteProjectionMatrix->populateFromFrustumLeft( m_left, m_right, m_top, m_bottom, m_near, m_far );
 
-		_finiteProjectionMatrix->setIsDirty( false );
+		m_finiteProjectionMatrix->setIsDirty( false );
 	}
 
-	return _finiteProjectionMatrix;
+	return m_finiteProjectionMatrix;
 }
 
 CC3Matrix* CC3Frustum::getInfiniteProjectionMatrix()
 {
 	// Since this matrix is not commonly used, it is only calculated when the
 	// finiateProjectionMatrix has changed, and then only on demand.
-	if ( !_infiniteProjectionMatrix ) 
+	if ( !m_infiniteProjectionMatrix ) 
 	{
-		_infiniteProjectionMatrix = CC3ProjectionMatrix::matrix();		// retained
-		_infiniteProjectionMatrix->retain();
-		_infiniteProjectionMatrix->setIsDirty( true );
+		m_infiniteProjectionMatrix = CC3ProjectionMatrix::matrix();		// retained
+		m_infiniteProjectionMatrix->retain();
+		m_infiniteProjectionMatrix->setIsDirty( true );
 	}
-	if ( _infiniteProjectionMatrix->isDirty() ) 
+	if ( m_infiniteProjectionMatrix->isDirty() ) 
 	{
-		if (_isUsingParallelProjection)
-			_infiniteProjectionMatrix->populateOrthoFromFrustumLeft(_left, _right, _top, _bottom, _near, _far );
+		if (m_isUsingParallelProjection)
+			m_infiniteProjectionMatrix->populateOrthoFromFrustumLeft(m_left, m_right, m_top, m_bottom, m_near, m_far );
 		else
-			_infiniteProjectionMatrix->populateFromFrustumLeft( _left, _right, _top, _bottom, _near, _far );
+			m_infiniteProjectionMatrix->populateFromFrustumLeft( m_left, m_right, m_top, m_bottom, m_near, m_far );
 
-		_infiniteProjectionMatrix->setIsDirty( false );
+		m_infiniteProjectionMatrix->setIsDirty( false );
 	}
-	return _infiniteProjectionMatrix;
+	return m_infiniteProjectionMatrix;
 }
 
 /**
@@ -1192,23 +1192,23 @@ void CC3Frustum::buildPlanes()
 {
 	CC3Matrix4x4 projMtx, viewMtx, m;
 	getFiniteProjectionMatrix()->populateCC3Matrix4x4( &projMtx );
-	if ( _camera )
-		_camera->getViewMatrix()->populateCC3Matrix4x4( &viewMtx );
+	if ( m_camera )
+		m_camera->getViewMatrix()->populateCC3Matrix4x4( &viewMtx );
 	CC3Matrix4x4Multiply(&m, &projMtx, &viewMtx);
 	
-    _planes[kCC3BotmIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r2), (m.c2r4 + m.c2r2),
+    m_planes[kCC3BotmIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r2), (m.c2r4 + m.c2r2),
 																		 (m.c3r4 + m.c3r2), (m.c4r4 + m.c4r2))));
-	_planes[kCC3TopIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r2), (m.c2r4 - m.c2r2),
+	m_planes[kCC3TopIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r2), (m.c2r4 - m.c2r2),
 																		 (m.c3r4 - m.c3r2), (m.c4r4 - m.c4r2))));
 	
-	_planes[kCC3LeftIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r1), (m.c2r4 + m.c2r1),
+	m_planes[kCC3LeftIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r1), (m.c2r4 + m.c2r1),
 																		 (m.c3r4 + m.c3r1), (m.c4r4 + m.c4r1))));
-	_planes[kCC3RgtIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r1), (m.c2r4 - m.c2r1),
+	m_planes[kCC3RgtIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r1), (m.c2r4 - m.c2r1),
 																		 (m.c3r4 - m.c3r1), (m.c4r4 - m.c4r1))));
 	
-	_planes[kCC3NearIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r3), (m.c2r4 + m.c2r3),
+	m_planes[kCC3NearIdx] = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 + m.c1r3), (m.c2r4 + m.c2r3),
 																		 (m.c3r4 + m.c3r3), (m.c4r4 + m.c4r3))));
-	_planes[kCC3FarIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r3), (m.c2r4 - m.c2r3),
+	m_planes[kCC3FarIdx]  = CC3Plane::negate(CC3Plane::normalize(CC3Plane((m.c1r4 - m.c1r3), (m.c2r4 - m.c2r3),
 																		 (m.c3r4 - m.c3r3), (m.c4r4 - m.c4r3))));
 	buildVertices();
 	
@@ -1217,24 +1217,24 @@ void CC3Frustum::buildPlanes()
 
 void CC3Frustum::buildVertices()
 {
-	CC3Plane tp = _planes[kCC3TopIdx];
-	CC3Plane bp = _planes[kCC3BotmIdx];
-	CC3Plane lp = _planes[kCC3LeftIdx];
-	CC3Plane rp = _planes[kCC3RgtIdx];
-	CC3Plane np = _planes[kCC3NearIdx];
-	CC3Plane fp = _planes[kCC3FarIdx];
+	CC3Plane tp = m_planes[kCC3TopIdx];
+	CC3Plane bp = m_planes[kCC3BotmIdx];
+	CC3Plane lp = m_planes[kCC3LeftIdx];
+	CC3Plane rp = m_planes[kCC3RgtIdx];
+	CC3Plane np = m_planes[kCC3NearIdx];
+	CC3Plane fp = m_planes[kCC3FarIdx];
 	
-	_vertices[kCC3NearTopLeftIdx] = CC3TriplePlaneIntersection(np, tp, lp);
-	_vertices[kCC3NearTopRgtIdx] = CC3TriplePlaneIntersection(np, tp, rp);
+	m_vertices[kCC3NearTopLeftIdx] = CC3TriplePlaneIntersection(np, tp, lp);
+	m_vertices[kCC3NearTopRgtIdx] = CC3TriplePlaneIntersection(np, tp, rp);
 	
-	_vertices[kCC3NearBtmLeftIdx] = CC3TriplePlaneIntersection(np, bp, lp);
-	_vertices[kCC3NearBtmRgtIdx] = CC3TriplePlaneIntersection(np, bp, rp);
+	m_vertices[kCC3NearBtmLeftIdx] = CC3TriplePlaneIntersection(np, bp, lp);
+	m_vertices[kCC3NearBtmRgtIdx] = CC3TriplePlaneIntersection(np, bp, rp);
 	
-	_vertices[kCC3FarTopLeftIdx] = CC3TriplePlaneIntersection(fp, tp, lp);
-	_vertices[kCC3FarTopRgtIdx] = CC3TriplePlaneIntersection(fp, tp, rp);
+	m_vertices[kCC3FarTopLeftIdx] = CC3TriplePlaneIntersection(fp, tp, lp);
+	m_vertices[kCC3FarTopRgtIdx] = CC3TriplePlaneIntersection(fp, tp, rp);
 	
-	_vertices[kCC3FarBtmLeftIdx] = CC3TriplePlaneIntersection(fp, bp, lp);
-	_vertices[kCC3FarBtmRgtIdx] = CC3TriplePlaneIntersection(fp, bp, rp);
+	m_vertices[kCC3FarBtmLeftIdx] = CC3TriplePlaneIntersection(fp, bp, lp);
+	m_vertices[kCC3FarBtmRgtIdx] = CC3TriplePlaneIntersection(fp, bp, rp);
 }
 
 NS_COCOS3D_END
