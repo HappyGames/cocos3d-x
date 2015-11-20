@@ -26,13 +26,13 @@ void CHUDScene::drawSceneContentWithVisitor( CC3NodeDrawingVisitor* visitor )
 
 CCOpacity CHUDScene::getOpacity()
 {
-	return _backdrop->getOpacity() / kBackDropOpacityFactor; 
+	return m_pBackdrop->getOpacity() / kBackDropOpacityFactor;
 }
 
 void CHUDScene::setOpacity( CCOpacity opacity )
 {
 	super::setOpacity( opacity );
-	_backdrop->setOpacity( (opacity * kBackDropOpacityFactor) );
+	m_pBackdrop->setOpacity( (opacity * kBackDropOpacityFactor) );
 }
 
 void CHUDScene::onOpen()

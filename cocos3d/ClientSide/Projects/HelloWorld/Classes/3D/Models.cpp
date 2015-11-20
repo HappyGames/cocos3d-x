@@ -317,8 +317,8 @@ LandingCraft* LandingCraft::nodeWithName( const std::string& aName )
 void HangingPointParticle::initializeParticle()
 {
 	super::initializeParticle();
-	GLint zIndex = _particleIndex / kParticlesPerSide;
-	GLint xIndex = _particleIndex % kParticlesPerSide;
+	GLint zIndex = m_particleIndex / kParticlesPerSide;
+	GLint xIndex = m_particleIndex % kParticlesPerSide;
 	
 	GLfloat xStart = -kParticlesPerSide * kParticlesSpacing / 2.0f;
 	GLfloat zStart = -kParticlesPerSide * kParticlesSpacing / 2.0f;
@@ -329,7 +329,7 @@ void HangingPointParticle::initializeParticle()
 	
 	setColor4F( RandomCCC4FBetween(kCCC4FDarkGray, kCCC4FWhite) );
 	
-	GLfloat avgSize = ((CC3PointParticleEmitter*)_emitter)->getParticleSize();
+	GLfloat avgSize = ((CC3PointParticleEmitter*)m_pEmitter)->getParticleSize();
 	setSize( CC3RandomFloatBetween(avgSize * 0.75, avgSize * 1.25) );
 }
 
@@ -352,7 +352,7 @@ void HangingMeshParticle::initializeParticle()
 {
 	super::initializeParticle();
 
-	GLuint particleIndex = _emitter->getParticleCount();
+	GLuint particleIndex = m_pEmitter->getParticleCount();
 	GLint zIndex = particleIndex / kParticlesPerSide;
 	GLint xIndex = particleIndex % kParticlesPerSide;
 	
@@ -380,7 +380,7 @@ void HangingMeshParticle::initializeParticle()
 /** Derive the texture rectangle from the particle index, in a modulus of eight options . */
 CCRect HangingMeshParticle::getTextureRectangle()
 {
-	unsigned int particleIndex = _emitter->getParticleCount();
+	unsigned int particleIndex = m_pEmitter->getParticleCount();
 	switch (particleIndex % 8) 
 	{
 		case 1:
@@ -473,7 +473,7 @@ void RotatingFadingMeshParticle::initializeParticle()
 	
 	// Alternate between rotating right or left.
 	// Particles are always emitted at the end, so particle index should be randomly odd/even.
-	unsigned int particleIndex = _emitter->getParticleCount();
+	unsigned int particleIndex = m_pEmitter->getParticleCount();
 	float dirSign = CC3IntIsEven(particleIndex) ? 1 : -1;
 	setRotationAngle( 0.0f );
 	setRotationAngleVelocity( dirSign * CC3RandomFloatBetween(45.0, 120.0) );
@@ -481,7 +481,7 @@ void RotatingFadingMeshParticle::initializeParticle()
 	setUniformScale( CC3RandomFloatBetween(0.5, 2.0) );
 	
 	// Set the color velocity to change only the opacity, to fade the particle away
-	setColor4F( _emitter->getDiffuseColor() );
+	setColor4F( m_pEmitter->getDiffuseColor() );
 	setColorVelocity( ccc4f(0.0f, 0.0f, 0.0f, -(1.0 / getLifeSpan())) );
 }
 

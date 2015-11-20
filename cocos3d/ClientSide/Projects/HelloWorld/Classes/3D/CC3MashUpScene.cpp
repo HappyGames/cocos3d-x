@@ -1278,27 +1278,27 @@ void CC3MashUpScene::addFog()
 {
 	setFog( CC3Fog::fog() );
 
-	_fog->addTexture( _postProcSurface->getColorTexture() );
-	_fog->addTexture( _postProcSurface->getDepthTexture() );
-	_fog->setShaderProgram( CC3ShaderProgram::programFromVertexShaderFile( "CC3ClipSpaceTexturable.vsh", "CC3Fog.fsh" ) );
+	m_pFog->addTexture( _postProcSurface->getColorTexture() );
+	m_pFog->addTexture( _postProcSurface->getDepthTexture() );
+	m_pFog->setShaderProgram( CC3ShaderProgram::programFromVertexShaderFile( "CC3ClipSpaceTexturable.vsh", "CC3Fog.fsh" ) );
 
-	_fog->setVisible( false );
-	_fog->setColor( CCColorRefFromCCC4F(ccc4f(0.5, 0.5, 0.75, 1.0)) );	// A slightly bluish fog.
+	m_pFog->setVisible( false );
+	m_pFog->setColor( CCColorRefFromCCC4F(ccc4f(0.5, 0.5, 0.75, 1.0)) );	// A slightly bluish fog.
 
 	// Choose one of GL_LINEAR, GL_EXP or GL_EXP2
-	_fog->setAttenuationMode( GL_EXP2 );
+	m_pFog->setAttenuationMode( GL_EXP2 );
 
 	// If using GL_EXP or GL_EXP2, the density property will have effect.
-	_fog->setDensity( 0.0017f );
+	m_pFog->setDensity( 0.0017f );
 	
 	// If using GL_LINEAR, the start and end distance properties will have effect.
-	_fog->setStartDistance( 200.0f );
-	_fog->setEndDistance( 1500.0f );
+	m_pFog->setStartDistance( 200.0f );
+	m_pFog->setEndDistance( 1500.0f );
 
 	// To make things a bit more interesting, set up a repeating up/down cycle to
 	// change the color of the fog from the original bluish to reddish, and back again.
 	GLfloat tintTime = 4.0f;
-	CCColorRef startColor = _fog->getColor();
+	CCColorRef startColor = m_pFog->getColor();
 	CCColorRef endColor = CCColorRefFromCCC4F(ccc4f(0.75, 0.5, 0.5, 1.0));		// A slightly redish fog.
 	CCActionInterval* tintDown = CCActionTintTo::create( tintTime, endColor.r, endColor.g, endColor.b );
 	CCActionInterval* tintUp   = CCActionTintTo::create( tintTime, startColor.r, startColor.g, startColor.b );
@@ -2352,7 +2352,7 @@ CC3MeshNode* CC3MashUpScene::getPostProcessingNode()
 	switch (_lightingType) 
 	{
 		case kLightingFog:
-			return _fog;
+			return m_pFog;
 		case kLightingGrayscale:
 			return _grayscaleNode;
 		case kLightingDepth:
@@ -2699,62 +2699,62 @@ void CC3MashUpScene::cycleLights()
 	{
 		case kLightingSun:
 			sun->setVisible( true );
-			_fog->setVisible( false );
+			m_pFog->setVisible( false );
 			_robotLamp->setVisible( true );
 			flashLight->setVisible( false );
 			if ( _bumpMapLightTracker )
 				_bumpMapLightTracker->setTarget( _robotLamp );
-			_backdrop->setEmissionColor( kSkyColor );
+			m_pBackdrop->setEmissionColor( kSkyColor );
 			setShouldUseLightProbes( false );
 			break;
 		case kLightingFlashlight:
 			sun->setVisible( false );
-			_fog->setVisible( false );
+			m_pFog->setVisible( false );
 			_robotLamp->setVisible( false );
 			flashLight->setVisible( true );
 			if ( _bumpMapLightTracker )
 				_bumpMapLightTracker->setTarget( flashLight );
-			_backdrop->setEmissionColor( kCCC4FBlack );
+			m_pBackdrop->setEmissionColor( kCCC4FBlack );
 			setShouldUseLightProbes( false );
 			break;
 		case kLightingLightProbe:
 			sun->setVisible( false );
-			_fog->setVisible( false );
+			m_pFog->setVisible( false );
 			_robotLamp->setVisible( true );
 			flashLight->setVisible( false );
 			if ( _bumpMapLightTracker )
 				_bumpMapLightTracker->setTarget( _robotLamp );
-			_backdrop->setEmissionColor( kSkyColor );
+			m_pBackdrop->setEmissionColor( kSkyColor );
 			setShouldUseLightProbes( false );
 			break;
 		case kLightingFog:
 			sun->setVisible( true );
-			_fog->setVisible( true );
+			m_pFog->setVisible( true );
 			_robotLamp->setVisible( true );
 			flashLight->setVisible( false );
 			if ( _bumpMapLightTracker )
 				_bumpMapLightTracker->setTarget( _robotLamp );
-			_backdrop->setEmissionColor( kSkyColor );
+			m_pBackdrop->setEmissionColor( kSkyColor );
 			setShouldUseLightProbes( false );
 			break;
 		case kLightingGrayscale:
 			sun->setVisible( true );
-			_fog->setVisible( false );
+			m_pFog->setVisible( false );
 			_robotLamp->setVisible( true );
 			flashLight->setVisible( false );
 			if ( _bumpMapLightTracker )
 				_bumpMapLightTracker->setTarget( _robotLamp );
-			_backdrop->setEmissionColor( kSkyColor );
+			m_pBackdrop->setEmissionColor( kSkyColor );
 			setShouldUseLightProbes( false );
 			break;
 		case kLightingDepth:
 			sun->setVisible( true );
-			_fog->setVisible( false );
+			m_pFog->setVisible( false );
 			_robotLamp->setVisible( true );
 			flashLight->setVisible( false );
 			if ( _bumpMapLightTracker )
 				_bumpMapLightTracker->setTarget( _robotLamp );
-			_backdrop->setEmissionColor( kSkyColor );
+			m_pBackdrop->setEmissionColor( kSkyColor );
 			setShouldUseLightProbes( false );
 			break;
 	}

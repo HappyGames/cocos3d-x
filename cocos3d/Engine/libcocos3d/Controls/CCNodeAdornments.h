@@ -226,10 +226,10 @@ public:
 	static CCNodeAdornmentOverlayFader* adornmentWithSprite( CCSprite* aNode );
 
 protected:
-	CCSprite*					_sprite;
-	CCOpacity					_peakOpacity;
+	CCSprite*					m_pSprite;
+	CCOpacity					m_peakOpacity;
 
-	CCSize						_contentSize;
+	CCSize						m_contentSize;
 };
 
 /** The default duration of the scaling up and down actions of the CCNodeAdornmentScaler */
@@ -330,8 +330,8 @@ public:
 	virtual void				setParent( CCNode* aNode );
 
 protected:
-	CCSize						_activatedScale;
-	CCSize						_originalScale;
+	CCSize						m_activatedScale;
+	CCSize						m_originalScale;
 };
 
 /**
@@ -360,7 +360,7 @@ public:
 	static AdornableMenuItemToggle* createWithTarget(CCObject* target, SEL_MenuHandler selector, CCMenuItem* item, ...);  
 
 protected:
-	CCNodeAdornment*			_adornment;
+	CCNodeAdornment*			m_pAdornment;
 };
 
 /**
@@ -389,7 +389,7 @@ public:
 	static AdornableMenuItemImage* create(const char *normalImage, const char *selectedImage, CCObject* target, SEL_MenuHandler selector);
 
 protected:
-	CCNodeAdornment*			_adornment;
+	CCNodeAdornment*			m_pAdornment;
 };
 
 NS_COCOS3D_END

@@ -106,11 +106,11 @@ void CCNodeAdornmentOverlayFader::initWithSprite( CCSprite* sprite, CCOpacity op
 
 	super::initWithActionDuration( aDuration );
 
-	_peakOpacity = opacity;
+	m_peakOpacity = opacity;
 	setContentSize ( sprite->getContentSize() );
 	sprite->setVisible( false );
 	sprite->setOpacity( 0 );
-	_sprite = sprite;
+	m_pSprite = sprite;
 	addChild( sprite );
 }
 
@@ -156,14 +156,14 @@ CCNodeAdornmentOverlayFader* CCNodeAdornmentOverlayFader::adornmentWithSprite( C
 // can be easily found if it needs to be cancelled.
 void CCNodeAdornmentOverlayFader::activate()
 {
-	if ( _sprite )
+	if ( m_pSprite )
 	{
-		_sprite->stopActionByTag( kFadeActionTag );	// Cancel any existing fade action
+		m_pSprite->stopActionByTag( kFadeActionTag );	// Cancel any existing fade action
 	
-		CCAction* fadeAction = CCActionFadeTo::create( getActionDuration(), _peakOpacity );
+		CCAction* fadeAction = CCActionFadeTo::create( getActionDuration(), m_peakOpacity );
 		fadeAction->setTag( kFadeActionTag );
-		_sprite->setVisible( true );
-		_sprite->runAction( fadeAction );
+		m_pSprite->setVisible( true );
+		m_pSprite->runAction( fadeAction );
 	}
 }
 
@@ -174,30 +174,30 @@ void CCNodeAdornmentOverlayFader::activate()
 // if it needs to be cancelled.
 void CCNodeAdornmentOverlayFader::deactivate()
 {
-	if ( _sprite )
+	if ( m_pSprite )
 	{
-		_sprite->stopActionByTag( kFadeActionTag );	// Cancel any existing fade action
+		m_pSprite->stopActionByTag( kFadeActionTag );	// Cancel any existing fade action
 		CCActionInterval* fadeAction = CCActionFadeOut::create( getActionDuration() );
 		CCFiniteTimeAction* hideAction = CCActionHide::create();
 		CCActionInterval* fadeThenHideAction = CCActionSequence::createWithTwoActions( fadeAction, hideAction );
 		fadeThenHideAction->setTag( kFadeActionTag );
-		_sprite->runAction( fadeThenHideAction );
+		m_pSprite->runAction( fadeThenHideAction );
 	}
 }
 
 CCOpacity CCNodeAdornmentOverlayFader::getPeakOpacity()
 {
-	return _peakOpacity;
+	return m_peakOpacity;
 }
 
 void CCNodeAdornmentOverlayFader::setPeakOpacity( CCOpacity peakOpacity )
 {
-	_peakOpacity = peakOpacity;
+	m_peakOpacity = peakOpacity;
 }
 
 CCSprite* CCNodeAdornmentOverlayFader::getSprite()
 {
-	return _sprite;
+	return m_pSprite;
 }
 
 // A (hopefully) unique tag that identifies the currently activated scaling action.
@@ -209,7 +209,7 @@ void CCNodeAdornmentScaler::initToScaleBy( const CCSize& aScale, float aDuration
 	if ( super::init() ) 
 	{
 		setActionDuration( aDuration );
-		_activatedScale = aScale;
+		m_activatedScale = aScale;
 	}
 }
 
@@ -269,7 +269,7 @@ void CCNodeAdornmentScaler::setOriginalScaleFromParent()
 {
 	CCNode* p = getParent();
 	if ( p )
-		_originalScale = CCSizeMake(p->getScaleX(), p->getScaleY());
+		m_originalScale = CCSizeMake(p->getScaleX(), p->getScaleY());
 }
 
 // Overridden to cache the parent's current scale
@@ -305,8 +305,8 @@ void CCNodeAdornmentScaler::activate()
 	}
 	// use scaleTo instead of scaleBy so that final size is deterministic in the case
 	// where we have interrupted an active scaling action above
-	float finalScaleX = _originalScale.width * _activatedScale.width;
-	float finalScaleY = _originalScale.height * _activatedScale.height;
+	float finalScaleX = m_originalScale.width * m_activatedScale.width;
+	float finalScaleY = m_originalScale.height * m_activatedScale.height;
 	CCAction* scaleAction = CCActionScaleTo::create( getActionDuration(), finalScaleX, finalScaleY );
 	scaleAction->setTag( kScaleActionTag );
 	p->runAction( scaleAction );
@@ -321,33 +321,33 @@ void CCNodeAdornmentScaler::deactivate()
 		return;
 
 	p->stopActionByTag( kScaleActionTag );		// Cancel any existing scaling action
-	CCAction* scaleAction = CCActionScaleTo::create( getActionDuration(), _originalScale.width, _originalScale.height );
+	CCAction* scaleAction = CCActionScaleTo::create( getActionDuration(), m_originalScale.width, m_originalScale.height );
 	scaleAction->setTag( kScaleActionTag );
 	p->runAction( scaleAction );
 }
 
 CCSize CCNodeAdornmentScaler::getActivatedScale()
 {
-	return _activatedScale;
+	return m_activatedScale;
 }
 
 void CCNodeAdornmentScaler::setActivatedScale( const CCSize& activatedScale )
 {
-	_activatedScale = activatedScale;
+	m_activatedScale = activatedScale;
 }
 
 CCNodeAdornment* AdornableMenuItemToggle::getAdornment()
 {
-	return _adornment; 
+	return m_pAdornment;
 }
 
 // Add the adornment as a child, removing any previous adornment.
 void AdornableMenuItemToggle::setAdornment( CCNodeAdornment* aNode )
 {
-	if ( _adornment )
-		removeChild( _adornment, true );
+	if ( m_pAdornment )
+		removeChild( m_pAdornment, true );
 	
-	_adornment = aNode;
+	m_pAdornment = aNode;
 	
 	if ( aNode ) 
 		addChild( aNode );
@@ -357,14 +357,14 @@ void AdornableMenuItemToggle::setAdornment( CCNodeAdornment* aNode )
 void AdornableMenuItemToggle::selected()
 {
 	super::selected();
-	_adornment->activate();
+	m_pAdornment->activate();
 }
 
 // When this menu item is unselected, deactivate the adornment
 void AdornableMenuItemToggle::unselected()
 {
 	super::unselected();
-	_adornment->deactivate();
+	m_pAdornment->deactivate();
 }
 
 AdornableMenuItemToggle* AdornableMenuItemToggle::createWithTarget(CCObject* target, SEL_MenuHandler selector, CCMenuItem* item, ...)
@@ -380,16 +380,16 @@ AdornableMenuItemToggle* AdornableMenuItemToggle::createWithTarget(CCObject* tar
 
 CCNodeAdornment* AdornableMenuItemImage::getAdornment()
 {
-	return _adornment; 
+	return m_pAdornment;
 }
 
 // Add the adornment as a child, removing any previous adornment.
 void AdornableMenuItemImage::setAdornment( CCNodeAdornment* aNode )
 {
-	if ( _adornment )
-		removeChild( _adornment, true );
+	if ( m_pAdornment )
+		removeChild( m_pAdornment, true );
 	
-	_adornment = aNode;
+	m_pAdornment = aNode;
 	if ( aNode ) 
 		addChild( aNode );
 }
@@ -399,8 +399,8 @@ void AdornableMenuItemImage::selected()
 {
 	super::selected();
 	
-	if ( _adornment )
-		_adornment->activate();
+	if ( m_pAdornment )
+		m_pAdornment->activate();
 }
 
 // When this menu item is unselected, deactivate the adornment
@@ -408,8 +408,8 @@ void AdornableMenuItemImage::unselected()
 {
 	super::unselected();
 
-	if ( _adornment )
-		_adornment->deactivate();
+	if ( m_pAdornment )
+		m_pAdornment->deactivate();
 }
 
 AdornableMenuItemImage* AdornableMenuItemImage::create(const char *normalImage, const char *selectedImage, CCObject* target, SEL_MenuHandler selector)
