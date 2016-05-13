@@ -217,6 +217,11 @@ static inline float CC3RandomFloatBetween(float min, float max)
 	return (float)CC3RandomDoubleBetween(min, max);
 }
 
+static inline bool isInRange( int x, int low, int high ) 
+{
+	return  x >= low && x <= high;
+}
+
 
 NS_COCOS3D_END
 

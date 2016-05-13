@@ -1378,7 +1378,6 @@ void CC3Node::removeShaders()
 	}
 }
 
-
 ccColor3B CC3Node::getColor()
 {
 	ccColor4F colorSum = kCCC4FBlackTransparent;

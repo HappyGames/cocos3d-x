@@ -788,6 +788,7 @@ CC3Vector CC3Camera::projectNode( CC3Node* aNode )
 
 CC3Ray CC3Camera::unprojectPoint( const CCPoint& cc2Point )
 {
+#if 0
 	// Scale from UI points to GL points
 	CCPoint glPoint = ccpMult(cc2Point, CCDirector::sharedDirector()->getContentScaleFactor());
 	
@@ -832,6 +833,36 @@ CC3Ray CC3Camera::unprojectPoint( const CCPoint& cc2Point )
 	//			  NSStringFromCC3Vector(ray.startLocation), NSStringFromCC3Vector(ray.direction));
 
 	return ray;
+#else
+	// Ensure that the camera's frustum is up to date, and then map the proportional point
+	// on the viewport to its position on the near clipping rectangle. The Z-coordinate is
+	// negative because the camera points down the negative Z axis in its local coordinates.
+	buildProjection();
+
+	// Scale from UI points to GL points
+	CCPoint glPoint = ccpMult(cc2Point, CCDirector::sharedDirector()->getContentScaleFactor());
+
+	// Express the glPoint X & Y as proportion of the viewport dimensions.
+	CC3Viewport vp = getViewport();
+	float xp = ((2.0f * glPoint.x) / vp.w) - 1;
+	float yp = ((2.0f * glPoint.y) / vp.h) - 1;
+
+	// Projection
+	float e = 1.f / tanf(CC3DegToRad(getFieldOfView() * 0.5f));
+	float a = (float)vp.h / (float)vp.w;
+	xp /= e;
+	yp /= e / a;
+
+	// View
+	CC3Matrix* pView = getGlobalTransformMatrix();
+
+	CC3Ray ray( CC3Vector::kCC3VectorZero, CC3Vector(xp, yp, -1.f) );
+	ray.startLocation = pView->transformLocation( ray.startLocation );
+	ray.direction = pView->transformDirection( ray.direction );
+	ray.direction = ray.direction.normalize();
+
+	return ray;
+#endif
 }
 
 CC3Vector4 CC3Camera::unprojectPoint( const CCPoint& cc2Point, const CC3Plane& plane )
