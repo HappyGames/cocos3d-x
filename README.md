@@ -23,7 +23,7 @@ add a member(void* m_pUserData) and two inline member accessors
 add constructor initializer of m_pUserData
 
 2. CCActionManager:  ////////////////////////////////////////////////////
-	to override the CCActionManager we need do the flowing modifications
+	to override the CCActionManager we need do the following modifications
 .h 
 move struct _hashElement declaration from .cpp to .h
 change 'void removeAction(CCAction *pAction)' to 'virtual void removeAction(CCObject *pAction)'
