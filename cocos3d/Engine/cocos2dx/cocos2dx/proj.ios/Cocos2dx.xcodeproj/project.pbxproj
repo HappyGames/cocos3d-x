@@ -277,7 +277,6 @@
 		1A31963016C0DDE800207637 /* decode.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A3191B616C0DDE700207637 /* decode.h */; };
 		1A31963116C0DDE800207637 /* encode.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A3191B716C0DDE700207637 /* encode.h */; };
 		1A31963216C0DDE800207637 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A3191B816C0DDE700207637 /* types.h */; };
-		1A3199AE16C0E3A200207637 /* libwebp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A3199AD16C0E3A200207637 /* libwebp.a */; };
 		1A4646DA16DC8FB700DE131F /* ccFPSImages.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A4646D816DC8FB700DE131F /* ccFPSImages.h */; };
 		1A4646DC16DC901A00DE131F /* ccFPSImages.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A4646DB16DC901900DE131F /* ccFPSImages.c */; };
 		1A5428FF1720F0650074EC5C /* CCDataVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A5428FD1720F0650074EC5C /* CCDataVisitor.cpp */; };
@@ -316,6 +315,9 @@
 		4EF8999A16E207E70040A527 /* CCTMXXMLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF8998E16E207E70040A527 /* CCTMXXMLParser.cpp */; };
 		4EF8999B16E207E70040A527 /* CCTMXXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF8998F16E207E70040A527 /* CCTMXXMLParser.h */; };
 		D43F7F8A15C7D8BA00D713FC /* CCTouch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43F7F8915C7D8BA00D713FC /* CCTouch.cpp */; };
+		D4A1B055256BAE40005FD1EA /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A1B052256BAE40005FD1EA /* libcurl.a */; };
+		D4A1B056256BAE40005FD1EA /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A1B053256BAE40005FD1EA /* libssl.a */; };
+		D4A1B057256BAE40005FD1EA /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A1B054256BAE40005FD1EA /* libcrypto.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -592,7 +594,6 @@
 		1A3191B616C0DDE700207637 /* decode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = decode.h; sourceTree = "<group>"; };
 		1A3191B716C0DDE700207637 /* encode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encode.h; sourceTree = "<group>"; };
 		1A3191B816C0DDE700207637 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		1A3199AD16C0E3A200207637 /* libwebp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebp.a; path = ../platform/third_party/ios/libraries/libwebp.a; sourceTree = "<group>"; };
 		1A4646D816DC8FB700DE131F /* ccFPSImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccFPSImages.h; sourceTree = "<group>"; };
 		1A4646DB16DC901900DE131F /* ccFPSImages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccFPSImages.c; sourceTree = "<group>"; };
 		1A5428FD1720F0650074EC5C /* CCDataVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCDataVisitor.cpp; sourceTree = "<group>"; };
@@ -631,6 +632,11 @@
 		4EF8998E16E207E70040A527 /* CCTMXXMLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTMXXMLParser.cpp; sourceTree = "<group>"; };
 		4EF8998F16E207E70040A527 /* CCTMXXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTMXXMLParser.h; sourceTree = "<group>"; };
 		D43F7F8915C7D8BA00D713FC /* CCTouch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTouch.cpp; sourceTree = "<group>"; };
+		D4A1B04B256BADF1005FD1EA /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../../../../cc3-Developing/cocos3d-x/Engine/cocos2dx/cocos2dx/platform/third_party/ios/libraries/libssl.a"; sourceTree = "<group>"; };
+		D4A1B04C256BADF1005FD1EA /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = "../../../../../../../cc3-Developing/cocos3d-x/Engine/cocos2dx/cocos2dx/platform/third_party/ios/libraries/libcurl.a"; sourceTree = "<group>"; };
+		D4A1B052256BAE40005FD1EA /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
+		D4A1B053256BAE40005FD1EA /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../platform/third_party/ios/libraries/libssl.a; sourceTree = "<group>"; };
+		D4A1B054256BAE40005FD1EA /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../platform/third_party/ios/libraries/libcrypto.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -638,8 +644,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4A1B055256BAE40005FD1EA /* libcurl.a in Frameworks */,
+				D4A1B056256BAE40005FD1EA /* libssl.a in Frameworks */,
+				D4A1B057256BAE40005FD1EA /* libcrypto.a in Frameworks */,
 				1551A343158F2AB200E66CFE /* Foundation.framework in Frameworks */,
-				1A3199AE16C0E3A200207637 /* libwebp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,7 +675,11 @@
 		1551A341158F2AB200E66CFE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1A3199AD16C0E3A200207637 /* libwebp.a */,
+				D4A1B054256BAE40005FD1EA /* libcrypto.a */,
+				D4A1B052256BAE40005FD1EA /* libcurl.a */,
+				D4A1B053256BAE40005FD1EA /* libssl.a */,
+				D4A1B04C256BADF1005FD1EA /* libcurl.a */,
+				D4A1B04B256BADF1005FD1EA /* libssl.a */,
 				1551A342158F2AB200E66CFE /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -1502,15 +1514,16 @@
 		1551A336158F2AB200E66CFE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "cocos2d-x";
 			};
 			buildConfigurationList = 1551A339158F2AB200E66CFE /* Build configuration list for PBXProject "Cocos2dx" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 1551A334158F2AB200E66CFE;
 			productRefGroup = 1551A340158F2AB200E66CFE /* Products */;
@@ -1671,14 +1684,32 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1686,10 +1717,14 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				WARNING_CFLAGS = "-fdiagnostics-show-option";
 			};
@@ -1699,22 +1734,42 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NS_BLOCK_ASSERTIONS=1",
 					"NDEBUG=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				WARNING_CFLAGS = "-fdiagnostics-show-option";
@@ -1724,7 +1779,11 @@
 		1551A34D158F2AB200E66CFE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				DSTROOT = /tmp/cocos2dx.dst;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cocos2dx-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1733,10 +1792,13 @@
 					CC_TARGET_OS_IPHONE,
 					"COCOS2D_DEBUG=1",
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/..\"",
 					"\"$(SRCROOT)/../kazmath/include\"",
 					"\"$(SDKROOT)/usr/include/libxml2\"",
+					"\"$(SRCROOT)/../platform/third_party/ios/webp/webp\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1752,7 +1814,11 @@
 		1551A34E158F2AB200E66CFE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				DSTROOT = /tmp/cocos2dx.dst;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cocos2dx-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1760,10 +1826,13 @@
 					USE_FILE32API,
 					CC_TARGET_OS_IPHONE,
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/..\"",
 					"\"$(SRCROOT)/../kazmath/include\"",
 					"\"$(SDKROOT)/usr/include/libxml2\"",
+					"\"$(SRCROOT)/../platform/third_party/ios/webp/webp\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

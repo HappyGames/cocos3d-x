@@ -153,7 +153,7 @@ void CC3Cache::initAsWeakCache( bool _weak, const std::string& typeName )
     
     // Initialize dict type as string
     CCObject* pObject = new CCObject;
-    m_objectsByName->setObject( pObject,  "dummy_cc3_object" );
+    m_objectsByName->setObject( pObject, "dummy_cc3_object" );
     m_objectsByName->removeAllObjects();
     CC_SAFE_DELETE( pObject );
     

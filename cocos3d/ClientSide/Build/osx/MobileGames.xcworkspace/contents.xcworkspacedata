@@ -6,6 +6,13 @@
       name = "Dependencies">
       <Group
          location = "container:"
+         name = "Externals">
+         <FileRef
+            location = "group:../../../Engine/cocos2dx/cocos2dx/platform/third_party/ios/webp/libwebp.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
+         location = "container:"
          name = "Cocos">
          <FileRef
             location = "group:../../../Engine/libcocos3d/proj.ios/Cocos3d.xcodeproj">
