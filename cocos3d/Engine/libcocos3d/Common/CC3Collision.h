@@ -2,7 +2,7 @@
 //  CC3Collision.h
 //  Cocos3d
 //
-//  Created by Jason Wong on 19/12/2016.
+//  Created by Jason Wang on 19/12/2016.
 //  Copyright © 2016 http://www.cocos3dx.org/. All rights reserved.
 //
 #ifndef _CC3_COLLISION_H_
