@@ -71,7 +71,7 @@ public:
 class CC3ActionInterval : public CC3Action
 {
 public:
-	virtual void				initWithDuration( float d );
+	virtual bool				initWithDuration( float d );
 	CCAction*					repeatForever();
 	CC3Node*					getTargetNode();
 	virtual void				startWithTarget( CC3Node* pNode );
@@ -85,7 +85,7 @@ class CC3ActionTransformVector : public CC3ActionInterval
 {
 	DECLARE_SUPER( CC3ActionInterval );
 public:
-	virtual void				initWithDuration( float t, const CC3Vector& vector );
+	virtual bool				initWithDuration( float t, const CC3Vector& vector );
 
 	CCObject*					copyWithZone( CCZone* pZone );
 	virtual CC3ActionInterval*	reverse();
@@ -109,7 +109,7 @@ class CC3ActionTransformBy : public CC3ActionTransformVector
 class CC3ActionMoveBy : public CC3ActionTransformBy
 {
 public:
-	virtual void				initWithDuration( float t, const CC3Vector& translation );
+	virtual bool				initWithDuration( float t, const CC3Vector& translation );
 	static CC3ActionMoveBy*		actionWithDuration( float t, const CC3Vector& aTranslation );
 	CC3Vector					getTargetVector();
 	void						setTargetVector( const CC3Vector& aLocation );
@@ -118,12 +118,55 @@ public:
 class CC3ActionRotateBy : public CC3ActionTransformBy
 {
 public:
-	virtual void				initWithDuration( float t, const CC3Vector& rotation );
+	virtual bool				initWithDuration( float t, const CC3Vector& rotation );
 	static CC3ActionRotateBy*	actionWithDuration( float t, const CC3Vector& aRotation );
 	CC3Vector					getTargetVector();
 	void						setTargetVector( const CC3Vector& aRotation );
 };
 
+class CC3Repeat : public CC3ActionInterval
+{
+public:
+    ~CC3Repeat(void);
+    
+    /** initializes a CC3Repeat action. Times is an unsigned integer between 1 and pow(2,30) */
+    bool                        initWithAction( CC3ActionInterval *pAction, unsigned int times );
+
+    virtual CCObject*           copyWithZone( CCZone* pZone );
+    virtual void                startWithTarget( CC3Node *pTarget );
+    virtual void                stop(void);
+    virtual void                update( float dt );
+    virtual bool                isDone(void);
+    virtual CC3ActionInterval*  reverse(void);
+    
+    inline void                 setInnerAction( CC3ActionInterval *pAction )
+    {
+        if (m_pInnerAction != pAction)
+        {
+            CC_SAFE_RETAIN(pAction);
+            CC_SAFE_RELEASE(m_pInnerAction);
+            m_pInnerAction = pAction;
+        }
+    }
+    
+    inline CC3ActionInterval*   getInnerAction()
+    {
+        return m_pInnerAction;
+    }
+    
+public:
+    
+    /** creates a CCRepeat action. Times is an unsigned integer between 1 and pow(2,30) */
+    static CC3Repeat*           create( CC3ActionInterval *pAction, unsigned int times );
+    
+protected:
+    unsigned int                m_uTimes;
+    unsigned int                m_uTotal;
+    float                       m_fNextDt;
+    bool                        m_bActionInstant;
+    /** Inner action */
+    CC3ActionInterval*          m_pInnerAction;
+};
 
 class CC3RepeatForever : public CC3ActionInterval
 {
@@ -177,8 +220,8 @@ class CC3ActionScaleBy : public CC3ActionTransformBy
 {
 	DECLARE_SUPER( CC3ActionTransformBy )
 public:
-	void						initWithDuration( float t, const CC3Vector& scale );
-	void						initWithDuration( float t, GLfloat scale );
+	bool						initWithDuration( float t, const CC3Vector& scale );
+	bool						initWithDuration( float t, GLfloat scale );
 	/**
 	 * Scale is multiplicative. Scaling BY 5 means take whatever the current scale is
 	 * and multiply it by 5. If the previous scale was 3, then the future scale
@@ -200,8 +243,8 @@ class CC3ActionRotateByAngle : public CC3ActionInterval
 {
 	DECLARE_SUPER( CC3ActionInterval );
 public:
-	void						initWithDuration( float t, GLfloat angle );
-	void						initWithDuration( float t, GLfloat angle, const CC3Vector& anAxis );
+	bool						initWithDuration( float t, GLfloat angle );
+	bool						initWithDuration( float t, GLfloat angle, const CC3Vector& anAxis );
 
 	CCObject*					copyWithZone( CCZone* zone );
 	CC3ActionInterval*			reverse();
@@ -236,7 +279,7 @@ class CC3ActionTransformTo : public CC3ActionTransformVector
 {
 	DECLARE_SUPER( CC3ActionTransformVector );
 public:
-	void						initWithDuration( float t, const CC3Vector& endVector );
+	bool						initWithDuration( float t, const CC3Vector& endVector );
 	CCObject*					copyWithZone( CCZone* zone );
 
 	CC3ActionInterval*			reverse();
@@ -260,7 +303,7 @@ public:
 	 * Initializes this instance to move the target node
 	 * to the specified location, within the specified time duration.
 	 */
-	void						initWithDuration( float t, const CC3Vector& aLocation );
+	bool						initWithDuration( float t, const CC3Vector& aLocation );
 
 	virtual CC3Vector			getTargetVector();
 	virtual void				setTargetVector( const CC3Vector& aLocation );
@@ -284,7 +327,7 @@ public:
 	 * Initializes this instance to move the target node
 	 * to the specified rotation, within the specified time duration.
 	 */
-	virtual void				initWithDuration( float t, const CC3Vector& aRotation );
+	virtual bool				initWithDuration( float t, const CC3Vector& aRotation );
 	static CC3ActionRotateTo*	actionWithDuration( float t, const CC3Vector& aRotation );
 	// We want to rotate the minimal angles to get from the startVector to the endVector,
 	// taking into consideration the cyclical nature of rotation. Therefore, a rotation
@@ -304,13 +347,13 @@ public:
 	 * Initializes this instance to scale the target node
 	 * to the specified scale, within the specified time duration.
 	 */
-	virtual void				initWithDuration( float t, const CC3Vector& aScale );
+	virtual bool				initWithDuration( float t, const CC3Vector& aScale );
 	
 	/**
 	 * Initializes this instance to scale the target node uniformly in all
 	 * dimensions to the specified uniformScale, within the specified time duration.
 	 */
-	virtual void				initWithDuration( float t, GLfloat aScale );
+	virtual bool				initWithDuration( float t, GLfloat aScale );
 
 	virtual CC3Vector			getTargetVector();
 	virtual void				setTargetVector( const CC3Vector& aVector );
@@ -339,7 +382,7 @@ public:
 	 * Initializes this instance to move the target node to the
 	 * specified rotation angle, within the specified time duration.
 	 */
-	virtual void				initWithDuration( float t, GLfloat anAngle );
+	virtual bool				initWithDuration( float t, GLfloat anAngle );
 	CCObject*					copyWithZone( CCZone* pZone );
 	CC3ActionInterval*			reverse();
 	// We want to rotate the minimal angles to get from the startAngle to the endAngle,
@@ -369,7 +412,7 @@ public:
 	 * Initializes this instance to rotate the target node to look towards
 	 * the specified dirction. within the specified time duration.
 	 */
-	virtual void				initWithDuration( float t, const CC3Vector& aDirection );
+	virtual bool				initWithDuration( float t, const CC3Vector& aDirection );
 	virtual CC3Vector			getTargetVector();
 	virtual void				setTargetVector( const CC3Vector& aDirection );
 
@@ -387,7 +430,7 @@ public:
 	 * Initializes this instance to rotate the target node to look at
 	 * the specified location. within the specified time duration.
 	 */
-	virtual void				initWithDuration( float t, const CC3Vector& aLocation );
+	virtual bool				initWithDuration( float t, const CC3Vector& aLocation );
 	void						startWithTarget( CC3Node* aTarget );
 
 	static CC3ActionRotateToLookAt* actionWithDuration( float t, const CC3Vector& aLocation );
@@ -420,7 +463,7 @@ public:
 	 * is also being rotated over time, this action will follow the change in
 	 * direction of movement of the node.
 	 */
-	void						initWithDuration( float t, GLfloat aDistance );
+	bool						initWithDuration( float t, GLfloat aDistance );
 	virtual CC3Vector			getTargetDirection();
 	CCObject*					copyWithZone( CCZone* zone );
 	CC3ActionInterval*			reverse();
@@ -508,7 +551,7 @@ public:
 	 */
 	virtual ccColor4F			getTargetColor();
 	virtual void				setTargetColor( const ccColor4F& aColor );
-	virtual void				initWithDuration( float t, const ccColor4F& aColor );
+	virtual bool				initWithDuration( float t, const ccColor4F& aColor );
 	static CC3ActionTintTo*		actionWithDuration( float t, const ccColor4F& aColor );
 
 	CCObject*					copyWithZone( CCZone* zone );
@@ -586,12 +629,12 @@ public:
 	GLuint						getTrackID();
 	bool						isReversed();
 	void						setIsReversed( bool reversed ); 
-	void						initWithDuration( float t ); 
+	bool						initWithDuration( float t );
 	/**
 	 * Initializes this instance to animate the specified animation track on the target node,
 	 * over the specified time duration.
 	 */
-	void						initWithDuration( float t, GLuint trackID );
+	bool						initWithDuration( float t, GLuint trackID );
 	void						update( float t );
 
 	CCObject*					copyWithZone( CCZone* zone );
@@ -639,7 +682,7 @@ public:
 	 * Initializes this instance to fade the animation blending weight of the specified animation
 	 * track on the target node to the specified value, over the specified time duration.
 	 */
-	void						initWithDuration( float t, GLuint trackID, GLfloat blendingWeight );
+	bool						initWithDuration( float t, GLuint trackID, GLfloat blendingWeight );
 
 	void						update( float t );
 	CC3ActionInterval*			reverse();
@@ -668,13 +711,13 @@ public:
 	 * Initializes this instance to fade from the specified track to the specified track, over
 	 * the specified time duration, and leaving the final track with a blending weight of one.
 	 */
-	void						initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID );
+	bool						initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID );
 
 	/**
 	 * Initializes this instance to fade from the specified track to the specified track, over the
 	 * specified time duration, and leaving the final track with the specified blending weight.
 	 */
-	void						initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID, GLfloat toBlendingWeight );
+	bool						initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID, GLfloat toBlendingWeight );
 
 	CCObject*					copyWithZone( CCZone* zone );
 	void						startWithTarget( CC3Node* aTarget );
@@ -793,7 +836,7 @@ protected:
  * kind of action has completed. For example, you might create a CCActionSequence containing 
  * a CCActionFadeOut and a CC3ActionRemove, to fade a node away and then remove it from the scene.
  */
-class CC3ActionRemove : public CCActionInstant
+class CC3ActionRemove : public CC3ActionInterval
 {
 public:
 	void						update( float t );
@@ -809,7 +852,7 @@ public:
 	 * Initializes this instance to change the contentSize property of the target to the specified
 	 * size, within the specified elapsed duration.
 	 */
-	void						initWithDuration( float dur, const CCSize& endSize );
+	bool						initWithDuration( float dur, const CCSize& endSize );
 	void						update( float t );
 	void						startWithTarget( CCNode* aTarget );
 	CCObject*					copyWithZone( CCZone* zone );
@@ -852,6 +895,37 @@ protected:
 	CC3ActionInterval*			m_pActions[2];
 	float						m_split;
 	int							m_last;
+};
+
+/** @brief Fades In an object that implements the CCRGBAProtocol protocol. It modifies the opacity from 0 to 255.
+ The "reverse" of this action is FadeOut
+ */
+class CC3FadeIn : public CC3ActionInterval
+{
+public:
+    virtual void                update( float time );
+    virtual CC3ActionInterval*  reverse();
+    virtual CCObject*           copyWithZone( CCZone* pZone );
+    
+public:
+    /** creates the action */
+    static CC3FadeIn*           create( float d );
+};
+
+/** @brief Fades Out an object that implements the CCRGBAProtocol protocol. It modifies the opacity from 255 to 0.
+ The "reverse" of this action is FadeIn
+ */
+class CC3FadeOut : public CC3ActionInterval
+{
+public:
+    virtual void                update( float time );
+    virtual CC3ActionInterval*  reverse();
+    virtual CCObject*           copyWithZone( CCZone* pZone );
+    
+public:
+    
+    /** creates the action */
+    static CC3FadeOut*          create( float d );
 };
 
 

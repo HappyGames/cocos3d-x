@@ -97,10 +97,9 @@ CC3Vector4 CC3RayIntersectionWithPlane(CC3Ray ray, CC3Plane plane)
 		return CC3Vector4::kCC3Vector4Null;		// Ray is parallel to plane, so no intersection
 
 	GLfloat dirDist = -(rs.dot( pn ) + plane.d) / rd.dot( pn );
-	CC3Vector loc = rs.add( rd.scaleUniform( dirDist ) );
+	CC3Vector loc = rs + rd * dirDist;
 	return CC3Vector4().fromCC3Vector(loc, dirDist);
 }
-
 
 CC3Vector CC3TriplePlaneIntersection(CC3Plane p1, CC3Plane p2, CC3Plane p3) 
 {
@@ -115,20 +114,17 @@ CC3Vector CC3TriplePlaneIntersection(CC3Plane p1, CC3Plane p2, CC3Plane p3)
 	GLfloat n1xn2dotn3 = n1.cross(n2).dot( n3 );
 	if (n1xn2dotn3 == 0.0f) return CC3Vector::kCC3VectorNull;
 
-	CC3Vector d1n2xn3 = n2.cross( n3 ).scaleUniform( p1.d );
-	CC3Vector d2n3xn1 = n3.cross( n1 ).scaleUniform( p2.d );
-	CC3Vector d3n1xn2 = n1.cross( n2 ).scaleUniform( p3.d );
+	CC3Vector d1n2xn3 = n2.cross( n3 ) * p1.d;
+	CC3Vector d2n3xn1 = n3.cross( n1 ) * p2.d;
+	CC3Vector d3n1xn2 = n1.cross( n2 ) * p3.d;
 
-	CC3Vector sum = d1n2xn3.add(d2n3xn1).add(d3n1xn2);
+	CC3Vector sum = d1n2xn3 + d2n3xn1 + d3n1xn2;
 
-	return sum.scaleUniform(-1.0f / n1xn2dotn3);
+	return sum * (-1.0f / n1xn2dotn3);
 }
-
 
 void CC3VectorOrthonormalize( CC3Vector* vectors, GLuint vectorCount ) 
 {
-	//LogTrace(@"Vectors BEFORE orthonormalization: %@", NSStringFromCC3Vectors(vectors, vectorCount));
-
 	for ( GLuint currIdx = 0; currIdx < vectorCount; currIdx++ ) 
 	{
 		// Get the current vector, and subtract any projection from any previously processed vector.
@@ -147,8 +143,6 @@ void CC3VectorOrthonormalize( CC3Vector* vectors, GLuint vectorCount )
 		// Replace the current vector with its orthonormalized version
 		vectors[currIdx] = cleanedCurrVector.normalize();
 	}
-
-	//LogTrace(@"Vectors AFTER orthonormalization: %@", NSStringFromCC3Vectors(vectors, vectorCount));
 }
 
 CC3Vector CC3RayIntersectionWithSphere(CC3Ray aRay, CC3Sphere aSphere)
@@ -173,8 +167,8 @@ CC3Vector CC3RayIntersectionWithSphere(CC3Ray aRay, CC3Sphere aSphere)
 	// If t is positive, the corresponding intersection location is on the ray.
 	// Find that location on the ray as: p = s + tv and return it.
 	if (t >= 0.0f) {
-		CC3Vector tv = aRay.direction.scaleUniform( t );
-		return aRay.startLocation.add( tv );
+		CC3Vector tv = aRay.direction * t;
+		return aRay.startLocation + tv;
 	}
 
 	// Both intersection locations are behind the startLocation of the ray
@@ -211,15 +205,15 @@ CC3Sphere CC3SphereUnion(CC3Sphere s1, CC3Sphere s2)
 	// Calculate where each sphere intersects the line in the direction of the unit
 	// vector between the centers. Then take the intersection point that is farther
 	// from the midpoint along this line as the foward endpoint.
-	is1 = s1.center.add( uc.scaleUniform(s1.radius) );
-	is2 = s2.center.add( uc.scaleUniform(s2.radius) );
+	is1 = s1.center + uc * s1.radius;
+	is2 = s2.center + uc * s2.radius;
 	epF = ( is1.distanceSquared(mc) > is2.distanceSquared( mc ) ) ? is1 : is2;
 
 	// Calculate where each sphere intersects the line in the opposite direction of
 	// the unit vector between the centers. Then take the intersection point that is
 	// farther from the midpoint along this line as the backward endpoint.
-	is1 = s1.center.difference( uc.scaleUniform( s1.radius ) );
-	is2 = s2.center.difference( uc.scaleUniform( s2.radius ) );
+	is1 = s1.center - uc * s1.radius;
+	is2 = s2.center - uc * s2.radius;
 	epB = ( is1.distanceSquared( mc ) > is2.distanceSquared( mc ) ) ? is1 : is2;
 
 	// The resulting union sphere has a center at the midpoint between the two endpoints,
@@ -246,9 +240,6 @@ CC3Plane CC3RaySphereIntersectionEquation(CC3Ray aRay, CC3Sphere aSphere)
 	GLfloat d = (b * b) - (4.0f * a * c);
 
 	// Return the coefficients and discriminant as a plane
-	//LogTrace(@"Intersection equation for ray %@ and sphere %@: %@",
-	//	NSStringFromCC3Ray(aRay), NSStringFromCC3Spere(aSphere),
-	//	NSStringFromCC3Plane(CC3PlaneMake(a, b, c, d)));
 	return CC3Plane(a, b, c, d);
 }
 
@@ -267,8 +258,6 @@ void CC3FlipVertically( GLubyte* rowMajorData, GLuint rowCount, GLuint bytesPerR
 		memcpy(tmpRow, upperRow, bytesPerRow);
 		memcpy(upperRow, lowerRow, bytesPerRow);
 		memcpy(lowerRow, tmpRow, bytesPerRow);
-		//LogTrace(@"Swapped %u bytes in %p between row %u at %p and row %u at %p",
-		//	bytesPerRow, rowMajorData, rowIdx, lowerRow, (lastRowIdx - rowIdx), upperRow);
 	}
 
 	CC_SAFE_DELETE_ARRAY( tmpRow );

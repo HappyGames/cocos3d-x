@@ -45,6 +45,7 @@
 #include "Common/CC3Foundation.h"
 #include "Common/CC3WeakRef.h"
 #include "Common/CC3Ref.h"
+#include "Common/CC3Collision.h"
 
 /// matrices
 #include "Matrices/CC3Matrix3x3.h"
@@ -106,6 +107,7 @@
 
 /// Animation
 #include "Animations/CC3Actions.h"
+#include "Animations/CC3ActionEase.h"
 #include "Animations/CC3NodeAnimationState.h"
 #include "Animations/CC3NodeAnimation.h"
 #include "Animations/CC3ArrayNodeAnimation.h"

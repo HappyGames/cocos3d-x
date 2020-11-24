@@ -528,7 +528,7 @@ public:
 	 * This method is invoked automatically by CC3Scene at the end of each frame drawing
 	 * cycle. Usually, the application never needs to invoke this method directly.
 	 */
-	// void						draw2dWithinBounds( const CCRect& bounds, CCRenderer* renderer, CC3NodeDrawingVisitor* visitor );
+	void						draw2dWithinBounds( const CCRect& bounds, CC3NodeDrawingVisitor* visitor );
 
 	/**
 	 * Returns whether the local content of this node intersects the given bounding rectangle.
@@ -587,8 +587,11 @@ public:
 	/** Overridden to ignore lighting, since Cocos2D nodes have no normals. */
 	virtual void				setMaterial( CC3Material* aMaterial );
 
-	virtual CCColorRef			getColor();
-	virtual void				setColor( CCColorRef color );
+	virtual ccColor3B			getColor();
+	virtual void				setColor( const ccColor3B& color );
+    
+    virtual void				setOpacity( CCOpacity opacity );
+    virtual CCOpacity			getOpacity();
 
 	void						initWithTag( GLuint aTag, const std::string& aName );
 
@@ -808,8 +811,32 @@ protected:
  */
 class CC3NodeDescriptor : public CC3Billboard
 {
+    DECLARE_SUPER( CC3Billboard );
 public:
 	static CC3NodeDescriptor*	nodeWithName( const std::string& aName, CCNode* a2DNode );
+    
+    virtual CC3Box              getLocalContentBoundingBox();
+    virtual CC3Box              getGlobalLocalContentBoundingBox();
+    virtual bool                shouldIncludeInDeepCopy();
+    virtual bool                shouldDrawDescriptor();
+    virtual void                setShouldDrawDescriptor( bool shouldDraw );
+    virtual bool                shouldDrawWireframeBox();
+    virtual void                setShouldDrawWireframeBox( bool shouldDraw );
+    virtual bool                shouldDrawLocalContentWireframeBox();
+    virtual void                setShouldDrawLocalContentWireframeBox( bool shouldDraw );
+    virtual bool                shouldContributeToParentBoundingBox();
+    virtual bool                shouldDrawBoundingVolume();
+    virtual void                setShouldDrawBoundingVolume( bool shouldDraw );
+    
+    // Overridden so that not touchable unless specifically set as such
+    virtual bool                isTouchable();
+    
+    // Overridden so that can still be visible if parent is invisible, unless explicitly turned off.
+    virtual bool                isVisible();
+    
+    virtual void                initWithTag( GLuint aTag, const std::string& aName );
+    
+    virtual void                addShadowVolumesForLight( CC3Light* light ) {  }
 };
 //
 ///** CCNode extension to support embedding 2D CCNodes in the 3D scene. */

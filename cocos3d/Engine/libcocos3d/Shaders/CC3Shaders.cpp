@@ -1052,8 +1052,6 @@ void CC3ShaderProgram::populateSceneScopeUniformsWithVisitor( CC3NodeDrawingVisi
 {
 	if ( m_isSceneScopeDirty ) 
 	{
-		// MARK_TRACE_HERE
-		//CCLOG("CC3Shader populating scene scope");
 		populateUniforms( m_uniformsSceneScope, visitor );
 		m_isSceneScopeDirty = false;
 	}
@@ -1062,15 +1060,11 @@ void CC3ShaderProgram::populateSceneScopeUniformsWithVisitor( CC3NodeDrawingVisi
 void CC3ShaderProgram::populateNodeScopeUniformsWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	populateSceneScopeUniformsWithVisitor( visitor );
-	// MARK_TRACE_HERE
-	//CCLOG("CC3Shader populating node scope");
 	populateUniforms( m_uniformsNodeScope, visitor );
 }
 
 void CC3ShaderProgram::populateDrawScopeUniformsWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	// MARK_TRACE_HERE
-	//CCLOG("CC3Shader populating draw scope");
 	populateUniforms( m_uniformsDrawScope, visitor );
 }
 

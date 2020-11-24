@@ -251,6 +251,7 @@ class CC3SphereNode : public CC3MeshNode
 {
 public:
 	CC3NodeBoundingVolume*		defaultBoundingVolume();
+    virtual CCObject*           copyWithZone( CCZone* zone );
 	static CC3SphereNode*		nodeWithName( const std::string& aName );
 	static CC3SphereNode*		node();
 };
@@ -441,6 +442,8 @@ public:
 	 */
 	virtual CC3Box				getParentBoundingBox();
 
+    virtual void                addShadowVolumesForLight( CC3Light* light ) {  }
+    
 	static CC3WireframeBoundingBoxNode*	nodeWithName( const std::string& aName );
 
 protected:
@@ -633,6 +636,8 @@ public:
 	bool						isTouchable();
 	// Overridden so that can still be visible if parent is invisible, unless explicitly turned off.
 	bool						isVisible();
+    
+    virtual void                addShadowVolumesForLight( CC3Light* light ) {  }
 };
 
 /**

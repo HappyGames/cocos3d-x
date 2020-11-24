@@ -54,10 +54,12 @@ bool CC3Identifiable::deriveNameFrom( CC3Identifiable* another, const std::strin
 {
 	if ( m_sName.empty() ) 
 		return false;
+    
 	std::string otherName = another->getName();
 	if ( otherName.empty() ) 
 		return false;
-	if ( suffix.empty() ) 
+	
+    if ( suffix.empty() )
 		return false;
 
 	setName( CC3String::stringWithFormat( (char*)"%s-%s", otherName.c_str(), suffix.c_str() ) );

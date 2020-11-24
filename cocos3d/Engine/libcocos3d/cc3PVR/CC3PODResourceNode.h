@@ -59,14 +59,14 @@ public:
 	virtual void				initWithName( const std::string& aName );
 	virtual bool				initWithName( const std::string& aName, const std::string& aFilePath );
 
-	static CC3PODResourceNode*	nodeFromFile( const std::string& aFilePath );
 	static CC3PODResourceNode*	nodeWithName( const std::string& aName, const std::string& aFilePath );
 	static CC3PODResourceNode*  nodeWithName( const std::string& aName );
-	static CC3PODResourceNode*	nodeFromFile( const std::string& aFilepath, bool flipped );
+    static CC3PODResourceNode*	nodeFromFile( const std::string& aFilePath );
+    static CC3PODResourceNode*	nodeFromFile( const std::string& aFilepath, bool flipped );
 
 protected:
-	CC3NodesResource*			createResourceFromFile( const std::string& aFilePath );
-	CC3NodesResource*			createResourceFromFile( const std::string& aFilePath, bool flipped );
+	virtual CC3NodesResource*	createResourceFromFile( const std::string& aFilePath );
+	virtual CC3NodesResource*   createResourceFromFile( const std::string& aFilePath, bool flipped );
 
 protected:
 	GLuint						_animationFrameCount;

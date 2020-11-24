@@ -66,8 +66,8 @@ inline bool CC3Ray::passes( const CC3Vector &aLocation ) const
     // location, then the location is on the ray.
     CC3Vector locVect = aLocation.difference( startLocation );
     float proj = locVect.dot( direction );
-    CC3Vector projVect = direction.scaleUniform( proj );
-    CC3Vector projLoc = startLocation.add( projVect );
+    CC3Vector projVect = direction * proj;
+    CC3Vector projLoc = startLocation + projVect;
     return aLocation.equals( projLoc );
 }
 

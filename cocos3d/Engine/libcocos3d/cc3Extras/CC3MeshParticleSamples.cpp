@@ -86,7 +86,7 @@ void CC3SprayMeshParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visito
 	if( !isAlive() ) 
 		return;
 
-	setLocation( getLocation().add( getVelocity().scaleUniform( visitor->getDeltaTime() ) ) );
+	setLocation( getLocation() + m_velocity * visitor->getDeltaTime() );
 }
 
 bool CC3SprayMeshParticle::init()
@@ -176,7 +176,7 @@ void CC3UniformlyEvolvingMeshParticle::updateBeforeTransform( CC3NodeUpdatingVis
 		{
 			CC3Vector rotVel = getRotationVelocity();
 			if ( !rotVel.isZero() ) 
-				rotateBy( rotVel.scaleUniform( dt ) );
+				rotateBy( rotVel * dt );
 			break;
 		}
 		case kCC3RotationTypeAxisAngle: 
@@ -204,8 +204,6 @@ void CC3UniformlyEvolvingMeshParticle::updateBeforeTransform( CC3NodeUpdatingVis
 								   CLAMP(currColor.b + (m_colorVelocity.b * dt), 0.0f, 1.0f),
 								   CLAMP(currColor.a + (m_colorVelocity.a * dt), 0.0f, 1.0f));
 		setColor4F( newColor );
-		/*LogTrace(@"Updating color of %@ from %@ to %@", self,
-					  NSStringFromCCC4F(currColor), NSStringFromCCC4F(newColor));*/
 	}
 	
 }
@@ -262,8 +260,6 @@ CC3MultiTemplateMeshParticleEmitter::~CC3MultiTemplateMeshParticleEmitter()
 void CC3MultiTemplateMeshParticleEmitter::addParticleTemplateMesh( CC3Mesh* aVtxArrayMesh )
 {
 	m_particleTemplateMeshes->addObject( aVtxArrayMesh );
-	//LogTrace(@"%@ added particle template mesh %@ with %i vertices and %i vertex indices",
-	//			  self, aVtxArrayMesh, aVtxArrayMesh.vertexCount, aVtxArrayMesh.vertexIndexCount);
 }
 
 /** Removes the specified mesh from the collection of meshes in the particleTemplateMeshes property. */

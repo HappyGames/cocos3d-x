@@ -372,7 +372,7 @@ static inline CC3Vector CC3VectorFromAngularVector(CC3AngularVector av)
 	GLfloat radHeading = CC3DegToRad(av.heading);
 	unitDir.x = xzLen * sinf(radHeading);
 	unitDir.z = -xzLen * cosf(radHeading);
-	return unitDir.scaleUniform( av.radius );
+	return unitDir * av.radius;
 }
 
 /**

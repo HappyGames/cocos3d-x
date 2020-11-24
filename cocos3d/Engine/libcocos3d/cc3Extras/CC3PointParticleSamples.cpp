@@ -87,7 +87,7 @@ void CC3SprayPointParticle::updateBeforeTransform( CC3NodeUpdatingVisitor* visit
 	if( !isAlive() ) 
 		return;
 
-	setLocation( getLocation().add( getVelocity().scaleUniform( visitor->getDeltaTime() ) ) );
+	setLocation( getLocation() + m_velocity * visitor->getDeltaTime() );
 }
 
 bool CC3SprayPointParticle::init()

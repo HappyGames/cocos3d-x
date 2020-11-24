@@ -51,7 +51,7 @@ bool CC3NodeTransformListeners::isEmpty()
 	return getListenerCount() == 0;
 }
 
-std::vector<CC3NodeTransformListenerProtocol*>& CC3NodeTransformListeners::transformListeners()
+TransformListenerList& CC3NodeTransformListeners::transformListeners()
 {
 	/// TODO: Create and return a array and add all listeners to this array
 	return m_transformListenerWrappers;

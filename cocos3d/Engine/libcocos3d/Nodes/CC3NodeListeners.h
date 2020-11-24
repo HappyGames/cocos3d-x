@@ -70,6 +70,8 @@ public:
 	virtual void				nodeWasTransformed( CC3Node* node ) = 0;
 };
 
+typedef std::vector<CC3NodeTransformListenerProtocol*> TransformListenerList;
+
 /** Manages a collection of transform listeners on behalf of a CC3Node. */
 class CC3NodeTransformListeners : public CCObject 
 {
@@ -100,7 +102,7 @@ public:
 	 * to, and must remove itself as a listener (using the removeTransformListener: method) when
 	 * appropriate, such as when being deallocated.
 	 */
-	std::vector<CC3NodeTransformListenerProtocol*>&	transformListeners();
+	TransformListenerList&      transformListeners();
 
 	/**
 	 * Adds the specified object as a transform listener.
@@ -138,7 +140,7 @@ public:
 
 protected:
 	CC3Node*					m_pNode;
-	std::vector<CC3NodeTransformListenerProtocol*>	m_transformListenerWrappers;
+	TransformListenerList       m_transformListenerWrappers;
 //	pthread_mutex_t				m_mutex;
 };
 

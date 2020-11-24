@@ -68,12 +68,12 @@ void CC3PODMesh::initAtIndex( GLint aPODIndex, CC3PODResource* aPODRez )
 	// The original pointer is now being managed by the CC3VertexLocations instance.
 	if ( psm->pInterleaved != NULL ) 
 	{
-		_shouldInterleaveVertices = true;
+		m_shouldInterleaveVertices = true;
 		psm->pInterleaved = (PVRTuint8*)calloc(1, sizeof(PVRTuint8));
 	}
 	else 
 	{
-		_shouldInterleaveVertices = false;
+		m_shouldInterleaveVertices = false;
 	}
 }
 

@@ -3161,7 +3161,7 @@ void CC3MashUpScene::markTouchPoint( const CCPoint& touchPoint, CC3Node* aNode )
 	// Use actions to fade the descriptor node in and then out, and remove it when done.
 	CCActionInterval* fadeIn = CCActionFadeIn::create( 0.2f );
 	CCActionInterval* fadeOut = CCActionFadeOut::create( 5.0f );
-	CCActionInstant* remove = CC3ActionRemove::create(); 
+    CCActionInterval* remove = CC3ActionRemove::create(); 
 	dn->setOpacity( 0 );		// Start invisible
 //	dn->runAction( CCActionSequence::create( fadeIn, fadeOut, remove, NULL ) );
 	

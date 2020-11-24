@@ -410,7 +410,7 @@ public:
 	 * of the new node. The subclass can invoke this superclass method, and then change
 	 * properties as required.
 	 */
-	CC3Light*					buildLightAtIndex( GLuint lightIndex );
+	virtual CC3Light*			buildLightAtIndex( GLuint lightIndex );
 
 	/**
 	 * Returns the SPODNode structure of the lightIndex'th light node.
@@ -495,7 +495,7 @@ public:
 	 * of the new node. The subclass can invoke this superclass method, and then change
 	 * properties as required.
 	 */
-	CC3Material*				buildMaterialAtIndex( GLuint materialIndex );
+	virtual CC3Material*		buildMaterialAtIndex( GLuint materialIndex );
 
 	/**
 	 * Returns materialIndex'th SPODMaterial structure from the data structures.

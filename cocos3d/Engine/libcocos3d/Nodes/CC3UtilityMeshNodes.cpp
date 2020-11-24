@@ -274,6 +274,16 @@ CC3SphereNode* CC3SphereNode::node()
 	return pNode;
 }
 
+CCObject* CC3SphereNode::copyWithZone( CCZone *zone )
+{
+    CC3SphereNode* pMeshNode = new CC3SphereNode;
+    pMeshNode->init();
+    pMeshNode->populateFrom( this );
+    pMeshNode->addCopiesOfChildrenFrom( this );
+    
+    return pMeshNode;
+}
+
 
 void CC3ClipSpaceNode::initWithTag( GLuint aTag, const std::string& aName )
 {
@@ -589,7 +599,7 @@ CC3Box CC3DirectionMarkerNode::getParentBoundingBox()
 	CC3Vector bbDim = CC3Vector::kCC3VectorZero;
 	CC3Scene* pScene = getScene();
 	if ( pScene )
-		bbDim = getScene()->getBoundingBox().getSize().scaleUniform( 0.05f );
+		bbDim = getScene()->getBoundingBox().getSize() * 0.05f;
 		
 	return CC3Box( bbDim.negate(), bbDim );
 }
@@ -704,10 +714,8 @@ CC3Vector CC3DirectionMarkerNode::calculateLineEnd()
 		dirScale = MAX(dirScale, minScale);
 	}
 
-	CC3Vector lineEnd = md.scaleUniform( dirScale );
-	//LogTrace(@"%@ calculated line end %@ from pbb scale %@ and dir scale %.3f and min global length: %.3f", self,
-	//		 NSStringFromCC3Vector(lineEnd), NSStringFromCC3Vector(pbbDirScale), dirScale, directionMarkerMinimumLength);
-	return lineEnd;
+	CC3Vector lineEnd = md * dirScale;
+    return lineEnd;
 }
 
 CC3DirectionMarkerNode* CC3DirectionMarkerNode::nodeWithName( const std::string& aName )
@@ -817,15 +825,20 @@ bool CC3BoundingVolumeDisplayNode::isVisible()
 
 bool CC3Fog::init()
 {
-	m_attenuationMode = GL_EXP2;
-	m_performanceHint = GL_DONT_CARE;
-	m_density = 1.0f;
-	m_startDistance = 0.0f;
-	m_endDistance = 1.0f;
-	setDiffuseColor( kCCC4FLightGray );
-	setShouldDrawInClipSpace( true );
-
-	return true;
+    if ( super::init() )
+    {
+        m_attenuationMode = GL_EXP2;
+        m_performanceHint = GL_DONT_CARE;
+        m_density = 1.0f;
+        m_startDistance = 0.0f;
+        m_endDistance = 1.0f;
+        setDiffuseColor( kCCC4FLightGray );
+        setShouldDrawInClipSpace( true );
+        
+        return true;
+    }
+    
+    return false;
 }
 
 CC3Fog* CC3Fog::fog()

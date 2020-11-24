@@ -978,7 +978,6 @@ bool CC3MeshNode::isMeshNode()
  */
 void CC3MeshNode::drawWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
-	//LogTrace(@"Drawing %@", self);
 	configureDrawingParameters( visitor );		// Before material is applied.
 	applyMaterialWithVisitor( visitor );
 	applyShaderProgramWithVisitor( visitor );

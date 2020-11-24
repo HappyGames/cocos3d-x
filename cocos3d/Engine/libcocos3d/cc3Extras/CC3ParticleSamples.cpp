@@ -328,8 +328,8 @@ void CC3HoseParticleNavigator::initializeParticle( CC3Particle* aParticle )
 	// The combination of emission speed and emission direction is the emission velocity in the
 	// nozzle's local coordinates. The particle velocity is then the nozzle emission velocity
 	// transformed by the nozzleMatrix to convert it to the emitter's local coordinates.
-	CC3Vector emissionVelocity = emissionDir.scaleUniform( emissionSpeed );
-	aParticle->setVelocity( getNozzleMatrix()->transformDirection( emissionVelocity ) );
+	CC3Vector emissionVelocity = emissionDir * emissionSpeed;
+	aParticle->setVelocity( getNozzleMatrix()->transformDirection(emissionVelocity) );
 }
 
 NS_COCOS3D_END

@@ -742,11 +742,15 @@ void CC3OpenGL::loadTexureSubImage( const GLvoid* imageData, GLenum target, GLin
 	activateTextureUnit( tuIdx );
 	setPixelUnpackingAlignment( byteAlignment );
 	glTexSubImage2D(target, mipmapLevel, rect.x, rect.y, rect.w, rect.h, texelFormat, texelType, imageData);
-//	CCLOG_TRACE("[ogl]glTexSubImage2D(%s, %d, %d, %d, %d, %d, %s, %s)",
-//		stringFromGLEnum(target).c_str(), mipmapLevel, rect.x, rect.y, rect.w, rect.h,
-//		stringFromGLEnum(texelFormat).c_str(), stringFromGLEnum(texelType).c_str(), imageData);
-
 	CHECK_GL_ERROR_DEBUG();
+}
+
+void CC3OpenGL::loadCompressedTextureImage( const GLvoid* imageData, GLsizei dataSize, GLenum target, GLint mipmapLevel, const CC3IntSize& size, GLenum format, GLuint tuIdx )
+{
+    activateTextureUnit( tuIdx );
+    CHECK_GL_ERROR_DEBUG();
+    glCompressedTexImage2D( target, mipmapLevel, format, size.width, size.height, 0, dataSize, imageData );
+    CHECK_GL_ERROR_DEBUG();
 }
 
 // Activate the current texture unit, and keep track of the maximum
@@ -809,7 +813,7 @@ void CC3OpenGL::bindTexture( GLuint texID, GLenum target, GLuint tuIdx )
 	}
 
 
-	if (CC3CheckGLuintAt(tuIdx, texID, stateArray, isKnownBits)) 
+	if ( CC3CheckGLuintAt(tuIdx, texID, stateArray, isKnownBits) )
 	{
 		CHECK_GL_ERROR_DEBUG();
 
@@ -820,7 +824,7 @@ void CC3OpenGL::bindTexture( GLuint texID, GLenum target, GLuint tuIdx )
 		//CCLOG("[ogl]glBindTexture(%s, %d)", stringFromGLEnum(target).c_str(), texID);
 
 		// If a real texture was set in this target, unbind all other targets in this texture unit
-		if (texID) 
+		if ( texID )
 			unbindTexturesExceptTarget( target, tuIdx );
 	}
 }
@@ -835,10 +839,7 @@ void CC3OpenGL::unbindTexturesExceptTarget( GLenum target, GLuint tuIdx )
 void CC3OpenGL::setTexParamEnum( GLenum pName, GLenum target, GLenum val, GLuint tuIdx )
 {
 	activateTextureUnit( tuIdx );
-	glTexParameteri(target, pName, val);
-	//LogGLErrorTrace(@"glTexParameteri(%@, %@, %@)", NSStringFromGLEnum(target),
-	//				NSStringFromGLEnum(pName), NSStringFromGLEnum(val));
-
+	glTexParameteri( target, pName, val );
 	CHECK_GL_ERROR_DEBUG();
 }
 
@@ -1368,18 +1369,6 @@ bool CC3OpenGL::supportsExtension( const char* extensionName )
 	return true;
 }
 
-/** Returns a description of the available extensions. */
-//-(NSString*) extensionsDescription {
-//	NSMutableString* desc = [NSMutableString stringWithCapacity: 1000];
-//	NSSortDescriptor* sorter = [NSSortDescriptor sortDescriptorWithKey: @"description"
-//															 ascending: YES
-//															  selector: @selector(caseInsensitiveCompare:)];
-//	NSArray* sorted = [self.extensions sortedArrayUsingDescriptors: [NSArray arrayWithObject: sorter]];
-//	for (NSString* ext in sorted) [desc appendFormat: @"\n\t%@", ext];
-//	return desc;
-//}
-
-
 CC3ShaderPrewarmer* CC3OpenGL::getShaderProgramPrewarmer()
 {
 	return NULL;
@@ -1502,14 +1491,12 @@ void CC3OpenGL::pushGroupMarker( const char* marker )
 
 void CC3OpenGL::pushGroupMarkerC( const char* marker )
 {
-	//glPushGroupMarkerEXT(0, marker);
-	//LogGLErrorTrace(@"glPushGroupMarkerEXT(0, %@)", [NSString stringWithUTF8String: marker]);
+	// glPushGroupMarkerEXT( 0, marker );
 }
 
 void CC3OpenGL::popGroupMarker() 
 {
-	//glPopGroupMarkerEXT();
-//	LogGLErrorTrace(@"glPopGroupMarkerEXT()");	// Log appears outside the group, which creates clutter.
+	// glPopGroupMarkerEXT();
 }
 
 void CC3OpenGL::insertEventMarker( const char* marker )
@@ -1519,8 +1506,7 @@ void CC3OpenGL::insertEventMarker( const char* marker )
 
 void CC3OpenGL::insertEventMarkerC( const char* marker )
 {
-	//glInsertEventMarkerEXT(0, marker);
-	//LogGLErrorTrace(@"glInsertEventMarkerEXT(0, %@)", [NSString stringWithUTF8String: marker]);
+	// glInsertEventMarkerEXT( 0, marker );
 }
 
 void CC3OpenGL::captureOpenGLFrame()
@@ -1540,8 +1526,7 @@ void CC3OpenGL::setVertexArrayDebugLabel( const char* label, GLuint vaID ) {}
 #else
 void CC3OpenGL::setDebugLabel( const char* label, GLuint objID, GLenum objType )
 {
-	//glLabelObjectEXT(objType, objID, 0, label);
-	//LogGLErrorTrace(@"glLabelObjectEXT(%@, %u, 0, %@)", NSStringFromGLEnum(objType), objID, label);
+	// glLabelObjectEXT( objType, objID, 0, label );
 }
 
 void CC3OpenGL::setTextureDebugLabel( const char* label, GLuint texID )

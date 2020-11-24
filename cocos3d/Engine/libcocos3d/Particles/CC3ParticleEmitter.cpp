@@ -237,13 +237,6 @@ CCObject* CC3ParticleEmitter::copyWithZone( CCZone* zone )
 std::string CC3ParticleEmitter::fullDescription() 
 {
 	return "CC3ParticleEmitter";
-	/*return [NSString stringWithFormat: @"%@ is %@emitting %u of %@ particles every %@ ms for %.1f of %@ seconds, and will expand by %u at %u particles",
-			[self class], (_isEmitting ? @"" : @"not "), _particleCount,
-			(_maximumParticleCapacity == kCC3ParticlesNoMax ? @"endless" : [NSString stringWithFormat: @"%u", _maximumParticleCapacity]),
-			(_emissionInterval == kCC3ParticleInfiniteInterval ? @"endless" : [NSString stringWithFormat: @"%.1f", _emissionInterval * 1000.0f]),
-			_elapsedTime,
-			(_emissionDuration == kCC3ParticleInfiniteInterval ? @"endless" : [NSString stringWithFormat: @"%.1f", _emissionDuration]),
-			_particleCapacityExpansionIncrement, (self.currentParticleCapacity + 1)];*/
 }
 
 /**
@@ -356,14 +349,7 @@ bool CC3ParticleEmitter::emitParticle( CC3Particle* aParticle )
 	if ( !aParticle || isFull() ) 
 		return false;		// Can't add particles if there's no space
 
-	/*CC3Assert([aParticle conformsToProtocol: self.requiredParticleProtocol],
-			  @"%@ does not conform to the %@ protocol. All particles emitted by %@ must conform to that protocol.", aParticle,
-			  [NSString stringWithUTF8String: protocol_getName(self.requiredParticleProtocol)], self);
-	CC3Assert(!_particleNavigator || [aParticle conformsToProtocol: _particleNavigator.requiredParticleProtocol],
-			  @"%@ does not conform to the %@ protocol. All particles configured by %@ must conform to that protocol.", aParticle,
-			  [NSString stringWithUTF8String: protocol_getName(_particleNavigator.requiredParticleProtocol)], _particleNavigator);*/
-	
-	// Ensure that we have capacity for this particle, and add the particle to the living
+    // Ensure that we have capacity for this particle, and add the particle to the living
 	// particles, which also attaches the emitter to the particle.
 	if ( !ensureParticleCapacityFor( aParticle ) ) 
 		return false;

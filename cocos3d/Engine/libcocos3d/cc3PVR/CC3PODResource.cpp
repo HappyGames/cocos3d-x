@@ -261,23 +261,6 @@ void CC3PODResource::buildSceneInfo()
 
 std::string CC3PODResource::fullDescription()
 {
-#if 0
-	NSMutableString* desc = [NSMutableString stringWithCapacity: 200];
-	[desc appendFormat: @"%@", self];
-	if (_pvrtModel && self.pvrtModelImpl->nFlags & PVRTMODELPODSF_FIXED) [desc appendFormat: @" (FIXED POINT!!)"];
-	[desc appendFormat: @" containing %u nodes", self.nodeCount];
-	[desc appendFormat: @" (%u mesh nodes)", self.meshNodeCount];
-	[desc appendFormat: @", %u meshes", self.meshCount];
-	[desc appendFormat: @", %u cameras", self.cameraCount];
-	[desc appendFormat: @", %u lights", self.lightCount];
-	[desc appendFormat: @", %u materials", self.materialCount];
-	[desc appendFormat: @", %u textures", self.textureCount];
-	[desc appendFormat: @", ambient light %@", NSStringFromCCC4F(self.ambientLight)];
-	[desc appendFormat: @", background color %@", NSStringFromCCC4F(self.backgroundColor)];
-	[desc appendFormat: @", %u frames of animation at %.1f FPS", self.animationFrameCount, self.animationFrameRate];
-	return desc;
-#endif
-
 	return "CC3PODResource";
 }
 

@@ -88,6 +88,7 @@ USING_NS_CC_EXT;
 #define CC3_WARNING( format, ... )	
 #define CC3_TAG( tag, format, ... )	
 #endif
+
 /************************************************************************/
 
 /************************************************************************/
@@ -133,5 +134,20 @@ public:
 #ifndef FLOAT_INFINITY
 #define FLOAT_INFINITY				kCC3MaxGLfloat
 #endif
+
+class ScopedArray
+{
+public:
+    ScopedArray( char* data ) : m_pData( data ) {  }
+    ~ScopedArray()
+    {
+        CC_SAFE_DELETE_ARRAY( m_pData );
+    }
+    
+protected:
+    char*   m_pData;
+};
+
+#define SCOPED_ARRAY( arr ) ScopedArray _scoped_array_##arr( (char*)(arr) )
 
 #endif

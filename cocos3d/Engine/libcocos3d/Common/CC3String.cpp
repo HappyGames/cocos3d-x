@@ -38,7 +38,7 @@ std::string CC3String::getFileName( const std::string& filePath )
 {
 	int i;
 	bool bFound = false;
-	for (i = filePath.size()-1; i>0; i--)
+	for (i = (int)filePath.size()-1; i>0; i--)
 	{
 		if ( filePath[i] == '\\' || filePath[i] == '/' )
 		{
@@ -55,7 +55,7 @@ static inline bool _getDirectory( char* dest, char* src )
 {
 	char buf[_MAX_PATH] = {0};
 	strcpy( buf, src );
-	int nLen = strlen(src);
+	int nLen = (int)strlen(src);
 
 	bool bFound = false;
 	for ( int i = nLen-1; i >=0; i--)
@@ -76,7 +76,7 @@ static inline bool _getDirectory( char* dest, char* src )
 
 static inline void addSlash( char* buf )
 {
-	int nLen = strlen(buf);
+	size_t nLen = strlen(buf);
 	if ( buf[nLen-1] != '\\' && buf[nLen-1] != '/' )
 		strcat(buf, "/");
 }
@@ -172,7 +172,7 @@ int CC3String::splitString( const std::string& src, std::vector<std::string>& de
 {
 	std::string sTmp = src;
 	std::string sRet = "";
-	int nPos = sTmp.find( seperator );
+    std::string::size_type nPos = sTmp.find( seperator );
 	if ( nPos == std::string::npos )
 	{
 		if ( sTmp.empty() )
@@ -202,7 +202,7 @@ int CC3String::splitString( const std::string& src, std::vector<std::string>& de
 		}
 	}
 
-	return destParts.size();
+	return (int)destParts.size();
 }
 
 std::string CC3String::getSystemTime()
@@ -222,7 +222,7 @@ int CC3String::toInteger( const std::string& str )
 	if ( str.empty() )
 		return 0;
 
-	if ( !isNumber(str.data(), str.size()) )
+	if ( !isNumber(str.data(), (int)str.size()) )
 		return 0;
 
 	return atoi( str.data() );
@@ -232,7 +232,7 @@ bool CC3String::startsWith( const char* str, const char* with )
 {
 	const char* src = str;
 	const char* cmp = with;
-	int nLen = strlen( with );
+	size_t nLen = strlen( with );
 	int i = 0;
 	while( i < nLen )
 	{

@@ -289,7 +289,7 @@ public:
 	 * This property is not universally automatically applied or honoured. It is
 	 * up to the invoker and invokee to agree on when to make use of this property.
 	 */
-	bool						shouldIncludeInDeepCopy();
+	virtual bool				shouldIncludeInDeepCopy();
 	
 	/**
 	 * Returns a unique tag value to identify instances. This value is unique across all instances

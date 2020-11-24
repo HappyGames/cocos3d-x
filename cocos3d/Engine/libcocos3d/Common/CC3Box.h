@@ -238,8 +238,8 @@ static inline CC3Box CC3BoxScale( const CC3Box& bb, const CC3Vector& scale )
 static inline CC3Box CC3BoxScaleUniform( const CC3Box& bb, GLfloat scale )
 {
     CC3Box bbScaled;
-    bbScaled.maximum = bb.maximum.scaleUniform( scale );
-    bbScaled.minimum = bb.minimum.scaleUniform( scale );
+    bbScaled.maximum = bb.maximum * scale;
+    bbScaled.minimum = bb.minimum * scale;
     return bbScaled;
 }
 

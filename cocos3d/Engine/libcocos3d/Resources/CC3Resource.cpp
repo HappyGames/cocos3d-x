@@ -221,9 +221,6 @@ void CC3Resource::setIsPreloading( bool _isPreloading )
 std::string CC3Resource::cachedResourcesDescription()
 {
 	std::string desc = "";
-	/*[_resourceCache enumerateObjectsUsingBlock: ^(CC3Resource* rez, BOOL* stop) {
-		if ( [rez isKindOfClass: self] ) [desc appendFormat: @"\n\t%@", rez.constructorDescription];
-	}];*/
 	return desc;
 }
 

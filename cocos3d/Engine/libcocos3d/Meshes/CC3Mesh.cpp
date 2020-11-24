@@ -86,63 +86,63 @@ std::string stringFromCC3VertexContent(CC3VertexContent vtxContent)
 
 CC3Mesh::CC3Mesh()
 {
-	_vertexLocations = NULL;
-	_vertexNormals = NULL;
-	_vertexTangents = NULL;
-	_vertexBitangents = NULL;
-	_vertexColors = NULL;
-	_vertexTextureCoordinates = NULL;
-	_overlayTextureCoordinates = NULL;
-	_vertexBoneWeights = NULL;
-	_vertexBoneIndices = NULL;
-	_vertexPointSizes = NULL;
-	_vertexIndices = NULL;
-	_faces = NULL;
+	m_vertexLocations = NULL;
+	m_vertexNormals = NULL;
+	m_vertexTangents = NULL;
+	m_vertexBitangents = NULL;
+	m_vertexColors = NULL;
+	m_vertexTextureCoordinates = NULL;
+	m_overlayTextureCoordinates = NULL;
+	m_vertexBoneWeights = NULL;
+	m_vertexBoneIndices = NULL;
+	m_vertexPointSizes = NULL;
+	m_vertexIndices = NULL;
+	m_faces = NULL;
 }
 
 CC3Mesh::~CC3Mesh()
 {
-	CC_SAFE_RELEASE( _vertexLocations );
-	CC_SAFE_RELEASE( _vertexNormals );
-	CC_SAFE_RELEASE( _vertexTangents );
-	CC_SAFE_RELEASE( _vertexBitangents );
-	CC_SAFE_RELEASE( _vertexColors );
-	CC_SAFE_RELEASE( _vertexTextureCoordinates );
-	CC_SAFE_RELEASE( _overlayTextureCoordinates );
-	CC_SAFE_RELEASE( _vertexBoneWeights );
-	CC_SAFE_RELEASE( _vertexBoneIndices );
-	CC_SAFE_RELEASE( _vertexPointSizes );
-	CC_SAFE_RELEASE( _vertexIndices );
-	CC_SAFE_RELEASE( _faces );
+	CC_SAFE_RELEASE( m_vertexLocations );
+	CC_SAFE_RELEASE( m_vertexNormals );
+	CC_SAFE_RELEASE( m_vertexTangents );
+	CC_SAFE_RELEASE( m_vertexBitangents );
+	CC_SAFE_RELEASE( m_vertexColors );
+	CC_SAFE_RELEASE( m_vertexTextureCoordinates );
+	CC_SAFE_RELEASE( m_overlayTextureCoordinates );
+	CC_SAFE_RELEASE( m_vertexBoneWeights );
+	CC_SAFE_RELEASE( m_vertexBoneIndices );
+	CC_SAFE_RELEASE( m_vertexPointSizes );
+	CC_SAFE_RELEASE( m_vertexIndices );
+	CC_SAFE_RELEASE( m_faces );
 }
 
 void CC3Mesh::setName( const std::string& name )
 {
 	super::setName( name );
 
-	if ( _vertexLocations )
-		_vertexLocations->deriveNameFrom( this );
-	if ( _vertexNormals )
-		_vertexNormals->deriveNameFrom( this );
-	if ( _vertexTangents )
-		_vertexTangents->deriveNameFrom( this );
-	if ( _vertexBitangents )
-		_vertexBitangents->deriveNameFrom( this );
-	if ( _vertexColors )
-		_vertexColors->deriveNameFrom( this );
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->deriveNameFrom( this );
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->deriveNameFrom( this );
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->deriveNameFrom( this );
-	if ( _vertexPointSizes )
-		_vertexPointSizes->deriveNameFrom( this );
-	if ( _vertexIndices )
-		_vertexIndices->deriveNameFrom( this );
+	if ( m_vertexLocations )
+		m_vertexLocations->deriveNameFrom( this );
+	if ( m_vertexNormals )
+		m_vertexNormals->deriveNameFrom( this );
+	if ( m_vertexTangents )
+		m_vertexTangents->deriveNameFrom( this );
+	if ( m_vertexBitangents )
+		m_vertexBitangents->deriveNameFrom( this );
+	if ( m_vertexColors )
+		m_vertexColors->deriveNameFrom( this );
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->deriveNameFrom( this );
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->deriveNameFrom( this );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->deriveNameFrom( this );
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->deriveNameFrom( this );
+	if ( m_vertexIndices )
+		m_vertexIndices->deriveNameFrom( this );
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		otc->deriveNameFrom( this );
@@ -156,262 +156,262 @@ std::string CC3Mesh::getNameSuffix()
 
 CC3VertexLocations* CC3Mesh::getVertexLocations() 
 { 
-	return _vertexLocations; 
+	return m_vertexLocations; 
 }
 
 void CC3Mesh::setVertexLocations( CC3VertexLocations* vtxLocs )
 {
-	if (vtxLocs == _vertexLocations) 
+	if (vtxLocs == m_vertexLocations) 
 		return;
 	
-	CC_SAFE_RELEASE(_vertexLocations);
-	_vertexLocations = vtxLocs;
+	CC_SAFE_RELEASE(m_vertexLocations);
+	m_vertexLocations = vtxLocs;
 	CC_SAFE_RETAIN( vtxLocs );
 
-	if ( _vertexLocations )
-		_vertexLocations->deriveNameFrom( this );
+	if ( m_vertexLocations )
+		m_vertexLocations->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexLocations()
 {
-	return (_vertexLocations != NULL); 
+	return (m_vertexLocations != NULL); 
 }
 
 CC3VertexNormals* CC3Mesh::getVertexNormals()
 {
-	return _vertexNormals; 
+	return m_vertexNormals; 
 }
 
 void CC3Mesh::setVertexNormals( CC3VertexNormals* vtxNorms )
 {
-	if (vtxNorms == _vertexNormals)
+	if (vtxNorms == m_vertexNormals)
 		return;
 
-	CC_SAFE_RELEASE(_vertexNormals);
-	_vertexNormals= vtxNorms;
+	CC_SAFE_RELEASE(m_vertexNormals);
+	m_vertexNormals= vtxNorms;
 	CC_SAFE_RETAIN(vtxNorms);
 
-	if ( _vertexNormals )
-		_vertexNormals->deriveNameFrom( this );
+	if ( m_vertexNormals )
+		m_vertexNormals->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexNormals()
 {
-	return (_vertexNormals != NULL); 
+	return (m_vertexNormals != NULL); 
 }
 
 void CC3Mesh::flipNormals()
 {
-	_vertexNormals->flipNormals(); 
+	m_vertexNormals->flipNormals(); 
 }
 
 CC3VertexTangents* CC3Mesh::getVertexTangents()
 {
-	return _vertexTangents; 
+	return m_vertexTangents; 
 }
 
 void CC3Mesh::setVertexTangents( CC3VertexTangents* vtxTans )
 {
-	if (vtxTans == _vertexTangents) 
+	if (vtxTans == m_vertexTangents) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexTangents);
-	_vertexTangents = vtxTans;
+	CC_SAFE_RELEASE(m_vertexTangents);
+	m_vertexTangents = vtxTans;
 	CC_SAFE_RETAIN(vtxTans);
 
-	if ( _vertexTangents )
-		_vertexTangents->deriveNameFrom( this );
+	if ( m_vertexTangents )
+		m_vertexTangents->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexTangents()
 {
-	return (_vertexTangents != NULL); 
+	return (m_vertexTangents != NULL); 
 }
 
 CC3VertexTangents* CC3Mesh::getVertexBitangents()
 {
-	return _vertexBitangents; 
+	return m_vertexBitangents; 
 }
 
 void CC3Mesh::setVertexBitangents( CC3VertexTangents* vtxBitans )
 {
-	if (vtxBitans == _vertexBitangents) 
+	if (vtxBitans == m_vertexBitangents) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexBitangents);
-	_vertexBitangents = vtxBitans;
+	CC_SAFE_RELEASE(m_vertexBitangents);
+	m_vertexBitangents = vtxBitans;
 	CC_SAFE_RETAIN(vtxBitans);
 
-	if ( _vertexBitangents )
+	if ( m_vertexBitangents )
 	{
-		_vertexBitangents->deriveNameFrom( this, "Bitangents" );
-		_vertexBitangents->setSemantic( kCC3SemanticVertexBitangent );
+		m_vertexBitangents->deriveNameFrom( this, "Bitangents" );
+		m_vertexBitangents->setSemantic( kCC3SemanticVertexBitangent );
 	}
 }
 
 bool CC3Mesh::hasVertexBitangents()
 {
-	return (_vertexBitangents != NULL); 
+	return (m_vertexBitangents != NULL); 
 }
 
 CC3VertexColors* CC3Mesh::getVertexColors()
 {
-	return _vertexColors; 
+	return m_vertexColors; 
 }
 
 void CC3Mesh::setVertexColors( CC3VertexColors* vtxCols )
 {
-	if (vtxCols == _vertexColors) 
+	if (vtxCols == m_vertexColors) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexColors);
-	_vertexColors = vtxCols;
+	CC_SAFE_RELEASE(m_vertexColors);
+	m_vertexColors = vtxCols;
 	CC_SAFE_RETAIN(vtxCols);
 
-	if ( _vertexColors )
-		_vertexColors->deriveNameFrom( this );
+	if ( m_vertexColors )
+		m_vertexColors->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexColors()
 {
-	return (_vertexColors != NULL); 
+	return (m_vertexColors != NULL); 
 }
 
 GLenum CC3Mesh::getVertexColorType()
 {
-	return _vertexColors ? _vertexColors->getElementType() : GL_FALSE; 
+	return m_vertexColors ? m_vertexColors->getElementType() : GL_FALSE; 
 }
 
 CC3VertexBoneIndices* CC3Mesh::getVertexBoneIndices()
 {
-	return _vertexBoneIndices; 
+	return m_vertexBoneIndices; 
 }
 
 void CC3Mesh::setVertexBoneIndices( CC3VertexBoneIndices* vertexBoneIndices )
 {
-	if (vertexBoneIndices == _vertexBoneIndices) 
+	if (vertexBoneIndices == m_vertexBoneIndices) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexBoneIndices);
-	_vertexBoneIndices = vertexBoneIndices;
+	CC_SAFE_RELEASE(m_vertexBoneIndices);
+	m_vertexBoneIndices = vertexBoneIndices;
 	CC_SAFE_RETAIN(vertexBoneIndices);
 
-	if (_vertexBoneIndices)
-		_vertexBoneIndices->deriveNameFrom( this );
+	if (m_vertexBoneIndices)
+		m_vertexBoneIndices->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexBoneIndices()
 {
-	return (_vertexBoneIndices != NULL);
+	return (m_vertexBoneIndices != NULL);
 }
 
 CC3VertexBoneWeights* CC3Mesh::getVertexBoneWeights()
 {
-	return _vertexBoneWeights; 
+	return m_vertexBoneWeights; 
 }
 
 void CC3Mesh::setVertexBoneWeights( CC3VertexBoneWeights* vertexBoneWeights )
 {
-	if (vertexBoneWeights == _vertexBoneWeights) 
+	if (vertexBoneWeights == m_vertexBoneWeights) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexBoneWeights);
-	_vertexBoneWeights = vertexBoneWeights;
+	CC_SAFE_RELEASE(m_vertexBoneWeights);
+	m_vertexBoneWeights = vertexBoneWeights;
 	CC_SAFE_RETAIN(vertexBoneWeights);
 
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->deriveNameFrom( this );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexBoneWeights()
 {
-	return (_vertexBoneWeights != NULL); 
+	return (m_vertexBoneWeights != NULL); 
 }
 
 CC3VertexPointSizes* CC3Mesh::getVertexPointSizes()
 {
-	return _vertexPointSizes; 
+	return m_vertexPointSizes; 
 }
 
 void CC3Mesh::setVertexPointSizes( CC3VertexPointSizes* vtxSizes )
 {
-	if (vtxSizes == _vertexPointSizes) 
+	if (vtxSizes == m_vertexPointSizes) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexPointSizes);
-	_vertexPointSizes = vtxSizes;
+	CC_SAFE_RELEASE(m_vertexPointSizes);
+	m_vertexPointSizes = vtxSizes;
 	CC_SAFE_RETAIN(vtxSizes);
 
-	if ( _vertexPointSizes )
-		_vertexPointSizes->deriveNameFrom( this );
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexPointSizes()
 {
-	return (_vertexPointSizes != NULL); 
+	return (m_vertexPointSizes != NULL); 
 }
 
 CC3VertexIndices* CC3Mesh::getVertexIndices()
 {
-	return _vertexIndices; 
+	return m_vertexIndices; 
 }
 
 void CC3Mesh::setVertexIndices( CC3VertexIndices* vtxInd )
 {
-	if (vtxInd == _vertexIndices) 
+	if (vtxInd == m_vertexIndices) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexIndices);
-	_vertexIndices = vtxInd;
+	CC_SAFE_RELEASE(m_vertexIndices);
+	m_vertexIndices = vtxInd;
 	CC_SAFE_RETAIN(vtxInd);
 
-	if ( _vertexIndices )
-		_vertexIndices->deriveNameFrom( this );
+	if ( m_vertexIndices )
+		m_vertexIndices->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexIndices()
 {
-	return (_vertexIndices != NULL); 
+	return (m_vertexIndices != NULL); 
 }
 
 CC3VertexTextureCoordinates* CC3Mesh::getVertexTextureCoordinates()
 {
-	return _vertexTextureCoordinates; 
+	return m_vertexTextureCoordinates; 
 }
 
 void CC3Mesh::setVertexTextureCoordinates( CC3VertexTextureCoordinates* vtxTexCoords )
 {
-	if (vtxTexCoords == _vertexTextureCoordinates) 
+	if (vtxTexCoords == m_vertexTextureCoordinates) 
 		return;
 
-	CC_SAFE_RELEASE(_vertexTextureCoordinates);
-	_vertexTextureCoordinates = vtxTexCoords;
+	CC_SAFE_RELEASE(m_vertexTextureCoordinates);
+	m_vertexTextureCoordinates = vtxTexCoords;
 	CC_SAFE_RETAIN(vtxTexCoords);
 
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->deriveNameFrom( this );
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->deriveNameFrom( this );
 }
 
 bool CC3Mesh::hasVertexTextureCoordinates()
 {
-	return (_vertexTextureCoordinates != NULL); 
+	return (m_vertexTextureCoordinates != NULL); 
 }
 
 GLuint CC3Mesh::getTextureCoordinatesArrayCount()
 {
-	return (_overlayTextureCoordinates ? (GLuint)_overlayTextureCoordinates->count() : 0) + (_vertexTextureCoordinates ? 1 : 0);
+	return (m_overlayTextureCoordinates ? (GLuint)m_overlayTextureCoordinates->count() : 0) + (m_vertexTextureCoordinates ? 1 : 0);
 }
 
 void CC3Mesh::addTextureCoordinates( CC3VertexTextureCoordinates* vtxTexCoords )
 {
 	CCAssert(vtxTexCoords, "Overlay texture cannot be nil");
-	CCAssert(!_overlayTextureCoordinates || ((_overlayTextureCoordinates->count() + 1) <
+	CCAssert(!m_overlayTextureCoordinates || ((m_overlayTextureCoordinates->count() + 1) <
 											  CC3OpenGL::sharedGL()->getMaxNumberOfTextureUnits()),
 			  "Too many overlaid textures. This platform only supports %i texture units."/*,
 			  CC3OpenGL::sharedGL()->getMaxNumberOfTextureUnits()*/);
 	
 	// Set the first texture coordinates into vertexTextureCoordinates
-	if (!_vertexTextureCoordinates) 
+	if (!m_vertexTextureCoordinates) 
 	{
 		setVertexTextureCoordinates( vtxTexCoords );
 	} 
@@ -419,12 +419,12 @@ void CC3Mesh::addTextureCoordinates( CC3VertexTextureCoordinates* vtxTexCoords )
 	{
 		// Add subsequent texture coordinate arrays to the array of overlayTextureCoordinates,
 		// creating it first if necessary
-		if( !_overlayTextureCoordinates )	
+		if( !m_overlayTextureCoordinates )	
 		{
-			_overlayTextureCoordinates = CCArray::create();	// retained
-			_overlayTextureCoordinates->retain();
+			m_overlayTextureCoordinates = CCArray::create();	// retained
+			m_overlayTextureCoordinates->retain();
 		}
-		_overlayTextureCoordinates->addObject( vtxTexCoords );
+		m_overlayTextureCoordinates->addObject( vtxTexCoords );
 		vtxTexCoords->deriveNameFrom( this );
 	}
 }
@@ -434,19 +434,19 @@ void CC3Mesh::removeTextureCoordinates( CC3VertexTextureCoordinates* aTexCoord )
 	// LogTrace(@"Removing %@ from %@", aTexCoord, self);
 	
 	// If the array to be removed is actually the vertexTextureCoordinates, remove it
-	if (_vertexTextureCoordinates == aTexCoord) 
+	if (m_vertexTextureCoordinates == aTexCoord) 
 	{
 		setVertexTextureCoordinates( NULL );
 	} else {
 		// Otherwise, find it in the array of overlays and remove it,
 		// and remove the overlay array if it is now empty
-		if (_overlayTextureCoordinates && aTexCoord) 
+		if (m_overlayTextureCoordinates && aTexCoord) 
 		{
-			_overlayTextureCoordinates->removeObject( aTexCoord );
-			if (_overlayTextureCoordinates->count() == 0) 
+			m_overlayTextureCoordinates->removeObject( aTexCoord );
+			if (m_overlayTextureCoordinates->count() == 0) 
 			{
-				_overlayTextureCoordinates->release();
-				_overlayTextureCoordinates = NULL;
+				m_overlayTextureCoordinates->release();
+				m_overlayTextureCoordinates = NULL;
 			}
 		}
 	}
@@ -457,10 +457,10 @@ void CC3Mesh::removeAllTextureCoordinates()
 	// Remove the first texture coordinates
 	setVertexTextureCoordinates( NULL );
 	
-	if ( _overlayTextureCoordinates )
+	if ( m_overlayTextureCoordinates )
 	{
 		// Remove the overlay texture coordinates
-		CCArray* myOTCs = (CCArray*)_overlayTextureCoordinates->copy();
+		CCArray* myOTCs = (CCArray*)m_overlayTextureCoordinates->copy();
 		CCObject* pObj;
 		CCARRAY_FOREACH( myOTCs, pObj )
 		{
@@ -476,15 +476,15 @@ CC3VertexTextureCoordinates* CC3Mesh::getTextureCoordinatesNamed( const std::str
 	std::string tcName = "";
 	
 	// First check if the first texture coordinates is the one
-	if (_vertexTextureCoordinates) {
-		tcName = _vertexTextureCoordinates->getName();
+	if (m_vertexTextureCoordinates) {
+		tcName = m_vertexTextureCoordinates->getName();
 		if (tcName == aName || (tcName.empty() && aName.empty())) {		// Name equal or both nil.
-			return _vertexTextureCoordinates;
+			return m_vertexTextureCoordinates;
 		}
 	}
 	// Then look for it in the overlays array
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		tcName = otc->getName();
@@ -504,9 +504,9 @@ CC3VertexTextureCoordinates* CC3Mesh::getTextureCoordinatesNamed( const std::str
 CC3VertexTextureCoordinates* CC3Mesh::getTextureCoordinatesForTextureUnit( GLuint texUnit )
 {
 	if ( texUnit == 0) 
-		return _vertexTextureCoordinates;
+		return m_vertexTextureCoordinates;
 	else if (texUnit < getTextureCoordinatesArrayCount()) 
-		return (CC3VertexTextureCoordinates*)_overlayTextureCoordinates->objectAtIndex( texUnit - 1 );
+		return (CC3VertexTextureCoordinates*)m_overlayTextureCoordinates->objectAtIndex( texUnit - 1 );
 	
 	return getTextureCoordinatesForTextureUnit( texUnit - 1 );
 }
@@ -517,7 +517,7 @@ void CC3Mesh::setTextureCoordinates( CC3VertexTextureCoordinates* aTexCoords, GL
 	if (texUnit == 0) 
 		setVertexTextureCoordinates( aTexCoords );
 	else if (texUnit < getTextureCoordinatesArrayCount())
-		_overlayTextureCoordinates->replaceObjectAtIndex( texUnit - 1,  aTexCoords );
+		m_overlayTextureCoordinates->replaceObjectAtIndex( texUnit - 1,  aTexCoords );
 	else 
 		addTextureCoordinates( aTexCoords );
 }
@@ -551,13 +551,13 @@ CC3VertexArray* CC3Mesh::getVertexArrayForSemantic( GLenum semantic, GLuint sema
 
 bool CC3Mesh::shouldInterleaveVertices()
 {
-	return _shouldInterleaveVertices; 
+	return m_shouldInterleaveVertices; 
 }
 
 void CC3Mesh::setShouldInterleaveVertices( bool shouldInterleave )
 {
-	_shouldInterleaveVertices = shouldInterleave;
-	if ( !_shouldInterleaveVertices )
+	m_shouldInterleaveVertices = shouldInterleave;
+	if ( !m_shouldInterleaveVertices )
 	{
 		CC3_TRACE("CC3Mesh has been configured to use non-interleaved vertex content. "
 			"To improve performance, it is recommended that you interleave all vertex content, "
@@ -589,12 +589,12 @@ void CC3Mesh::setVertexContentTypes( CC3VertexContent vtxContentTypes )
 void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 {
 	// Always create a new vertex locations
-	if (!_vertexLocations) 
+	if (!m_vertexLocations) 
 		setVertexLocations( CC3VertexLocations::vertexArray() );
 	
 	// Vertex normals
 	if (vtxContentTypes & kCC3VertexContentNormal) {
-		if (!_vertexNormals)
+		if (!m_vertexNormals)
 			setVertexNormals( CC3VertexNormals::vertexArray() );
 	} else {
 		setVertexNormals( NULL );
@@ -602,7 +602,7 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 	
 	// Vertex tangents
 	if (vtxContentTypes & kCC3VertexContentTangent) {
-		if (!_vertexTangents) 
+		if (!m_vertexTangents) 
 			setVertexTangents( CC3VertexTangents::vertexArray() );
 	} else {
 		setVertexTangents( NULL );
@@ -610,7 +610,7 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 	
 	// Vertex bitangents
 	if (vtxContentTypes & kCC3VertexContentBitangent) {
-		if (!_vertexBitangents) 
+		if (!m_vertexBitangents) 
 			setVertexBitangents( CC3VertexTangents::vertexArray() );
 	} else {
 		setVertexBitangents( NULL );
@@ -618,7 +618,7 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 	
 	// Vertex colors
 	if (vtxContentTypes & kCC3VertexContentColor) {
-		if (!_vertexColors) 
+		if (!m_vertexColors) 
 			setVertexColors( CC3VertexColors::vertexArray() );
 	} else {
 		setVertexColors( NULL );
@@ -626,7 +626,7 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 	
 	// Vertex texture coordinates
 	if (vtxContentTypes & kCC3VertexContentTextureCoordinates) {
-		if (!_vertexTextureCoordinates) 
+		if (!m_vertexTextureCoordinates) 
 			setVertexTextureCoordinates( CC3VertexTextureCoordinates::vertexArray() );
 	} else {
 		removeAllTextureCoordinates();
@@ -634,7 +634,7 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 	
 	// Weights
 	if (vtxContentTypes & kCC3VertexContentBoneWeights) {
-		if (!_vertexBoneWeights) 
+		if (!m_vertexBoneWeights) 
 			setVertexBoneWeights( CC3VertexBoneWeights::vertexArray() );
 	} else {
 		setVertexBoneWeights( NULL );
@@ -642,7 +642,7 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 	
 	// Matrix indices
 	if (vtxContentTypes & kCC3VertexContentBoneIndices) {
-		if (!_vertexBoneIndices) 
+		if (!m_vertexBoneIndices) 
 			setVertexBoneIndices( CC3VertexBoneIndices::vertexArray() );
 	} else {
 		setVertexBoneIndices( NULL );
@@ -650,7 +650,7 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 	
 	// Point sizes
 	if (vtxContentTypes & kCC3VertexContentPointSize) {
-		if (!_vertexPointSizes) 
+		if (!m_vertexPointSizes) 
 			setVertexPointSizes( CC3VertexPointSizes::vertexArray() );
 	} else {
 		setVertexPointSizes( NULL );
@@ -661,18 +661,18 @@ void CC3Mesh::createVertexContent( CC3VertexContent vtxContentTypes )
 GLuint CC3Mesh::getVertexStride()
 {
 	GLuint stride = 0;
-	if (_vertexLocations) stride += _vertexLocations->getElementLength();
-	if (_vertexNormals) stride += _vertexNormals->getElementLength();
-	if (_vertexTangents) stride += _vertexTangents->getElementLength();
-	if (_vertexBitangents) stride += _vertexBitangents->getElementLength();
-	if (_vertexColors) stride += _vertexColors->getElementLength();
-	if (_vertexBoneIndices) stride += _vertexBoneIndices->getElementLength();
-	if (_vertexBoneWeights) stride += _vertexBoneWeights->getElementLength();
-	if (_vertexPointSizes) stride += _vertexPointSizes->getElementLength();
-	if (_vertexTextureCoordinates) stride += _vertexTextureCoordinates->getElementLength();
+	if (m_vertexLocations) stride += m_vertexLocations->getElementLength();
+	if (m_vertexNormals) stride += m_vertexNormals->getElementLength();
+	if (m_vertexTangents) stride += m_vertexTangents->getElementLength();
+	if (m_vertexBitangents) stride += m_vertexBitangents->getElementLength();
+	if (m_vertexColors) stride += m_vertexColors->getElementLength();
+	if (m_vertexBoneIndices) stride += m_vertexBoneIndices->getElementLength();
+	if (m_vertexBoneWeights) stride += m_vertexBoneWeights->getElementLength();
+	if (m_vertexPointSizes) stride += m_vertexPointSizes->getElementLength();
+	if (m_vertexTextureCoordinates) stride += m_vertexTextureCoordinates->getElementLength();
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		stride += otc->getElementLength();
@@ -683,30 +683,30 @@ GLuint CC3Mesh::getVertexStride()
 
 void CC3Mesh::setVertexStride( GLuint vtxStride )
 {
-	if ( !_shouldInterleaveVertices ) 
+	if ( !m_shouldInterleaveVertices ) 
 		return;
 
-	if ( _vertexLocations )
-		_vertexLocations->setVertexStride( vtxStride );
-	if ( _vertexNormals )
-		_vertexNormals->setVertexStride( vtxStride );
-	if ( _vertexTangents )
-		_vertexTangents->setVertexStride( vtxStride );
-	if ( _vertexBitangents )
-		_vertexBitangents->setVertexStride( vtxStride );
-	if ( _vertexColors )
-		_vertexColors->setVertexStride( vtxStride );
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->setVertexStride( vtxStride );
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->setVertexStride( vtxStride );
-	if ( _vertexPointSizes )
-		_vertexPointSizes->setVertexStride( vtxStride );
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->setVertexStride( vtxStride );
+	if ( m_vertexLocations )
+		m_vertexLocations->setVertexStride( vtxStride );
+	if ( m_vertexNormals )
+		m_vertexNormals->setVertexStride( vtxStride );
+	if ( m_vertexTangents )
+		m_vertexTangents->setVertexStride( vtxStride );
+	if ( m_vertexBitangents )
+		m_vertexBitangents->setVertexStride( vtxStride );
+	if ( m_vertexColors )
+		m_vertexColors->setVertexStride( vtxStride );
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->setVertexStride( vtxStride );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->setVertexStride( vtxStride );
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->setVertexStride( vtxStride );
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->setVertexStride( vtxStride );
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		otc->setVertexStride( vtxStride );
@@ -717,51 +717,51 @@ GLuint CC3Mesh::updateVertexStride()
 {
 	GLuint stride = 0;
 	
-	if (_vertexLocations) {
-		if (_shouldInterleaveVertices) _vertexLocations->setElementOffset( stride );
-		stride += _vertexLocations->getElementLength();
+	if (m_vertexLocations) {
+		if (m_shouldInterleaveVertices) m_vertexLocations->setElementOffset( stride );
+		stride += m_vertexLocations->getElementLength();
 	}
-	if (_vertexNormals) {
-		if (_shouldInterleaveVertices) _vertexNormals->setElementOffset( stride );
-		stride += _vertexNormals->getElementLength();
+	if (m_vertexNormals) {
+		if (m_shouldInterleaveVertices) m_vertexNormals->setElementOffset( stride );
+		stride += m_vertexNormals->getElementLength();
 	}
-	if (_vertexTangents) {
-		if (_shouldInterleaveVertices) _vertexTangents->setElementOffset( stride );
-		stride += _vertexTangents->getElementLength();
+	if (m_vertexTangents) {
+		if (m_shouldInterleaveVertices) m_vertexTangents->setElementOffset( stride );
+		stride += m_vertexTangents->getElementLength();
 	}
-	if (_vertexBitangents) {
-		if (_shouldInterleaveVertices) _vertexBitangents->setElementOffset( stride );
-		stride += _vertexBitangents->getElementLength();
+	if (m_vertexBitangents) {
+		if (m_shouldInterleaveVertices) m_vertexBitangents->setElementOffset( stride );
+		stride += m_vertexBitangents->getElementLength();
 	}
-	if (_vertexColors) {
-		if (_shouldInterleaveVertices) _vertexColors->setElementOffset( stride );
-		stride += _vertexColors->getElementLength();
+	if (m_vertexColors) {
+		if (m_shouldInterleaveVertices) m_vertexColors->setElementOffset( stride );
+		stride += m_vertexColors->getElementLength();
 	}
-	if (_vertexTextureCoordinates) {
-		if (_shouldInterleaveVertices) _vertexTextureCoordinates->setElementOffset( stride );
-		stride += _vertexTextureCoordinates->getElementLength();
+	if (m_vertexTextureCoordinates) {
+		if (m_shouldInterleaveVertices) m_vertexTextureCoordinates->setElementOffset( stride );
+		stride += m_vertexTextureCoordinates->getElementLength();
 	}
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
-		if (_shouldInterleaveVertices) 
+		if (m_shouldInterleaveVertices) 
 			otc->setElementOffset( stride );
 		stride += otc->getElementLength();
 	}
 
-	if (_vertexBoneWeights) {
-		if (_shouldInterleaveVertices) _vertexBoneWeights->setElementOffset( stride );
-		stride += _vertexBoneWeights->getElementLength();
+	if (m_vertexBoneWeights) {
+		if (m_shouldInterleaveVertices) m_vertexBoneWeights->setElementOffset( stride );
+		stride += m_vertexBoneWeights->getElementLength();
 	}
-	if (_vertexBoneIndices) {
-		if (_shouldInterleaveVertices) _vertexBoneIndices->setElementOffset( stride );
-		stride += _vertexBoneIndices->getElementLength();
+	if (m_vertexBoneIndices) {
+		if (m_shouldInterleaveVertices) m_vertexBoneIndices->setElementOffset( stride );
+		stride += m_vertexBoneIndices->getElementLength();
 	}
-	if (_vertexPointSizes) {
-		if (_shouldInterleaveVertices) _vertexPointSizes->setElementOffset( stride );
-		stride += _vertexPointSizes->getElementLength();
+	if (m_vertexPointSizes) {
+		if (m_shouldInterleaveVertices) m_vertexPointSizes->setElementOffset( stride );
+		stride += m_vertexPointSizes->getElementLength();
 	}
 	
 	setVertexStride( stride );
@@ -770,63 +770,63 @@ GLuint CC3Mesh::updateVertexStride()
 
 GLuint CC3Mesh::getAllocatedVertexCapacity()
 { 
-	return _vertexLocations ? _vertexLocations->getAllocatedVertexCapacity() : 0; 
+	return m_vertexLocations ? m_vertexLocations->getAllocatedVertexCapacity() : 0; 
 }
 
 void CC3Mesh::setAllocatedVertexCapacity( GLuint vtxCount )
 {
-	if (!_vertexLocations) 
+	if (!m_vertexLocations) 
 		setVertexLocations( CC3VertexLocations::vertexArray() );
     
-	_vertexLocations->setAllocatedVertexCapacity( vtxCount );
+	m_vertexLocations->setAllocatedVertexCapacity( vtxCount );
 	
     if ( shouldInterleaveVertices() )
 	{
-		if ( _vertexNormals )
-			_vertexNormals->interleaveWith( _vertexLocations );
-		if ( _vertexTangents )
-			_vertexTangents->interleaveWith( _vertexLocations );
-		if ( _vertexBitangents )
-			_vertexBitangents->interleaveWith( _vertexLocations );
-		if ( _vertexColors )
-			_vertexColors->interleaveWith( _vertexLocations );
-		if ( _vertexBoneIndices )
-			_vertexBoneIndices->interleaveWith( _vertexLocations );
-		if ( _vertexBoneWeights )
-			_vertexBoneWeights->interleaveWith( _vertexLocations );
-		if ( _vertexPointSizes )
-			_vertexPointSizes->interleaveWith( _vertexLocations );
-		if ( _vertexTextureCoordinates )
-			_vertexTextureCoordinates->interleaveWith( _vertexLocations );
+		if ( m_vertexNormals )
+			m_vertexNormals->interleaveWith( m_vertexLocations );
+		if ( m_vertexTangents )
+			m_vertexTangents->interleaveWith( m_vertexLocations );
+		if ( m_vertexBitangents )
+			m_vertexBitangents->interleaveWith( m_vertexLocations );
+		if ( m_vertexColors )
+			m_vertexColors->interleaveWith( m_vertexLocations );
+		if ( m_vertexBoneIndices )
+			m_vertexBoneIndices->interleaveWith( m_vertexLocations );
+		if ( m_vertexBoneWeights )
+			m_vertexBoneWeights->interleaveWith( m_vertexLocations );
+		if ( m_vertexPointSizes )
+			m_vertexPointSizes->interleaveWith( m_vertexLocations );
+		if ( m_vertexTextureCoordinates )
+			m_vertexTextureCoordinates->interleaveWith( m_vertexLocations );
 
 		CCObject* pObj;
-		CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+		CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 		{
 			CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
-			otc->interleaveWith( _vertexLocations );
+			otc->interleaveWith( m_vertexLocations );
 		}
 	} 
 	else 
 	{
-		if ( _vertexNormals )
-			_vertexNormals->setAllocatedVertexCapacity( vtxCount );
-		if ( _vertexTangents )
-			_vertexTangents->setAllocatedVertexCapacity( vtxCount );
-		if ( _vertexBitangents )
-			_vertexBitangents->setAllocatedVertexCapacity( vtxCount );
-		if ( _vertexColors )
-			_vertexColors->setAllocatedVertexCapacity( vtxCount );
-		if ( _vertexBoneIndices )
-			_vertexBoneIndices->setAllocatedVertexCapacity( vtxCount );
-		if ( _vertexBoneWeights )
-			_vertexBoneWeights->setAllocatedVertexCapacity( vtxCount );
-		if ( _vertexPointSizes )
-			_vertexPointSizes->setAllocatedVertexCapacity( vtxCount );
-		if ( _vertexTextureCoordinates )
-			_vertexTextureCoordinates->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexNormals )
+			m_vertexNormals->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexTangents )
+			m_vertexTangents->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexBitangents )
+			m_vertexBitangents->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexColors )
+			m_vertexColors->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexBoneIndices )
+			m_vertexBoneIndices->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexBoneWeights )
+			m_vertexBoneWeights->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexPointSizes )
+			m_vertexPointSizes->setAllocatedVertexCapacity( vtxCount );
+		if ( m_vertexTextureCoordinates )
+			m_vertexTextureCoordinates->setAllocatedVertexCapacity( vtxCount );
 
 		CCObject* pObj;
-		CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+		CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 		{
 			CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 			otc->setAllocatedVertexCapacity( vtxCount );
@@ -852,42 +852,42 @@ bool CC3Mesh::ensureCapacity( GLuint vtxCount )
 
 GLfloat CC3Mesh::getCapacityExpansionFactor()
 {
-	return _capacityExpansionFactor;
+	return m_capacityExpansionFactor;
 }
 
 GLvoid* CC3Mesh::interleavedVertices()
 {
-	return (_shouldInterleaveVertices && _vertexLocations) ? _vertexLocations->getVertices() : NULL;
+	return (m_shouldInterleaveVertices && m_vertexLocations) ? m_vertexLocations->getVertices() : NULL;
 }
 
 GLuint CC3Mesh::getAllocatedVertexIndexCapacity()
 { 
-	return _vertexIndices ? _vertexIndices->getAllocatedVertexCapacity() : 0; 
+	return m_vertexIndices ? m_vertexIndices->getAllocatedVertexCapacity() : 0; 
 }
 
 void CC3Mesh::setAllocatedVertexIndexCapacity( GLuint vtxCount )
 {
-	if ( !_vertexIndices && vtxCount > 0 ) 
+	if ( !m_vertexIndices && vtxCount > 0 ) 
 		setVertexIndices( CC3VertexIndices::vertexArray() );
-	_vertexIndices->setAllocatedVertexCapacity( vtxCount );
+	m_vertexIndices->setAllocatedVertexCapacity( vtxCount );
 }
 
 void CC3Mesh::copyVertices( GLuint vtxCount, GLuint srcIdx, GLuint dstIdx )
 {
-	_vertexLocations->copyVertices( vtxCount, srcIdx, dstIdx );
-	if ( !_shouldInterleaveVertices ) 
+	m_vertexLocations->copyVertices( vtxCount, srcIdx, dstIdx );
+	if ( !m_shouldInterleaveVertices ) 
 	{
-		_vertexNormals->copyVertices( vtxCount, srcIdx, dstIdx );
-		_vertexTangents->copyVertices( vtxCount, srcIdx, dstIdx );
-		_vertexBitangents->copyVertices( vtxCount, srcIdx, dstIdx );
-		_vertexColors->copyVertices( vtxCount, srcIdx, dstIdx );
-		_vertexBoneIndices->copyVertices( vtxCount, srcIdx, dstIdx );
-		_vertexBoneWeights->copyVertices( vtxCount, srcIdx, dstIdx );
-		_vertexPointSizes->copyVertices( vtxCount, srcIdx, dstIdx );
-		_vertexTextureCoordinates->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexNormals->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexTangents->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexBitangents->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexColors->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexBoneIndices->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexBoneWeights->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexPointSizes->copyVertices( vtxCount, srcIdx, dstIdx );
+		m_vertexTextureCoordinates->copyVertices( vtxCount, srcIdx, dstIdx );
 
 		CCObject* pObj;
-		CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+		CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 		{
 			CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 			otc->copyVertices( vtxCount, srcIdx, dstIdx );
@@ -940,12 +940,12 @@ void CC3Mesh::copyVertexAt( GLuint srcIdx, CC3Mesh* srcMesh, GLuint dstIdx )
 
 void CC3Mesh::copyVertexIndices( GLuint vtxCount, GLuint srcIdx, GLuint dstIdx, GLint offset )
 {
-	_vertexIndices->copyVertices( vtxCount, srcIdx, dstIdx, offset );
+	m_vertexIndices->copyVertices( vtxCount, srcIdx, dstIdx, offset );
 }
 
 void CC3Mesh::copyVertexIndices( GLuint vtxCount, GLuint srcIdx, CC3Mesh* srcMesh, GLuint dstIdx, GLint offset )
 {
-	if ( !_vertexIndices ) 
+	if ( !m_vertexIndices ) 
 		return;	// If there are no vertex indices, leave
 	
 	CC3VertexIndices* srcVtxIdxs = srcMesh->getVertexIndices();
@@ -953,14 +953,14 @@ void CC3Mesh::copyVertexIndices( GLuint vtxCount, GLuint srcIdx, CC3Mesh* srcMes
 	{
 		// If the template mesh has vertex indices, copy them over and offset them.
 		// If both vertex index arrays are of the same type, we can optimize to a fast copy.
-		if (srcVtxIdxs->getElementType() == _vertexIndices->getElementType())
+		if (srcVtxIdxs->getElementType() == m_vertexIndices->getElementType())
 		{
-			_vertexIndices->copyVertices( vtxCount, srcVtxIdxs->getAddressOfElement( srcIdx ), dstIdx,  offset );
+			m_vertexIndices->copyVertices( vtxCount, srcVtxIdxs->getAddressOfElement( srcIdx ), dstIdx,  offset );
 		} else {
 			for (GLuint vtxIdx = 0; vtxIdx < vtxCount; vtxIdx++) 
 			{
 				GLuint srcVtx = srcVtxIdxs->getIndexAt( srcIdx + vtxIdx );
-				_vertexIndices->setIndex( srcVtx + offset, dstIdx + vtxIdx );
+				m_vertexIndices->setIndex( srcVtx + offset, dstIdx + vtxIdx );
 			}
 		}
 	} 
@@ -971,52 +971,52 @@ void CC3Mesh::copyVertexIndices( GLuint vtxCount, GLuint srcIdx, CC3Mesh* srcMes
 		// There will be a 1:1 mapping of indices to vertices.
 		for (GLuint vtxIdx = 0; vtxIdx < vtxCount; vtxIdx++) 
 		{
-			_vertexIndices->setIndex( offset + vtxIdx, dstIdx + vtxIdx );
+			m_vertexIndices->setIndex( offset + vtxIdx, dstIdx + vtxIdx );
 		}
 	}
 }
 
 GLuint CC3Mesh::getVertexCount()
 {
-	return _vertexLocations ? _vertexLocations->getVertexCount() : 0; 
+	return m_vertexLocations ? m_vertexLocations->getVertexCount() : 0; 
 }
 
 void CC3Mesh::setVertexCount( GLuint vCount )
 {
 	// If we're attempting to set too many vertices for indexed drawing, log an error, but don't abort.
-	if(_vertexIndices && (vCount > (kCC3MaxGLushort + 1)))
+	if(m_vertexIndices && (vCount > (kCC3MaxGLushort + 1)))
 		CCLOGERROR("Setting vertexCount property of CC3Mesh to %d vertices. This mesh uses indexed drawing, which is limited by OpenGL ES to %d vertices."
 				 " Vertices beyond that limit will not be drawn.", vCount, (kCC3MaxGLushort + 1));
 	
-	if ( _vertexLocations )
-		_vertexLocations->setVertexCount( vCount );
+	if ( m_vertexLocations )
+		m_vertexLocations->setVertexCount( vCount );
 	
-	if ( _vertexNormals )
-		_vertexNormals->setVertexCount( vCount );
+	if ( m_vertexNormals )
+		m_vertexNormals->setVertexCount( vCount );
 	
-	if ( _vertexTangents )
-		_vertexTangents->setVertexCount( vCount );
+	if ( m_vertexTangents )
+		m_vertexTangents->setVertexCount( vCount );
 	
-	if ( _vertexBitangents )
-		_vertexBitangents->setVertexCount( vCount );
+	if ( m_vertexBitangents )
+		m_vertexBitangents->setVertexCount( vCount );
 	
-	if ( _vertexColors )
-		_vertexColors->setVertexCount( vCount );
+	if ( m_vertexColors )
+		m_vertexColors->setVertexCount( vCount );
 
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->setVertexCount( vCount );
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->setVertexCount( vCount );
 	
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->setVertexCount( vCount );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->setVertexCount( vCount );
 	
-	if ( _vertexPointSizes )
-		_vertexPointSizes->setVertexCount( vCount );
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->setVertexCount( vCount );
 
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->setVertexCount( vCount );
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->setVertexCount( vCount );
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		otc->setVertexCount( vCount );
@@ -1025,159 +1025,159 @@ void CC3Mesh::setVertexCount( GLuint vCount )
 
 GLuint CC3Mesh::getVertexIndexCount()
 { 
-	return _vertexIndices ? _vertexIndices->getVertexCount() :getVertexCount(); 
+	return m_vertexIndices ? m_vertexIndices->getVertexCount() :getVertexCount(); 
 }
 
 void CC3Mesh::setVertexIndexCount( GLuint vCount )
 {
-	if ( _vertexIndices )
-		_vertexIndices->setVertexCount( vCount ); 
+	if ( m_vertexIndices )
+		m_vertexIndices->setVertexCount( vCount ); 
 }
 
 CC3Vector CC3Mesh::getVertexLocationAt( GLuint index )
 {
-	return _vertexLocations ? _vertexLocations->getLocationAt( index ) : CC3Vector::kCC3VectorZero;
+	return m_vertexLocations ? m_vertexLocations->getLocationAt( index ) : CC3Vector::kCC3VectorZero;
 }
 
 void CC3Mesh::setVertexLocation( const CC3Vector& aLocation, GLuint index )
 {
-	_vertexLocations->setLocation( aLocation, index );
+	m_vertexLocations->setLocation( aLocation, index );
 }
 
 CC3Vector4 CC3Mesh::getVertexHomogeneousLocationAt( GLuint index )
 {
-	return _vertexLocations ? _vertexLocations->getHomogeneousLocationAt( index ) : CC3Vector4::kCC3Vector4ZeroLocation;
+	return m_vertexLocations ? m_vertexLocations->getHomogeneousLocationAt( index ) : CC3Vector4::kCC3Vector4ZeroLocation;
 }
 
 void CC3Mesh::setVertexHomogeneousLocation( const CC3Vector4& aLocation, GLuint index )
 {
-	_vertexLocations->setHomogeneousLocation( aLocation, index );
+	m_vertexLocations->setHomogeneousLocation( aLocation, index );
 }
 
 CC3Vector CC3Mesh::getVertexNormalAt( GLuint index )
 {
-	return _vertexNormals ? _vertexNormals->getNormalAt( index ) : CC3Vector::kCC3VectorUnitZPositive;
+	return m_vertexNormals ? m_vertexNormals->getNormalAt( index ) : CC3Vector::kCC3VectorUnitZPositive;
 }
 
 void CC3Mesh::setVertexNormal( const CC3Vector& aNormal, GLuint index )
 {
-	if ( _vertexNormals )
-		_vertexNormals->setNormal( aNormal, index );
+	if ( m_vertexNormals )
+		m_vertexNormals->setNormal( aNormal, index );
 }
 
 CC3Vector CC3Mesh::getVertexTangentAt( GLuint index )
 {
-	return _vertexTangents ? _vertexTangents->getTangentAt( index ) : CC3Vector::kCC3VectorUnitXPositive;
+	return m_vertexTangents ? m_vertexTangents->getTangentAt( index ) : CC3Vector::kCC3VectorUnitXPositive;
 }
 
 void CC3Mesh::setVertexTangent( const CC3Vector& aTangent, GLuint index )
 {
-	if ( _vertexTangents ) 
-		_vertexTangents->setTangent( aTangent, index );
+	if ( m_vertexTangents ) 
+		m_vertexTangents->setTangent( aTangent, index );
 }
 
 CC3Vector CC3Mesh::getVertexBitangentAt( GLuint index )
 {
-	return _vertexBitangents ? _vertexBitangents->getTangentAt( index ) : CC3Vector::kCC3VectorUnitYPositive;
+	return m_vertexBitangents ? m_vertexBitangents->getTangentAt( index ) : CC3Vector::kCC3VectorUnitYPositive;
 }
 
 void CC3Mesh::setVertexBitangent( const CC3Vector& aTangent, GLuint index )
 {
-	if ( _vertexBitangents )
-		_vertexBitangents->setTangent( aTangent, index );
+	if ( m_vertexBitangents )
+		m_vertexBitangents->setTangent( aTangent, index );
 }
 
 ccColor4F CC3Mesh::getVertexColor4FAt( GLuint index )
 {
-	return _vertexColors ? _vertexColors->getColor4FAt( index ) : kCCC4FBlackTransparent;
+	return m_vertexColors ? m_vertexColors->getColor4FAt( index ) : kCCC4FBlackTransparent;
 }
 
 void CC3Mesh::setVertexColor4F( const ccColor4F& aColor, GLuint index )
 {
-	if ( _vertexColors ) 
-		_vertexColors->setColor4F( aColor, index );
+	if ( m_vertexColors ) 
+		m_vertexColors->setColor4F( aColor, index );
 }
 
 ccColor4B CC3Mesh::getVertexColor4BAt( GLuint index )
 {
-	return _vertexColors ? _vertexColors->getColor4BAt( index ) : ccc4(0, 0, 0, 0);
+	return m_vertexColors ? m_vertexColors->getColor4BAt( index ) : ccc4(0, 0, 0, 0);
 }
 
 void CC3Mesh::setVertexColor4B( const ccColor4B& aColor, GLuint index )
 {
-	if ( _vertexColors )
-		_vertexColors->setColor4B( aColor, index );
+	if ( m_vertexColors )
+		m_vertexColors->setColor4B( aColor, index );
 }
 
 GLuint CC3Mesh::getVertexBoneCount()
 { 
-	return _vertexBoneWeights ? _vertexBoneWeights->getElementSize() : 0; 
+	return m_vertexBoneWeights ? m_vertexBoneWeights->getElementSize() : 0; 
 }
 
 GLfloat CC3Mesh::getVertexWeightForBoneInfluence( GLuint influenceIndex, GLuint vtxIndex )
 {
-	return _vertexBoneWeights ? _vertexBoneWeights->getWeightForBoneInfluence( influenceIndex, vtxIndex ) : 0.0f;
+	return m_vertexBoneWeights ? m_vertexBoneWeights->getWeightForBoneInfluence( influenceIndex, vtxIndex ) : 0.0f;
 }
 
 void CC3Mesh::setVertexWeight( GLfloat weight, GLuint influenceIndex, GLuint vtxIndex )
 {
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->setWeight( weight, influenceIndex, vtxIndex );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->setWeight( weight, influenceIndex, vtxIndex );
 }
 
 GLfloat* CC3Mesh::getVertexBoneWeightsAt( GLuint vtxIndex )
 {
-	return _vertexBoneWeights ? _vertexBoneWeights->getBoneWeightsAt( vtxIndex ) : NULL;
+	return m_vertexBoneWeights ? m_vertexBoneWeights->getBoneWeightsAt( vtxIndex ) : NULL;
 }
 
 void CC3Mesh::setVertexBoneWeights( GLfloat* weights, GLuint vtxIndex )
 {
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->setBoneWeights( weights, vtxIndex );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->setBoneWeights( weights, vtxIndex );
 }
 
 GLuint CC3Mesh::getVertexBoneIndexForBoneInfluence( GLuint influenceIndex, GLuint vtxIndex )
 {
-	return _vertexBoneIndices ? _vertexBoneIndices->getBoneIndexForBoneInfluence( influenceIndex, vtxIndex ) : 0;
+	return m_vertexBoneIndices ? m_vertexBoneIndices->getBoneIndexForBoneInfluence( influenceIndex, vtxIndex ) : 0;
 }
 
 void CC3Mesh::setVertexBoneIndex( GLuint boneIndex, GLuint influenceIndex, GLuint vtxIndex )
 {
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->setBoneIndex( boneIndex, influenceIndex, vtxIndex );
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->setBoneIndex( boneIndex, influenceIndex, vtxIndex );
 }
 
 GLvoid* CC3Mesh::getVertexBoneIndicesAt( GLuint vtxIndex )
 {
-	return _vertexBoneIndices ? _vertexBoneIndices->getBoneIndicesAt(vtxIndex) : NULL;
+	return m_vertexBoneIndices ? m_vertexBoneIndices->getBoneIndicesAt(vtxIndex) : NULL;
 }
 
 void CC3Mesh::setVertexBoneIndices( GLvoid* boneIndices, GLuint vtxIndex )
 {
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->setBoneIndices( boneIndices, vtxIndex );
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->setBoneIndices( boneIndices, vtxIndex );
 }
 
 GLenum CC3Mesh::getVertexBoneIndexType()
 {
-	return _vertexBoneIndices->getElementType(); 
+	return m_vertexBoneIndices->getElementType(); 
 }
 
 GLfloat CC3Mesh::getVertexPointSizeAt( GLuint vtxIndex )
 {
-	return _vertexPointSizes ? _vertexPointSizes->getPointSizeAt( vtxIndex ) : 0.0f;
+	return m_vertexPointSizes ? m_vertexPointSizes->getPointSizeAt( vtxIndex ) : 0.0f;
 }
 
 void CC3Mesh::setVertexPointSize( GLfloat aSize, GLuint vtxIndex )
 {
-	if ( _vertexPointSizes )
-		_vertexPointSizes->setPointSize( aSize, vtxIndex );
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->setPointSize( aSize, vtxIndex );
 }
 
 void CC3Mesh::updatePointSizesGLBuffer()
 { 
-	if ( _vertexPointSizes )
-		_vertexPointSizes->updateGLBuffer(); 
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->updateGLBuffer(); 
 }
 
 ccTex2F CC3Mesh::getVertexTexCoord2FAt( GLuint index )
@@ -1205,41 +1205,41 @@ void CC3Mesh::setVertexTexCoord2F( const ccTex2F& aTex2F, GLuint texUnit, GLuint
 
 GLuint CC3Mesh::getVertexIndexAt( GLuint index )
 {
-	return _vertexIndices ? _vertexIndices->getIndexAt( index ) : 0;
+	return m_vertexIndices ? m_vertexIndices->getIndexAt( index ) : 0;
 }
 
 void CC3Mesh::setVertexIndex( GLuint vertexIndex, GLuint index )
 {
-	if ( _vertexIndices )
-		_vertexIndices->setIndex( vertexIndex, index );
+	if ( m_vertexIndices )
+		m_vertexIndices->setIndex( vertexIndex, index );
 }
 
 CC3FaceArray* CC3Mesh::getFaces()
 {
-	if ( !_faces ) 
+	if ( !m_faces ) 
 	{
 		std::string facesName = CC3String::stringWithFormat( (char*)"%s-Faces", getName().c_str() );
 		setFaces( CC3FaceArray::faceArrayWithName( facesName ) );
 	}
-	return _faces;
+	return m_faces;
 }
 
 void CC3Mesh::setFaces( CC3FaceArray* aFaceArray )
 {
-	if (aFaceArray == _faces) 
+	if (aFaceArray == m_faces) 
 		return;
 	
-	CC_SAFE_RELEASE( _faces );
-	_faces = aFaceArray;
-	CC_SAFE_RETAIN( _faces );
+	CC_SAFE_RELEASE( m_faces );
+	m_faces = aFaceArray;
+	CC_SAFE_RETAIN( m_faces );
 
-	if ( _faces )
-		_faces->setMesh( this );
+	if ( m_faces )
+		m_faces->setMesh( this );
 }
 
 bool CC3Mesh::shouldCacheFaces()
 { 
-	return _faces ? _faces->shouldCacheFaces() : false; 
+	return m_faces ? m_faces->shouldCacheFaces() : false; 
 }
 
 void CC3Mesh::setShouldCacheFaces( bool shouldCache )
@@ -1249,26 +1249,26 @@ void CC3Mesh::setShouldCacheFaces( bool shouldCache )
 
 GLuint CC3Mesh::getFaceCount()
 {
-	if (_vertexIndices) 
-		return _vertexIndices->getFaceCount();
+	if (m_vertexIndices) 
+		return m_vertexIndices->getFaceCount();
 
-	if (_vertexLocations) 
-		return _vertexLocations->getFaceCount();
+	if (m_vertexLocations) 
+		return m_vertexLocations->getFaceCount();
 
 	return 0;
 }
 
 CC3Face CC3Mesh::getFaceFromIndices( const CC3FaceIndices& faceIndices )
 {
-	return _vertexLocations ? _vertexLocations->getFaceFromIndices( faceIndices ) : CC3Face::kCC3FaceZero;
+	return m_vertexLocations ? m_vertexLocations->getFaceFromIndices( faceIndices ) : CC3Face::kCC3FaceZero;
 }
 
 CC3FaceIndices CC3Mesh::getUncachedFaceIndicesAt( GLuint faceIndex )
 {
-	if (_vertexIndices) 
-		return _vertexIndices->getFaceIndicesAt( faceIndex );
-	if (_vertexLocations) 
-		return _vertexLocations->getFaceIndicesAt( faceIndex );
+	if (m_vertexIndices) 
+		return m_vertexIndices->getFaceIndicesAt( faceIndex );
+	if (m_vertexLocations) 
+		return m_vertexLocations->getFaceIndicesAt( faceIndex );
 	CCAssert(false, "CC3Mesh has no drawable vertex array and cannot retrieve indices for a face.");
 
 	return kCC3FaceIndicesZero;
@@ -1276,10 +1276,10 @@ CC3FaceIndices CC3Mesh::getUncachedFaceIndicesAt( GLuint faceIndex )
 
 GLuint CC3Mesh::getFaceCountFromVertexIndexCount( GLuint vc )
 {
-	if (_vertexIndices) 
-		return _vertexIndices->getFaceCountFromVertexIndexCount( vc );
-	if (_vertexLocations) 
-		return _vertexLocations->getFaceCountFromVertexIndexCount( vc );
+	if (m_vertexIndices) 
+		return m_vertexIndices->getFaceCountFromVertexIndexCount( vc );
+	if (m_vertexLocations) 
+		return m_vertexLocations->getFaceCountFromVertexIndexCount( vc );
 
 	CCAssert(false, "CC3Mesh has no drawable vertex array and cannot convert vertex count to face count.");
 	
@@ -1288,10 +1288,10 @@ GLuint CC3Mesh::getFaceCountFromVertexIndexCount( GLuint vc )
 
 GLuint CC3Mesh::getVertexIndexCountFromFaceCount( GLuint fc )
 {
-	if (_vertexIndices) 
-		return _vertexIndices->getVertexIndexCountFromFaceCount(fc);
-	if (_vertexLocations) 
-		return _vertexLocations->getVertexIndexCountFromFaceCount(fc);
+	if (m_vertexIndices) 
+		return m_vertexIndices->getVertexIndexCountFromFaceCount(fc);
+	if (m_vertexLocations) 
+		return m_vertexLocations->getVertexIndexCountFromFaceCount(fc);
 	CCAssert(false, "CC3Mesh has no drawable vertex array and cannot convert face count to vertex count.");
 	return 0;
 }
@@ -1370,32 +1370,32 @@ GLuint CC3Mesh::findFirst( GLuint maxHitCount, CC3MeshIntersection* intersection
  */
 void CC3Mesh::createGLBuffers()
 {
-	if ( _vertexLocations )
-		_vertexLocations->createGLBuffer();
+	if ( m_vertexLocations )
+		m_vertexLocations->createGLBuffer();
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 	{
-		if ( _vertexLocations )
+		if ( m_vertexLocations )
 		{
-			GLuint commonBufferId = _vertexLocations->getBufferID();
-			if ( _vertexNormals )
-				_vertexNormals->setBufferID( commonBufferId );
-			if ( _vertexTangents )
-				_vertexTangents->setBufferID( commonBufferId );
-			if ( _vertexBitangents )
-				_vertexBitangents->setBufferID( commonBufferId );
-			if ( _vertexColors )
-				_vertexColors->setBufferID( commonBufferId );
-			if ( _vertexBoneIndices )
-				_vertexBoneIndices->setBufferID( commonBufferId );
-			if ( _vertexBoneWeights )
-				_vertexBoneWeights->setBufferID( commonBufferId );
-			if ( _vertexPointSizes )
-				_vertexPointSizes->setBufferID( commonBufferId );
-			if ( _vertexTextureCoordinates )
-				_vertexTextureCoordinates->setBufferID( commonBufferId );
+			GLuint commonBufferId = m_vertexLocations->getBufferID();
+			if ( m_vertexNormals )
+				m_vertexNormals->setBufferID( commonBufferId );
+			if ( m_vertexTangents )
+				m_vertexTangents->setBufferID( commonBufferId );
+			if ( m_vertexBitangents )
+				m_vertexBitangents->setBufferID( commonBufferId );
+			if ( m_vertexColors )
+				m_vertexColors->setBufferID( commonBufferId );
+			if ( m_vertexBoneIndices )
+				m_vertexBoneIndices->setBufferID( commonBufferId );
+			if ( m_vertexBoneWeights )
+				m_vertexBoneWeights->setBufferID( commonBufferId );
+			if ( m_vertexPointSizes )
+				m_vertexPointSizes->setBufferID( commonBufferId );
+			if ( m_vertexTextureCoordinates )
+				m_vertexTextureCoordinates->setBufferID( commonBufferId );
 			CCObject* pObj;
-			CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+			CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 			{
 				CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 				otc->setBufferID( commonBufferId );
@@ -1404,94 +1404,94 @@ void CC3Mesh::createGLBuffers()
 	} 
 	else 
 	{
-		if ( _vertexNormals )
-			_vertexNormals->createGLBuffer();
+		if ( m_vertexNormals )
+			m_vertexNormals->createGLBuffer();
 		
-		if ( _vertexTangents )
-			_vertexTangents->createGLBuffer();
+		if ( m_vertexTangents )
+			m_vertexTangents->createGLBuffer();
 		
-		if ( _vertexBitangents )
-			_vertexBitangents->createGLBuffer();
+		if ( m_vertexBitangents )
+			m_vertexBitangents->createGLBuffer();
 		
-		if ( _vertexColors )
-			_vertexColors->createGLBuffer();
+		if ( m_vertexColors )
+			m_vertexColors->createGLBuffer();
 		
-		if ( _vertexBoneIndices )
-			_vertexBoneIndices->createGLBuffer();
+		if ( m_vertexBoneIndices )
+			m_vertexBoneIndices->createGLBuffer();
 		
-		if ( _vertexBoneWeights )
-			_vertexBoneWeights->createGLBuffer();
+		if ( m_vertexBoneWeights )
+			m_vertexBoneWeights->createGLBuffer();
 		
-		if ( _vertexPointSizes )
-			_vertexPointSizes->createGLBuffer();
+		if ( m_vertexPointSizes )
+			m_vertexPointSizes->createGLBuffer();
 		
-		if ( _vertexTextureCoordinates )
-			_vertexTextureCoordinates->createGLBuffer();
+		if ( m_vertexTextureCoordinates )
+			m_vertexTextureCoordinates->createGLBuffer();
 
 		CCObject* pObj;
-		CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+		CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 		{
 			CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 			otc->createGLBuffer();
 		}
 	}
 
-	if ( _vertexIndices )
-		_vertexIndices->createGLBuffer();
+	if ( m_vertexIndices )
+		m_vertexIndices->createGLBuffer();
 }
 
 void CC3Mesh::deleteGLBuffers()
 {
-	if ( _vertexLocations )
-		_vertexLocations->deleteGLBuffer();
+	if ( m_vertexLocations )
+		m_vertexLocations->deleteGLBuffer();
 	
-	if ( _vertexNormals )
-		_vertexNormals->deleteGLBuffer();
+	if ( m_vertexNormals )
+		m_vertexNormals->deleteGLBuffer();
 	
-	if ( _vertexTangents )
-		_vertexTangents->deleteGLBuffer();
+	if ( m_vertexTangents )
+		m_vertexTangents->deleteGLBuffer();
 	
-	if ( _vertexBitangents )
-		_vertexBitangents->deleteGLBuffer();
+	if ( m_vertexBitangents )
+		m_vertexBitangents->deleteGLBuffer();
 	
-	if ( _vertexColors )
-		_vertexColors->deleteGLBuffer();
+	if ( m_vertexColors )
+		m_vertexColors->deleteGLBuffer();
 	
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->deleteGLBuffer();
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->deleteGLBuffer();
 
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->deleteGLBuffer();
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->deleteGLBuffer();
 	
-	if ( _vertexPointSizes )
-		_vertexPointSizes->deleteGLBuffer();
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->deleteGLBuffer();
 	
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->deleteGLBuffer();
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->deleteGLBuffer();
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		otc->deleteGLBuffer();
 	}
 
-	if ( _vertexIndices )
-		_vertexIndices->deleteGLBuffer();
+	if ( m_vertexIndices )
+		m_vertexIndices->deleteGLBuffer();
 }
 
 bool CC3Mesh::isUsingGLBuffers()
 {
-	if (_vertexLocations && _vertexLocations->isUsingGLBuffer()) return true;
-	if (_vertexNormals && _vertexNormals->isUsingGLBuffer()) return true;
-	if (_vertexTangents && _vertexTangents->isUsingGLBuffer()) return true;
-	if (_vertexBitangents && _vertexBitangents->isUsingGLBuffer()) return true;
-	if (_vertexColors && _vertexColors->isUsingGLBuffer()) return true;
-	if (_vertexBoneIndices && _vertexBoneIndices->isUsingGLBuffer()) return true;
-	if (_vertexBoneWeights && _vertexBoneWeights->isUsingGLBuffer()) return true;
-	if (_vertexPointSizes && _vertexPointSizes->isUsingGLBuffer()) return true;
-	if (_vertexTextureCoordinates && _vertexTextureCoordinates->isUsingGLBuffer()) return true;
+	if (m_vertexLocations && m_vertexLocations->isUsingGLBuffer()) return true;
+	if (m_vertexNormals && m_vertexNormals->isUsingGLBuffer()) return true;
+	if (m_vertexTangents && m_vertexTangents->isUsingGLBuffer()) return true;
+	if (m_vertexBitangents && m_vertexBitangents->isUsingGLBuffer()) return true;
+	if (m_vertexColors && m_vertexColors->isUsingGLBuffer()) return true;
+	if (m_vertexBoneIndices && m_vertexBoneIndices->isUsingGLBuffer()) return true;
+	if (m_vertexBoneWeights && m_vertexBoneWeights->isUsingGLBuffer()) return true;
+	if (m_vertexPointSizes && m_vertexPointSizes->isUsingGLBuffer()) return true;
+	if (m_vertexTextureCoordinates && m_vertexTextureCoordinates->isUsingGLBuffer()) return true;
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		 if (otc->isUsingGLBuffer()) 
@@ -1503,33 +1503,33 @@ bool CC3Mesh::isUsingGLBuffers()
 
 void CC3Mesh::releaseRedundantContent()
 {
-	if ( _vertexLocations )
-		_vertexLocations->releaseRedundantContent();
-	if ( _vertexNormals )
-		_vertexNormals->releaseRedundantContent();
-	if ( _vertexTangents )
-		_vertexTangents->releaseRedundantContent();
-	if ( _vertexBitangents )
-		_vertexBitangents->releaseRedundantContent();
-	if ( _vertexColors )
-		_vertexColors->releaseRedundantContent();
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->releaseRedundantContent();
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->releaseRedundantContent();
-	if ( _vertexPointSizes )
-		_vertexPointSizes->releaseRedundantContent();
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->releaseRedundantContent();
+	if ( m_vertexLocations )
+		m_vertexLocations->releaseRedundantContent();
+	if ( m_vertexNormals )
+		m_vertexNormals->releaseRedundantContent();
+	if ( m_vertexTangents )
+		m_vertexTangents->releaseRedundantContent();
+	if ( m_vertexBitangents )
+		m_vertexBitangents->releaseRedundantContent();
+	if ( m_vertexColors )
+		m_vertexColors->releaseRedundantContent();
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->releaseRedundantContent();
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->releaseRedundantContent();
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->releaseRedundantContent();
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->releaseRedundantContent();
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		otc->releaseRedundantContent();
 	}
 
-	if ( _vertexIndices )
-		_vertexIndices->releaseRedundantContent();
+	if ( m_vertexIndices )
+		m_vertexIndices->releaseRedundantContent();
 }
 
 void CC3Mesh::retainVertexContent()
@@ -1547,30 +1547,30 @@ void CC3Mesh::retainVertexContent()
 
 void CC3Mesh::retainVertexLocations()
 {
-	if ( _vertexLocations )
-		_vertexLocations->setShouldReleaseRedundantContent( false ); 
+	if ( m_vertexLocations )
+		m_vertexLocations->setShouldReleaseRedundantContent( false ); 
 }
 
 void CC3Mesh::retainVertexNormals()
 {
 	if ( !hasVertexNormals() ) return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexNormals )
-		_vertexNormals->setShouldReleaseRedundantContent( false );
+	if ( m_vertexNormals )
+		m_vertexNormals->setShouldReleaseRedundantContent( false );
 }
 
 void CC3Mesh::retainVertexTangents()
 {
 	if ( !hasVertexTangents() ) return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexTangents )
-		_vertexTangents->setShouldReleaseRedundantContent( false );
+	if ( m_vertexTangents )
+		m_vertexTangents->setShouldReleaseRedundantContent( false );
 }
 
 void CC3Mesh::retainVertexBitangents()
@@ -1578,11 +1578,11 @@ void CC3Mesh::retainVertexBitangents()
 	if ( !hasVertexBitangents() ) 
 		return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexBitangents )
-		_vertexBitangents->setShouldReleaseRedundantContent( false );
+	if ( m_vertexBitangents )
+		m_vertexBitangents->setShouldReleaseRedundantContent( false );
 }
 
 void CC3Mesh::retainVertexColors()
@@ -1590,11 +1590,11 @@ void CC3Mesh::retainVertexColors()
 	if ( !hasVertexColors() ) 
 		return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexColors )
-		_vertexColors->setShouldReleaseRedundantContent( false );
+	if ( m_vertexColors )
+		m_vertexColors->setShouldReleaseRedundantContent( false );
 }
 
 void CC3Mesh::retainVertexBoneWeights()
@@ -1602,11 +1602,11 @@ void CC3Mesh::retainVertexBoneWeights()
 	if ( !hasVertexBoneWeights() )
 		return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->setShouldReleaseRedundantContent( false );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->setShouldReleaseRedundantContent( false );
 }
 
 void CC3Mesh::retainVertexBoneIndices()
@@ -1614,11 +1614,11 @@ void CC3Mesh::retainVertexBoneIndices()
 	if ( !hasVertexBoneIndices() ) 
 		return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->setShouldReleaseRedundantContent( false );
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->setShouldReleaseRedundantContent( false );
 }
 
 void CC3Mesh::retainVertexPointSizes()
@@ -1626,11 +1626,11 @@ void CC3Mesh::retainVertexPointSizes()
 	if ( !hasVertexPointSizes() ) 
 		return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexPointSizes ) 
-		_vertexPointSizes->setShouldReleaseRedundantContent( false );
+	if ( m_vertexPointSizes ) 
+		m_vertexPointSizes->setShouldReleaseRedundantContent( false );
 }
 
 void CC3Mesh::retainVertexTextureCoordinates()
@@ -1638,14 +1638,14 @@ void CC3Mesh::retainVertexTextureCoordinates()
 	if ( !hasVertexTextureCoordinates() ) 
 		return;
 	
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		retainVertexLocations();
 
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->setShouldReleaseRedundantContent( false );
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->setShouldReleaseRedundantContent( false );
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		otc->setShouldReleaseRedundantContent( false );
@@ -1654,8 +1654,8 @@ void CC3Mesh::retainVertexTextureCoordinates()
 
 void CC3Mesh::retainVertexIndices()
 {
-	if ( _vertexIndices )
-		_vertexIndices->setShouldReleaseRedundantContent( false ); 
+	if ( m_vertexIndices )
+		m_vertexIndices->setShouldReleaseRedundantContent( false ); 
 }
 
 void CC3Mesh::doNotBufferVertexContent()
@@ -1673,80 +1673,80 @@ void CC3Mesh::doNotBufferVertexContent()
 
 void CC3Mesh::doNotBufferVertexLocations()
 {
-	_vertexLocations->setShouldAllowVertexBuffering( false ); 
+	m_vertexLocations->setShouldAllowVertexBuffering( false ); 
 }
 
 void CC3Mesh::doNotBufferVertexNormals()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
-	_vertexNormals->setShouldAllowVertexBuffering( false );
+	m_vertexNormals->setShouldAllowVertexBuffering( false );
 }
 
 void CC3Mesh::doNotBufferVertexTangents()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
 
-	if ( _vertexTangents )
-		_vertexTangents->setShouldAllowVertexBuffering( false );
+	if ( m_vertexTangents )
+		m_vertexTangents->setShouldAllowVertexBuffering( false );
 }
 
 void CC3Mesh::doNotBufferVertexBitangents()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
 
-	if ( _vertexBitangents )
-		_vertexBitangents->setShouldAllowVertexBuffering( false );
+	if ( m_vertexBitangents )
+		m_vertexBitangents->setShouldAllowVertexBuffering( false );
 }
 
 void CC3Mesh::doNotBufferVertexColors()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
 
-	if ( _vertexColors )
-		_vertexColors->setShouldAllowVertexBuffering( false );
+	if ( m_vertexColors )
+		m_vertexColors->setShouldAllowVertexBuffering( false );
 }
 
 void CC3Mesh::doNotBufferVertexBoneWeights()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
 
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->setShouldAllowVertexBuffering( false );
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->setShouldAllowVertexBuffering( false );
 }
 
 void CC3Mesh::doNotBufferVertexBoneIndices()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
 
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->setShouldAllowVertexBuffering( false );
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->setShouldAllowVertexBuffering( false );
 }
 
 void CC3Mesh::doNotBufferVertexPointSizes()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
 
-	if ( _vertexPointSizes )
-		_vertexPointSizes->setShouldAllowVertexBuffering( false );
+	if ( m_vertexPointSizes )
+		m_vertexPointSizes->setShouldAllowVertexBuffering( false );
 }
 
 void CC3Mesh::doNotBufferVertexTextureCoordinates()
 {
-	if (_shouldInterleaveVertices) 
+	if (m_shouldInterleaveVertices) 
 		doNotBufferVertexLocations();
 
-	if ( _vertexTextureCoordinates )
-		_vertexTextureCoordinates->setShouldAllowVertexBuffering( false );
+	if ( m_vertexTextureCoordinates )
+		m_vertexTextureCoordinates->setShouldAllowVertexBuffering( false );
 
 	CCObject* pObj;
-	CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+	CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 	{
 		CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 		otc->setShouldAllowVertexBuffering( false );
@@ -1755,36 +1755,36 @@ void CC3Mesh::doNotBufferVertexTextureCoordinates()
 
 void CC3Mesh::doNotBufferVertexIndices()
 { 
-	if ( _vertexIndices )
-		_vertexIndices->setShouldAllowVertexBuffering( false ); 
+	if ( m_vertexIndices )
+		m_vertexIndices->setShouldAllowVertexBuffering( false ); 
 }
 
 void CC3Mesh::updateGLBuffersStartingAt( GLuint offsetIndex, GLuint vertexCount )
 {
-	if ( _vertexLocations )
-		_vertexLocations->updateGLBufferStartingAt( offsetIndex, vertexCount );
+	if ( m_vertexLocations )
+		m_vertexLocations->updateGLBufferStartingAt( offsetIndex, vertexCount );
 
-	if ( !_shouldInterleaveVertices )
+	if ( !m_shouldInterleaveVertices )
 	{
-		if ( _vertexNormals )
-			_vertexNormals->updateGLBufferStartingAt( offsetIndex, vertexCount );
-		if ( _vertexTangents )
-			_vertexTangents->updateGLBufferStartingAt( offsetIndex, vertexCount );
-		if ( _vertexBitangents )
-			_vertexBitangents->updateGLBufferStartingAt( offsetIndex, vertexCount );
-		if ( _vertexColors )
-			_vertexColors->updateGLBufferStartingAt( offsetIndex, vertexCount );
-		if ( _vertexBoneIndices )
-			_vertexBoneIndices->updateGLBufferStartingAt( offsetIndex, vertexCount );
-		if ( _vertexBoneWeights )
-			_vertexBoneWeights->updateGLBufferStartingAt( offsetIndex, vertexCount );
-		if ( _vertexPointSizes )
-			_vertexPointSizes->updateGLBufferStartingAt( offsetIndex, vertexCount );
-		if ( _vertexTextureCoordinates )
-			_vertexTextureCoordinates->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexNormals )
+			m_vertexNormals->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexTangents )
+			m_vertexTangents->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexBitangents )
+			m_vertexBitangents->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexColors )
+			m_vertexColors->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexBoneIndices )
+			m_vertexBoneIndices->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexBoneWeights )
+			m_vertexBoneWeights->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexPointSizes )
+			m_vertexPointSizes->updateGLBufferStartingAt( offsetIndex, vertexCount );
+		if ( m_vertexTextureCoordinates )
+			m_vertexTextureCoordinates->updateGLBufferStartingAt( offsetIndex, vertexCount );
 
 		CCObject* pObj;
-		CCARRAY_FOREACH( _overlayTextureCoordinates, pObj )
+		CCARRAY_FOREACH( m_overlayTextureCoordinates, pObj )
 		{
 			CC3VertexTextureCoordinates* otc = (CC3VertexTextureCoordinates*)pObj;
 			otc->updateGLBufferStartingAt( offsetIndex, vertexCount );
@@ -1799,44 +1799,44 @@ void CC3Mesh::updateGLBuffers()
 
 void CC3Mesh::updateVertexLocationsGLBuffer()
 {
-	if ( _vertexLocations )
-		_vertexLocations->updateGLBuffer(); 
+	if ( m_vertexLocations )
+		m_vertexLocations->updateGLBuffer(); 
 }
 
 void CC3Mesh::updateVertexNormalsGLBuffer()
 {
-	if ( _vertexNormals )
-		_vertexNormals->updateGLBuffer(); 
+	if ( m_vertexNormals )
+		m_vertexNormals->updateGLBuffer(); 
 }
 
 void CC3Mesh::updateVertexTangentsGLBuffer()
 {
-	if ( _vertexTangents )
-		_vertexTangents->updateGLBuffer(); 
+	if ( m_vertexTangents )
+		m_vertexTangents->updateGLBuffer(); 
 }
 
 void CC3Mesh::updateVertexBitangentsGLBuffer()
 {
-	if ( _vertexBitangents )
-		_vertexBitangents->updateGLBuffer(); 
+	if ( m_vertexBitangents )
+		m_vertexBitangents->updateGLBuffer(); 
 }
 
 void CC3Mesh::updateVertexColorsGLBuffer()
 {
-	if ( _vertexColors )
-		_vertexColors->updateGLBuffer(); 
+	if ( m_vertexColors )
+		m_vertexColors->updateGLBuffer(); 
 }
 
 void CC3Mesh::updateVertexBoneWeightsGLBuffer()
 {
-	if ( _vertexBoneWeights )
-		_vertexBoneWeights->updateGLBuffer(); 
+	if ( m_vertexBoneWeights )
+		m_vertexBoneWeights->updateGLBuffer(); 
 }
 
 void CC3Mesh::updateVertexBoneIndicesGLBuffer()
 {
-	if ( _vertexBoneIndices )
-		_vertexBoneIndices->updateGLBuffer(); 
+	if ( m_vertexBoneIndices )
+		m_vertexBoneIndices->updateGLBuffer(); 
 }
 
 void CC3Mesh::updateVertexTextureCoordinatesGLBuffer()
@@ -1851,58 +1851,58 @@ void CC3Mesh::updateVertexTextureCoordinatesGLBufferForTextureUnit( GLuint texUn
 
 void CC3Mesh::updateVertexIndicesGLBuffer()
 {
-	if ( _vertexIndices )
-		_vertexIndices->updateGLBuffer(); 
+	if ( m_vertexIndices )
+		m_vertexIndices->updateGLBuffer(); 
 }
 
 CC3Vector CC3Mesh::getCenterOfGeometry()
 {
-	return _vertexLocations ? _vertexLocations->getCenterOfGeometry() : CC3Vector::kCC3VectorZero; 
+	return m_vertexLocations ? m_vertexLocations->getCenterOfGeometry() : CC3Vector::kCC3VectorZero; 
 }
 
 CC3Box CC3Mesh::getBoundingBox()
 {
-	return _vertexLocations ? _vertexLocations->getBoundingBox() : CC3Box::kCC3BoxNull;
+	return m_vertexLocations ? m_vertexLocations->getBoundingBox() : CC3Box::kCC3BoxNull;
 }
 
 GLfloat CC3Mesh::getRadius()
 {
-	return _vertexLocations ? _vertexLocations->getRadius() : 0.0f; 
+	return m_vertexLocations ? m_vertexLocations->getRadius() : 0.0f; 
 }
 
 void CC3Mesh::moveMeshOriginTo( const CC3Vector& aLocation )
 { 
-	if ( _vertexLocations )
-		_vertexLocations->moveMeshOriginTo( aLocation ); 
+	if ( m_vertexLocations )
+		m_vertexLocations->moveMeshOriginTo( aLocation ); 
 }
 
 void CC3Mesh::moveMeshOriginToCenterOfGeometry()
 {
-	if ( _vertexLocations )
-		_vertexLocations->moveMeshOriginToCenterOfGeometry(); 
+	if ( m_vertexLocations )
+		m_vertexLocations->moveMeshOriginToCenterOfGeometry(); 
 }
 
 
 CCColorRef CC3Mesh::getColor()
 {
-	return _vertexColors ? _vertexColors->getColor() : CCColorRefFromCCC4F(kCCC4FBlackTransparent); 
+	return m_vertexColors ? m_vertexColors->getColor() : CCColorRefFromCCC4F(kCCC4FBlackTransparent); 
 }
 
 void CC3Mesh::setColor( const CCColorRef& aColor )
 { 
-	if ( _vertexColors )
-		_vertexColors->setColor( aColor ); 
+	if ( m_vertexColors )
+		m_vertexColors->setColor( aColor ); 
 }
 
 CCOpacity CC3Mesh::getOpacity()
 { 
-	return _vertexColors ? _vertexColors->getOpacity() : kCCOpacityFull; 
+	return m_vertexColors ? m_vertexColors->getOpacity() : kCCOpacityFull; 
 }
 
 void CC3Mesh::setOpacity( CCOpacity opacity )
 {
-	if ( _vertexColors )
-		_vertexColors->setOpacity( opacity ); 
+	if ( m_vertexColors )
+		m_vertexColors->setOpacity( opacity ); 
 }
 
 bool CC3Mesh::expectsVerticallyFlippedTextures()
@@ -2001,19 +2001,19 @@ void CC3Mesh::setTextureRectangle( const CCRect& aRect )
 
 GLenum CC3Mesh::getDrawingMode() 
 {
-	if (_vertexIndices) 
-		return _vertexIndices->getDrawingMode();
-	if (_vertexLocations) 
-		return _vertexLocations->getDrawingMode();
+	if (m_vertexIndices) 
+		return m_vertexIndices->getDrawingMode();
+	if (m_vertexLocations) 
+		return m_vertexLocations->getDrawingMode();
 	return GL_TRIANGLES;
 }
 
 void CC3Mesh::setDrawingMode( GLenum aMode )
 {
-	if ( _vertexIndices )
-		_vertexIndices->setDrawingMode( aMode );
-	if ( _vertexLocations )
-		_vertexLocations->setDrawingMode( aMode );
+	if ( m_vertexIndices )
+		m_vertexIndices->setDrawingMode( aMode );
+	if ( m_vertexLocations )
+		m_vertexLocations->setDrawingMode( aMode );
 }
 
 void CC3Mesh::drawWithVisitor( CC3NodeDrawingVisitor* visitor )
@@ -2047,10 +2047,10 @@ void CC3Mesh::drawVerticesWithVisitor( CC3NodeDrawingVisitor* visitor )
 	if ( pShaderProgram )
 		pShaderProgram->populateDrawScopeUniformsWithVisitor( visitor );
 
-	if (_vertexIndices)
-		_vertexIndices->drawWithVisitor( visitor );
-	else if ( _vertexLocations )
-		_vertexLocations->drawWithVisitor( visitor );
+	if (m_vertexIndices)
+		m_vertexIndices->drawWithVisitor( visitor );
+	else if ( m_vertexLocations )
+		m_vertexLocations->drawWithVisitor( visitor );
 }
 
 /**
@@ -2069,29 +2069,29 @@ void CC3Mesh::drawVerticesFrom( GLuint vertexIndex, GLuint vertexCount, CC3NodeD
 	if ( pShaderProgram )
 		pShaderProgram->populateDrawScopeUniformsWithVisitor( visitor );
 
-	if (_vertexIndices)
-		_vertexIndices->drawFrom( vertexIndex, vertexCount, visitor );
-	else if ( _vertexLocations )
-		_vertexLocations->drawFrom( vertexIndex, vertexCount, visitor );
+	if (m_vertexIndices)
+		m_vertexIndices->drawFrom( vertexIndex, vertexCount, visitor );
+	else if ( m_vertexLocations )
+		m_vertexLocations->drawFrom( vertexIndex, vertexCount, visitor );
 }
 
 void CC3Mesh::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
-	_vertexLocations = NULL;
-	_vertexNormals = NULL;
-	_vertexTangents = NULL;
-	_vertexBitangents = NULL;
-	_vertexColors = NULL;
-	_vertexBoneIndices = NULL;
-	_vertexBoneWeights = NULL;
-	_vertexPointSizes = NULL;
-	_vertexTextureCoordinates = NULL;
-	_overlayTextureCoordinates = NULL;
-	_vertexIndices = NULL;
-	_faces = NULL;
-	_shouldInterleaveVertices = true;
-	_capacityExpansionFactor = 1.25f;
+	m_vertexLocations = NULL;
+	m_vertexNormals = NULL;
+	m_vertexTangents = NULL;
+	m_vertexBitangents = NULL;
+	m_vertexColors = NULL;
+	m_vertexBoneIndices = NULL;
+	m_vertexBoneWeights = NULL;
+	m_vertexPointSizes = NULL;
+	m_vertexTextureCoordinates = NULL;
+	m_overlayTextureCoordinates = NULL;
+	m_vertexIndices = NULL;
+	m_faces = NULL;
+	m_shouldInterleaveVertices = true;
+	m_capacityExpansionFactor = 1.25f;
 }
 
 void CC3Mesh::initWithTag( GLuint aTag )
@@ -2103,8 +2103,8 @@ void CC3Mesh::populateFrom( CC3Mesh* another )
 {
 	super::populateFrom( another );
 	
-	_shouldInterleaveVertices = another->shouldInterleaveVertices();
-	_capacityExpansionFactor = another->getCapacityExpansionFactor();
+	m_shouldInterleaveVertices = another->shouldInterleaveVertices();
+	m_capacityExpansionFactor = another->getCapacityExpansionFactor();
 	
 	// Share vertex arrays between copies
 	setVertexLocations( (CC3VertexLocations*)another->getVertexLocations()->copy()->autorelease() );
@@ -2118,8 +2118,8 @@ void CC3Mesh::populateFrom( CC3Mesh* another )
 	setVertexTextureCoordinates( (CC3VertexTextureCoordinates*)another->getVertexTextureCoordinates()->copy()->autorelease() );
 	
 	// Remove any existing overlay textures and add the overlay textures from the other vertex array.
-	_overlayTextureCoordinates->removeAllObjects();
-	CCArray* otherOTCs = another->_overlayTextureCoordinates;
+	m_overlayTextureCoordinates->removeAllObjects();
+	CCArray* otherOTCs = another->m_overlayTextureCoordinates;
 
 	CCObject* pObj;
 	CCARRAY_FOREACH( otherOTCs, pObj )
@@ -2398,9 +2398,6 @@ void CC3Mesh::populateAsDiskWithRadius( GLfloat radius, const CC3Tessellation& r
 	setAllocatedVertexIndexCapacity( triangleCount * 3 );
 	GLushort* indices = (GLushort*)getVertexIndices()->getVertices();		// Pointer to the indices
 
-	//LogTrace(@"%@ populating as disk with radius: %.3f, %i radial divs, %i angular divs, %i vertices, and %i triangles",
-	//			  self, radius, numRadialDivs, numAngularDivs, vertexCount, triangleCount);
-
 	// Populate vertex locations, normals & texture coordinates.
 	GLuint vIndx = 0;			// Vertex index
 	GLuint iIndx = 0;			// Index index
@@ -2601,7 +2598,8 @@ void CC3Mesh::populateAsSolidBox( const CC3Box& box, const CCPoint& corner )
 	// Since the index array is a simple array, just access the array directly.
 	GLubyte indxIndx = 0;
 	GLubyte vtxIndx = 0;
-	for (int side = 0; side < 6; side++) {
+	for (int side = 0; side < 6; side++)
+    {
 		// First trangle of side - CCW from bottom left
 		indices[indxIndx++] = vtxIndx++;		// vertex 0
 		indices[indxIndx++] = vtxIndx++;		// vertex 1
@@ -2704,7 +2702,7 @@ void CC3Mesh::populateAsSphereWithRadius( GLfloat radius, const CC3Tessellation&
 			// Vertex location, starting at negative-Z axis,
 			// and right-hand rotating towards negative-X axis.
 			CC3Vector unitRadial = cc3v( -(sy * sx), cy, -(sy * cx) );
-			setVertexLocation( unitRadial.scaleUniform( radius ), vIndx );
+			setVertexLocation( unitRadial * radius, vIndx );
 
 			// Vertex normal - same as location on unit sphere
 			// Will do nothing if this mesh does not include normals.
@@ -3083,10 +3081,7 @@ void CC3FaceArray::populateIndices()
 	for (GLuint faceIdx = 0; faceIdx < faceCount; faceIdx++) 
 	{
 		m_indices[faceIdx] = getUncachedIndicesAt( faceIdx );
-		
-		//LogTrace(@"Face %i has indices %@", faceIdx,
-		//			  NSStringFromCC3FaceIndices(_indices[faceIdx]));
-	}
+    }
 	m_indicesAreDirty = false;
 }
 
@@ -3123,7 +3118,6 @@ CC3Vector* CC3FaceArray::allocateCenters()
 	{
 		m_centers = (CC3Vector*)calloc(faceCount, sizeof(CC3Vector));
 		m_centersAreRetained = true;
-		//LogTrace(@"%@ allocated space for %u face centers", self, faceCount);
 	}
 	return m_centers;
 }
@@ -3135,13 +3129,11 @@ void CC3FaceArray::deallocateCenters()
 		free(m_centers);
 		m_centers = NULL;
 		m_centersAreRetained = false;
-		//LogTrace(@"%@ deallocated %u previously allocated centers", self, self.faceCount);
 	}
 }
 
 void CC3FaceArray::populateCenters()
 {
-	//LogTrace(@"%@ populating %u face centers", self, self.faceCount);
 	if ( !m_centers ) 
 		allocateCenters();
 	
@@ -3149,11 +3141,7 @@ void CC3FaceArray::populateCenters()
 	for (GLuint faceIdx = 0; faceIdx < faceCount; faceIdx++) 
 	{
 		m_centers[faceIdx] = getFaceAt(faceIdx).getCenter();
-
-		//LogTrace(@"Face %i has vertices %@ and center %@", faceIdx,
-		//			  NSStringFromCC3Face([self faceAt: faceIdx]),
-		//			  NSStringFromCC3Vector(_centers[faceIdx]));
-	}
+    }
 	m_centersAreDirty = false;
 }
 
@@ -3189,9 +3177,8 @@ CC3Vector* CC3FaceArray::allocateNormals()
 	GLuint faceCount = getFaceCount();
 	if (faceCount) 
 	{
-		m_normals = (CC3Vector*)calloc(faceCount, sizeof(CC3Vector));
+		m_normals = (CC3Vector*)calloc( faceCount, sizeof(CC3Vector) );
 		m_normalsAreRetained = true;
-		//LogTrace(@"%@ allocated space for %u face normals", self, faceCount);
 	}
 	return m_normals;
 }
@@ -3200,16 +3187,14 @@ void CC3FaceArray::deallocateNormals()
 {
 	if (m_normalsAreRetained && m_normals) 
 	{
-		free(m_normals);
+		free( m_normals );
 		m_normals = NULL;
 		m_normalsAreRetained = false;
-		//LogTrace(@"%@ deallocated %u previously allocated normals", self, self.faceCount);
 	}
 }
 
 void CC3FaceArray::populateNormals()
 {
-	//LogTrace(@"%@ populating %u face normals", self, self.faceCount);
 	if ( !m_normals ) 
 		allocateNormals();
 	
@@ -3217,10 +3202,6 @@ void CC3FaceArray::populateNormals()
 	for (GLuint faceIdx = 0; faceIdx < faceCount; faceIdx++) 
 	{
 		m_normals[faceIdx] = getFaceAt(faceIdx).getNormal();
-		
-		//LogTrace(@"Face %i has vertices %@ and normal %@", faceIdx,
-		//			  NSStringFromCC3Face([self faceAt: faceIdx]),
-		//			  NSStringFromCC3Vector(_normals[faceIdx]));
 	}
 	m_normalsAreDirty = false;
 }
@@ -3259,7 +3240,6 @@ CC3Plane* CC3FaceArray::allocatePlanes()
 	{
 		m_planes = (CC3Plane*)calloc(faceCount, sizeof(CC3Plane));
 		m_planesAreRetained = true;
-		//LogTrace(@"%@ allocated space for %u face planes", self, faceCount);
 	}
 	return m_planes;
 }
@@ -3271,13 +3251,11 @@ void CC3FaceArray::deallocatePlanes()
 		free(m_planes);
 		m_planes = NULL;
 		m_planesAreRetained = false;
-		//LogTrace(@"%@ deallocated %u previously allocated planes", self, self.faceCount);
 	}
 }
 
 void CC3FaceArray::populatePlanes()
 {
-	//LogTrace(@"%@ populating %u face planes", self, self.faceCount);
 	if ( !m_planes ) 
 		allocatePlanes();
 	
@@ -3285,10 +3263,6 @@ void CC3FaceArray::populatePlanes()
 	for (GLuint faceIdx = 0; faceIdx < faceCount; faceIdx++) 
 	{
         m_planes[faceIdx] = CC3Plane::planeFromFace( getFaceAt(faceIdx) );
-		
-		//LogTrace(@"Face %i has vertices %@ and plane %@", faceIdx,
-		//			  NSStringFromCC3Face([self faceAt: faceIdx]),
-		//			  NSStringFromCC3Plane(_planes[faceIdx]));
 	}
 	m_planesAreDirty = false;
 }
@@ -3325,7 +3299,6 @@ CC3FaceNeighbours* CC3FaceArray::allocateNeighbours()
 	{
 		m_neighbours = (CC3FaceNeighbours*)calloc(faceCount, sizeof(CC3FaceNeighbours));
 		m_neighboursAreRetained = true;
-		//LogTrace(@"%@ allocated space for %u face neighbours", self, faceCount);
 	}
 	return m_neighbours;
 }
@@ -3337,13 +3310,11 @@ void CC3FaceArray::deallocateNeighbours()
 		free(m_neighbours);
 		m_neighbours = NULL;
 		m_neighboursAreRetained = false;
-		//LogTrace(@"%@ deallocated %u previously allocated neighbour structures", self, self.faceCount);
 	}
 }
 
 void CC3FaceArray::populateNeighbours()
 {
-	//LogTrace(@"%@ populating neighbours for %u faces", self, self.faceCount);
 	if ( !m_neighbours ) 
 		allocateNeighbours();
 	
@@ -3368,7 +3339,6 @@ void CC3FaceArray::populateNeighbours()
 			f1Neighbours[1] == kCC3FaceNoNeighbour ||
 			f1Neighbours[2] == kCC3FaceNoNeighbour) 
 		{
-
 			// For the current face, retrieve the vertex indices
 			GLuint* f1Vertices = m_pMesh->getFaceIndicesAt(f1Idx).vertices;
 			
@@ -3413,9 +3383,6 @@ void CC3FaceArray::populateNeighbours()
 									{
 										f1Neighbours[f1EdgeIdx] = f2Idx;
 										f2Neighbours[f2EdgeIdx] = f1Idx;
-										/*LogTrace(@"Matched face %@ with face %@",
-													  NSStringFromCC3FaceIndices(_indices[f1Idx]),
-													  NSStringFromCC3FaceIndices(_indices[f2Idx]));*/
 									}
 								}
 							}
@@ -3423,14 +3390,10 @@ void CC3FaceArray::populateNeighbours()
 					}
 				}
 			}
-			/*LogTrace(@"Face %i has indices %@ and neighbours %@", f1Idx,
-						  NSStringFromCC3FaceIndices([_mesh faceIndicesAt: f1Idx]),
-						  NSStringFromCC3FaceNeighbours(_neighbours[f1Idx]));*/
 		}
-		
 	}
+    
 	m_neighboursAreDirty = false;
-	//LogTrace(@"%@ finished building neighbours", self);
 }
 
 void CC3FaceArray::markNeighboursDirty()

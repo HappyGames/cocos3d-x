@@ -67,6 +67,11 @@ void CC3ShadowVolumeMeshNode::setVisible( bool _isVisible )
 	checkShadowMaterial();
 }
 
+bool CC3ShadowVolumeMeshNode::isVisible()
+{
+    return m_visible;
+}
+
 void CC3ShadowVolumeMeshNode::setShouldDrawTerminator( bool shouldDraw )
 {
 	m_shouldDrawTerminator = shouldDraw;
@@ -268,7 +273,10 @@ void CC3ShadowVolumeMeshNode::checkShadowMaterial()
 
 void CC3ShadowVolumeMeshNode::createShadowMesh()
 {
-	GLuint vertexCount = getShadowCaster()->getVertexCount();
+    GLuint vertexCount = 0;
+    CC3MeshNode* pCaster = getShadowCaster();
+    if ( pCaster )
+        vertexCount = pCaster->getVertexCount();
 	
 	// Create vertexLocation array.
 	CC3VertexLocations* locArray = CC3VertexLocations::vertexArray();
@@ -303,13 +311,13 @@ CC3Vector4 CC3ShadowVolumeMeshNode::getShadowVolumeVertexOffsetForLightAt( const
 	CC3Vector camLoc = getShadowCaster()->getGlobalTransformMatrixInverted()->transformLocation( getActiveCamera()->getGlobalLocation() );	
 
 	// Get a unit offset vector in the direction away from the light
-	CC3Vector offsetDir = m_pLight->isDirectionalOnly() ? lgtLoc.negate() : scLoc.difference( lgtLoc );
+	CC3Vector offsetDir = m_pLight->isDirectionalOnly() ? lgtLoc.negate() : scLoc - lgtLoc;
 	offsetDir = offsetDir.normalize();
 
 	// Get the distance from the shadow caster CoG and the camera, and scale the
 	// unit offset vector by that distance and the shadowVolumeVertexOffsetFactor
 	GLfloat camDist = scLoc.distance( camLoc );
-	CC3Vector offset = offsetDir.scaleUniform( camDist * m_shadowVolumeVertexOffsetFactor );
+	CC3Vector offset = offsetDir * camDist * m_shadowVolumeVertexOffsetFactor;
 	CC3_TRACE("CC3ShadowVolumeMeshNode nudging vertices by %s", offset.stringfy().c_str());
 
 	// Create and return a 4D directional vector from the offset
@@ -353,9 +361,9 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 		// Retrieve the current face, convert it to 4D homogeneous locations
 		CC3Face face = scNode->getDeformedFaceAt( faceIdx );
 		CC3Vector4 vertices4d[3];
-		vertices4d[0].fromLocation(face.vertices[0]);
-		vertices4d[1].fromLocation(face.vertices[1]);
-		vertices4d[2].fromLocation(face.vertices[2]);
+		vertices4d[0].fromLocation( face.vertices[0] );
+		vertices4d[1].fromLocation( face.vertices[1] );
+		vertices4d[2].fromLocation( face.vertices[2] );
 		
 		// If needed, nudge the shadow volume face away from the
 		// shadow caster face in the direction away from the light
@@ -373,13 +381,8 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 		// It's part of an end-cap if it's a dark face and shadowing is based on front
 		// faces (typical), or it's a lit face and shadowing is (also) based on back faces
 		// (as with some open meshes).
-		if ( doesRequireCapping &&
-			(isFaceLit ? m_shouldShadowBackFaces : m_shouldShadowFrontFaces) &&
-			!m_shouldDrawTerminator) 
-		{
-			/*LogTrace(@"%@ adding end cap for face %i", self, faceIdx);*/
+        if ( doesRequireCapping && (isFaceLit ? m_shouldShadowBackFaces : m_shouldShadowFrontFaces) && !m_shouldDrawTerminator)
 			wasMeshExpanded |= addShadowVolumeCapFor( isFaceLit,  vertices4d, localLightPosition, &shdwVtxIdx );
-		}
 		
 		// Now check the neighbouring face on the other side of each edge of this face.
 		CC3FaceNeighbours neighbours = scNode->getFaceNeighboursAt( faceIdx );
@@ -403,7 +406,7 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 				isTerminatorEdge = isFaceLit ? m_shouldShadowFrontFaces : m_shouldShadowBackFaces;
 			} 
 			else if ( neighbourFaceIdx > faceIdx ) 
-			{		// Don't double count edges
+			{	// Don't double count edges
 				bool isNeighbourFaceLit = scNode->getDeformedFacePlaneAt(neighbourFaceIdx).isInFront( localLightPosition );
 				isTerminatorEdge = (isNeighbourFaceLit != isFaceLit);
 			}
@@ -411,11 +414,6 @@ void CC3ShadowVolumeMeshNode::populateShadowMesh()
 			if ( isTerminatorEdge ) 
 			{
 				// We've found a terminator edge!
-				/*LogTrace(@"\tNeighbouring face %u is %@. We have a terminator edge.",
-				neighbourFaceIdx, ((neighbourFaceIdx == kCC3FaceNoNeighbour)
-				? @"missing" 
-				: (isFaceLit ? @"dark" : @"illuminated")));*/
-				
 				// Get the end points of the terminator edge that we will be extruding.
 				// To have the normals of the shadow volume mesh point outwards, we want the
 				// winding of the extruded face to be the same as the dark face. So, choose
@@ -652,7 +650,13 @@ void CC3ShadowVolumeMeshNode::processUpdateBeforeTransform( CC3NodeUpdatingVisit
 /** Returns whether the shadow cast by this shadow volume will be visible. */
 bool CC3ShadowVolumeMeshNode::isShadowVisible()
 {
+    if ( m_pLight == NULL )
+        return false;
+    
 	CC3MeshNode* scNode = getShadowCaster();
+    if ( scNode == NULL )
+        return false;
+    
 	return (m_pLight->isVisible() || m_pLight->shouldCastShadowsWhenInvisible()) &&
 			(scNode->isVisible() || scNode->shouldCastShadowsWhenInvisible() || isVisible()) &&
 			scNode->doesIntersectBoundingVolume( m_pLight->getShadowCastingVolume() );
@@ -891,6 +895,16 @@ bool CC3ShadowVolumeMeshNode::isTouchable()
 	return (isVisible() || m_shouldAllowTouchableWhenInvisible) && isTouchEnabled(); 
 }
 
+void CC3ShadowVolumeMeshNode::setLight( cocos3d::CC3Light *light )
+{
+    m_pLight = light;
+}
+
+CC3Light* CC3ShadowVolumeMeshNode::getLight()
+{
+    return m_pLight;
+}
+
 
 /** The shadow painter is always drawn. */
 bool CC3StencilledShadowPainterNode::isShadowVisible()
@@ -919,16 +933,6 @@ CC3StencilledShadowPainterNode* CC3StencilledShadowPainterNode::nodeWithName( co
 	pNode->setEmissionColor( color );
 
 	return pNode;
-}
-
-void CC3StencilledShadowPainterNode::nodeWasTransformed( CC3Node* aNode )
-{
-
-}
-
-void CC3StencilledShadowPainterNode::nodeWasDestroyed( CC3Node* aNode )
-{
-
 }
 
 void CC3ShadowDrawingVisitor::init()

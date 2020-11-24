@@ -335,11 +335,13 @@ void CC3VertexArray::populateFrom( CC3VertexArray* another )
 	// If the original has its data stored in memory that it allocated, allocate the
 	// same amount in this copy, and copy the data over. Otherwise, the memory is
 	// being managed externally, so simply copy the vertices reference over.
-	if (another->getAllocatedVertexCapacity()) 
+	if ( another->getAllocatedVertexCapacity() )
 	{
 		setAllocatedVertexCapacity( another->getAllocatedVertexCapacity() );
-		memcpy(m_vertices, another->getVertices(), (m_allocatedVertexCapacity * getVertexStride()));
-	} else {
+		memcpy( m_vertices, another->getVertices(), (m_allocatedVertexCapacity * getVertexStride()) );
+	}
+    else
+    {
 		m_vertices = another->getVertices();
 	}
 	m_vertexCount = another->getVertexCount();
@@ -415,7 +417,7 @@ bool CC3VertexArray::allocateVertexCapacity( GLuint vtxCount )
 }
 
 
-static GLuint lastAssignedVertexArrayTag;
+static GLuint lastAssignedVertexArrayTag = 0;
 
 GLuint CC3VertexArray::nextTag()
 {

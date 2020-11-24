@@ -789,7 +789,7 @@ protected:
 /** 
  * CC3ScalableMeshParticle is a type of CC3MeshParticle that can be scaled.
  *
- * This clas is distinct from CC3MeshParticle so that mesh particle that do not require
+ * This class is distinct from CC3MeshParticle so that mesh particle that do not require
  * scaling do not have to carry storage for scaling information.
  */
 class CC3ScalableMeshParticle : public CC3MeshParticle

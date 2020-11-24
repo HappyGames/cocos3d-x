@@ -238,11 +238,11 @@ void CC3Billboard::setMaterial( CC3Material* aMaterial )
 }
 
 /** Returns color of billboard if it has a color, otherwise falls back to superclass implementation. */
-CCColorRef CC3Billboard::getColor()
+ccColor3B CC3Billboard::getColor()
 {
 	if ( m_pBillboard )
 	{
-		CCSprite* pSprt = dynamic_cast<CCSprite*>( m_pBillboard );
+		CCRGBAProtocol* pSprt = dynamic_cast<CCRGBAProtocol*>( m_pBillboard );
 		if ( pSprt )
 			return pSprt->getColor();
 	}
@@ -251,31 +251,49 @@ CCColorRef CC3Billboard::getColor()
 }
 //
 /** Also sets color of billboard if it can be set. */
-void CC3Billboard::setColor( CCColorRef color )
+void CC3Billboard::setColor( const ccColor3B& color )
 {
 	if ( m_pBillboard )
 	{
-		CCSprite* pSprt = dynamic_cast<CCSprite*>( m_pBillboard );
+		CCRGBAProtocol* pSprt = dynamic_cast<CCRGBAProtocol*>( m_pBillboard );
 		if ( pSprt )
-			pSprt->setColor( color );
+        {
+            pSprt->setColor( color );
+            return;
+        }
 	}
 
-	super::setColor( color );
+    super::setColor( color );
 }
-//
+
 ///** Returns opacity of billboard if it has an opacity, otherwise falls back to superclass implementation. */
-//-(CCOpacity) opacity {
-//	return ([_billboard conformsToProtocol: @protocol(CCRGBAProtocol)])
-//				? [((id<CCRGBAProtocol>)_billboard) opacity]
-//				: [super opacity];
-//}
-//
+CCOpacity CC3Billboard::getOpacity()
+{
+    if ( m_pBillboard )
+    {
+        CCRGBAProtocol* pSprt = dynamic_cast<CCRGBAProtocol*>( m_pBillboard );
+        if ( pSprt )
+            return pSprt->getOpacity();
+    }
+    
+    return super::getOpacity();
+}
+
 ///** Also sets opacity of billboard if it can be set. */
-//void setOpacity: (CCOpacity) opacity {
-//	if ([_billboard conformsToProtocol: @protocol(CCRGBAProtocol)])
-//		[((id<CCRGBAProtocol>)_billboard) setOpacity: opacity];
-//	[super setOpacity: opacity];
-//}
+void CC3Billboard::setOpacity( CCOpacity opacity )
+{
+    if ( m_pBillboard )
+    {
+        CCRGBAProtocol* pSprt = dynamic_cast<CCRGBAProtocol*>( m_pBillboard );
+        if ( pSprt )
+        {
+            pSprt->setOpacity( opacity );
+            return;
+        }
+    }
+    
+    super::setOpacity( opacity );
+}
 
 void CC3Billboard::initWithTag( GLuint aTag, const std::string& aName )
 {
@@ -569,8 +587,6 @@ CC3NodeBoundingArea* CC3Billboard::getBoundingVolume()
 /** Verify that the bounding volume is of the right type. */
 void CC3Billboard::setBoundingVolume( CC3NodeBoundingArea* boundingVolume )
 {
-	//CC3Assert( [boundingVolume isKindOfClass: [CC3NodeBoundingArea class]],
-	//		  @"%@ requires that the boundingVolume property be of type CC3NodeBoundingArea.", self);
 	super::setBoundingVolume( boundingVolume );
 }
 
@@ -669,6 +685,7 @@ void CC3Billboard::cleanupDrawingParameters( CC3NodeDrawingVisitor* visitor )
 {
 	if (visitor->shouldDecorateNode()) 
 		visitor->getGL()->alignFor3DDrawingWithVisitor(visitor);
+    
 	super::cleanupDrawingParameters(visitor);
 }
 
@@ -694,31 +711,21 @@ bool CC3Billboard::doesIntersectBounds( const CCRect& bounds )
 	if (m_pBoundingVolume) 
 	{
 		bool intersects = getBoundingVolume()->doesIntersectBounds( bounds );
-		//LogTrace(@"%@ bounded by %@ %@ %@", self, _boundingVolume,
-		//			  (intersects ? @"intersects" : @"does not intersect"), NSStringFromCGRect(bounds));
-
-		// Uncomment and change name to verify culling:
-//		if (!intersects && ([self.name isEqualToString: @"MyNodeName"])) {
-//			LogDebug(@"%@ bounded by %@ does not intersect %@",
-//						  self, _boundingVolume, NSStringFromCGRect(bounds));
-//		}
-		return intersects;
+        return intersects;
 	}
+    
 	return true;
 }
 
-/*
-void CC3Billboard::draw2dWithinBounds( const CCRect& bounds, CCRenderer* renderer, CC3NodeDrawingVisitor* visitor )
+void CC3Billboard::draw2dWithinBounds( const CCRect& bounds, CC3NodeDrawingVisitor* visitor )
 {
-	if( !(_shouldDrawAs2DOverlay && self.visible && [self doesIntersectBounds: bounds ]) ) 
+	if( !(m_shouldDrawAs2DOverlay && isVisible() && doesIntersectBounds(bounds)) )
 		return;
 
-	CC3OpenGL* gl = visitor.gl;
-	[gl pushGroupMarkerC: "Draw overlay 2D billboard"];
-	[_billboard visit: renderer parentTransform: visitor.layerTransformMatrix];
-	[gl popGroupMarker];
+	CC3OpenGL* gl = visitor->getGL();
+    m_pBillboard->visit();
 }
-*/
+
 
 void CC3Billboard::resumeAllActions()
 {
@@ -955,6 +962,88 @@ CC3NodeDescriptor* CC3NodeDescriptor::nodeWithName( const std::string& aName, CC
 	pDescriptor->autorelease();
 
 	return pDescriptor;
+}
+
+void CC3NodeDescriptor::initWithTag( GLuint aTag, const std::string &aName )
+{
+    super::initWithTag( aTag, aName );
+    m_minimumBillboardScale = ccp( 1.f, 1.f );
+    m_maximumBillboardScale = ccp( 1.f, 1.f );
+        
+    m_shouldDrawAs2DOverlay = true;
+}
+
+CC3Box CC3NodeDescriptor::getLocalContentBoundingBox()
+{
+    return CC3Box::kCC3BoxNull;
+}
+
+CC3Box CC3NodeDescriptor::getGlobalLocalContentBoundingBox()
+{
+    return CC3Box::kCC3BoxNull;
+}
+
+bool CC3NodeDescriptor::shouldIncludeInDeepCopy()
+{
+    return false;
+}
+
+bool CC3NodeDescriptor::shouldDrawDescriptor()
+{
+    return true;
+}
+
+void CC3NodeDescriptor::setShouldDrawDescriptor( bool shouldDraw )
+{
+    
+}
+
+bool CC3NodeDescriptor::shouldDrawWireframeBox()
+{
+    return true;
+}
+
+void CC3NodeDescriptor::setShouldDrawWireframeBox( bool shouldDraw )
+{
+    
+}
+
+bool CC3NodeDescriptor::shouldDrawLocalContentWireframeBox()
+{
+    return true;
+}
+
+void CC3NodeDescriptor::setShouldDrawLocalContentWireframeBox( bool shouldDraw )
+{
+    
+}
+
+bool CC3NodeDescriptor::shouldContributeToParentBoundingBox()
+{
+    return false;
+}
+
+bool CC3NodeDescriptor::shouldDrawBoundingVolume()
+{
+    return false;
+}
+
+void CC3NodeDescriptor::setShouldDrawBoundingVolume( bool shouldDraw )
+{
+    
+}
+
+
+// Overridden so that not touchable unless specifically set as such
+bool CC3NodeDescriptor::isTouchable()
+{
+    return isTouchEnabled();
+}
+
+// Overridden so that can still be visible if parent is invisible, unless explicitly turned off.
+bool CC3NodeDescriptor::isVisible()
+{
+    return m_visible;
 }
 
 void CC3ParticleSystemBillboard::initWithTag( GLuint aTag, const std::string& aName )

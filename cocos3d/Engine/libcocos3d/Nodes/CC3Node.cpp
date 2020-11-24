@@ -556,7 +556,7 @@ CC3TargettingRotator*  CC3Node::getTargettingRotator()
 			tRotator->populateFrom( (CC3MutableRotator*)m_rotator );
 
 		tRotator->setShouldReverseForwardDirection( shouldReverseForwardDirection() );
-		CC3_TRACE( "CC3Node swapping CC3TargettingRotatorfor existing rotator" );
+		CC3_TRACE( "CC3Node swapping CC3TargettingRotator for existing rotator" );
 		setRotator( tRotator );
 	}
 	return (CC3TargettingRotator*)m_rotator;
@@ -1020,7 +1020,7 @@ void CC3Node::setShouldUseLightProbes( bool shouldUseLightProbes )
 	{
 		CC3Node* pChild = (CC3Node*) child;
 		if (pChild )
-			pChild->setShouldUseLighting( shouldUseLightProbes );
+			pChild->setShouldUseLightProbes( shouldUseLightProbes );
 	}
 }
 
@@ -1231,7 +1231,7 @@ void CC3Node::setReflectivity( GLfloat reflectivity )
 	{
 		CC3Node* pChild = (CC3Node*) child;
 		if (pChild )
-			pChild->setShininess( reflectivity );
+			pChild->setReflectivity( reflectivity );
 	}
 }
 
@@ -1670,33 +1670,33 @@ void CC3Node::initWithTag( GLuint aTag, const std::string& aName )
 {
 	super::initWithTag( aTag, aName );
 
-	m_localTransformMatrix = NULL;
-	m_globalTransformMatrix = new CC3AffineMatrix;		// retained
+	m_localTransformMatrix          = NULL;
+	m_globalTransformMatrix         = new CC3AffineMatrix;		// retained
 	m_globalTransformMatrix->init();
 	m_globalTransformMatrixInverted = NULL;
-	m_globalRotationMatrix = NULL;
-	m_rotator = new CC3Rotator;						// retained
-	m_pTransformListeners = NULL;
-	m_pAnimationStates = NULL;
-	m_isAnimationDirty = false;
-	m_pBoundingVolume = NULL;
-	m_fBoundingVolumePadding = 0.0f;
-	m_shouldUseFixedBoundingVolume = false;
-	m_location = CC3Vector::kCC3VectorZero;
-	m_projectedLocation = CC3Vector::kCC3VectorZero;
-	m_scale = CC3Vector::kCC3VectorUnitCube;
-	m_fCameraDistanceProduct = 0.0f;
-	m_touchEnabled = false;
-	m_shouldInheritTouchability = true;
+	m_globalRotationMatrix          = NULL;
+	m_rotator                       = new CC3Rotator;			// retained
+	m_pTransformListeners           = NULL;
+	m_pAnimationStates              = NULL;
+	m_isAnimationDirty              = false;
+	m_pBoundingVolume               = NULL;
+	m_fBoundingVolumePadding        = 0.0f;
+	m_shouldUseFixedBoundingVolume  = false;
+	m_location                      = CC3Vector::kCC3VectorZero;
+	m_projectedLocation             = CC3Vector::kCC3VectorZero;
+	m_scale                         = CC3Vector::kCC3VectorUnitCube;
+	m_fCameraDistanceProduct        = 0.0f;
+	m_touchEnabled                  = false;
+	m_shouldInheritTouchability     = true;
 	m_shouldAllowTouchableWhenInvisible = false;
-	m_visible = true;
-	m_isRunning = false;
-	m_shouldStopActionsWhenRemoved = true;
-	m_shouldAutoremoveWhenEmpty = false;
-	m_cascadeColorEnabled = true;
-	m_cascadeOpacityEnabled = true;
-	m_shouldCastShadows = true;
-	m_isBeingAdded = false;
+	m_visible                       = true;
+	m_isRunning                     = false;
+	m_shouldStopActionsWhenRemoved  = true;
+	m_shouldAutoremoveWhenEmpty     = false;
+	m_cascadeColorEnabled           = true;
+	m_cascadeOpacityEnabled         = true;
+	m_shouldCastShadows             = true;
+	m_isBeingAdded                  = false;
 }
 
 CC3Node* CC3Node::node() 
@@ -1803,6 +1803,7 @@ void CC3Node::populateFrom( CC3Node* another )
 CCObject* CC3Node::copyWithZone( CCZone* zone )
 {
 	CC3Node* aCopy = new CC3Node;
+    aCopy->init();
 	aCopy->addCopiesOfChildrenFrom( this );
 	return aCopy;
 }
@@ -2221,7 +2222,7 @@ void CC3Node::flipTexturesHorizontally()
 
 // Class variable tracking the most recent tag value assigned for CC3Nodes.
 // This class variable is automatically incremented whenever the method nextTag is called.
-static GLuint lastAssignedNodeTag;
+static GLuint lastAssignedNodeTag = 0;
 
 GLuint CC3Node::nextTag()
 { 
@@ -2253,7 +2254,7 @@ void CC3Node::show()
 	setVisible( true );
 }
 
-void CC3Node:: hide()
+void CC3Node::hide()
 {
 	setVisible( false );
 }
@@ -4767,7 +4768,8 @@ CCArray* CC3Node::getShadowVolumes()
 CC3ShadowVolumeMeshNode* CC3Node::getShadowVolumeForLight( CC3Light* aLight )
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( getShadowVolumes(), pObj )
+    CCArray* shadows = getShadowVolumes();
+	CCARRAY_FOREACH( shadows, pObj )
 	{
 		CC3ShadowVolumeMeshNode* sv = (CC3ShadowVolumeMeshNode*)pObj;
 		 if (sv->getLight() == aLight) 
@@ -4805,7 +4807,9 @@ bool CC3Node::hasShadowVolumes()
 
 void CC3Node::removeShadowVolumesForLight( CC3Light* aLight )
 {
-	getShadowVolumeForLight(aLight)->remove();
+    CC3Node* pShadow = getShadowVolumeForLight( aLight );
+    if ( pShadow )
+        pShadow->remove();
 
 	CCObject* pObj = NULL;
 	CCARRAY_FOREACH( m_pChildren, pObj )
@@ -4818,7 +4822,8 @@ void CC3Node::removeShadowVolumesForLight( CC3Light* aLight )
 void CC3Node::removeShadowVolumes()
 {
 	CCObject* pObj = NULL;
-	CCARRAY_FOREACH( getShadowVolumes(), pObj )
+    CCArray* shadows = getShadowVolumes();
+	CCARRAY_FOREACH( shadows, pObj )
 	{
 		CC3Node* sv = (CC3Node*)pObj;
 		sv->remove();

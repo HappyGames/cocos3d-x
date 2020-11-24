@@ -483,6 +483,9 @@ public:
 	 */
 	virtual void				loadTexureImage( const GLvoid* imageData, GLenum target, GLint mipmapLevel, 
 		const CC3IntSize& size, GLenum texelFormat, GLenum texelType, GLint byteAlignment, GLuint tuIdx );
+    
+    virtual void                loadCompressedTextureImage( const GLvoid* imageData, GLsizei dataSize, GLenum target, GLint mipmapLevel,
+                                                           const CC3IntSize& size, GLenum format, GLuint tuIdx );
 
 	/**
 	 * Loads the specified texture image data, with the specified characteristics, into the

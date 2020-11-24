@@ -540,7 +540,7 @@ inline CC3Vector CC3Vector::lerp( const CC3Vector& other, float blendFactor)
 		return other;
 
 	CC3Vector tmp = other;
-	return tmp.difference( *this ).scaleUniform( blendFactor ).add( *this );
+	return (tmp- *this) * blendFactor + *this;
 }
 
 /** 

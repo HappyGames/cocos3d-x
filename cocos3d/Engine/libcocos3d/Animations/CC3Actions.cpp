@@ -31,6 +31,49 @@
 
 NS_COCOS3D_BEGIN
 
+// Extra action for making a CCSequence or CCSpawn when only adding one action to it.
+class CC3ExtraAction : public CC3ActionInterval
+{
+public:
+    static CC3ExtraAction* create();
+    virtual CCObject* copyWithZone(CCZone* pZone);
+    virtual CC3ExtraAction* reverse(void);
+    virtual void update(float time);
+    virtual void step(float dt);
+};
+
+CC3ExtraAction* CC3ExtraAction::create()
+{
+    CC3ExtraAction* pRet = new CC3ExtraAction();
+    if (pRet)
+    {
+        pRet->autorelease();
+    }
+    return pRet;
+}
+
+CCObject* CC3ExtraAction::copyWithZone(CCZone* pZone)
+{
+    CC_UNUSED_PARAM(pZone);
+    CC3ExtraAction* pRet = new CC3ExtraAction();
+    return pRet;
+}
+
+CC3ExtraAction* CC3ExtraAction::reverse(void)
+{
+    return CC3ExtraAction::create();
+}
+
+void CC3ExtraAction::update(float time)
+{
+    CC_UNUSED_PARAM(time);
+}
+
+void CC3ExtraAction::step(float dt)
+{
+    CC_UNUSED_PARAM(dt);
+}
+
 
 CCAction* CC3ActionInterval::repeatForever()
 { 
@@ -54,15 +97,20 @@ CC3ActionInterval* CC3ActionInterval::reverse()
 	return NULL;
 }
 
-void CC3ActionInterval::initWithDuration( float d )
+bool CC3ActionInterval::initWithDuration( float d )
 {
-	CCActionInterval::initWithDuration( d );
+	return CCActionInterval::initWithDuration( d );
 }
 
-void CC3ActionTransformVector::initWithDuration( float t, const CC3Vector& aVector )    /// differeneceVector
+bool CC3ActionTransformVector::initWithDuration( float t, const CC3Vector& aVector )    /// differeneceVector
 {
-	super::initWithDuration( t ); 
-	m_diffVector = aVector;
+	if ( super::initWithDuration(t) )
+    {
+        m_diffVector = aVector;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionTransformVector* CC3ActionTransformVector::actionWithDuration( float t, const CC3Vector& aVector )
@@ -95,7 +143,7 @@ void CC3ActionTransformVector::startWithTarget( CC3Node* aTarget )
 
 void CC3ActionTransformVector::update( float t )
 {	
-	setTargetVector( m_startVector.add( m_diffVector.scaleUniform( t )) );
+	setTargetVector( m_startVector + m_diffVector * t );
 }
 
 CC3Vector CC3ActionTransformVector::getTargetVector()
@@ -108,9 +156,9 @@ void CC3ActionTransformVector::setTargetVector( const CC3Vector& aVector )
 
 }
 
-void CC3ActionMoveBy::initWithDuration( float t, const CC3Vector& aTranslation )   /// moveBy
+bool CC3ActionMoveBy::initWithDuration( float t, const CC3Vector& aTranslation )   /// moveBy
 {
-	CC3ActionTransformVector::initWithDuration( t, aTranslation );
+	return CC3ActionTransformVector::initWithDuration( t, aTranslation );
 }
 
 CC3ActionMoveBy* CC3ActionMoveBy::actionWithDuration( float t, const CC3Vector& aTranslation )
@@ -132,9 +180,9 @@ void CC3ActionMoveBy::setTargetVector( const CC3Vector& aLocation )
 	getTargetNode()->setLocation( aLocation );
 }
 
-void CC3ActionRotateBy::initWithDuration( float t, const CC3Vector& aRotation )  /// rotateBy
+bool CC3ActionRotateBy::initWithDuration( float t, const CC3Vector& aRotation )  /// rotateBy
 {
-	CC3ActionTransformVector::initWithDuration( t, aRotation );
+	return CC3ActionTransformVector::initWithDuration( t, aRotation );
 }
 
 CC3ActionRotateBy* CC3ActionRotateBy::actionWithDuration( float t, const CC3Vector& aRotation )
@@ -190,9 +238,9 @@ void CC3ActionScaleBy::startWithTarget( CC3Node* aTarget )
 	m_scaleDiffVector = endVector - m_startVector;
 }
 
-void CC3ActionScaleBy::initWithDuration( float t, const CC3Vector& aScale )  /// scaleBy
+bool CC3ActionScaleBy::initWithDuration( float t, const CC3Vector& aScale )  /// scaleBy
 {
-	super::initWithDuration( t, aScale );
+	return super::initWithDuration( t, aScale );
 }
 
 CC3ActionScaleBy* CC3ActionScaleBy::actionWithDuration( float t, const CC3Vector& aScale )
@@ -204,7 +252,7 @@ CC3ActionScaleBy* CC3ActionScaleBy::actionWithDuration( float t, const CC3Vector
 	return pAction;
 }
 
-void CC3ActionScaleBy::initWithDuration( float t, GLfloat aScale )
+bool CC3ActionScaleBy::initWithDuration( float t, GLfloat aScale )
 {
 	return initWithDuration( t, cc3v(aScale, aScale, aScale) );
 }
@@ -216,7 +264,7 @@ CC3ActionScaleBy* CC3ActionScaleBy::actionWithDuration( float t, GLfloat aScale 
 
 void CC3ActionScaleBy::update( float t )
 {	
-	setTargetVector( m_startVector.add( m_scaleDiffVector.scaleUniform( t ) ) );
+	setTargetVector( m_startVector + m_scaleDiffVector * t );
 }
 
 CC3Vector CC3ActionScaleBy::getTargetVector()
@@ -229,7 +277,7 @@ void CC3ActionScaleBy::setTargetVector( const CC3Vector& aScale )
 	getTargetNode()->setScale( aScale );  
 }
  
-void CC3ActionRotateByAngle::initWithDuration( float t, GLfloat anAngle )
+bool CC3ActionRotateByAngle::initWithDuration( float t, GLfloat anAngle )
 {
 	return initWithDuration( t, anAngle, CC3Vector::kCC3VectorNull );
 }
@@ -243,11 +291,16 @@ CC3ActionRotateByAngle* CC3ActionRotateByAngle::actionWithDuration( float t, GLf
 	return pAction;
 }
 
-void CC3ActionRotateByAngle::initWithDuration( float t, GLfloat anAngle, const CC3Vector& anAxis )
+bool CC3ActionRotateByAngle::initWithDuration( float t, GLfloat anAngle, const CC3Vector& anAxis )
 {
-	super::initWithDuration( t );
-	m_diffAngle = anAngle;
-	m_rotationAxis = anAxis;
+	if (super::initWithDuration(t) )
+    {
+        m_diffAngle = anAngle;
+        m_rotationAxis = anAxis;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionRotateByAngle* CC3ActionRotateByAngle::actionWithDuration( float t, GLfloat anAngle, const CC3Vector& anAxis )
@@ -313,10 +366,15 @@ CC3ActionInterval* CC3ActionRotateOnAxisForever::reverse()
 }
 
 
-void CC3ActionTransformTo::initWithDuration( float t, const CC3Vector& aVector ) /// endVector
+bool CC3ActionTransformTo::initWithDuration( float t, const CC3Vector& aVector ) /// endVector
 {
-	CC3ActionInterval::initWithDuration( t );
-	m_endVector = aVector;
+	if (CC3ActionInterval::initWithDuration(t) )
+    {
+        m_endVector = aVector;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionTransformTo* CC3ActionTransformTo::actionWithDuration( float t, const CC3Vector& aVector )
@@ -353,7 +411,7 @@ std::string CC3ActionTransformTo::description()
 			m_diffVector.stringfy().c_str() );
 }
 
-void CC3ActionMoveTo::initWithDuration( float t, const CC3Vector& aLocation ) /// moveTo
+bool CC3ActionMoveTo::initWithDuration( float t, const CC3Vector& aLocation ) /// moveTo
 {
 	return super::initWithDuration( t, aLocation );
 }
@@ -378,7 +436,7 @@ void CC3ActionMoveTo::setTargetVector( const CC3Vector& aLocation )
 }
 
 
-void CC3ActionRotateTo::initWithDuration( float t, const CC3Vector& aRotation ) /// rotateTo
+bool CC3ActionRotateTo::initWithDuration( float t, const CC3Vector& aRotation ) /// rotateTo
 {
 	return super::initWithDuration( t, aRotation );
 }
@@ -412,7 +470,7 @@ void CC3ActionRotateTo::setTargetVector( const CC3Vector& aRotation )
 	getTargetNode()->setRotation( aRotation );
 }
 
-void CC3ActionScaleTo::initWithDuration( float t, const CC3Vector& aScale )  /// scaleTo
+bool CC3ActionScaleTo::initWithDuration( float t, const CC3Vector& aScale )  /// scaleTo
 {
 	super::initWithDuration(t, aScale);
 }
@@ -426,7 +484,7 @@ CC3ActionScaleTo* CC3ActionScaleTo::actionWithDuration( float t, const CC3Vector
 	return pAction;
 }
 
-void CC3ActionScaleTo::initWithDuration( float t, GLfloat aScale )
+bool CC3ActionScaleTo::initWithDuration( float t, GLfloat aScale )
 {
 	return initWithDuration( t, cc3v(aScale, aScale, aScale) );
 }
@@ -450,7 +508,7 @@ void CC3ActionScaleTo::setTargetVector( const CC3Vector& aScale )
 	getTargetNode()->setScale( aScale );  
 }
 
-void CC3ActionRotateToAngle::initWithDuration( float t, GLfloat anAngle )
+bool CC3ActionRotateToAngle::initWithDuration( float t, GLfloat anAngle )
 {
 	super::initWithDuration( t );
 	m_endAngle = anAngle;
@@ -495,7 +553,7 @@ std::string CC3ActionRotateToAngle::description()
 			m_startAngle, m_endAngle, m_diffAngle );
 }
 
-void CC3ActionRotateToLookTowards::initWithDuration( float t, const CC3Vector& aDirection )	/// forwardDirection
+bool CC3ActionRotateToLookTowards::initWithDuration( float t, const CC3Vector& aDirection )	/// forwardDirection
 {
 	return super::initWithDuration( t, aDirection.normalize() );
 }
@@ -519,7 +577,7 @@ void CC3ActionRotateToLookTowards::setTargetVector( const CC3Vector& aDirection 
 	getTargetNode()->setForwardDirection( aDirection );   
 }
 
-void CC3ActionRotateToLookAt::initWithDuration( float t, const CC3Vector& aLocation )
+bool CC3ActionRotateToLookAt::initWithDuration( float t, const CC3Vector& aLocation )
 {
 	return CC3ActionTransformTo::initWithDuration( t, aLocation );
 }
@@ -540,7 +598,7 @@ void CC3ActionRotateToLookAt::startWithTarget( CC3Node* aTarget )
 	super::startWithTarget( aTarget );
 }
 
-void CC3ActionMoveDirectionallyBy::initWithDuration( float t, GLfloat aDistance )
+bool CC3ActionMoveDirectionallyBy::initWithDuration( float t, GLfloat aDistance )
 {
 	super::initWithDuration( t );
 	m_distance = aDistance;
@@ -584,13 +642,8 @@ void CC3ActionMoveDirectionallyBy::update( float t )
 	GLfloat deltaDist = m_distance * deltaTime;
 	CC3Vector moveDir = getTargetDirection().normalize();
 	CC3Vector prevLoc = getTargetNode()->getLocation();
-	getTargetNode()->setLocation( prevLoc.add( moveDir.scaleUniform(deltaDist) ) );
+	getTargetNode()->setLocation( prevLoc + moveDir * deltaDist );
 	m_prevTime = t;
-	
-	/*LogTrace(@"%@: time: %.3f, delta time: %.3f, delta dist: %.3f, was at: %@, now at: %@",
-				  self, t, deltaTime, deltaDist,
-				  NSStringFromCC3Vector(prevLoc),
-				  NSStringFromCC3Vector(self.targetCC3Node.location));*/
 }
 
 /** The direction in which to move. Subclasses will override. */
@@ -631,10 +684,15 @@ void CC3ActionTintTo::setTargetColor( const ccColor4F& aColor )
 	getTargetNode()->setDiffuseColor( aColor );
 }
 
-void CC3ActionTintTo::initWithDuration( float t, const ccColor4F& aColor )
+bool CC3ActionTintTo::initWithDuration( float t, const ccColor4F& aColor )
 {
-	super::initWithDuration( t );
-	m_endColor = aColor;
+	if (super::initWithDuration(t) )
+    {
+        m_endColor = aColor;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionTintTo* CC3ActionTintTo::actionWithDuration( float t, const ccColor4F& aColor )
@@ -714,7 +772,7 @@ void CC3ActionAnimate::setIsReversed( bool reversed )
 	m_isReversed = reversed;
 }
 
-void CC3ActionAnimate::initWithDuration( float t )
+bool CC3ActionAnimate::initWithDuration( float t )
 {
 	return initWithDuration( t, 0 ); 
 }
@@ -724,11 +782,16 @@ CC3ActionAnimate* CC3ActionAnimate::actionWithDuration( float t )
 	return actionWithDuration( t, 0 ); 
 }
 
-void CC3ActionAnimate::initWithDuration( float t, GLuint trackID )
+bool CC3ActionAnimate::initWithDuration( float t, GLuint trackID )
 {
-	super::initWithDuration( t );
-	m_trackID = trackID;
-	m_isReversed = false;
+	if (super::initWithDuration(t) )
+    {
+        m_trackID = trackID;
+        m_isReversed = false;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionAnimate* CC3ActionAnimate::actionWithDuration( float t, GLuint trackID )
@@ -780,11 +843,16 @@ CCObject* CC3ActionAnimate::copyWithZone( CCZone* zone )
 }
 
 
-void CC3ActionAnimationBlendingFadeTrackTo::initWithDuration( float t, GLuint trackID, GLfloat blendingWeight )
+bool CC3ActionAnimationBlendingFadeTrackTo::initWithDuration( float t, GLuint trackID, GLfloat blendingWeight )
 {
-	super::initWithDuration( t );
-	m_trackID = trackID;
-	m_endWeight = blendingWeight;
+	if (super::initWithDuration(t) )
+    {
+        m_trackID = trackID;
+        m_endWeight = blendingWeight;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionAnimationBlendingFadeTrackTo* CC3ActionAnimationBlendingFadeTrackTo::actionWithDuration( float t, GLuint trackID, GLfloat blendingWeight )
@@ -820,17 +888,22 @@ CCObject* CC3ActionAnimationBlendingFadeTrackTo::copyWithZone( CCZone* zone )
 	return pAction;
 }
 
-void CC3ActionAnimationCrossFade::initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID )
+bool CC3ActionAnimationCrossFade::initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID )
 {
 	return initWithDuration( t, fromTrackID, toTrackID, 1.0f );
 }
 
-void CC3ActionAnimationCrossFade::initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID, GLfloat toBlendingWeight )
+bool CC3ActionAnimationCrossFade::initWithDuration( float t, GLuint fromTrackID, GLuint toTrackID, GLfloat toBlendingWeight )
 {
-	super::initWithDuration( t );
-	m_fromTrackID = fromTrackID;
-	m_toTrackID = toTrackID;
-	m_endWeight = toBlendingWeight;
+	if (super::initWithDuration(t) )
+    {
+        m_fromTrackID = fromTrackID;
+        m_toTrackID = toTrackID;
+        m_endWeight = toBlendingWeight;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionAnimationCrossFade* CC3ActionAnimationCrossFade::actionWithDuration( float t, GLuint fromTrackID, GLuint toTrackID )
@@ -989,14 +1062,20 @@ CC3ActionRemove* CC3ActionRemove::create()
 
 void CC3ActionRemove::update( float t )
 {
-	// getTargetNode()->remove(); 
+    if ( m_pTargetCC3Node )
+        m_pTargetCC3Node->remove();
 }
 
 
-void CC3ActionCCNodeSizeTo::initWithDuration( float dur, const CCSize& endSize )
+bool CC3ActionCCNodeSizeTo::initWithDuration( float dur, const CCSize& endSize )
 {
-	super::initWithDuration( dur );
-	endSize_ = endSize;
+	if (super::initWithDuration(dur) )
+    {
+        endSize_ = endSize;
+        return true;
+    }
+    
+    return false;
 }
 
 CC3ActionCCNodeSizeTo* CC3ActionCCNodeSizeTo::actionWithDuration( float dur, const CCSize& endSize )
@@ -1033,6 +1112,136 @@ void CC3ActionCCNodeSizeTo::update( float t )
 	CCNode* tNode = (CCNode*)getTarget();
 	tNode->setContentSize( CCSizeMake(startSize_.width + (sizeChange_.width * t),
 								   startSize_.height + (sizeChange_.height * t)) );
+}
+
+
+//
+// Repeat
+//
+
+CC3Repeat* CC3Repeat::create( CC3ActionInterval *pAction, unsigned int times )
+{
+    CC3Repeat* pRepeat = new CC3Repeat();
+    pRepeat->initWithAction(pAction, times);
+    pRepeat->autorelease();
+    
+    return pRepeat;
+}
+
+bool CC3Repeat::initWithAction( CC3ActionInterval *pAction, unsigned int times )
+{
+    float d = pAction->getDuration() * times;
+    
+    if (CC3ActionInterval::initWithDuration(d))
+    {
+        m_uTimes = times;
+        m_pInnerAction = pAction;
+        pAction->retain();
+        
+        m_bActionInstant = false;
+        m_uTotal = 0;
+        
+        return true;
+    }
+    
+    return false;
+}
+
+CCObject* CC3Repeat::copyWithZone( CCZone *pZone )
+{
+    
+    CCZone* pNewZone = NULL;
+    CC3Repeat* pCopy = NULL;
+    if(pZone && pZone->m_pCopyObject)
+    {
+        //in case of being called at sub class
+        pCopy = (CC3Repeat*)(pZone->m_pCopyObject);
+    }
+    else
+    {
+        pCopy = new CC3Repeat();
+        pZone = pNewZone = new CCZone(pCopy);
+    }
+    
+    CC3ActionInterval::copyWithZone(pZone);
+    
+    pCopy->initWithAction((CC3ActionInterval*)(m_pInnerAction->copy()->autorelease()), m_uTimes);
+    
+    CC_SAFE_DELETE(pNewZone);
+    return pCopy;
+}
+
+CC3Repeat::~CC3Repeat(void)
+{
+    CC_SAFE_RELEASE(m_pInnerAction);
+}
+
+void CC3Repeat::startWithTarget(CC3Node *pTarget)
+{
+    m_uTotal = 0;
+    m_fNextDt = m_pInnerAction->getDuration()/m_fDuration;
+    CC3ActionInterval::startWithTarget(pTarget);
+    m_pInnerAction->startWithTarget(pTarget);
+}
+
+void CC3Repeat::stop(void)
+{
+    m_pInnerAction->stop();
+    CC3ActionInterval::stop();
+}
+
+// issue #80. Instead of hooking step:, hook update: since it can be called by any
+// container action like CCRepeat, CCSequence, CCEase, etc..
+void CC3Repeat::update(float dt)
+{
+    if (dt >= m_fNextDt)
+    {
+        while (dt > m_fNextDt && m_uTotal < m_uTimes)
+        {
+            
+            m_pInnerAction->update(1.0f);
+            m_uTotal++;
+            
+            m_pInnerAction->stop();
+            m_pInnerAction->startWithTarget(m_pTargetCC3Node);
+            m_fNextDt += m_pInnerAction->getDuration()/m_fDuration;
+        }
+        
+        // fix for issue #1288, incorrect end value of repeat
+        if(dt >= 1.0f && m_uTotal < m_uTimes)
+        {
+            m_uTotal++;
+        }
+        
+        // don't set an instant action back or update it, it has no use because it has no duration
+        if (!m_bActionInstant)
+        {
+            if (m_uTotal == m_uTimes)
+            {
+                m_pInnerAction->update(1);
+                m_pInnerAction->stop();
+            }
+            else
+            {
+                // issue #390 prevent jerk, use right update
+                m_pInnerAction->update(dt - (m_fNextDt - m_pInnerAction->getDuration()/m_fDuration));
+            }
+        }
+    }
+    else
+    {
+        m_pInnerAction->update(fmodf(dt * m_uTimes,1.0f));
+    }
+}
+
+bool CC3Repeat::isDone(void)
+{
+    return m_uTotal == m_uTimes;
+}
+
+CC3ActionInterval* CC3Repeat::reverse(void)
+{
+    return CC3Repeat::create(m_pInnerAction->reverse(), m_uTimes);
 }
 
 
@@ -1132,6 +1341,8 @@ bool CC3ActionSequence::initWithTwoActions(CC3ActionInterval *pActionOne, CC3Act
 
 	m_pActions[1] = pActionTwo;
 	pActionTwo->retain();
+    
+    m_last = -1;
 
 	return true;
 }
@@ -1162,6 +1373,8 @@ void CC3ActionSequence::startWithTarget(CC3Node *pTarget)
 	CC3ActionInterval::startWithTarget(pTarget);
 	m_elapsed = 0.0f;
 	m_bFirstTick = true;
+    m_split = m_pActions[0]->getDuration() / m_fDuration;
+    m_last = -1;
 }
 
 
@@ -1250,6 +1463,156 @@ CC3ActionSequence* CC3ActionSequence::createWithTwoActions(CC3ActionInterval *pA
 	pSequence->autorelease();
 
 	return pSequence;
+}
+
+CC3ActionSequence* CC3ActionSequence::create( cocos3d::CC3ActionInterval *pAction1, ... )
+{
+    va_list params;
+    va_start(params, pAction1);
+    
+    CC3ActionSequence *pRet = CC3ActionSequence::createWithVariableList(pAction1, params);
+    
+    va_end(params);
+    
+    return pRet;
+}
+
+CC3ActionSequence* CC3ActionSequence::createWithVariableList(CC3ActionInterval *pAction1, va_list args)
+{
+    CC3ActionInterval *pNow;
+    CC3ActionInterval *pPrev = pAction1;
+    bool bOneAction = true;
+    
+    while (pAction1)
+    {
+        pNow = va_arg(args, CC3ActionInterval*);
+        if (pNow)
+        {
+            pPrev = createWithTwoActions(pPrev, pNow);
+            bOneAction = false;
+        }
+        else
+        {
+            // If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.
+            if (bOneAction)
+            {
+                pPrev = createWithTwoActions(pPrev, CC3ExtraAction::create());
+            }
+            break;
+        }
+    }
+    
+    return ((CC3ActionSequence*)pPrev);
+}
+
+CC3ActionSequence* CC3ActionSequence::create(CCArray* arrayOfActions)
+{
+    CC3ActionSequence* pRet = NULL;
+    do
+    {
+        unsigned  int count = arrayOfActions->count();
+        CC_BREAK_IF(count == 0);
+        
+        CC3ActionInterval* prev = (CC3ActionInterval*)arrayOfActions->objectAtIndex(0);
+        
+        if (count > 1)
+        {
+            for (unsigned int i = 1; i < count; ++i)
+            {
+                prev = createWithTwoActions(prev, (CC3ActionInterval*)arrayOfActions->objectAtIndex(i));
+            }
+        }
+        else
+        {
+            // If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.
+            prev = createWithTwoActions(prev, CC3ExtraAction::create());
+        }
+        pRet = (CC3ActionSequence*)prev;
+    }while (0);
+    return pRet;
+}
+
+
+CC3FadeIn* CC3FadeIn::create( float d )
+{
+    CC3FadeIn* pAction = new CC3FadeIn();
+    pAction->initWithDuration( d );
+    pAction->autorelease();
+    
+    return pAction;
+}
+
+void CC3FadeIn::update( float time )
+{
+    m_pTargetCC3Node->setOpacity( (GLuint)(255 * time) );
+}
+
+CC3ActionInterval* CC3FadeIn::reverse()
+{
+    return CC3FadeOut::create( m_fDuration );
+}
+
+CCObject* CC3FadeIn::copyWithZone( CCZone* pZone )
+{
+    CCZone* pNewZone = NULL;
+    CC3FadeIn* pCopy = NULL;
+    if(pZone && pZone->m_pCopyObject)
+    {
+        //in case of being called at sub class
+        pCopy = (CC3FadeIn*)(pZone->m_pCopyObject);
+    }
+    else
+    {
+        pCopy = new CC3FadeIn();
+        pZone = pNewZone = new CCZone(pCopy);
+    }
+    
+    CC3ActionInterval::copyWithZone(pZone);
+    
+    CC_SAFE_DELETE(pNewZone);
+    
+    return pCopy;
+}
+
+CC3FadeOut* CC3FadeOut::create( float d )
+{
+    CC3FadeOut* pAction = new CC3FadeOut();
+    pAction->initWithDuration( d );
+    pAction->autorelease();
+    
+    return pAction;
+}
+
+void CC3FadeOut::update( float time )
+{
+    m_pTargetCC3Node->setOpacity( (GLuint)(255 * (1 - time)) );
+}
+
+CC3ActionInterval* CC3FadeOut::reverse()
+{
+    return CC3FadeIn::create( m_fDuration );
+}
+
+CCObject* CC3FadeOut::copyWithZone( CCZone* pZone )
+{
+    CCZone* pNewZone = NULL;
+    CC3FadeOut* pCopy = NULL;
+    if(pZone && pZone->m_pCopyObject)
+    {
+        //in case of being called at sub class
+        pCopy = (CC3FadeOut*)(pZone->m_pCopyObject);
+    }
+    else
+    {
+        pCopy = new CC3FadeOut();
+        pZone = pNewZone = new CCZone(pCopy);
+    }
+    
+    CC3ActionInterval::copyWithZone(pZone);
+    
+    CC_SAFE_DELETE(pNewZone);
+    
+    return pCopy;
 }
 
 NS_COCOS3D_END

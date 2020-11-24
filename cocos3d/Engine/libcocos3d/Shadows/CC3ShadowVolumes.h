@@ -122,6 +122,8 @@ public:
 	 * to display the volume, otherwise get rid of it.
 	 */
 	void						setVisible( bool _isVisible );
+    /* Overridden so that can still be visible if parent is invisible, unless explicitly turned off. */
+    bool                        isVisible();
 
 	void						createShadowMesh();
 	/** A shadow volume only uses a material when it is to be visible during development. */
@@ -320,6 +322,9 @@ public:
 	void						setShouldDrawBoundingVolume( bool shouldDraw );
 	// Overridden so that not touchable unless specifically set as such
 	bool						isTouchable();
+    
+    void                        setLight( CC3Light* light );
+    CC3Light*                   getLight();
 
 protected:
 	CC3Light*					m_pLight;
@@ -352,8 +357,6 @@ public:
 	CC3Light*					getLight();
 	void						setLight( CC3Light* light );
 
-	virtual void				nodeWasTransformed( CC3Node* aNode );
-	virtual void				nodeWasDestroyed( CC3Node* aNode );
 	static CC3StencilledShadowPainterNode* nodeWithName( const std::string& name, const ccColor4F& color );
 };
 

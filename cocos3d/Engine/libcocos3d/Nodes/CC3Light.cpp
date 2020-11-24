@@ -513,7 +513,9 @@ void CC3Light::addShadowFromBackgroundThread( CC3ShadowVolumeMeshNode* aShadowNo
 
 void CC3Light::removeShadow( CC3ShadowVolumeMeshNode* aShadowNode )
 {
-#pragma _NOTE_TODO( "removeShadow( CC3ShadowProtocol* aShadowNode )" )
+    if ( m_shadows )
+        m_shadows->removeObject( aShadowNode );
+    
 	//_shadows->removeObject( aShadowNode );
 	aShadowNode->setLight( NULL );					// So it can't call back here if I'm gone
 	if (m_shadows && m_shadows->count() == 0) 
@@ -536,10 +538,11 @@ bool CC3Light::hasShadows()
 void CC3Light::updateShadows()
 {
 	CCObject* pObj = NULL;
+    int index = 0;
 	CCARRAY_FOREACH( m_shadows, pObj )
 	{
 		CC3ShadowVolumeMeshNode* sv = (CC3ShadowVolumeMeshNode*)pObj;
-		sv->updateShadow();
+        sv->updateShadow();
 	}
 }
 
@@ -559,9 +562,13 @@ void CC3Light::setShadowCastingVolume( CC3ShadowCastingVolume* scVolume )
 	CC_SAFE_RELEASE( m_shadowCastingVolume );
 	
 	m_shadowCastingVolume = scVolume;
-	m_shadowCastingVolume->retain();
-	m_shadowCastingVolume->setLight( this );
-	cam->addTransformListener( m_shadowCastingVolume );
+    
+    if ( m_shadowCastingVolume )
+    {
+        m_shadowCastingVolume->retain();
+        m_shadowCastingVolume->setLight( this );
+        cam->addTransformListener( m_shadowCastingVolume );
+    }
 }
 
 /**
@@ -575,8 +582,8 @@ void CC3Light::setShadowCastingVolume( CC3ShadowCastingVolume* scVolume )
  */
 void CC3Light::checkShadowCastingVolume()
 {
-	if (hasShadows()) {
-		if (!m_shadowCastingVolume) 
+	if ( hasShadows() ) {
+		if ( !m_shadowCastingVolume )
 			setShadowCastingVolume( CC3ShadowCastingVolume::boundingVolume() );
 	} else {
 		setShadowCastingVolume( NULL );
@@ -597,11 +604,15 @@ void CC3Light::setCameraShadowVolume( CC3CameraShadowVolume* csVolume )
 	CC3Camera* cam = getActiveCamera();
 	cam->removeTransformListener( m_cameraShadowVolume );
 	CC_SAFE_RELEASE( m_cameraShadowVolume );
-	
+
 	m_cameraShadowVolume = csVolume;
-	m_cameraShadowVolume->retain();
-	m_cameraShadowVolume->setLight( this );
-	cam->addTransformListener( m_cameraShadowVolume );
+    
+    if ( csVolume )
+    {
+        m_cameraShadowVolume->retain();
+        m_cameraShadowVolume->setLight( this );
+        cam->addTransformListener( m_cameraShadowVolume );
+    }
 }
 
 /**
@@ -675,8 +686,6 @@ void CC3Light::drawShadowsWithVisitor( CC3NodeDrawingVisitor* visitor )
 {
 	if (m_shadows && (isVisible() || shouldCastShadowsWhenInvisible()) ) 
 	{
-		// MARK_TRACE_HERE
-		//CCLOG("CC3Light drawing %d shadows", _shadows->count());
 		configureStencilParameters( visitor );
 		
 		CCObject* pObj = NULL;
@@ -986,16 +995,6 @@ void CC3ShadowCastingVolume::addPlane( const CC3Plane& aPlane )
 	m_planes[m_planeCount++] = aPlane; 
 }
 
-//-(NSString*) fullDescription {
-//	NSMutableString* desc = [NSMutableString stringWithCapacity: 200];
-//	[desc appendFormat: @"%@", self.description];
-//	[desc appendFormat: @" from light at %@", NSStringFromCC3Vector4(_light.globalHomogeneousPosition)];
-//	[self appendPlanesTo: desc];
-//	[self appendVerticesTo: desc];
-//	return desc;
-//}
-
-
 void CC3ShadowCastingVolume::checkPlaneEdge( const CC3Plane& edgePlane, const CC3Vector& v1, const CC3Vector& v2 )
 {
 	if ( isLightInFrontOfPlane( edgePlane ) ) 
@@ -1140,7 +1139,7 @@ GLuint CC3CameraShadowVolume::getVertexCount()
 {
 	updateIfNeeded();
 
-	return m_pLight->isDirectionalOnly() ? 4 : 5;
+	return (m_pLight && m_pLight->isDirectionalOnly()) ? 4 : 5;
 }
 
 CC3Plane CC3CameraShadowVolume::getTopPlane()
@@ -1252,12 +1251,13 @@ void CC3CameraShadowVolume::buildPlanes()
 	// Finally, determine if the light source is actually behind the camera, by crossing
 	// two sides of the near plane to determine the camera direction, and dotting with a
 	// vector from the light position and a point on the near plane.
-	CC3Vector left = tl.difference( bl );
-	CC3Vector bottom = br.difference( bl );
+	CC3Vector left = tl - bl;
+	CC3Vector bottom = br - bl;
 	CC3Vector camDir = left.cross( bottom );
 	BOOL isBehindCamera = (camDir.dot( lightDir ) < 0);
 	
-	if ( isBehindCamera ) {
+	if ( isBehindCamera )
+    {
         m_planes[kCC3LeftIdx] = CC3Plane::negate(m_planes[kCC3LeftIdx]);
 		m_planes[kCC3RgtIdx] = CC3Plane::negate(m_planes[kCC3RgtIdx]);
 		m_planes[kCC3TopIdx] = CC3Plane::negate(m_planes[kCC3TopIdx]);
@@ -1265,27 +1265,6 @@ void CC3CameraShadowVolume::buildPlanes()
 		m_planes[kCC3NearIdx] = CC3Plane::negate(m_planes[kCC3NearIdx]);
 		m_planes[kCC3FarIdx] = CC3Plane::negate(m_planes[kCC3FarIdx]);
 	}
-	
-	//LogTrace(@"Built %@ from %@ light %@ the camera",
-	//			  self.fullDescription, (_light.isDirectionalOnly ? @"directional" : @"positional"),
-	//			  (isBehindCamera ? @"behind" : @"in front of"));
 }
-//
-//-(NSString*) fullDescription {
-//	NSMutableString* desc = [NSMutableString stringWithCapacity: 500];
-//	[desc appendFormat: @"%@", self.description];
-//	[desc appendFormat: @" from light at %@", NSStringFromCC3Vector4(_light.globalHomogeneousPosition)];
-//	[desc appendFormat: @"\n\tleftPlane: %@", NSStringFromCC3Plane(self.leftPlane)];
-//	[desc appendFormat: @"\n\trightPlane: %@", NSStringFromCC3Plane(self.rightPlane)];
-//	[desc appendFormat: @"\n\ttopPlane: %@", NSStringFromCC3Plane(self.topPlane)];
-//	[desc appendFormat: @"\n\tbottomPlane: %@", NSStringFromCC3Plane(self.bottomPlane)];
-//	[desc appendFormat: @"\n\tnearPlane: %@", NSStringFromCC3Plane(self.nearPlane)];
-//	[desc appendFormat: @"\n\tfarPlane: %@", NSStringFromCC3Plane(self.farPlane)];
-//	[desc appendFormat: @"\n\ttopLeft: %@", NSStringFromCC3Vector(self.topLeft)];
-//	[desc appendFormat: @"\n\ttopRight: %@", NSStringFromCC3Vector(self.topRight)];
-//	[desc appendFormat: @"\n\tbottomLeft: %@", NSStringFromCC3Vector(self.bottomLeft)];
-//	[desc appendFormat: @"\n\tbottomRight: %@", NSStringFromCC3Vector(self.bottomRight)];
-//	return desc;
-//}
 
 NS_COCOS3D_END

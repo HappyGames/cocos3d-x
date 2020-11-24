@@ -2750,20 +2750,20 @@ public:
 	void						populateAsLineStripWith( GLuint vertexCount, CC3Vector* vertices, bool shouldRetainVertices );
 
 protected:
-	CC3VertexLocations*			_vertexLocations;
-	CC3VertexNormals*			_vertexNormals;
-	CC3VertexTangents*			_vertexTangents;
-	CC3VertexTangents*			_vertexBitangents;
-	CC3VertexColors*			_vertexColors;
-	CC3VertexTextureCoordinates* _vertexTextureCoordinates;
-	CCArray*					_overlayTextureCoordinates;
-	CC3VertexBoneWeights*		_vertexBoneWeights;
-	CC3VertexBoneIndices*		_vertexBoneIndices;
-	CC3VertexPointSizes*		_vertexPointSizes;
-	CC3VertexIndices*			_vertexIndices;
-	CC3FaceArray*				_faces;
-	GLfloat						_capacityExpansionFactor;
-	bool						_shouldInterleaveVertices : 1;
+	CC3VertexLocations*			m_vertexLocations;
+	CC3VertexNormals*			m_vertexNormals;
+	CC3VertexTangents*			m_vertexTangents;
+	CC3VertexTangents*			m_vertexBitangents;
+	CC3VertexColors*			m_vertexColors;
+	CC3VertexTextureCoordinates* m_vertexTextureCoordinates;
+	CCArray*					m_overlayTextureCoordinates;
+	CC3VertexBoneWeights*		m_vertexBoneWeights;
+	CC3VertexBoneIndices*		m_vertexBoneIndices;
+	CC3VertexPointSizes*		m_vertexPointSizes;
+	CC3VertexIndices*			m_vertexIndices;
+	CC3FaceArray*				m_faces;
+	GLfloat						m_capacityExpansionFactor;
+	bool						m_shouldInterleaveVertices : 1;
 };
 
 	/**
